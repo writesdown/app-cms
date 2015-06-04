@@ -1,0 +1,43 @@
+{
+    "name": "Writesdown CMS",
+    "description": "CMS Developed With Yii2 Framework",
+    "keywords": ["yii2", "framework", "cms", "writesdown", "project"],
+    "homepage": "http://www.writesdown.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/writesdown/app-cms/issues?state=open",               
+        "source": "https://github.com/writesdown/app-cms"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": ">=2.0.4",
+        "yiisoft/yii2-bootstrap": "*",
+        "yiisoft/yii2-swiftmailer": "*",
+        "yiisoft/yii2-imagine": "~2.0.0",
+        "yiisoft/yii2-jui": "~2.0.0",
+
+        "codezeen/yii2-adminlte": "~1.0",
+        "codezeen/yii2-tinymce": "~1.0",
+
+        "2amigos/yii2-selectize-widget": "~1.0",
+        "2amigos/yii2-date-time-picker-widget": "*",
+        "2amigos/yii2-file-upload-widget": "dev-master"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-faker": "*"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    }
+}
