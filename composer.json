@@ -9,7 +9,7 @@
         "issues": "https://github.com/writesdown/app-cms/issues?state=open",               
         "source": "https://github.com/writesdown/app-cms"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.4",
