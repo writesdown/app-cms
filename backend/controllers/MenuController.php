@@ -133,7 +133,7 @@ class MenuController extends Controller
             }
 
         }
-
+        Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Menu successfully saved.'));
         return $this->redirect(['/menu/index', 'id' => $id]);
     }
 
