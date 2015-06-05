@@ -72,7 +72,7 @@ to the command line.
 
 ```
 composer global require "fxp/composer-asset-plugin:1.0.0"
-composer create-project --prefer-dist writesdown/app-cms writesdown
+composer create-project --prefer-dist --stability=dev writesdown/app-cms writesdown
 ```
 
 The first command installs the composer asset plugin which allows managing bower and npm package dependencies through Composer. 
@@ -116,5 +116,5 @@ Done, Enjoy!
 
 Demo
 ----
-Please visit [http://cms.writesdown.com/](http://cms.writesdown.com/) for demo.
+Please visit [http://democms.writesdown.com/](http://democms.writesdown.com/) for the demo.
 
