@@ -1,6 +1,6 @@
 {
-    "name": "Writesdown CMS",
-    "description": "CMS Developed With Yii2 Framework",
+    "name": "writesdown/app-cms",
+    "description": "CMS Developed Using Yii2 Framework",
     "keywords": ["yii2", "framework", "cms", "writesdown", "project"],
     "homepage": "http://www.writesdown.com/",
     "type": "project",
