@@ -568,7 +568,7 @@ class MediaUploadHandler {
         $this->options = [
             'script_url'                       => Yii::$app->request->absoluteUrl,
             'upload_dir'                       => Yii::getAlias('@frontend/web/uploads/'),
-            'upload_url'                       => Yii::$app->urlManagerFront->createAbsoluteUrl('/uploads/'),
+            'upload_url'                       => Yii::$app->urlManagerFront->baseUrl  . '/uploads/',
             'user_dirs'                        => true,
             'year_month_dirs'                  => true,
             'mkdir_mode'                       => 0755,
