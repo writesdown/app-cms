@@ -248,32 +248,7 @@ class Media extends ActiveRecord
      */
     public function getUrl()
     {
-
-        if (isset($this->mediaPost->postType)) {
-            return Yii::$app->urlManagerFront->createUrl(['/media/view', 'post_type' => $this->mediaPost->postType->post_type_slug, 'post_slug' => $this->mediaPost->post_slug, 'media_slug' => $this->media_slug]);
-        } else {
-            return Yii::$app->urlManagerFront->createUrl(['/media/view', 'media_slug' => $this->media_slug]);
-        }
-
-    }
-
-    /**
-     * Get permalink of a post by an ID
-     *
-     * @param $id
-     *
-     * @return string
-     */
-    public function getMediaUrl($id)
-    {
-
-        $model = static::findOne($id);
-
-        if ($this->mediaPost) {
-            return Yii::$app->urlManagerFront->createAbsoluteUrl(['/media/view', 'post_type' => $model->mediaPost->postType->post_type_slug, 'post_slug' => $model->mediaPost->post_slug, 'media_slug' => $model->media_slug]);
-        } else {
-            return Yii::$app->urlManagerFront->createAbsoluteUrl(['/media/view', 'media_slug' => $model->media_slug]);
-        }
+        return Yii::$app->urlManagerFront->createUrl(['/media/view', 'id' => $this->id]);
     }
 
     /**
@@ -283,7 +258,7 @@ class Media extends ActiveRecord
      */
     public function getUploadUrl()
     {
-        return Yii::$app->urlManagerFront->createAbsoluteUrl('uploads') . '/';
+        return Yii::$app->urlManagerFront->baseUrl . '/uploads/';
     }
 
     /**

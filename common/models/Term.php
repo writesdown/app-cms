@@ -118,6 +118,6 @@ class Term extends ActiveRecord
      * Get URL of current term
      */
     public function getUrl(){
-        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/term/view', 'taxonomy_slug'=>$this->taxonomy->taxonomy_slug, 'term_slug'=>$this->term_slug]);
+        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/term/view', 'id'=> $this->id]);
     }
 }

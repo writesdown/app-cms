@@ -222,22 +222,8 @@ class Post extends ActiveRecord
      */
     public function getUrl()
     {
-        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/post/view', 'post_type' => $this->postType->post_type_slug, 'post_slug' => $this->post_slug]);
+        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/post/view', 'id' => $this->id]);
 
-    }
-
-    /**
-     * Get permalink of a post by an ID
-     *
-     * @param $id
-     *
-     * @return string
-     */
-    public function getPostUrl($id)
-    {
-        $model = static::findOne($id);
-
-        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/post/view', 'post_type' => $model->postType->post_type_slug, 'post_slug' => $model->post_slug]);
     }
 
     /**
