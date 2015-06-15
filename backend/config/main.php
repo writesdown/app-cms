@@ -9,9 +9,10 @@ $params = array_merge(
 );
 
 // Replace url
-$baseUrlBack = str_replace('/backend/web', '/admin', (new Request)->getBaseUrl());
-$baseUrlBack = str_replace('/frontend/web', '/admin', $baseUrlBack);
-$baseUrlFront = str_replace('/backend/web', '', (new Request)->getBaseUrl());
+$request = new Request();
+
+$baseUrlFront    = str_replace('/backend/web', '/frontend/web', $request->getBaseUrl());
+$scriptUrlFront  = str_replace('/backend/web', '/frontend/web', $request->getScriptUrl());
 
 return [
     'id' => 'app-backend',
@@ -48,35 +49,13 @@ return [
                 ],
             ],
         ],
-        'request'         => [
-            'baseUrl' => $baseUrlBack,
-        ],
-        'urlManager'      => [
-            'baseUrl'         => $baseUrlBack,
-            'enablePrettyUrl' => true,
-            'showScriptName'  => false,
-            'rules'           => []
-        ],
         'urlManagerFront' => [
-            'class'           => 'yii\web\urlManager',
-            'baseUrl'         => $baseUrlFront,
-            'enablePrettyUrl' => true,
-            'showScriptName'  => false,
-            'rules'           => [
-                'p/<post_type:[\w-@]+>'                                          => 'post/index',
-                'p/<post_type:[\w-@]+>/<post_slug:[\w-@]+>'                      => 'post/view',
-                'p/<post_type:[\w-@]+>/<post_slug:[\w-@]+>/<media_slug:[\w-@]+>' => 'media/view',
-                'c/<taxonomy_slug:[\w-@]+>/<term_slug:[\w-@]+>'                  => 'term/view',
-                'a/author/<username:[\w-@]+>'                                    => 'user/view',
-                'm/media/<media_slug:[\w-@]+>'                                   => 'media/view',
-            ]
+            'class'     => 'yii\web\urlManager',
+            'scriptUrl' => $scriptUrlFront,
+            'baseUrl'   => $baseUrlFront,
         ],
         'urlManagerBack'  => [
             'class'           => 'yii\web\urlManager',
-            'baseUrl'         => $baseUrlBack,
-            'enablePrettyUrl' => true,
-            'showScriptName'  => false,
-            'rules'           => []
         ],
         'authManager'     => [
             'class' => 'yii\rbac\DbManager',

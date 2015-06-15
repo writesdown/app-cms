@@ -9,14 +9,15 @@ $params = array_merge(
 );
 
 // Replace url
-$baseUrlBack = str_replace('/backend/web', '/admin', (new Request)->getBaseUrl());
-$baseUrlBack = str_replace('/frontend/web', '/admin', $baseUrlBack);
-$baseUrlFront = str_replace('/frontend/web', '', (new Request)->getBaseUrl());
+$request = new Request();
+
+$baseUrlBack    = str_replace('/frontend/web', '/backend/web', $request->getBaseUrl());
+$scriptUrlBack  = str_replace('/frontend/web', '/backend/web', $request->getScriptUrl());
 
 return [
-    'id' => 'app-frontend',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'id'                  => 'app-frontend',
+    'basePath'            => dirname(__DIR__),
+    'bootstrap'           => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components'          => [
         'user'            => [
@@ -47,53 +48,17 @@ return [
                 ],
             ],
         ],
-        'request'         => [
-            'baseUrl' => $baseUrlFront,
-        ],
-        'urlManager'      => [
-            'baseUrl'         => $baseUrlFront,
-            'enablePrettyUrl' => true,
-            'showScriptName'  => false,
-            'rules'           => [
-                'robots.txt'                                                     => 'site/robots',
-                'site/<action:robots>'                                           => 'site/not-notfound',
-
-                'sitemap/<type:[\w-@]+>/<slug:[\w-@]+>-<page:\d+>.xml'           => 'sitemap/view',
-                'sitemap/<type:[\w-@]+>/<slug:[\w-@]+>.xml'                      => 'sitemap/view',
-                'sitemap.xml'                                                    => 'sitemap/index',
-
-                'p/<post_type:[\w-@]+>'                                          => 'post/index',
-                'p/<post_type:[\w-@]+>/<post_slug:[\w-@]+>'                      => 'post/view',
-                'p/<post_type:[\w-@]+>/<post_slug:[\w-@]+>/<media_slug:[\w-@]+>' => 'media/view',
-                'c/<taxonomy_slug:[\w-@]+>/<term_slug:[\w-@]+>'                  => 'term/view',
-                'a/author/<username:[\w-@]+>'                                    => 'user/view',
-                'm/media/<media_slug:[\w-@]+>'                                   => 'media/view',
-            ]
-        ],
         'urlManagerFront' => [
-            'class'           => 'yii\web\urlManager',
-            'baseUrl'         => $baseUrlFront,
-            'enablePrettyUrl' => true,
-            'showScriptName'  => false,
-            'rules'           => [
-                'p/<post_type:[\w-@]+>'                                          => 'post/index',
-                'p/<post_type:[\w-@]+>/<post_slug:[\w-@]+>'                      => 'post/view',
-                'p/<post_type:[\w-@]+>/<post_slug:[\w-@]+>/<media_slug:[\w-@]+>' => 'media/view',
-                'c/<taxonomy_slug:[\w-@]+>/<term_slug:[\w-@]+>'                  => 'term/view',
-                'a/author/<username:[\w-@]+>'                                    => 'user/view',
-                'm/media/<media_slug:[\w-@]+>'                                   => 'media/view',
-            ]
+            'class' => 'yii\web\urlManager',
         ],
         'urlManagerBack'  => [
-            'class'           => 'yii\web\urlManager',
-            'baseUrl'         => $baseUrlBack,
-            'enablePrettyUrl' => true,
-            'showScriptName'  => false,
-            'rules'           => []
+            'class'     => 'yii\web\urlManager',
+            'scriptUrl' => $scriptUrlBack,
+            'baseUrl'   => $baseUrlBack,
         ],
         'authManager'     => [
             'class' => 'yii\rbac\DbManager',
         ],
     ],
-    'params' => $params,
+    'params'              => $params,
 ];
