@@ -23,7 +23,7 @@ $this->title = 'Reset password';
 
     <div class="login-logo">
         <h1>
-            <?= Html::a( Html::img( Yii::getAlias('@web/img/logo-300x43.png'), ['alt' => 'WritesDown'] ), 'http://www.writesdown.com' ); ?>
+            <?= Html::a( Html::img( Yii::getAlias('@web/img/logo.png'), ['alt' => 'WritesDown'] ), 'http://www.writesdown.com' ); ?>
         </h1>
     </div>
 

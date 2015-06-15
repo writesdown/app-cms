@@ -67,7 +67,7 @@ $this->beginPage()
 <?php $this->beginBody() ?>
 <?php
 NavBar::begin([
-    'brandLabel' => Html::img(Yii::getAlias('@web/img/logo-21x21.png'), ['alt' => 'WritsDown Small Logo']),
+    'brandLabel' => Html::img(Yii::getAlias('@web/img/logo-mini.png'), ['alt' => 'WritsDown Mini Logo']),
     'brandUrl'   => Yii::$app->homeUrl,
     'options'    => [
         'class' => 'navbar-inverse navbar-static-top',
@@ -83,7 +83,7 @@ NavBar::end();
 ?>
 <header id="header-primary">
     <div class="container">
-        <?= Html::a(Html::img(Yii::getAlias('@web/img/logo-large.png'), ['alt' => 'Writes Down Large Logo']), Yii::$app->homeUrl, ['id' => 'logo']); ?>
+        <?= Html::a(Html::img(Yii::getAlias('@web/img/logo.png'), ['alt' => 'Writes Down Logo']), Yii::$app->homeUrl, ['id' => 'logo']); ?>
         <?php if (Yii::$app->controller->route == 'site/index') {
             echo Html::tag('h1', $sitetitle . ' - ' . $tagline, [
                 'id'    => 'site-title',

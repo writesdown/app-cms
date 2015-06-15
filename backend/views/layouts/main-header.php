@@ -17,8 +17,8 @@ use cebe\gravatar\Gravatar;
 <header class="main-header">
     <?php
     echo Html::a(
-        Html::tag('span', Html::img(Yii::getAlias('@web/img/logo-21x21.png')), ['class' => 'logo-mini']) .
-        Html::tag('span', '<b>Writes</b>Down', ['class' => 'logo-lg']), Yii::$app->urlManagerFront->createAbsoluteUrl('/'),
+        Html::tag('span', Html::img(Yii::getAlias('@web/img/logo-mini.png')), ['class' => 'logo-mini']) .
+        Html::tag('span', '<b>Writes</b>Down', ['class' => 'logo-lg']), Yii::$app->urlManagerFront->baseUrl,
         [
             'class' => 'logo'
         ]);
