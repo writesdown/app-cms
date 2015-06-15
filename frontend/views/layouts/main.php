@@ -29,6 +29,14 @@ $this->registerLinkTag([
     'rel'  => 'canonical',
     'href' => Yii::$app->request->absoluteUrl
 ]);
+
+// Favicon
+$this->registerLinkTag([
+    'rel'  => 'icon',
+    'href' => Yii::getAlias('@web/favicon.ico'),
+    'type' => 'image/x-icon'
+]);
+
 // Add meta robots noindex, nofollow when option disable_site_indexing = true
 if (Option::get('disable_site_indexing')) {
     $this->registerMetaTag([
@@ -36,6 +44,7 @@ if (Option::get('disable_site_indexing')) {
         'content' => 'noindex, nofollow'
     ]);
 }
+
 // Get site-title and tag-line
 $sitetitle = Option::get('sitetitle');
 $tagline = Option::get('tagline');
@@ -74,7 +83,7 @@ NavBar::end();
 ?>
 <header id="header-primary">
     <div class="container">
-        <?= Html::a(Html::img(Yii::getAlias('@web/img/logo-300x43.png'), ['alt' => 'Writes Down Large Logo']), Yii::$app->homeUrl, ['id' => 'logo']); ?>
+        <?= Html::a(Html::img(Yii::getAlias('@web/img/logo-large.png'), ['alt' => 'Writes Down Large Logo']), Yii::$app->homeUrl, ['id' => 'logo']); ?>
         <?php if (Yii::$app->controller->route == 'site/index') {
             echo Html::tag('h1', $sitetitle . ' - ' . $tagline, [
                 'id'    => 'site-title',

@@ -14,6 +14,13 @@ use backend\assets\AppAsset;
 /* @var $this yii\web\View */
 /* @var $content string */
 
+// Favicon
+$this->registerLinkTag([
+    'rel'  => 'icon',
+    'href' => Yii::getAlias('@web/favicon.ico'),
+    'type' => 'image/x-icon'
+]);
+
 AppAsset::register($this);
 ?>
 
