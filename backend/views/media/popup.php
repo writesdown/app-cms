@@ -59,7 +59,7 @@ MediaPopupAsset::register($this);
                         ],
                         [
                             'label'       => '<i class="fa fa-folder-open"></i> <span>' . Yii::t('writesdown', 'Media Library') . '</span>',
-                            'url'         => ['#media-library'],
+                            'url'         => '#media-library',
                             'linkOptions' => [
                                 'aria-controls' => 'media-library',
                                 'role'          => 'tab',
