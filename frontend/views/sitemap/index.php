@@ -12,14 +12,17 @@
 <?= '<?xml-stylesheet type="text/xsl" href="' . Yii::$app->urlManager->createAbsoluteUrl(['sitemap/style']) . '"?>'; ?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <sitemap>
-        <loc><?= Yii::$app->urlManager->createAbsoluteUrl(['sitemap/view', 'type' => 'h', 'slug' => 'home', 'page' => 1]); ?></loc>
-        <lastmod><?php $lastmod = new \DateTime('now', new \DateTimeZone(Yii::$app->timeZone));
-            echo $lastmod->format('r') ?></lastmod>
-        ;
+        <loc><![CDATA[<?= Yii::$app->urlManager->createAbsoluteUrl(['sitemap/view', 'type' => 'h', 'slug' => 'home', 'page' => 1]); ?>]]></loc>
+        <lastmod>
+            <?php
+            $lastmod = new \DateTime('now', new \DateTimeZone(Yii::$app->timeZone));
+            echo $lastmod->format('r')
+            ?>
+        </lastmod>
     </sitemap>
     <?php foreach ($items as $item) {
         echo '<sitemap>';
-        echo '<loc>' . $item['loc'] . '</loc>';
+        echo '<loc><![CDATA[' . $item['loc'] . ']]></loc>';
         echo '<lastmod>' . $item['lastmod'] . '</lastmod>';
         echo '</sitemap>';
     }; ?>

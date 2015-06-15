@@ -40,21 +40,26 @@ use common\models\Option;
                 ?>
                 <item>
                     <title><?= $post->post_title; ?></title>
-                    <link><?= $post->url; ?></link>
-                    <comments><?= $post->url; ?>#comments</comments>
-                    <pubDate><?php $postDate = new DateTime($post->post_date, new DateTimeZone(Option::get('time_zone')));
-                        echo $postDate->format('r'); ?></pubDate>
+                    <link><![CDATA[<?= $post->url; ?>]]></link>
+                    <comments><![CDATA[<?= $post->url; ?>#comments]]></comments>
+                    <pubDate>
+                        <?php
+                        $postDate = new DateTime($post->post_date, new DateTimeZone(Option::get('time_zone')));
+                        echo $postDate->format('r');
+                        ?>
+                    </pubDate>
                     <dc:creator><![CDATA[<?= $post->postAuthor->display_name ?>]]></dc:creator>
-                    <?php foreach ($post->terms as $term): ?>
-                        <category><![CDATA[<?= $term->term_name; ?>]]></category>
-                    <?php endforeach; ?>
-                    <guid
-                        isPermaLink="false"><?= Yii::$app->urlManager->createAbsoluteUrl(['post/view', 'id' => $post->id]); ?></guid>
+                    <?php foreach ($post->terms as $term){ ?>
+                    <category><![CDATA[<?= $term->term_name; ?>]]></category>
+                    <?php } ?>
+                    <guid isPermaLink="false">
+                        <![CDATA[<?= Yii::$app->urlManager->createAbsoluteUrl(['post/view', 'id' => $post->id]); ?>]]>
+                    </guid>
                     <description><![CDATA[<?= $post->post_excerpt; ?>]]></description>
                     <?php if (Option::get('rss_use_excerpt')) { ?>
                         <content:encoded><![CDATA[<?= $post->post_content; ?>]]></content:encoded>
                     <?php } ?>
-                    <wfw:commentRss><?= $post->url; ?></wfw:commentRss>
+                    <wfw:commentRss><![CDATA[<?= $post->url; ?>]]></wfw:commentRss>
                     <slash:comments><?= $post->post_comment_count; ?></slash:comments>
                 </item>
             <?php

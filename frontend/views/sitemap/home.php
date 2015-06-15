@@ -14,7 +14,7 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc><?= $item['loc']; ?></loc>
+        <loc><![CDATA[<?= $item['loc']; ?>]]></loc>
         <changefreq><?= $item['changefreq']; ?></changefreq>
         <priority><?= $item['priority']; ?></priority>
     </url>

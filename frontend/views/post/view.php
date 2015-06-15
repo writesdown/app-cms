@@ -15,7 +15,7 @@ use frontend\assets\CommentAsset;
 /* @var $comment common\models\PostComment */
 
 $this->title = $post->post_title;
-$this->params['breadcrumbs'][] = ['label' => $post->postType->post_type_sn, 'url' => ['/post/index', 'post_type' => $post->postType->post_type_slug]];
+$this->params['breadcrumbs'][] = ['label' => $post->postType->post_type_sn, 'url' => ['/post/index', 'id' => $post->postType->id]];
 $category = $post->getTerms()->innerJoinWith(['taxonomy'])->andWhere(['taxonomy_slug' => 'category'])->one();
 if ($category) {
     $this->params['breadcrumbs'][] = ['label' => $category->term_name, 'url' => $category->url];

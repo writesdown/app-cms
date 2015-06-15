@@ -16,7 +16,7 @@
         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <?php foreach ($items as $item) { ?>
         <url>
-            <loc><?= $item['loc']; ?></loc>
+            <loc><![CDATA[<?= $item['loc']; ?>]]></loc>
             <lastmod><?= $item['lastmod']; ?></lastmod>
             <changefreq><?= $item['changefreq']; ?></changefreq>
             <priority><?= $item['priority']; ?></priority>
@@ -25,7 +25,7 @@
                 foreach ($item['image'] as $image) {
                     ?>
                     <?= '<image:image>'; ?>
-                    <?= '<image:loc>' . $image['loc'] . '</image:loc>'; ?>
+                    <?= '<image:loc><![CDATA[' . $image['loc'] . ']]></image:loc>'; ?>
                     <?= isset($image['title']) ? '<image:title><![CDATA[' . $image['title'] . ']]></image:title>' : ''; ?>
                     <?= isset($image['caption']) ? ' <image:caption><![CDATA[' . $image['caption'] . ']]></image:caption>' : ''; ?>
                     <?= '</image:image>' ?>

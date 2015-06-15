@@ -64,9 +64,9 @@ use common\models\Post;
                     <?= Nav::widget([
                         'items'   => [
                             ['label' => 'Home', 'url' => Yii::$app->homeUrl],
-                            ['label' => 'About Us', 'url' => ['post/view', 'post_slug' => 'about-us', 'post_type' => 'page']],
-                            ['label' => 'Privacy Policy', 'url' => ['post/view', 'post_slug' => 'privacy-policy', 'post_type' => 'page']],
-                            ['label' => 'Sitemap', 'url' => ['/sitemap.xml']],
+                            ['label' => 'About Us', 'url' => ['post/view', 'id' => '1']],
+                            ['label' => 'Privacy Policy', 'url' => ['post/view', 'id' => 1]],
+                            ['label' => 'Sitemap', 'url' => ['/sitemap']],
                             ['label' => 'Entries RSS', 'url' => ['/feed']],
                         ],
                         'options' => ['class' => 'nav'],

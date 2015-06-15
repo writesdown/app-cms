@@ -53,12 +53,12 @@ use common\models\Taxonomy;
                 ],
                 [
                     'label'       => 'Logout',
-                    'url'         => Yii::$app->urlManagerBack->createAbsoluteUrl('/site/logout'),
+                    'url'         => Yii::$app->urlManagerFront->createAbsoluteUrl('/site/logout'),
                     'visible'     => !Yii::$app->user->isGuest,
                     'linkOptions' => ['data-method' => 'post']
                 ],
                 ['label' => 'Entries RSS', 'url' => ['/feed']],
-                ['label' => 'Sitemap', 'url' => ['/sitemap.xml']],
+                ['label' => 'Sitemap', 'url' => ['/sitemap']],
             ]]); ?>
         </div>
     </div>

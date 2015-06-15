@@ -17,7 +17,6 @@ use yii\helpers\Html;
 /* @var $comment common\models\MediaComment */
 
 $this->title = $media->media_title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Media'), 'url' => ['index']];
 if ($media->mediaPost) {
     $this->params['breadcrumbs'][] = ['label' => $media->mediaPost->post_title, 'url' => $media->mediaPost->url];
 }
