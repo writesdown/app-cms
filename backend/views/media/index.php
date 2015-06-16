@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         /* @var $model common\models\Media */
                         $metadata = $model->getMeta('metadata');
                         if (preg_match('/^image\//', $model->media_mime_type)) {
-                            return Html::a(Html::img(Yii::$app->urlManagerFront->baseUrl . '/uploads/' . $metadata['media_icon_url']), [
+                            return Html::a(Html::img($model->uploadUrl . $metadata['media_icon_url']), [
                                 '/media/update', 'id' => $model->id
                             ], [
                                 'class' => 'media-mime-icon'

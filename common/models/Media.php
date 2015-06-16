@@ -248,7 +248,7 @@ class Media extends ActiveRecord
      */
     public function getUrl()
     {
-        return Yii::$app->urlManagerFront->createUrl(['/media/view', 'id' => $this->id]);
+        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/media/view', 'id' => $this->id]);
     }
 
     /**
@@ -258,7 +258,7 @@ class Media extends ActiveRecord
      */
     public function getUploadUrl()
     {
-        return Yii::$app->urlManagerFront->baseUrl . '/uploads/';
+        return Yii::$app->urlManagerFront->hostInfo . Yii::$app->urlManagerFront->baseUrl . '/uploads/';
     }
 
     /**
