@@ -26,4 +26,14 @@ $application->formatter->dateFormat = 'php:' . Option::get('date_format');
 $application->formatter->timeFormat = 'php:' . Option::get('time_format');
 $application->formatter->datetimeFormat = 'php:' . Option::get('date_format') . ' ' . Option::get('time_format');
 
+/* Theme Config */
+$themeConfigFile = Yii::getAlias('@frontend/themes/') . Option::get('theme') . '/config/main.php';
+
+if(is_file($themeConfigFile)){
+    $themeConfig = require($themeConfigFile);
+    if(isset($themeConfig['backend'])){
+        $application->params = \yii\helpers\ArrayHelper::merge($application->params, $themeConfig['backend']);
+    }
+}
+
 $application->run();

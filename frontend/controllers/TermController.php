@@ -57,7 +57,7 @@ class TermController extends Controller{
             ->limit($pages->limit)
             ->all();
 
-        if( is_file($this->getViewPath() . "/view-" . $model->taxonomy->taxonomy_slug . '.php')){
+        if( is_file($this->view->theme->basePath . '/term/view-' . $model->taxonomy->taxonomy_slug . '.php')){
             $render = 'view-' . $model->taxonomy->taxonomy_slug;
         }
 

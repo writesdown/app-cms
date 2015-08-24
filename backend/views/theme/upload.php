@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div id="nav-tabs-custom" class="nav-tabs-custom">
         <?= $this->render('_navigation'); ?>
         <div class="tab-content">
-            <?php $form = ActiveForm::begin(); ?>
+            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
             <?= $form->field($model, 'theme')->fileInput(); ?>
 
             <div class="form-group">

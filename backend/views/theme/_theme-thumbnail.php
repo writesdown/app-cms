@@ -12,39 +12,40 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $i int */
-
+/* @var $theme [] */
+/* @var $installed string */
 ?>
 <div class="col-xs-6 col-sm-4">
     <div class="thumbnail theme-thumbnail">
-        <?= Html::img(Yii::getAlias('@web/img/themes.png'), [
+        <?= Html::img($theme['Thumbnail'], [
             'class' => 'theme-thumbnail'
         ]); ?>
-        <h3 class="theme-name">Sample Theme WritesDown <?= $i; ?></h3>
+        <h3 class="theme-name"><?= $theme['Name']; ?></h3>
         <?php
-        if ($i == 0) {
+        if ($theme['Dir'] === $installed) {
             echo Html::tag('span', Yii::t('writesdown', 'Installed'), ['class' => 'full-width btn-block btn btn-flat btn-info']);
-        } else {
+        }else{
             echo Html::beginTag('div', ['class' => 'btn-group']);
-            echo Html::a(Yii::t('writesdown', 'Detail'), ['/theme/detail', 'theme' => $i], [
+            echo Html::a(Yii::t('writesdown', 'Detail'), ['/theme/detail', 'theme' => $theme['Dir']], [
                 'class' => 'btn-detail btn btn-flat btn-success',
                 'data'  => [
-                    'theme'       => $i,
+                    'theme'       => $theme['Dir'],
                     'ajax-detail' => Url::to(['theme/ajax-detail'])
                 ]
             ]);
-            echo Html::a(Yii::t('writesdown', 'Install'), ['/theme/install', 'theme' => $i], [
+            echo Html::a(Yii::t('writesdown', 'Install'), ['/theme/install', 'theme' => $theme['Dir']], [
                 'class' => 'btn btn-flat btn-primary',
                 'data'  => [
-                    'theme'   => $i,
+                    'theme'   => $theme['Dir'],
                     'confirm' => Yii::t('writesdown', 'Are you wanna install this theme?'),
                     'method'  => 'post',
                 ]
             ]);
             echo Html::endTag('div');
-            echo Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/theme/delete', 'theme' => $i], [
+            echo Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/theme/delete', 'theme' => $theme['Dir']], [
                 'class' => 'btn btn-flat btn-danger pull-right',
                 'data'  => [
-                    'theme'   => $i,
+                    'theme'   => $theme['Dir'],
                     'confirm' => Yii::t('writesdown', 'Are you sure wanna to delete this theme permanently?'),
                     'method'  => 'post',
                 ]
