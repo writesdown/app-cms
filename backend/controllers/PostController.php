@@ -165,7 +165,7 @@ class PostController extends Controller
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', '{post_type} successfully saved.', ['post_type' => $postType->post_type_sn]));
 
-                return $this->refresh();
+                return $this->redirect(['post/update','id'=>$id]);
             }
         }
 
