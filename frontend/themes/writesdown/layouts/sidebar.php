@@ -43,18 +43,6 @@ use yii\bootstrap\Nav;
                 <h4>Meta</h4>
             </div>
             <?= Nav::widget(['items' => [
-                ['label' => 'Admin', 'url' => Yii::$app->urlManagerBack->createAbsoluteUrl('/site/index')],
-                [
-                    'label'   => 'Login',
-                    'url'     => Yii::$app->urlManagerBack->createAbsoluteUrl('/site/login'),
-                    'visible' => Yii::$app->user->isGuest
-                ],
-                [
-                    'label'       => 'Logout',
-                    'url'         => Yii::$app->urlManagerFront->createAbsoluteUrl('/site/logout'),
-                    'visible'     => !Yii::$app->user->isGuest,
-                    'linkOptions' => ['data-method' => 'post']
-                ],
                 ['label' => 'Entries RSS', 'url' => ['/feed']],
                 ['label' => 'Sitemap', 'url' => ['/sitemap']],
             ]]); ?>
