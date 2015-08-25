@@ -16,4 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Theme'), 'url
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= $this->render('_theme-detail', ['detail' => $detail]);
+<?= $this->render('_theme-detail', [
+    'detail' => $detail,
+    'installed' => $installed
+]);

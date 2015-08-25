@@ -58,7 +58,7 @@ class UserController extends Controller
         $posts = $query->all();
 
         if ($posts) {
-            if (is_file($this->getViewPath() . '/view-' . $model->username . '.php')) {
+            if (is_file($this->view->theme->basePath . '/user/view-' . $model->username . '.php')) {
                 $render = 'view-' . $model->username . '.php';
             }
 

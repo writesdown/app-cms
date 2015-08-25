@@ -91,7 +91,7 @@ class SiteController extends Controller{
             $query = $query->andWhere(['id' => $front_page]);
             $post = $query->one();
 
-            if (is_file($this->getViewPath() . DIRECTORY_SEPARATOR . '../post/view-' . $post->postType->post_type_slug . '.php')) {
+            if ( is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php' ) ) {
                 $render = '/post/view-' . $post->postType->post_type_slug;
             }
 
@@ -161,6 +161,7 @@ class SiteController extends Controller{
      *
      * @param $s
      *
+     * @return string
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionSearch($s)

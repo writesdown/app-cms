@@ -61,7 +61,7 @@ class MediaController extends Controller
             }
         }
 
-        if (is_file($this->getViewPath() . '/view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1)) . '.php')) {
+        if (is_file($this->view->theme->basePath . '/media/view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1)) . '.php')) {
             $render = 'view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1));
         }
 

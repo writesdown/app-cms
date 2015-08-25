@@ -11,6 +11,8 @@
 use yii\bootstrap\Modal;
 
 /* @var $this \yii\web\View */
+/* @var $themes [] */
+/* @var $installed string */
 
 $this->title = Yii::t('writesdown', 'Theme');
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,8 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="tab-content">
                 <div class="row">
                     <?php
-                    for ($i = 0; $i < 6; $i++) {
-                        echo $this->render('_theme-thumbnail', ['i' => $i]);
+                    foreach ($themes as $dir=>$theme) {
+                        echo $this->render('_theme-thumbnail', [
+                            'theme' => $theme,
+                            'installed'=> $installed
+                        ]);
                     } ?>
                 </div>
             </div>

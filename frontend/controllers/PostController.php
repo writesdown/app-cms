@@ -31,9 +31,10 @@ use common\models\PostComment as Comment;
 class PostController extends Controller
 {
     /**
-     * @param int|null    $id ID of post-type.
+     * @param int|null    $id        ID of post-type.
      * @param string|null $post_type Slug of post-type.
      *
+     * @return string
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionIndex($id = null, $post_type = null)
@@ -58,7 +59,7 @@ class PostController extends Controller
         $posts = $query->all();
 
         if ($posts) {
-            if (is_file($this->getViewPath() . '/index-' . $postType->post_type_slug . '.php')) {
+            if (is_file($this->view->theme->basePath . '/post/index-' . $postType->post_type_slug . '.php')) {
                 $render = 'index-' . $postType->post_type_slug . '.php';
             }
 
@@ -111,7 +112,7 @@ class PostController extends Controller
             }
         }
 
-        if (is_file($this->getViewPath() . '/view-' . $model->postType->post_type_slug . '.php')) {
+        if ( is_file($this->view->theme->basePath . '/post/view-' . $model->postType->post_type_slug . '.php')) {
             $render = 'view-' . $model->postType->post_type_slug . '.php';
         }
 
