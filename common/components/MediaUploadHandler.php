@@ -539,7 +539,7 @@ class MediaUploadHandler {
         $uploadPath = $this->getUploadPath($this->_meta['media_filename']);
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, $this->getOption('mkdir'), 'true');
+            mkdir($uploadDir, $this->getOption('mkdir_mode'), 'true');
         }
 
         if ($file->saveAs($uploadPath)) {
