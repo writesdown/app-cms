@@ -174,12 +174,13 @@ class Media extends ActiveRecord
         ];
     }
 
+
     /**
      * Get meta for current media.
      *
      * @param $meta_name
      *
-     * @return boolean|array|string
+     * @return mixed|null|string
      */
     public function getMeta($meta_name)
     {
@@ -195,7 +196,7 @@ class Media extends ActiveRecord
             return $model->meta_value;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -212,12 +213,17 @@ class Media extends ActiveRecord
             $meta_value = Json::encode($meta_value);
         }
 
-        $model = new MediaMeta();
-        $model->media_id = $this->id;
-        $model->meta_name = $meta_name;
-        $model->meta_value = $meta_value;
+        if ($this->getMeta($meta_name) !== null) {
+            return $this->upMeta($meta_name, $meta_value);
+        } else {
+            $model = new MediaMeta();
+            $model->media_id = $this->id;
+            $model->meta_name = $meta_name;
+            $model->meta_value = $meta_value;
 
-        return $model->save();
+            return $model->save();
+        }
+
     }
 
     /**

@@ -86,7 +86,7 @@ class Option extends ActiveRecord
                 return $model->option_value;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -102,20 +102,21 @@ class Option extends ActiveRecord
      */
     public static function set($option_name, $option_value, $option_label = null, $option_group = null)
     {
-        /* @var $model \common\models\Option */
-        $model = new Option();
-
         if (is_array($option_value) || is_object($option_value)) {
-            $model->option_value = Json::encode($option_value);
-        } else {
-            $model->option_value = $option_value;
+            $option_value = Json::encode($option_value);
         }
 
-        $model->option_name = $option_name;
-        $model->option_label = $option_label;
-        $model->option_group = $option_group;
+        if (static::get($option_name) !== null) {
+            return static::up($option_name, $option_value);
+        } else {
+            $model = new Option();
+            $model->option_name = $option_name;
+            $model->option_value = $option_value;
+            $model->option_label = $option_label;
+            $model->option_group = $option_group;
 
-        return $model->save();
+            return $model->save();
+        }
     }
 
     /**

@@ -231,7 +231,7 @@ class Post extends ActiveRecord
      *
      * @param $meta_name
      *
-     * @return bool|mixed
+     * @return mixed|null
      */
     public function getMeta($meta_name)
     {
@@ -246,7 +246,7 @@ class Post extends ActiveRecord
             return $model->meta_value;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -263,12 +263,16 @@ class Post extends ActiveRecord
             $meta_value = Json::encode($meta_value);
         }
 
-        $model = new PostMeta();
-        $model->media_id = $this->id;
-        $model->meta_name = $meta_name;
-        $model->meta_value = $meta_value;
+        if ($this->getMeta($meta_name) !== null) {
+            return $this->upMeta($meta_name, $meta_value);
+        } else {
+            $model = new PostMeta();
+            $model->media_id = $this->id;
+            $model->meta_name = $meta_name;
+            $model->meta_value = $meta_value;
 
-        return $model->save();
+            return $model->save();
+        }
     }
 
     /**
