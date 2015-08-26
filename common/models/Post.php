@@ -227,7 +227,7 @@ class Post extends ActiveRecord
     }
 
     /**
-     * Get meta for current media.
+     * Get meta for current post.
      *
      * @param $meta_name
      *
@@ -235,7 +235,7 @@ class Post extends ActiveRecord
      */
     public function getMeta($meta_name)
     {
-        $model = PostMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['media_id' => $this->id])->one();
+        $model = PostMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['post_id' => $this->id])->one();
 
         if ($model) {
 
@@ -250,7 +250,7 @@ class Post extends ActiveRecord
     }
 
     /**
-     * Add new meta data for current media.
+     * Add new meta data for current post.
      *
      * @param $meta_name
      * @param $meta_value
@@ -267,7 +267,7 @@ class Post extends ActiveRecord
             return $this->upMeta($meta_name, $meta_value);
         } else {
             $model = new PostMeta();
-            $model->media_id = $this->id;
+            $model->post_id = $this->id;
             $model->meta_name = $meta_name;
             $model->meta_value = $meta_value;
 
@@ -276,7 +276,7 @@ class Post extends ActiveRecord
     }
 
     /**
-     * Update meta data for current media.
+     * Update meta data for current post.
      *
      * @param $meta_name
      * @param $meta_value
@@ -285,7 +285,7 @@ class Post extends ActiveRecord
      */
     public function upMeta($meta_name, $meta_value)
     {
-        $model = PostMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['media_id' => $this->id])->one();
+        $model = PostMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['post_id' => $this->id])->one();
 
         if (is_array($meta_value) || is_object($meta_value))
             $meta_value = Json::encode($meta_value);
