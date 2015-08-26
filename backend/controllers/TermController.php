@@ -80,13 +80,13 @@ class TermController extends Controller
                     $termRelationship->term_id = $term->id;
                     if ($termRelationship->save()) {
                         echo '<br />';
-                        echo Html::label(Html::checkbox('termIds', true, ['value' => $term->id]) . $term->term_name);
+                        echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
                     }
                 }
             } else {
                 if ($term->save()) {
                     echo '<br />';
-                    echo Html::label(Html::checkbox('termIds', true, ['value' => $term->id]) . $term->term_name);
+                    echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
                 }
             }
         }
