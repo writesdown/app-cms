@@ -125,6 +125,13 @@ class PostController extends Controller
                         }
                     }
                 }
+
+                if ($meta = Yii::$app->request->post('meta')) {
+                    foreach ($meta as $meta_name => $meta_value) {
+                        $model->setMeta($meta_name, $meta_value);
+                    }
+                }
+
                 Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', '{post_type} successfully saved.', ['post_type' => $postType->post_type_sn]));
 
                 return $this->redirect(['update', 'id' => $model->id]);
@@ -163,6 +170,12 @@ class PostController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->post_date = Yii::$app->formatter->asDatetime($model->post_date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
+                if ($meta = Yii::$app->request->post('meta')) {
+                    foreach ($meta as $meta_name => $meta_value) {
+                        $model->setMeta($meta_name, $meta_value);
+                    }
+                }
+
                 Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', '{post_type} successfully saved.', ['post_type' => $postType->post_type_sn]));
 
                 return $this->redirect(['post/update','id'=>$id]);

@@ -39,6 +39,12 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
                 'form'  => $form
             ]); ?>
 
+            <?= $this->render('_meta-box', [
+                'model'     => $model,
+                'form'      => $form,
+                'postType'  => $postType
+            ]); ?>
+
         </div>
         <div class="col-md-4">
 
