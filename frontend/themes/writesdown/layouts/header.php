@@ -18,7 +18,7 @@ use yii\widgets\Breadcrumbs;
 use common\models\Menu;
 
 /* @var $this yii\web\View */
-/* @var $assetBundle frontend\themes\writesdown\assets\ThemeAsset */
+/* @var $assetBundle themes\writesdown\assets\ThemeAsset */
 /* @var $siteTitle string */
 /* @var $tagLine string */
 

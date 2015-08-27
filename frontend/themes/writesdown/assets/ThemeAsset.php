@@ -10,13 +10,13 @@
  * @since       1.0
  */
 
-namespace frontend\themes\writesdown\assets;
+namespace themes\writesdown\assets;
 
 use yii\web\AssetBundle;
 
 /**
  * Class ThemeAsset
- * @package frontend\themes\writesdown\assets
+ * @package themes\writesdown\assets
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   1.0
  */
@@ -25,7 +25,7 @@ class ThemeAsset extends AssetBundle
     /**
      * @var string
      */
-    public $sourcePath = '@frontend/themes/writesdown/files';
+    public $sourcePath = '@themes/writesdown/files';
 
     /**
      * @var array

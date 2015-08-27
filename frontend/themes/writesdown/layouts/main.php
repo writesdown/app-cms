@@ -9,7 +9,7 @@
  */
 
 use yii\helpers\Html;
-use frontend\themes\writesdown\assets\ThemeAsset;
+use themes\writesdown\assets\ThemeAsset;
 
 /* MODEL */
 use common\models\Option;

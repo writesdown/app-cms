@@ -8,11 +8,16 @@
  * @license   http://www.writesdown.com/license/
  */
 return [
-    'backend' => [
+    'backend'  => [
         'bodyClass' => 'skin-blue sidebar-mini',
-        'menu' => [
+        'menu'      => [
             'location' => [
-                'primary'   => 'Primary',
+                'primary' => 'Primary',
+            ]
+        ],
+        'metaBox'   => [
+            'post' => [
+                ['class' => 'themes\writesdown\metabox\MetaBox'],
             ]
         ]
     ],

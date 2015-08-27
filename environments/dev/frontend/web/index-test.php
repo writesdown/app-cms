@@ -27,15 +27,15 @@ $application->formatter->timeFormat = 'php:' . Option::get('time_format');
 $application->formatter->datetimeFormat = 'php:' . Option::get('date_format') . ' ' . Option::get('time_format');
 
 /* Theme */
-$application->view->theme->basePath = '@app/themes/' . Option::get('theme');
+$application->view->theme->basePath = '@themes/' . Option::get('theme');
 $application->view->theme->baseUrl = '@web/themes/' . Option::get('theme');
 $application->view->theme->pathMap = [
-    '@app/views' => '@app/themes/' . Option::get('theme'),
-    '@app/views/post' => '@app/themes/' . Option::get('theme') . '/post'
+    '@app/views' => '@themes/' . Option::get('theme'),
+    '@app/views/post' => '@themes/' . Option::get('theme') . '/post'
 ];
 
 /* Theme Config */
-$themeConfigFile = Yii::getAlias('@frontend/themes/') . Option::get('theme') . '/config/main.php';
+$themeConfigFile = Yii::getAlias('@themes/') . Option::get('theme') . '/config/main.php';
 
 if(is_file($themeConfigFile)){
     $themeConfig = require($themeConfigFile);

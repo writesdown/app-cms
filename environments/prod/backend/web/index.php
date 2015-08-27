@@ -27,7 +27,7 @@ $application->formatter->timeFormat = 'php:' . Option::get('time_format');
 $application->formatter->datetimeFormat = 'php:' . Option::get('date_format') . ' ' . Option::get('time_format');
 
 /* Theme Config */
-$themeConfigFile = Yii::getAlias('@frontend/themes/') . Option::get('theme') . '/config/main.php';
+$themeConfigFile = Yii::getAlias('@themes/') . Option::get('theme') . '/config/main.php';
 
 if(is_file($themeConfigFile)){
     $themeConfig = require($themeConfigFile);
