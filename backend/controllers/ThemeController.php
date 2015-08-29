@@ -135,7 +135,7 @@ class ThemeController extends Controller
 
             if ($model->validate()) {
                 // Theme path
-                $themePath = $this->themeDir . $model->theme->baseName . '.' . $model->theme->extension;
+                $themePath = $this->themeDir . $model->theme->name;
 
                 if (!is_dir($this->themeDir)) {
                     mkdir($this->themeDir, 0755);
@@ -287,7 +287,7 @@ class ThemeController extends Controller
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-            $this->themeDir = Yii::getAlias('@frontend/themes/');
+            $this->themeDir = Yii::getAlias('@themes/');
             $this->thumbDir = Yii::getAlias('@webroot/themes/');
             $this->thumbBaseUrl = Yii::getAlias('@web/themes/');
 
