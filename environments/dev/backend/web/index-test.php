@@ -1,5 +1,4 @@
 <?php
-use common\models\Option;
 
 // NOTE: Make sure this file is not accessible when deployed to production
 if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
@@ -17,24 +16,4 @@ require(__DIR__ . '/../config/bootstrap.php');
 
 $config = require(__DIR__ . '/../../tests/codeception/config/backend/acceptance.php');
 
-$application = new yii\web\Application($config);
-
-/* Time Zone */
-$application->timeZone = Option::get('time_zone');
-
-/* Date Time */
-$application->formatter->dateFormat = 'php:' . Option::get('date_format');
-$application->formatter->timeFormat = 'php:' . Option::get('time_format');
-$application->formatter->datetimeFormat = 'php:' . Option::get('date_format') . ' ' . Option::get('time_format');
-
-/* Theme Config */
-$themeConfigFile = Yii::getAlias('@themes/') . Option::get('theme') . '/config/main.php';
-
-if(is_file($themeConfigFile)){
-    $themeConfig = require($themeConfigFile);
-    if(isset($themeConfig['backend'])){
-        $application->params = \yii\helpers\ArrayHelper::merge($application->params, $themeConfig['backend']);
-    }
-}
-
-$application->run();
+(new yii\web\Application($config))->run();
