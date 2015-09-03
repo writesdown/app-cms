@@ -528,7 +528,7 @@
         }else if (confirm(_this.data('message'))){
             _form.attr('method', 'post');
             _form.append('<input type="hidden" name="_csrf" value="'+yii.getCsrfToken()+'">');
-            _form.attr('action', _this.data('url') + '?id=' + _form.find('#select-menu').val() );
+            _form.attr('action', _this.data('url') );
             _form.submit();
         }
     });
