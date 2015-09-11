@@ -13,7 +13,7 @@ return [
         'adminSiteMenu' => [
             70 => [
                 'label'   => Yii::t('writesdown', 'Sitemap'),
-                'url'     => ['/sitemap'],
+                'url'     => ['/sitemap/default/index'],
                 'icon'    => 'fa fa-sitemap',
             ],
         ]
