@@ -17,10 +17,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-imagine": "~2.0.0",
         "yiisoft/yii2-jui": "~2.0.0",
-
         "codezeen/yii2-adminlte": "~1.0",
         "codezeen/yii2-tinymce": "~1.0",
-
         "2amigos/yii2-selectize-widget": "~1.0",
         "2amigos/yii2-date-time-picker-widget": "*",
         "2amigos/yii2-file-upload-widget": "dev-master"
@@ -38,6 +36,19 @@
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
             "bower-asset-library": "vendor/bower"
+        },
+        "asset-ignore-files": {
+            "bower-asset/adminlte": [
+                "bootstrap",
+                "documentation",
+                "build",
+                "dist/img",
+                "pages",
+                "plugins",
+                "*.*",
+                "changelog",
+                "LICENSE"
+            ]
         },
         "branch-alias": {
             "dev-master": "0.1.x-dev"
