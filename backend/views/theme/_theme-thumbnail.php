@@ -16,7 +16,7 @@ use yii\helpers\Url;
 /* @var $installed string */
 ?>
 <div class="col-xs-6 col-sm-4">
-    <div class="thumbnail theme-thumbnail">
+    <div class="thumbnail theme-thumbnail bg-gray">
         <?= Html::img($theme['Thumbnail'], [
             'class' => 'theme-thumbnail'
         ]); ?>
