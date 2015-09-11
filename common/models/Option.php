@@ -149,7 +149,7 @@ class Option extends ActiveRecord
      */
     public static function getMenu($position = 30)
     {
-        $adminSiteMenu[ $position ] = ['label' => Yii::t('writesdown', 'Settings'), 'icon' => '<i class="fa fa-cogs"></i>', 'options' => ['class' => 'treeview']];
+        $adminSiteMenu[ $position ] = ['label' => Yii::t('writesdown', 'Settings'), 'icon' => 'fa fa-cogs'];
         $adminSiteMenu[ $position ]['items'] = static::getSubMenu();
 
         return $adminSiteMenu;
@@ -166,7 +166,7 @@ class Option extends ActiveRecord
         $models = static::find()->groupBy('option_group')->andWhere(['<>', 'option_group', ''])->andWhere(['<>', 'option_group', 'appearance'])->all();
         $adminSiteSubmenu = null;
         foreach ($models as $model) {
-            $adminSiteSubmenu[] = ['icon' => '<i class="fa fa-circle-o"></i>', 'label' => Yii::t('writesdown', ucwords($model->option_group)), 'url' => ['/setting/group/', 'id' => strtolower($model->option_group)], 'visible' => Yii::$app->user->can('administrator')];
+            $adminSiteSubmenu[] = ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', ucwords($model->option_group)), 'url' => ['/setting/group/', 'id' => strtolower($model->option_group)], 'visible' => Yii::$app->user->can('administrator')];
         }
 
         return $adminSiteSubmenu;

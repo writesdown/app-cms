@@ -153,10 +153,7 @@ class PostType extends ActiveRecord
         foreach ($models as $model) {
             $adminSiteMenu[ $position ] = [
                 'label'   => $model->post_type_pn,
-                'icon'    => '<i class="' . $model->post_type_icon . '"></i>',
-                'options' => [
-                    'class' => 'treeview'
-                ],
+                'icon'    => $model->post_type_icon,
                 'items'   => self::getTaxonomyMenu($model),
                 'visible' => Yii::$app->user->can($model->post_type_permission)
             ];
@@ -176,12 +173,12 @@ class PostType extends ActiveRecord
     protected static function getTaxonomyMenu($postType)
     {
         $adminSiteSubmenu = [];
-        $adminSiteSubmenu[] = ['icon' => '<i class="fa fa-circle-o"></i>', 'label' => Yii::t('app', 'All {post_type_name}', ['post_type_name' => $postType->post_type_pn]), 'url' => ['/post/index/', 'post_type' => $postType->id]];
-        $adminSiteSubmenu[] = ['icon' => '<i class="fa fa-circle-o"></i>', 'label' => Yii::t('app', 'Add New {post_type_name}', ['post_type_name' => $postType->post_type_sn]), 'url' => ['/post/create/', 'post_type' => $postType->id]];
+        $adminSiteSubmenu[] = ['icon' => 'fa fa-circle-o', 'label' => Yii::t('app', 'All {post_type_name}', ['post_type_name' => $postType->post_type_pn]), 'url' => ['/post/index/', 'post_type' => $postType->id]];
+        $adminSiteSubmenu[] = ['icon' => 'fa fa-circle-o', 'label' => Yii::t('app', 'Add New {post_type_name}', ['post_type_name' => $postType->post_type_sn]), 'url' => ['/post/create/', 'post_type' => $postType->id]];
         foreach ($postType->taxonomies as $taxonomy) {
-            $adminSiteSubmenu[] = ['icon' => '<i class="fa fa-circle-o"></i>', 'label' => $taxonomy->taxonomy_pn, 'url' => ['/taxonomy/view/', 'id' => $taxonomy->id], 'visible' => Yii::$app->user->can('editor')];
+            $adminSiteSubmenu[] = ['icon' => 'fa fa-circle-o', 'label' => $taxonomy->taxonomy_pn, 'url' => ['/taxonomy/view/', 'id' => $taxonomy->id], 'visible' => Yii::$app->user->can('editor')];
         }
-        $adminSiteSubmenu[] = ['icon' => '<i class="fa fa-circle-o"></i>', 'label' => Yii::t('app', 'Comments'), 'url' => ['/post-comment/index/', 'post_type' => $postType->id], 'visible' => Yii::$app->user->can('editor')];
+        $adminSiteSubmenu[] = ['icon' => 'fa fa-circle-o', 'label' => Yii::t('app', 'Comments'), 'url' => ['/post-comment/index/', 'post_type' => $postType->id], 'visible' => Yii::$app->user->can('editor')];
 
         return $adminSiteSubmenu;
 
