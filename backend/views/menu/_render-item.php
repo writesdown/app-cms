@@ -23,7 +23,7 @@ use yii\helpers\Url;
     <div class="menu-header clearfix">
         <?= Html::button('<i class="fa fa-caret-down"></i>', [
             'aria-controls' => $item->id,
-            'class'         => 'btn btn-flat btn-success btn-detail-menu',
+            'class'         => 'btn btn-flat btn-default btn-detail-menu',
             'data-toggle'   => 'collapse',
             'data-target'   => '#' . $item->id,
         ]); ?>

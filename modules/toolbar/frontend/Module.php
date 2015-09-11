@@ -36,6 +36,13 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function init()
     {
         parent::init();
+        if (!isset(Yii::$app->i18n->translations['toolbar'])) {
+            Yii::$app->i18n->translations['toolbar'] = [
+                'class'          => 'yii\i18n\PhpMessageSource',
+                'sourceLanguage' => Yii::$app->language,
+                'basePath'       => __DIR__ . '/../messages'
+            ];
+        }
     }
 
     /**
@@ -84,28 +91,33 @@ class Module extends \yii\base\Module implements BootstrapInterface
                     'label' => '<span aria-hidden="true" class="glyphicon glyphicon-dashboard"></span> ' . Option::get('sitetitle'),
                     'items' => [
                         [
-                            'label' => Yii::t('writesdown', 'Dashboard'),
+                            'label' => Yii::t('toolbar', 'Dashboard'),
                             'url'   => $urlManagerBack->baseUrl
                         ],
                         [
-                            'label' => Yii::t('writesdown', 'Themes'),
+                            'label'   => Yii::t('toolbar', 'Themes'),
                             'url'     => $urlManagerBack->createUrl(['/theme']),
                             'visible' => Yii::$app->user->can('administrator')
                         ],
                         [
-                            'label' => Yii::t('writesdown', 'Menus'),
+                            'label'   => Yii::t('toolbar', 'Menus'),
                             'url'     => $urlManagerBack->createUrl(['/menu']),
                             'visible' => Yii::$app->user->can('administrator')
                         ],
                         [
-                            'label' => Yii::t('writesdown', 'Modules'),
+                            'label'   => Yii::t('toolbar', 'Modules'),
                             'url'     => $urlManagerBack->createUrl(['/module']),
+                            'visible' => Yii::$app->user->can('administrator')
+                        ],
+                        [
+                            'label'   => Yii::t('toolbar', 'Widgets'),
+                            'url'     => $urlManagerBack->createUrl(['/widget']),
                             'visible' => Yii::$app->user->can('administrator')
                         ],
                     ]
                 ],
                 [
-                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span> ' . Yii::t('writesdown', 'New'),
+                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span> ' . Yii::t('toolbar', 'New'),
                     'items' => $this->getAddNewMenu() ? $this->getAddNewMenu() : null
                 ],
             ],
@@ -209,12 +221,12 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ['<li class="divider"></li>'],
             [
                 [
-                    'label'   => Yii::t('writesdown', 'Taxonomy'),
+                    'label'   => Yii::t('toolbar', 'Taxonomy'),
                     'url'     => $urlManagerBack->createUrl('/taxonomy/create'),
                     'visible' => Yii::$app->user->can('administrator')
                 ],
                 [
-                    'label'   => Yii::t('writesdown', 'Post Type'),
+                    'label'   => Yii::t('toolbar', 'Post Type'),
                     'url'     => $urlManagerBack->createUrl('/post-type/create'),
                     'visible' => Yii::$app->user->can('administrator')
                 ]

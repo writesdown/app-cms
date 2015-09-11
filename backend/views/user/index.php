@@ -131,7 +131,6 @@ jQuery(".bulk-button").click(function(e){
             type:"POST",
             success: function(response){
                 $.pjax.reload({container:"#user-grid-view"});
-                // alert(response);
             }
         });
     }

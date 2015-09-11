@@ -191,6 +191,23 @@ a.desc:after {
     margin-bottom: 4px;
 }
 
+/* MODULE */
+#module-configuration ul,
+.widget-configuration ul{
+    list-style: none outside;
+    padding-left: 0;
+}
+#module-configuration ul ul,
+.widget-configuration ul ul{
+    padding-left: 30px;
+}
+.widget-configuration .form-group{
+    margin-bottom: 10px;
+}
+.widget-configuration .form-group:last-child{
+    margin-bottom: 0;
+}
+
 /* RESPONSIVE */
 @media (max-width: 767px) {
     .grid-view{

@@ -11,7 +11,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use backend\widgets\MenuRenderer;
+use backend\widgets\RenderMenu;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
@@ -40,7 +40,7 @@ use backend\widgets\MenuRenderer;
             <?= $form->field($selectedMenu, 'menu_title', ['template' => '{input}{error}'])->textInput(['id' => 'menu-update-menu_title']); ?>
 
             <div class="dd">
-                <?php echo MenuRenderer::widget(['items' => $selectedMenu->getAvailableMenuItem()]); ?>
+                <?php echo RenderMenu::widget(['items' => $selectedMenu->getAvailableMenuItem()]); ?>
             </div>
 
             <?php

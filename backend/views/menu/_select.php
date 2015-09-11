@@ -28,7 +28,7 @@ $form = ActiveForm::begin([
                 <?= Html::submitButton(Yii::t('writesdown', 'Select Menu'), ['class' => 'btn btn-flat btn-primary submit-button']); ?>
             </div>
             <div class="input-group-btn">
-                <?= Html::button('<i class="fa fa-trash"></i> ' . Yii::t('writesdown', 'Delete'), [
+                <?= Html::button('<i class="fa fa-trash"></i>', [
                     'id'    => 'menu-delete-menu',
                     'class' => 'btn btn-flat btn-danger',
                     'data'  => [

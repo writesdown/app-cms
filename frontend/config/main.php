@@ -17,13 +17,9 @@ $scriptUrlBack  = str_replace('/frontend/web', '/backend/web', $request->getScri
 return [
     'id'                  => 'app-frontend',
     'basePath'            => dirname(__DIR__),
-    'bootstrap'           => ['log', 'toolbar'],
+    'bootstrap'           => ['log', 'common\components\FrontendBootstrap'],
     'controllerNamespace' => 'frontend\controllers',
-    'modules'             => [
-        'toolbar' => [
-            'class' => 'modules\toolbar\frontend\Module',
-        ]
-    ],
+    'modules'             => [],
     'components'          => [
         'user'            => [
             'identityClass'   => 'common\models\User',

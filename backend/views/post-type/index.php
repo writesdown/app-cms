@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs('
 jQuery(".bulk-button").click(function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t("app", "All posts on these post types will be affected. Are you sure?") . '")){
+    if(confirm("' . Yii::t("writesdown", "All posts on these post types will be affected. Are you sure?") . '")){
         var ids     = $("#post-type-grid-view").yiiGridView("getSelectedRows");
         var action  = $(this).parents(".form-group").find(".bulk-action").val();
         $.ajax({

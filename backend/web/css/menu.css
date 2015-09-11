@@ -89,8 +89,8 @@
 }
 .menu-header {
     display: block;
-    background: #F4F4F4;
-    border: 1px solid #dbdbdb;
+    background: #FCFCFC;
+    border: 1px solid #EEEEEE;
 }
 
 .menu-header .btn-detail-menu {
@@ -104,7 +104,7 @@
     background: #FFFFFF;
     border-width: 0 1px 1px 1px;
     border-style: solid;
-    border-color: #dbdbdb;
+    border-color: #EEEEEE;
 }
 
 .menu-body .dd-placeholder {

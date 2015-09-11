@@ -14,11 +14,11 @@ use yii\bootstrap\Nav;
 <?= Nav::widget([
     'items'        => [
         [
-            'label'       => '<i class="fa fa-check"></i> <span>' . Yii::t('writesdown', 'Available Theme') . '</span>',
+            'label'       => '<i class="fa fa-list"></i> <span>' . Yii::t('writesdown', 'Available Themes') . '</span>',
             'url'         => ['/theme/index'],
         ],
         [
-            'label'       => '<i class="fa fa-plus"></i> <span>' . Yii::t('writesdown', 'Add New Theme') . '</span>',
+            'label'       => '<i class="fa fa-upload"></i> <span>' . Yii::t('writesdown', 'Add New Theme') . '</span>',
             'url'         => ['/theme/upload'],
         ],
     ],

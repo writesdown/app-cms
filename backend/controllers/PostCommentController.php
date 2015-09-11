@@ -27,7 +27,7 @@ use common\models\search\PostComment as PostCommentSearch;
  *
  * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostCommentController extends Controller
 {

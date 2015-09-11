@@ -28,7 +28,7 @@ use common\models\search\Term as TermSearch;
  *
  * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class TaxonomyController extends Controller
 {

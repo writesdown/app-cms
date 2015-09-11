@@ -24,8 +24,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
 <div class="site-index">
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon info-box-icon bg-aqua"><i class="fa fa-github"></i></span>
+            <div class="info-box bg-aqua">
+                <span class="info-box-icon info-box-icon"><i class="fa fa-github"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Github</span>
                     <span class="info-box-number">
@@ -35,8 +35,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-files-o"></i></span>
+            <div class="info-box bg-red">
+                <span class="info-box-icon"><i class="fa fa-files-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><?= Yii::t('writesdown', 'Posts'); ?></span>
                     <span class="info-box-number"><?= $postCount; ?></span>
@@ -45,8 +45,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
         </div>
         <div class="clearfix visible-sm-block"></div>
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-comments-o"></i></span>
+            <div class="info-box bg-green">
+                <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><?= Yii::t('writesdown', 'Comments'); ?></span>
                     <span class="info-box-number"><?= $commentCount; ?></span>
@@ -54,8 +54,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+            <div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><?= Yii::t('writesdown', 'Members'); ?></span>
                     <span class="info-box-number"><?= $userCount; ?></span>
@@ -65,7 +65,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="box box-danger">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Posts'); ?></h3>
                     <div class="box-tools pull-right">
@@ -79,7 +79,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th><?= Yii::t('writesdown', 'Author'); ?></th>
@@ -107,7 +107,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <div class="box box-warning">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Members'); ?></h3>
                     <div class="box-tools pull-right">
@@ -144,7 +144,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
             </div>
         </div>
         <div class="col-sm-8">
-            <div class="box box-success">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Comments'); ?></h3>
                     <div class="box-tools pull-right">
@@ -158,7 +158,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th><?= Yii::t('writesdown', 'Author'); ?></th>

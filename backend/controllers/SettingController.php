@@ -25,7 +25,7 @@ use common\models\search\Option as OptionSearch;
  *
  * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class SettingController extends Controller
 {
@@ -151,6 +151,7 @@ class SettingController extends Controller
      *
      * @param string $id group name
      *
+     * @return string|\yii\web\Response
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionGroup($id)
@@ -163,7 +164,7 @@ class SettingController extends Controller
                 Option::up($option_name, $option['option_value']);
             }
             Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Settings successfully saved.'));
-            return $this->refresh();
+            return $this->redirect(['group', 'id' => $id]);
         }
 
         if ($model) {
@@ -173,7 +174,7 @@ class SettingController extends Controller
                     'group' => $id
                 ]);
             } else {
-                return $this->redirect('index');
+                return $this->redirect(['index']);
             }
 
         } else {

@@ -44,47 +44,58 @@ use common\models\PostType;
         <?php } ?>
 
         <?php
-        $admin_site_menu[0] = ['label' => Yii::t('writesdown', 'MAIN NAVIGATION'), 'options' => ['class' => 'header'], 'template' => '{label}'];
-        $admin_site_menu[1] = ['label' => Yii::t('writesdown', 'Dashboard'), 'icon' => 'fa fa-dashboard', 'items' => [
+        $adminSiteMenu[0] = ['label' => Yii::t('writesdown', 'MAIN NAVIGATION'), 'options' => ['class' => 'header'], 'template' => '{label}'];
+        $adminSiteMenu[1] = ['label' => Yii::t('writesdown', 'Dashboard'), 'icon' => 'fa fa-dashboard', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Home'), 'url' => ['/site/index']],
         ]];
-        $admin_site_menu[10] = ['label' => Yii::t('writesdown', 'Media'), 'icon' => 'fa fa-picture-o', 'items' => [
+        $adminSiteMenu[10] = ['label' => Yii::t('writesdown', 'Media'), 'icon' => 'fa fa-picture-o', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Media'), 'url' => ['/media/index']],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Media'), 'url' => ['/media/create']],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Comments'), 'url' => ['/media-comment/index'], 'visible' => Yii::$app->user->can('editor')],
-        ], 'visible'                    => Yii::$app->user->can('author')];
+        ], 'visible'                  => Yii::$app->user->can('author')];
 
-        $admin_site_menu[20] = ['label' => Yii::t('writesdown', 'Appearance'), 'icon' => 'fa fa-paint-brush', 'items' => [
+        $adminSiteMenu[20] = ['label' => Yii::t('writesdown', 'Appearance'), 'icon' => 'fa fa-paint-brush', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Menus'), 'url' => ['/menu']],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Themes'), 'url' => ['/theme']],
-        ], 'visible'                    => Yii::$app->user->can('administrator')];
-        $admin_site_menu[23] = ['label' => Yii::t('writesdown', 'Modules'), 'icon' => 'fa fa-laptop', 'items' => [
+            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Widgets'), 'url' => ['/widget']],
+        ], 'visible'                  => Yii::$app->user->can('administrator')];
+        $adminSiteMenu[23] = ['label' => Yii::t('writesdown', 'Modules'), 'icon' => 'fa fa-laptop', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Modules'), 'url' => ['/module']],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Module'), 'url' => ['/module/create']],
-        ], 'visible'                    => Yii::$app->user->can('administrator')];
-        $admin_site_menu[30] = ['label' => Yii::t('writesdown', 'Post Types'), 'icon' => 'fa fa-files-o', 'items' => [
+        ], 'visible'                  => Yii::$app->user->can('administrator')];
+        $adminSiteMenu[30] = ['label' => Yii::t('writesdown', 'Post Types'), 'icon' => 'fa fa-files-o', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Post Types'), 'url' => ['/post-type/index/']],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Post Type'), 'url' => ['/post-type/create/']],
-        ], 'visible'                    => Yii::$app->user->can('administrator')];
-        $admin_site_menu[40] = ['label' => Yii::t('writesdown', 'Taxonomies'), 'icon' => 'fa fa-tags', 'items' => [
+        ], 'visible'                  => Yii::$app->user->can('administrator')];
+        $adminSiteMenu[40] = ['label' => Yii::t('writesdown', 'Taxonomies'), 'icon' => 'fa fa-tags', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Taxonomies'), 'url' => ['/taxonomy/index/']],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Taxonomy'), 'url' => ['/taxonomy/create/']],
-        ], 'visible'                    => Yii::$app->user->can('administrator')];
-        $admin_site_menu[50] = ['label' => Yii::t('writesdown', 'Users'), 'icon' => 'fa fa-user', 'items' => [
+        ], 'visible'                  => Yii::$app->user->can('administrator')];
+        $adminSiteMenu[50] = ['label' => Yii::t('writesdown', 'Users'), 'icon' => 'fa fa-user', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All User'), 'url' => ['/user/index/'], 'visible' => Yii::$app->user->can('administrator')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New User'), 'url' => ['/user/create/'], 'visible' => Yii::$app->user->can('administrator')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'My Profile'), 'url' => ['/user/profile/'], 'visible' => Yii::$app->user->can('subscriber')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Reset Password'), 'url' => ['/user/reset-password/'], 'visible' => Yii::$app->user->can('subscriber')],
         ]];
-        $admin_site_menu[70] = ['label' => Yii::t('writesdown', 'Tools'), 'icon' => 'fa fa-wrench', 'items' => [
+        $adminSiteMenu[70] = ['label' => Yii::t('writesdown', 'Tools'), 'icon' => 'fa fa-wrench', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Export'), 'url' => ['/site/not-found/'], 'visible' => Yii::$app->user->can('superadmin')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Import'), 'url' => ['/site/not-found/'], 'visible' => Yii::$app->user->can('superadmin')],
         ]];
-        $admin_site_menu = ArrayHelper::merge($admin_site_menu, PostType::getMenu(2));
-        $admin_site_menu = ArrayHelper::merge($admin_site_menu, Option::getMenu(60));
-        ksort($admin_site_menu);
+        $adminSiteMenu = ArrayHelper::merge($adminSiteMenu, PostType::getMenu(2));
+        $adminSiteMenu = ArrayHelper::merge($adminSiteMenu, Option::getMenu(60));
+
+        if (isset(Yii::$app->params['adminSiteMenu']) && is_array(Yii::$app->params['adminSiteMenu'])) {
+            $adminSiteMenu = ArrayHelper::merge($adminSiteMenu, Yii::$app->params['adminSiteMenu']);
+        }
+
+        ksort($adminSiteMenu);
         echo MainSidebar::widget([
-            'items'           => $admin_site_menu,
+            'options'         => ['class' => 'sidebar-menu'],
+            'labelTemplate'   => '<a href="#">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+            'linkTemplate'    => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+            'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
+            'activateParents' => true,
+            'items'           => $adminSiteMenu,
         ]);
         ?>
     </section>

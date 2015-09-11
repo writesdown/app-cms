@@ -7,7 +7,7 @@ return [
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
-			'tablePrefix' => 'wd_'
+            'tablePrefix' => 'wd_'
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

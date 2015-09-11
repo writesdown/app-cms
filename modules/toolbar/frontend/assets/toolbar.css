@@ -18,8 +18,7 @@ body {
 #wd-frontend-toolbar .navbar-brand {
     height: 40px;
     line-height: 40px;
-    padding-bottom: 9px;
-    padding-top: 9px;
+    padding: 9px 15px;
 }
 #wd-frontend-toolbar .navbar-toggle{
     padding: 4px;

@@ -32,7 +32,7 @@ use common\models\Option;
  *
  * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MediaController extends Controller
 {
@@ -120,7 +120,7 @@ class MediaController extends Controller
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Media successfully saved.'));
 
-                return $this->refresh();
+                return $this->redirect(['update', 'id' => $id]);
             }
 
         }
@@ -184,7 +184,10 @@ class MediaController extends Controller
                 'crop'       => 1
             ]
         ];
-        $uploadHandler = new MediaUploadHandler(['versions' => $versions], false);
+        $uploadHandler = new MediaUploadHandler([
+            'versions' => $versions,
+            'user_dirs' => Option::get('uploads_username_based')
+        ], false);
         $uploadHandler->post();
     }
 

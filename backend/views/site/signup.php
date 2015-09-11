@@ -1,16 +1,19 @@
 <?php
 /**
- * @file    signup.php.
- * @date    6/4/2015
- * @time    5:38 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @file      signup.php.
+ * @date      6/4/2015
+ * @time      5:38 AM
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use codezeen\yii2\adminlte\widgets\Alert;
+
+/* MODEL */
+use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -24,7 +27,7 @@ $this->title = Yii::t('writesdown', 'Sing Up');
 
     <div class="login-logo">
         <h1>
-            <?= Html::a( Html::img( Yii::getAlias('@web/img/logo.png'), ['alt' => 'WritesDown'] ), 'http://www.writesdown.com' ); ?>
+            <?= Html::a(Html::img(Yii::getAlias('@web/img/logo.png'), ['alt' => 'WritesDown']), 'http://www.writesdown.com'); ?>
         </h1>
     </div>
 
@@ -63,4 +66,9 @@ $this->title = Yii::t('writesdown', 'Sing Up');
         <?= Html::a(Yii::t('writesdown', 'I already have a membership'), ['/site/login']); ?>
 
     </div>
+
+    <br/>
+
+    <?= Html::a('<i class="fa fa-home"></i> ' . Yii::t('writesdown', 'Back to {sitetitle}', ['sitetitle' => Option::get('sitetitle')]), Yii::$app->urlManagerFront->baseUrl, ['class' => 'btn btn-block btn-success']); ?>
+
 </div>

@@ -15,7 +15,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
-$this->title = Yii::t('writesdown', 'User View: {username}', ['username' => $model->username]);
+$this->title = Yii::t('writesdown', 'View User: {username}', ['username' => $model->username]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

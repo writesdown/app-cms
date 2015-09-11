@@ -1,6 +1,4 @@
 <?php
-use common\models\Option;
-
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
@@ -17,23 +15,4 @@ $config = yii\helpers\ArrayHelper::merge(
 );
 
 $application = new yii\web\Application($config);
-
-/* Time Zone */
-$application->timeZone = Option::get('time_zone');
-
-/* Date Time */
-$application->formatter->dateFormat = 'php:' . Option::get('date_format');
-$application->formatter->timeFormat = 'php:' . Option::get('time_format');
-$application->formatter->datetimeFormat = 'php:' . Option::get('date_format') . ' ' . Option::get('time_format');
-
-/* Theme Config */
-$themeConfigFile = Yii::getAlias('@themes/') . Option::get('theme') . '/config/main.php';
-
-if(is_file($themeConfigFile)){
-    $themeConfig = require($themeConfigFile);
-    if(isset($themeConfig['backend'])){
-        $application->params = \yii\helpers\ArrayHelper::merge($application->params, $themeConfig['backend']);
-    }
-}
-
 $application->run();

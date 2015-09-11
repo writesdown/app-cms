@@ -97,7 +97,7 @@ abstract class BaseComment extends ActiveRecord
             'comment_author_ip'    => Yii::t('writesdown', 'IP'),
             'comment_date'         => Yii::t('writesdown', 'Date'),
             'comment_content'      => Yii::t('writesdown', 'Content'),
-            'comment_approved'     => Yii::t('writesdown', 'Comment Approved'),
+            'comment_approved'     => Yii::t('writesdown', 'Approved'),
             'comment_agent'        => Yii::t('writesdown', 'Agent'),
             'comment_parent'       => Yii::t('writesdown', 'Parent'),
             'comment_user_id'      => Yii::t('writesdown', 'User ID'),

@@ -27,7 +27,7 @@ $this->title = Yii::t('writesdown', 'Sing In');
 
     <div class="login-logo">
         <h1>
-            <?= Html::a( Html::img( Yii::getAlias('@web/img/logo.png'), ['alt' => 'WritesDown'] ), 'http://www.writesdown.com' ); ?>
+            <?= Html::a(Html::img(Yii::getAlias('@web/img/logo.png'), ['alt' => 'WritesDown']), 'http://www.writesdown.com'); ?>
         </h1>
     </div>
 
@@ -58,5 +58,12 @@ $this->title = Yii::t('writesdown', 'Sing In');
         <br/>
 
         <?= Option::get('allow_signup') ? Html::a(Yii::t('writesdown', 'Register a new membership'), ['/site/signup']) : ""; ?>
+
     </div>
+
+    <br/>
+
+    <?= Html::a('<i class="fa fa-home"></i> ' . Yii::t('writesdown', 'Back to {sitetitle}', ['sitetitle' => Option::get('sitetitle')]), Yii::$app->urlManagerFront->baseUrl, ['class' => 'btn btn-block btn-success']); ?>
+
 </div>
+

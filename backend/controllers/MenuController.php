@@ -31,7 +31,7 @@ use common\models\Term;
  *
  * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MenuController extends Controller
 {

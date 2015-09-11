@@ -18,7 +18,7 @@ use yii\web\AssetBundle;
  *
  * @package backend\assets
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class AppAssetIe9 extends AssetBundle
 {

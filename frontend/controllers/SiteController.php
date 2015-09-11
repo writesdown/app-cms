@@ -1,11 +1,11 @@
 <?php
 /**
- * @file    SiteController.php.
- * @date    6/4/2015
- * @time    10:08 PM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @file      SiteController.php.
+ * @date      6/4/2015
+ * @time      10:08 PM
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
@@ -31,7 +31,8 @@ use frontend\models\ContactForm;
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   1.0
  */
-class SiteController extends Controller{
+class SiteController extends Controller
+{
     /**
      * @inheritdoc
      */
@@ -40,17 +41,17 @@ class SiteController extends Controller{
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only'  => ['logout'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -80,18 +81,20 @@ class SiteController extends Controller{
      * @throws \yii\web\NotFoundHttpException
      * @return string
      */
-    public function actionIndex(){
+    public function actionIndex()
+    {
         /* @var $post \common\models\Post */
 
-        $query = Post::find()->andWhere(['post_status' => 'publish']);
+        $query = Post::find()->from(['t' => Post::tableName()])->andWhere(['post_status' => 'publish'])
+            ->orderBy(['t.id' => SORT_DESC]);
 
-        if(Option::get('show_on_front') == 'page' && $front_page = Option::get('front_page')){
+        if (Option::get('show_on_front') == 'page' && $front_page = Option::get('front_page')) {
             $render = '/post/view';
             $comment = new PostComment();
             $query = $query->andWhere(['id' => $front_page]);
             $post = $query->one();
 
-            if ( is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php' ) ) {
+            if (is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php')) {
                 $render = '/post/view-' . $post->postType->post_type_slug;
             }
 
@@ -103,8 +106,8 @@ class SiteController extends Controller{
             } else {
                 return new NotFoundHttpException();
             }
-        }else{
-            if(Option::get('front_post_type') !== 'all'){
+        } else {
+            if (Option::get('front_post_type') !== 'all') {
                 $query->innerJoinWith(['postType'])->andWhere(['post_type_name' => Option::get('front_post_type')]);
             }
             $countQuery = clone $query;
@@ -186,25 +189,6 @@ class SiteController extends Controller{
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-
-    /**
-     * Action to create robots.txt.
-     * If file of robots.txt exist then it will be used instead.
-     */
-    public function actionRobots()
-    {
-        $response = Yii::$app->getResponse();
-        $response->headers->set('Content-Type', 'text/plain; charset=UTF-8');
-        $response->format = $response::FORMAT_RAW;
-        if (Option::get('site_indexing')) {
-            echo "User-agent: *\n";
-            echo "Disallow: /\n";
-        } else {
-            echo "User-agent: *\n";
-            echo "Disallow: /admin\n";
-            echo "Disallow: /themes\n";
         }
     }
 

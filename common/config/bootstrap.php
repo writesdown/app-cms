@@ -6,4 +6,5 @@ Yii::setAlias('console', dirname(dirname(__DIR__)) . '/console');
 
 /* ADDITIONAL ALIAS */
 Yii::setAlias('modules', dirname(dirname(__DIR__)) . '/modules');
-Yii::setAlias('themes', dirname(dirname(__DIR__)) . '/frontend/themes');
+Yii::setAlias('widgets', dirname(dirname(__DIR__)) . '/widgets');
+Yii::setAlias('themes', dirname(dirname(__DIR__)) . '/themes');

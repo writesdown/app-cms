@@ -13,18 +13,18 @@ use yii\helpers\Html;
 /* MODEL */
 use common\models\Option;
 
-/* @var $detail [] */
+/* @var $themeConfig [] */
 /* @var $installed string */
 
 ?>
 <div class="row">
     <div class="col-sm-6">
-        <?= Html::img($detail['Thumbnail'], ['class' => 'thumbnail full-width']); ?>
+        <?= Html::img($themeConfig['Thumbnail'], ['class' => 'thumbnail full-width']); ?>
     </div>
     <div class="col-sm-6">
         <table class="table table-striped table-bordered">
             <tbody>
-            <?php foreach ($detail as $k => $d) { ?>
+            <?php foreach ($themeConfig as $k => $d) { ?>
                 <?php if ($k === 'Thumbnail' || $k === 'Dir') {
                     continue;
                 } ?>
@@ -36,23 +36,23 @@ use common\models\Option;
             </tbody>
         </table>
         <?php
-        if ($detail['Dir'] === $installed) {
+        if ($themeConfig['Dir'] === $installed) {
             echo Html::tag('span', Yii::t('writesdown', 'Installed'), ['class' => 'full-width btn-block btn btn-flat btn-info']);
         } else {
             echo Html::beginTag('div', ['class' => 'btn-group']);
-            echo Html::a(Yii::t('writesdown', 'Install'), ['/theme/install', 'theme' => $detail['Dir']], [
+            echo Html::a(Yii::t('writesdown', 'Install'), ['/theme/install', 'theme' => $themeConfig['Dir']], [
                 'class' => 'btn btn-flat btn-primary',
                 'data' => [
-                    'theme' => $detail['Dir'],
+                    'theme' => $themeConfig['Dir'],
                     'confirm' => Yii::t('writesdown', 'Are you wanna install this theme?'),
                     'method' => 'post',
                 ]
             ]);
             echo Html::endTag('div');
-            echo Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/theme/delete', 'theme' => $detail['Dir']], [
+            echo Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/theme/delete', 'theme' => $themeConfig['Dir']], [
                 'class' => 'btn btn-flat btn-danger pull-right',
                 'data' => [
-                    'theme' => $detail['Dir'],
+                    'theme' => $themeConfig['Dir'],
                     'confirm' => Yii::t('writesdown', 'Are you sure wanna to delete this theme permanently?'),
                     'method' => 'post',
                 ]

@@ -67,7 +67,7 @@ class MenuItem extends ActiveRecord
             'menu_id'          => Yii::t('writesdown', 'Menu ID'),
             'menu_label'       => Yii::t('writesdown', 'Label'),
             'menu_url'         => Yii::t('writesdown', 'URL'),
-            'menu_description' => Yii::t('writesdown', 'escription'),
+            'menu_description' => Yii::t('writesdown', 'Description'),
             'menu_order'       => Yii::t('writesdown', 'Order'),
             'menu_parent'      => Yii::t('writesdown', 'Parent'),
             'menu_options'     => Yii::t('writesdown', 'Options'),

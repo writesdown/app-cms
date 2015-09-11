@@ -26,7 +26,7 @@ use common\models\search\MediaComment as MediaCommentSearch;
  *
  * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MediaCommentController extends Controller{
     /**
