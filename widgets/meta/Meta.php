@@ -28,12 +28,14 @@ class Meta extends BaseWidget
     public function init()
     {
         echo $this->beforeWidget;
-        echo $this->beforeTitle . $this->title . $this->afterTitle;
+        if( $this->title ){
+            echo $this->beforeTitle . $this->title . $this->afterTitle;
+        }
         echo Menu::widget([
             'items' => [
                 [
-                    'label' => 'Admin',
-                    'url'   => Yii::$app->urlManagerBack->baseUrl,
+                    'label'   => 'Site Admin',
+                    'url'     => Yii::$app->urlManagerBack->baseUrl,
                     'visible' => !Yii::$app->user->isGuest
                 ],
                 [
@@ -41,6 +43,16 @@ class Meta extends BaseWidget
                     'url'     => Yii::$app->urlManagerBack->createUrl(['/site/login']),
                     'visible' => Yii::$app->user->isGuest
                 ],
+                [
+                    'label'    => 'Logout',
+                    'url'      => Yii::$app->urlManager->createUrl(['/site/logout']),
+                    'visible'  => !Yii::$app->user->isGuest,
+                    'template' => '<a href="{url}" data-method="post">{label}</a>'
+                ],
+                [
+                    'label'    => 'WritesDown.com',
+                    'url'      => 'http://www.writesdown.com',
+                ]
             ],
         ]);
         echo $this->afterWidget;
