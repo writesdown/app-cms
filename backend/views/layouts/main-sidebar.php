@@ -64,7 +64,7 @@ use common\models\PostType;
         ], 'visible'                  => Yii::$app->user->can('administrator')];
         $adminSiteMenu[30] = ['label' => Yii::t('writesdown', 'Post Types'), 'icon' => 'fa fa-files-o', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Post Types'), 'url' => ['/post-type/index']],
-            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Post Type'), 'url' => ['/post-type/index']],
+            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Post Type'), 'url' => ['/post-type/create']],
         ], 'visible'                  => Yii::$app->user->can('administrator')];
         $adminSiteMenu[40] = ['label' => Yii::t('writesdown', 'Taxonomies'), 'icon' => 'fa fa-tags', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Taxonomies'), 'url' => ['/taxonomy/index']],
