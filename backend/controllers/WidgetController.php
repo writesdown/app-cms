@@ -202,7 +202,7 @@ class WidgetController extends Controller
      */
     public function actionAjaxActivate($id)
     {
-        $model = new Widget();
+        $model = new Widget(['scenario' => 'activate']);
         if ($model->load(Yii::$app->request->post())) {
             $count = Widget::find()->where(['widget_location' => $model->widget_location])->count();
 

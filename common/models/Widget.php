@@ -40,7 +40,8 @@ class Widget extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['widget_title', 'widget_config', 'widget_location', 'widget_dir'], 'required'],
+            [['widget_title', 'widget_location', 'widget_dir'], 'required'],
+            [['widget_config'], 'required', 'on' => 'create'],
             [['widget_config'], 'string'],
             [['widget_order'], 'integer'],
             [['widget_date', 'widget_modified'], 'safe'],
@@ -76,6 +77,7 @@ class Widget extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios['upload'] = ['widget_file'];
+        $scenarios['activate'] = $scenarios['default'];
 
         return $scenarios;
     }
