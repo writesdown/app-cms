@@ -23,7 +23,7 @@ WidgetAsset::register($this);
 ?>
 
 <div class="row">
-    <div class="col-md-push-5 col-sm-6 col-md-7">
+    <div class="col-sm-push-6 col-md-push-5 col-sm-6 col-md-7">
         <div class="row">
 
             <?= $this->render('_space', [
@@ -34,7 +34,7 @@ WidgetAsset::register($this);
 
         </div>
     </div>
-    <div class="col-md-pull-7 col-sm-6 col-md-5">
+    <div class="col-sm-pull-6 col-md-pull-7 col-sm-6 col-md-5">
         <h4><?= Yii::t('writesdown', 'Available Widget'); ?></h4>
 
         <p class="description">

@@ -22,6 +22,24 @@ return [
             'page' => [
                 ['class' => 'themes\writesdown\metabox\MetaBox'],
             ]
+        ],
+        'widget'    => [
+            [
+                'title'       => 'Sidebar',
+                'description' => 'Main sidebar that appears on the right.',
+                'location'    => 'sidebar',
+            ],
+            [
+                'title'       => 'Footer Left',
+                'description' => 'Appears on the left of footer',
+                'location'    => 'footer-left'
+            ],
+            [
+                'title'       => 'Footer Middle',
+                'description' => 'Appears on the middle of footer',
+                'location'    => 'footer-middle'
+            ],
+
         ]
     ],
     'frontend' => [

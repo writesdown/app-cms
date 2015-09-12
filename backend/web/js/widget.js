@@ -18,29 +18,36 @@
         })
     });
 
-    $('.widget-activated-form').on('submit', function (e) {
+    $(document).on('submit', '.widget-activated-form', function (e) {
+        var _boxtitle = $(this).find('.box-title');
+        var _title = _boxtitle.html();
+        var _loading = '<i class="fa fa-spinner fa-pulse"></i>';
         e.preventDefault();
         e.stopImmediatePropagation();
         $.ajax({
             url: $(this).data('url'),
             type: "POST",
-            data: $(this).serialize()
+            beforeSent: _boxtitle.html(_loading),
+            data: $(this).serialize(),
+            success: function () {
+                _boxtitle.html(_title)
+            }
         })
     });
 
-    $(document).on('click', '.ajax-delete-widget-btn', function (e) {
+    $(document).on('click', '.ajax-delete-widget-btn', function () {
         var _this = $(this);
         $.ajax({
             url: _this.data('url'),
             type: "POST",
-            success: function (response) {
+            success: function () {
                 _this.closest('.box').remove();
             }
         })
     });
 
     $('.widget-order').sortable({
-        update: function (event, ui) {
+        update: function () {
             var _ids = [{}];
             $(this).find('.widget-activated-form').each(function () {
                 _ids.push($(this).data('id'));
@@ -56,7 +63,7 @@
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        if($(this).find('.widget-order-field').val() !== ''){
+        if ($(this).find('.widget-order-field').val() !== '') {
             _ids = $.parseJSON($(this).find('.widget-order-field').val());
         }
 
@@ -65,7 +72,7 @@
             data: {ids: _ids, _csrf: yii.getCsrfToken()},
             type: "POST",
             beforeSent: _this.find('.btn').html('<i class="fa fa-spinner fa-pulse"></i> ' + _this.find('.btn').html()),
-            success: function (response) {
+            success: function () {
                 _this.find('.fa-spinner').remove();
             }
         })

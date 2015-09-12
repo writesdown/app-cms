@@ -8,11 +8,11 @@
  * @license   http://www.writesdown.com/license/
  */
 
-use yii\bootstrap\Nav;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
+use themes\writesdown\widgets\Nav;
 
 /* MODELS */
 use common\models\Menu;
@@ -63,9 +63,10 @@ use common\models\Menu;
         </div>
         <div id="menu-primary" class="collapse navbar-collapse">
             <?= Nav::widget([
-                'options'      => ['class' => 'nav navbar-nav navbar-right'],
-                'items'        => Menu::getMenu('primary'),
-                'encodeLabels' => false
+                'activateParents' => true,
+                'options'         => ['class' => 'nav navbar-nav navbar-right'],
+                'items'           => Menu::getMenu('primary'),
+                'encodeLabels'    => false
             ]); ?>
         </div>
     </div>

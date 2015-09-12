@@ -18,14 +18,16 @@ use yii\widgets\ActiveForm;
 /* @var $widgetSpace [] */
 ?>
 
-<?php $index = 0;
+<?php
+$index = 0;
+$sizeofSpace = sizeof($widgetSpace);
+$divideSpace = round($sizeofSpace/2);
 foreach ($widgetSpace as $space) {
-    if ($index % 2 === 0) {
-        echo Html::tag('div', '', ['class' => 'clearfix']);
+    if($index == 0 || $index == $divideSpace){
+        echo Html::beginTag('div', ['class' => 'col-sm-12 col-md-6']);
     }
     ?>
 
-    <div class="col-sm-12 col-md-6">
         <div id="widget-space-<?= $space['location'] ?>" class="widget-space box collapsed-box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title"><?= $space['title']; ?></h3>
@@ -45,10 +47,10 @@ foreach ($widgetSpace as $space) {
                 <div class="widget-order">
 
                     <?php if (isset($activatedWidget[ $space['location'] ])) {
-                        foreach ($activatedWidget[ $space['location'] ] as $activatedWidget) {
+                        foreach ($activatedWidget[ $space['location'] ] as $widget) {
                             echo $this->render('_activated', [
                                 'availableWidget' => $availableWidget,
-                                'activatedWidget' => $activatedWidget,
+                                'activatedWidget' => $widget,
                             ]);
                         }
                     }
@@ -76,7 +78,10 @@ foreach ($widgetSpace as $space) {
             <?php $form::end() ?>
 
         </div>
-    </div>
-    <?php $index++;
+    <?php
+    if($index == $divideSpace-1 || $index == $sizeofSpace-1){
+        echo Html::endTag('div');
+    }
+    $index++;
 }
 

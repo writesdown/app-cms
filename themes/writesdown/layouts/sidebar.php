@@ -8,8 +8,7 @@
  * @license   http://www.writesdown.com/license/
  */
 
-use common\models\Taxonomy;
-use yii\bootstrap\Nav;
+use frontend\widgets\RenderWidget;
 
 /* @var $this yii\web\View */
 /* @var $taxonomies common\models\Taxonomy[] */
@@ -18,34 +17,14 @@ use yii\bootstrap\Nav;
 
 <div class="col-md-4">
     <div id="sidebar">
-        <?php
-        $taxonomies = Taxonomy::find()->all();
-        $items = [];
-        foreach ($taxonomies as $taxonomy) {
-            foreach ($taxonomy->terms as $term) {
-                if ($term->getPosts()->andWhere(['post_status' => 'publish'])->count()) {
-                    $items[ $taxonomy->id ][ $term->id ]['label'] = $term->term_name;
-                    $items[ $taxonomy->id ][ $term->id ]['url'] = $term->url;
-                }
-            } ?>
-            <div class="widget">
-                <div class="widget-title">
-                    <h4><?= $taxonomy->taxonomy_pn; ?></h4>
-                </div>
-                <?= isset($items[ $taxonomy->id ]) ?
-                    Nav::widget(['items' => $items[ $taxonomy->id ]]) : '' ?>
-            </div>
-            <?php
-        }
-        ?>
-        <div class="widget">
-            <div class="widget-title">
-                <h4>Meta</h4>
-            </div>
-            <?= Nav::widget(['items' => [
-                ['label' => 'Entries RSS', 'url' => ['/feed']],
-                ['label' => 'Sitemap', 'url' => ['/sitemap']],
-            ]]); ?>
-        </div>
+        <?= RenderWidget::widget([
+            'location' => 'sidebar',
+            'config'   => [
+                'beforeWidget' => '<div class="widget">',
+                'afterWidget'  => '</div>',
+                'beforeTitle'  => '<div class="widget-title"> <h4>',
+                'afterTitle'   => '</div></h4>',
+            ]
+        ]); ?>
     </div>
 </div>
