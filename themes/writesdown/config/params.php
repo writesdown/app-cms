@@ -39,7 +39,11 @@ return [
                 'description' => 'Appears on the middle of footer',
                 'location'    => 'footer-middle'
             ],
-
+            [
+                'title'       => 'Footer Right',
+                'description' => 'Appears on the right of footer',
+                'location'    => 'footer-right'
+            ]
         ]
     ],
     'frontend' => [
