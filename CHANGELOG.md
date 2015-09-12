@@ -1,5 +1,12 @@
 WritesDown Change Log
 =====================
+(September 13, 2015)
+--------------------
+* (ENH) Update widgets and theme
+* (ENH) Add Nav widget in themes writesdown for item activation
+* (BUG) WidgetController set enableCsrfValidation to false in function beforeAction to avoid error 400 on ajax
+* (BUG) Activated widgets only show on single space
+
 (September 12, 2015)
 --------------------
 * Add and update new alias: themes, modules, and widgets
