@@ -64,9 +64,6 @@ class WidgetController extends Controller
      */
     public function actionIndex()
     {
-        // Disable csrf validation
-        $this->enableCsrfValidation = false;
-
         $availableWidget = [];
         $activatedWidget = [];
         $widgetConfig = [];
@@ -190,9 +187,6 @@ class WidgetController extends Controller
      */
     public function actionDeleteWidget($id)
     {
-        // Disable csrf validation
-        $this->enableCsrfValidation = false;
-
         FileHelper::removeDirectory($this->_widgetDir . $id);
         Widget::deleteAll('widget_dir=:widget_dir', ['widget_dir' => $id]);
 
@@ -208,9 +202,6 @@ class WidgetController extends Controller
      */
     public function actionAjaxActivate($id)
     {
-        // Disable csrf validation
-        $this->enableCsrfValidation = false;
-
         $model = new Widget();
         if ($model->load(Yii::$app->request->post())) {
             $count = Widget::find()->where(['widget_location' => $model->widget_location])->count();
@@ -236,7 +227,6 @@ class WidgetController extends Controller
         return null;
     }
 
-
     /**
      * Update activated widget via ajax.
      *
@@ -244,9 +234,6 @@ class WidgetController extends Controller
      */
     public function actionAjaxUpdate($id)
     {
-        // Disable csrf validation
-        $this->enableCsrfValidation = false;
-
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->widget_config = Json::encode($model->widget_config);
@@ -261,9 +248,6 @@ class WidgetController extends Controller
      */
     public function actionAjaxDelete($id)
     {
-        // Disable csrf validation
-        $this->enableCsrfValidation = false;
-
         $this->findModel($id)->delete();
     }
 
@@ -272,9 +256,6 @@ class WidgetController extends Controller
      */
     public function actionAjaxSaveOrder()
     {
-        // Disable csrf validation
-        $this->enableCsrfValidation = false;
-
         if ($ids = Yii::$app->request->post('ids')) {
             foreach ($ids as $order => $id) {
                 $this->findModel($id)->updateAttributes(['widget_order' => $order]);
@@ -287,6 +268,10 @@ class WidgetController extends Controller
      */
     public function beforeAction($action)
     {
+        // Disable csrf validation before action
+        if (in_array($this->action->id, ['ajax-activate', 'ajax-update', 'ajax-delete', 'ajax-save-order'])) {
+            $this->enableCsrfValidation = false;
+        }
         if (parent::beforeAction($action)) {
             $this->_widgetDir = Yii::getAlias('@widgets/');
             $this->_widgetTempDir = Yii::getAlias('@common/temp/widgets/');
