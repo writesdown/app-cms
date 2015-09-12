@@ -26,8 +26,12 @@ class Text extends BaseWidget
     public function init()
     {
         echo $this->beforeWidget;
-        echo $this->beforeTitle . $this->title . $this->afterTitle;
-        echo $this->text;
+        if($this->title){
+            echo $this->beforeTitle . $this->title . $this->afterTitle;
+        }
+        echo Html::tag('div', $this->text, [
+            'class' => 'widget-text'
+        ]);
         echo $this->afterWidget;
     }
 }
