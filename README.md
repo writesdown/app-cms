@@ -117,7 +117,7 @@ After that, write the following code to initialize the database.
 yii migrate
 ```
 
-Go to the admin panel http://host/backend/web/ (without slash on the end) and change the username and password. 
+Go to the admin panel http://host/backend/web/ and change the username and password. 
 The default username and password is superadmin/superadmin.
 
 Done, Enjoy!
