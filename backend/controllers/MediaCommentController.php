@@ -96,7 +96,7 @@ class MediaCommentController extends Controller{
             $model->comment_date = Yii::$app->formatter->asDatetime($model->comment_date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['update', 'id' => $model->id]);
-            };
+            }
         }
 
         return $this->render('update', [
