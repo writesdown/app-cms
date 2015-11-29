@@ -124,7 +124,7 @@ abstract class BaseComment extends Widget
 
             echo Html::beginTag($this->tag, ArrayHelper::merge(['id' => $this->id], $this->options));
             $this->renderComments($this->comments);
-            echo Html::endTag($this->tag, $this->options);
+            echo Html::endTag($this->tag);
             echo Html::beginTag('nav', ['class' => 'comment-pagination']);
             echo LinkPager::widget([
                 'pagination'           => $this->pages,

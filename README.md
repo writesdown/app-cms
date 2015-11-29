@@ -26,7 +26,7 @@ Feature
 * Bulk-action each index action
 * User management
 * Support resize and crop for images
-* Widget under development
+* Widget
 
 Directory Structure
 -------------------
@@ -79,7 +79,7 @@ Like Yii2 Application Advanced, WritesDown CMS also use composer for installatio
 to the command line.
 
 ```
-composer global require "fxp/composer-asset-plugin:1.0.0"
+composer global require "fxp/composer-asset-plugin:~1.1.0"
 composer create-project --prefer-dist --stability=dev writesdown/app-cms writesdown
 ```
 

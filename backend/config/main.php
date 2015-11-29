@@ -11,8 +11,8 @@ $params = array_merge(
 // Replace url
 $request = new Request();
 
-$baseUrlFront = str_replace('/backend/web', '/frontend/web', $request->getBaseUrl());
-$scriptUrlFront = str_replace('/backend/web', '/frontend/web', $request->getScriptUrl());
+$baseUrlFront = str_replace('/admin', '', $request->getBaseUrl());
+$scriptUrlFront = str_replace('/admin', '', $request->getScriptUrl());
 
 return [
     'id'                  => 'app-backend',

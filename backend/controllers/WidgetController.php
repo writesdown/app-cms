@@ -140,7 +140,7 @@ class WidgetController extends Controller
 
                         // Check if widget with the same directory already exist
                         if (is_dir($this->_widgetDir . $baseDir)) {
-                            FileHelper::removeDirectory($this->_widgetDir . $baseDir);
+                            FileHelper::removeDirectory($this->_widgetTempDir);
                             Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Widget with the same directory already exist.'));
                         } else {
 

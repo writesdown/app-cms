@@ -79,7 +79,7 @@ class TermController extends Controller{
      */
     protected function findModel($id)
     {
-        $model = Term::find()->andWhere(['id' => $id])->one();
+        $model = Term::findOne(['id' => $id]);
         if ($model) {
             return $model;
         } else {
@@ -100,7 +100,7 @@ class TermController extends Controller{
      */
     protected function findModelBySlug($term_slug)
     {
-        $model = Term::find()->andWhere(['term_slug' => $term_slug])->one();
+        $model = Term::findOne(['term_slug' => $term_slug]);
         if ($model) {
             return $model;
         } else {

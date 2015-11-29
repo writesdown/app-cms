@@ -1,5 +1,9 @@
 WritesDown Change Log
 =====================
+(November 29, 2015)
+-------------------
+* (ENH) Move directory web to public
+* Bug fixes
 (September 13, 2015)
 --------------------
 * (ENH) Update widgets and theme

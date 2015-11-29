@@ -163,7 +163,7 @@ class MenuController extends Controller
         if (Yii::$app->request->post('type') === 'link') {
             $model = new MenuItem();
             $model->menu_id = $id;
-            if (($model->load(Yii::$app->request->post()) && ($model->menu_id = $id) && ($model->save()))) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 echo $this->renderPartial('_render-item', ['item' => $model, 'wrapper' => 'true']);
             }
         } else if (Yii::$app->request->post('type') === 'post' && $postIds = Yii::$app->request->post('postIds')) {

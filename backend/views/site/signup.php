@@ -69,6 +69,6 @@ $this->title = Yii::t('writesdown', 'Sing Up');
 
     <br/>
 
-    <?= Html::a('<i class="fa fa-home"></i> ' . Yii::t('writesdown', 'Back to {sitetitle}', ['sitetitle' => Option::get('sitetitle')]), Yii::$app->urlManagerFront->baseUrl, ['class' => 'btn btn-block btn-success']); ?>
+    <?= Html::a('<i class="fa fa-home"></i> ' . Yii::t('writesdown', 'Back to {sitetitle}', ['sitetitle' => Option::get('sitetitle')]), Yii::$app->urlManagerFront->createUrl(['/site/index']), ['class' => 'btn btn-block btn-success']); ?>
 
 </div>

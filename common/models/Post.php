@@ -235,7 +235,8 @@ class Post extends ActiveRecord
      */
     public function getMeta($meta_name)
     {
-        $model = PostMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['post_id' => $this->id])->one();
+        /* @var $model \common\models\PostMeta*/
+        $model = PostMeta::findOne(['meta_name' => $meta_name, 'post_id' => $this->id]);
 
         if ($model) {
 
@@ -285,7 +286,8 @@ class Post extends ActiveRecord
      */
     public function upMeta($meta_name, $meta_value)
     {
-        $model = PostMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['post_id' => $this->id])->one();
+        /* @var $model \common\models\PostMeta */
+        $model = PostMeta::findOne(['meta_name' => $meta_name, 'post_id' => $this->id]);
 
         if (is_array($meta_value) || is_object($meta_value))
             $meta_value = Json::encode($meta_value);

@@ -76,10 +76,6 @@ use common\models\PostType;
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'My Profile'), 'url' => ['/user/profile'], 'visible' => Yii::$app->user->can('subscriber')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Reset Password'), 'url' => ['/user/reset-password'], 'visible' => Yii::$app->user->can('subscriber')],
         ]];
-        $adminSiteMenu[70] = ['label' => Yii::t('writesdown', 'Tools'), 'icon' => 'fa fa-wrench', 'items' => [
-            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Export'), 'url' => ['/site/not-found'], 'visible' => Yii::$app->user->can('superadmin')],
-            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Import'), 'url' => ['/site/not-found'], 'visible' => Yii::$app->user->can('superadmin')],
-        ]];
         $adminSiteMenu = ArrayHelper::merge($adminSiteMenu, PostType::getMenu(2));
         $adminSiteMenu = ArrayHelper::merge($adminSiteMenu, Option::getMenu(60));
 

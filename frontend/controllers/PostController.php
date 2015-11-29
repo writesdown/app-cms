@@ -133,7 +133,7 @@ class PostController extends Controller
      */
     protected function findModel($id)
     {
-        $model = Post::find()->andWhere(['id' => $id])->andWhere(['post_status' => 'publish'])->one();
+        $model = Post::findOne(['id' => $id, 'post_status' => 'publish']);
         if ($model) {
             return $model;
         } else {
@@ -153,7 +153,7 @@ class PostController extends Controller
      */
     protected function findModelBySlug($post_slug)
     {
-        $model = Post::find()->andWhere(['post_slug' => $post_slug])->andWhere(['post_status' => 'publish'])->one();
+        $model = Post::findOne(['post_slug' => $post_slug, 'post_status' => 'publish']);
         if ($model) {
             return $model;
         } else {
@@ -191,7 +191,7 @@ class PostController extends Controller
      */
     protected function findPostTypeBySlug($post_type)
     {
-        $model = PostType::find()->andWhere(['post_type_slug' => $post_type])->one();
+        $model = PostType::findOne(['post_type_slug' => $post_type]);
         if ($model) {
             return $model;
         } else {

@@ -185,7 +185,7 @@ class Media extends ActiveRecord
     public function getMeta($meta_name)
     {
         /* @var $model \common\models\MediaMeta */
-        $model = MediaMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['media_id' => $this->id])->one();
+        $model = MediaMeta::findOne(['meta_name' => $meta_name, 'media_id' => $this->id]);
 
         if ($model) {
 
@@ -237,7 +237,7 @@ class Media extends ActiveRecord
     public function upMeta($meta_name, $meta_value)
     {
         /* @var $model \common\models\MediaMeta */
-        $model = MediaMeta::find()->andWhere(['meta_name' => $meta_name])->andWhere(['media_id' => $this->id])->one();
+        $model = MediaMeta::findOne(['meta_name' => $meta_name, 'media_id' => $this->id]);
 
         if (is_array($meta_value) || is_object($meta_value))
             $meta_value = Json::encode($meta_value);

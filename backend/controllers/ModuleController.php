@@ -119,7 +119,7 @@ class ModuleController extends Controller
                                 if (isset($model->module_config['frontend']['class']) || isset($model->module_config['backend']['class'])) {
 
                                     // Check class whether exist or not
-                                    if (isset($model->module_config['frontend']['class']) && !class_exists($model->module_config['frontend']['class'])) {
+                                    if (isset($model->module_config['backend']['class']) && !class_exists($model->module_config['backend']['class'])) {
                                         FileHelper::removeDirectory($moduleDir . $baseDir);
                                         Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Invalid configuration.'));
 

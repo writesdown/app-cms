@@ -101,7 +101,7 @@ class MediaController extends Controller
      */
     protected function findModelBySlug($media_slug)
     {
-        if (($model = Media::find()->andWhere(['media_slug' => $media_slug])->one()) !== null) {
+        if (($model = Media::findOne(['media_slug' => $media_slug])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

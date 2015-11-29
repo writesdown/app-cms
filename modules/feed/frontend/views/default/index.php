@@ -21,7 +21,8 @@ use common\models\Option;
         <title><?= $title ?></title>
         <atom:link href="<?= $link ?>" rel="self" type="application/rss+xml"/>
         <link><?= $link ?></link>
-        <description><?= $description ?></description>
+        <description><![CDATA[<?= $description ?>]]></description>
+        <description><![CDATA[<?= $description ?>]]></description>
         <lastBuildDate><?= $lastBuildDate->format('r'); ?></lastBuildDate>
         <language><?= Yii::$app->language; ?></language>
         <sy:updatePeriod>hourly</sy:updatePeriod>

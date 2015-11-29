@@ -97,7 +97,7 @@ class UserController extends Controller
      */
     protected function findModelByUsername($username)
     {
-        if (($model = User::find()->andWhere(['username' => $username])->one()) !== null) {
+        if (($model = User::findOne(['username' => $username])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

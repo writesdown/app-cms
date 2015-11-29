@@ -77,7 +77,7 @@ class Option extends ActiveRecord
     public static function get($option_name)
     {
         /* @var $model \common\models\Option */
-        $model = static::find()->where(['option_name' => $option_name])->one();
+        $model = static::findOne(['option_name' => $option_name]);
 
         if ($model) {
             if (Json::isJson($model->option_value))
@@ -130,7 +130,7 @@ class Option extends ActiveRecord
     public static function up($option_name, $option_value)
     {
         /* @var $model \common\models\Option */
-        $model = static::find()->where(['option_name' => $option_name])->one();
+        $model = static::findOne(['option_name' => $option_name]);
         if (is_array($option_value) || is_object($option_value)) {
             $model->option_value = Json::encode($option_value);
         } else {
