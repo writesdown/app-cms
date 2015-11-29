@@ -660,7 +660,7 @@ class MediaUploadHandler {
 
         if (preg_match('/^image\//', $media->media_mime_type)) {
             $response['media_render_type'] = 'image';
-            $response['media_icon_url'] = $this->getOption('upload_url') . '/' . $metadata['media_icon_url'];
+            $response['media_icon_url'] = $this->getOption('upload_url') . $metadata['media_icon_url'];
 
             foreach ($metadata['media_versions'] as $versionName => $version) {
                 $response['media_size'][] = [
@@ -772,7 +772,6 @@ class MediaUploadHandler {
      */
     public function get($id = null, $printResponse = true)
     {
-        $response = [];
         $content = [];
 
         if ($id && $media = $this->findMedia($id)) {
@@ -801,7 +800,7 @@ class MediaUploadHandler {
             if ($models = $query->offset($pages->offset)->limit($pages->limit)->all()) {
                 foreach ($models as $index => $media) {
                     /* @var $media Media */
-                    $content[] = $this->generateResponse($media, $index);
+                    $content[] = $this->generateResponse($media);
                 }
             }
             $response = [
@@ -887,8 +886,8 @@ class MediaUploadHandler {
             $response[ $metadata['media_filename'] ] = $success;
         }
 
-        $this->setResponse($response, $printResponse);
+        $this->setResponse($response);
 
-        return $this->getResponse($response, $printResponse);
+        return $this->getResponse($printResponse);
     }
 } 
