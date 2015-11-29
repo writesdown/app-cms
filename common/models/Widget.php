@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\UploadedFile;
 use common\components\Json;
@@ -19,7 +20,7 @@ use common\components\Json;
  * @property string  $widget_date
  * @property string  $widget_modified
  */
-class Widget extends \yii\db\ActiveRecord
+class Widget extends ActiveRecord
 {
     /**
      * @var UploadedFile

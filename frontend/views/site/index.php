@@ -17,6 +17,7 @@ use yii\widgets\LinkPager;
 /* @var $this yii\web\View */
 /* @var $post common\models\Post */
 /* @var $image common\models\Media */
+/* @var $pages yii\data\Pagination */
 
 $this->title = Option::get('sitetitle') . ' - ' . Option::get('tagline');
 $this->params['breadcrumbs'][] = $this->title;

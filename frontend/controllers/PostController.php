@@ -76,7 +76,6 @@ class PostController extends Controller
     /**
      * Displays a single Post model.
      *
-     * @param null    $post_type
      * @param null    $post_slug
      *
      * @param integer $id
@@ -84,7 +83,7 @@ class PostController extends Controller
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
      */
-    public function actionView($id = null, $post_slug = null, $post_type = null)
+    public function actionView($id = null, $post_slug = null)
     {
         $render = 'view';
 

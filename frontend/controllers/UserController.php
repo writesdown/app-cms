@@ -34,6 +34,7 @@ class UserController extends Controller
      * @param null $id
      * @param      $username
      *
+     * @return mixed
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionView($id = null, $username = null)

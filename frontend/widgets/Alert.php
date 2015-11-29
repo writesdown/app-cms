@@ -6,6 +6,7 @@
  */
 
 namespace frontend\widgets;
+use yii\bootstrap\Widget;
 
 /**
  * Alert widget renders a message from session flash. All flash messages are displayed
@@ -26,7 +27,7 @@ namespace frontend\widgets;
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @author Alexander Makarov <sam@rmcreative.ru>
  */
-class Alert extends \yii\bootstrap\Widget
+class Alert extends Widget
 {
     /**
      * @var array the alert types configuration for the flash messages.

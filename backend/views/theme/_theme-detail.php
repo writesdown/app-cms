@@ -10,9 +10,6 @@
 
 use yii\helpers\Html;
 
-/* MODEL */
-use common\models\Option;
-
 /* @var $themeConfig [] */
 /* @var $installed string */
 

@@ -59,7 +59,7 @@ class SiteController extends Controller
                     [
                         'actions'       => ['signup'],
                         'allow'         => true,
-                        'matchCallback' => function ($rule, $action) {
+                        'matchCallback' => function () {
                             return Option::get('allow_signup') && Yii::$app->user->isGuest;
                         },
                     ],

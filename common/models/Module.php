@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\UploadedFile;
 use common\components\Json;
@@ -22,7 +23,7 @@ use common\components\Json;
  * @property string  $module_date
  * @property string  $module_modified
  */
-class Module extends \yii\db\ActiveRecord
+class Module extends ActiveRecord
 {
     // Constant for module activation.
     const MODULE_ACTIVE = 1;
