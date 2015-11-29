@@ -26,7 +26,7 @@ Feature
 * Bulk-action each index action
 * User management
 * Support resize and crop for images
-* Widget
+* Widget under development
 
 Directory Structure
 -------------------
@@ -37,9 +37,7 @@ backend
     controllers/         contains Web controller classes
     models/              contains backend-specific model classes
     runtime/             contains files generated during runtime
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    web/                 contains frontend widgets
+    views/               contains view files for the Web application    
     widgets/             contains widgets for backend
 common
     components/          contains shared components
@@ -63,9 +61,10 @@ frontend
     models/              contains frontend-specific model classes
     runtime/             contains files generated during runtime
     views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
     widgets/             contains frontend widgets
 modules                  contains modules
+public                   contains the frontend entry script and Web resources    
+    admin/               contains the backend entry script and Web resources        
 tests                    contains various tests for the advanced application
     codeception/         contains tests developed with Codeception PHP Testing Framework
 themes                   contains themes 
