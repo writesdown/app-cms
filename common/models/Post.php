@@ -390,6 +390,25 @@ class Post extends ActiveRecord
     }
 
     /**
+     * Generate excerpt of post model.
+     *
+     * @param int $limit
+     *
+     * @return string
+     */
+    public function getExcerpt($limit = 55){
+        $excerpt    = preg_replace('/\s{3,}/',' ', strip_tags($this->post_content));
+        $words      = preg_split("/[\n\r\t ]+/", $excerpt, $limit + 1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE);
+        if (count($words) > $limit) {
+            end($words);
+            $last_word = prev($words);
+
+            $excerpt =  substr($excerpt, 0, $last_word[1] + strlen($last_word[0]));
+        }
+        return $excerpt;
+    }
+
+    /**
      * @inheritdoc
      */
     public function beforeSave($insert)
@@ -399,7 +418,7 @@ class Post extends ActiveRecord
                 $this->post_author = Yii::$app->user->id;
             }
             $this->post_modified = new Expression('NOW()');
-            $this->post_excerpt = substr(strip_tags($this->post_content), 0, 400);
+            $this->post_excerpt  = $this->getExcerpt();
 
             return true;
         } else {
