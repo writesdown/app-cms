@@ -13,6 +13,8 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\SluggableBehavior;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 use common\components\Json;
 
@@ -258,13 +260,46 @@ class Media extends ActiveRecord
     }
 
     /**
-     * Get upload URL
+     * Get upload URL.
      *
      * @return string
      */
-    public function getUploadUrl()
+    public static function getUploadUrl()
     {
         return Yii::$app->urlManagerFront->hostInfo . Yii::$app->urlManagerFront->baseUrl . '/uploads/';
+    }
+
+    /**
+     * Get media image thumbnail. If the version is not found, full size will be returned.
+     *
+     * @param string $version Version of image thumbnail.
+     * @param array  $options Html::image options.
+     *
+     * @return string
+     */
+    public function getThumbnail($version = 'thumbnail', $options = []){
+        $thumbnail = '';
+        $metadata = $this->getMeta('metadata');
+
+        if(preg_match("/^image/", $this->media_mime_type)){
+            if(isset($metadata['media_versions'][$version])){
+                $image_src = $metadata['media_versions'][$version]['url'];
+                $image_width = $metadata['media_versions'][$version]['width'];
+                $image_height = $metadata['media_versions'][$version]['height'];
+            }else{
+                $image_src = $metadata['media_versions']['full']['url'];
+                $image_width = $metadata['media_versions']['full']['width'];
+                $image_height = $metadata['media_versions']['full']['height'];
+            }
+
+            $thumbnail = Html::img($this->uploadUrl . $image_src, ArrayHelper::merge([
+                'width'  => $image_width,
+                'height' => $image_height,
+                'alt'    => $this->media_title,
+            ], $options));
+        }
+
+        return $thumbnail;
     }
 
     /**
