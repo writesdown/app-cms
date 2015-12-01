@@ -30,12 +30,12 @@ $metaSeo = $model->getMeta('seo');
 
         <div class="form-group">
             <?= Html::label( Yii::t('writesdown', 'Keyword'), 'meta-keyword' ); ?>
-            <?= Html::textInput("meta[seo][keyword]", $metaSeo['keyword'], ['id' => 'meta-keyword', 'class' => 'form-control']); ?>
+            <?= Html::textInput("meta[seo][keywords]", isset($meta['keywords']) ? $meta['keywords'] : '', ['id' => 'meta-keyword', 'class' => 'form-control']); ?>
         </div>
 
         <div class="form-group">
             <?= Html::label( Yii::t('writesdown', 'Description'), 'meta-description' ); ?>
-            <?= Html::textarea("meta[seo][description]", $metaSeo['description'], ['id' => 'meta-description', 'class' => 'form-control']); ?>
+            <?= Html::textarea("meta[seo][description]", isset($meta['description']) ? $meta['description'] : '', ['id' => 'meta-description', 'class' => 'form-control']); ?>
         </div>
 
     </div>

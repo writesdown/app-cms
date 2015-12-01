@@ -10,6 +10,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
+use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $postType common\models\PostType */
@@ -18,29 +19,31 @@ use yii\widgets\LinkPager;
 /* @var $tags common\models\Term[] */
 /* @var $pages yii\data\Pagination */
 
-$this->title = $postType->post_type_pn;
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Html::encode($postType->post_type_pn . ' - ' . Option::get('sitetitle'));
+$this->params['breadcrumbs'][] = Html::encode($postType->post_type_pn);
 
 ?>
 <div class="archive post-index">
     <header id="archive-header" class="archive-header">
-        <h1><?= Html::encode($this->title) ?></h1>
-        <?php if ($postType->post_type_description) {
-            echo '<p class="description term-description">' . $postType->post_type_description . '</p>';
-        }?>
+        <h1><?= Html::encode($postType->post_type_pn) ?></h1>
+        <?php
+        if ($postType->post_type_description) {
+            echo Html::tag('div', $postType->post_type_description, ['class' => 'description post-description']);
+        }
+        ?>
     </header>
     <?php if ($posts): ?>
         <?php foreach ($posts as $post) : ?>
             <article class="hentry">
                 <header class="entry-header">
-                    <h2 class="entry-title"><?= Html::a($post->post_title, $post->url); ?></h2>
+                    <h2 class="entry-title"><?= Html::a(Html::encode($post->post_title), $post->url); ?></h2>
                     <?php
                     $updated = new \DateTime($post->post_modified, new DateTimeZone(Yii::$app->timeZone));
                     ?>
                     <div class="entry-meta">
                         <span class="entry-date">
                             <a rel="bookmark" href="<?= $post->url; ?>">
-                                <time datetime="<?= $updated->format('r'); ?>" class="entry-date">
+                                <time datetime="<?= $updated->format('c'); ?>" class="entry-date">
                                     <?= Yii::$app->formatter->asDate($post->post_date); ?>
                                 </time>
                             </a>
@@ -63,16 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php
                     $image = $post->getMedia()->where(['LIKE', 'media_mime_type', 'image/'])->one();
                     if ($image) {
-                        $image_metadata = $image->getMeta('metadata');
-                        $image_src = $image_metadata['media_versions']['thumbnail']['url'];
-                        $image_width = $image_metadata['media_versions']['thumbnail']['width'];
-                        $image_height = $image_metadata['media_versions']['thumbnail']['height'];
-                        echo Html::a(Html::img($image->uploadUrl . $image_src, [
-                            'width'  => $image_width,
-                            'height' => $image_height,
-                            'alt'    => $image->media_title,
-                            'class'  => 'post-thumbnail'
-                        ]), $post->url, ['class' => 'media-left entry-thumbnail']);
+                        echo Html::a($image->getThumbnail('thumbnail', ['class' => 'post-thumbnail']), $post->url, ['class' => 'media-left entry-thumbnail']);
                     }
                     ?>
                     <div class="media-body">
@@ -95,7 +89,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
         <nav id="archive-pagination">
             <?php
-            // display pagination
             echo LinkPager::widget([
                 'pagination'           => $pages,
                 'activePageCssClass'   => 'active',

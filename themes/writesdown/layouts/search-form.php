@@ -21,9 +21,8 @@ use yii\widgets\ActiveForm;
     <div class="input-group">
         <?= Html::textInput('s', null, ['class' => 'form-control', 'placeholder' => 'Search...']); ?>
         <span class="input-group-btn">
-            <?= Html::button('<span class="glyphicon glyphicon-search"></span>', [
+            <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span>', [
                 'class' => ' btn btn-default',
-                'type' => 'submit'
             ]); ?>
         </span>
     </div>

@@ -8,31 +8,55 @@
  * @license   http://www.writesdown.com/license/
  */
 
+use yii\helpers\Html;
 use frontend\assets\CommentAsset;
+use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $post common\models\Post */
 /* @var $comment common\models\PostComment */
+/* @var $category common\models\Term */
 
-$this->title = $post->post_title;
-$this->params['breadcrumbs'][] = ['label' => $post->postType->post_type_sn, 'url' => ['/post/index', 'id' => $post->postType->id]];
+if ($seo = $post->getMeta('seo')) {
+    if(isset($seo['description']) && $seo['description'] != ''){
+        $this->registerMetaTag([
+            'name'    => 'description',
+            'content' => $seo['description'],
+        ]);
+    }else{
+        $this->registerMetaTag([
+            'name'    => 'description',
+            'content' => substr($post->post_excerpt, 0, 350),
+        ]);
+    }
+    if(isset($seo['keywords'])  && $seo['keywords'] != ''){
+        $this->registerMetaTag([
+            'name'    => 'keywords',
+            'content' => $seo['keywords'],
+        ]);
+    }
+}
+
+$this->title = Html::encode($post->post_title . ' - ' . Option::get('sitetitle'));
+$this->params['breadcrumbs'][] = ['label' => Html::encode($post->postType->post_type_sn), 'url' => ['/post/index', 'id' => $post->postType->id]];
 $category = $post->getTerms()->innerJoinWith(['taxonomy'])->andWhere(['taxonomy_slug' => 'category'])->one();
 if ($category) {
-    $this->params['breadcrumbs'][] = ['label' => $category->term_name, 'url' => $category->url];
+    $this->params['breadcrumbs'][] = ['label' => Html::encode($category->term_name), 'url' => $category->url];
 }
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = Html::encode($post->post_title);
 
 CommentAsset::register($this);
 ?>
 <div class="single post-view">
     <article class="hentry">
+        <?php if(Yii::$app->controller->route !== 'site/index'): ?>
         <header class="entry-header">
-            <h1 class="entry-title"><?= $post->post_title ?></h1>
+            <h1 class="entry-title"><?= Html::encode($post->post_title) ?></h1>
             <?php $updated = new \DateTime($post->post_modified, new DateTimeZone(Yii::$app->timeZone)); ?>
             <div class="entry-meta">
                 <span class="entry-date">
                     <a rel="bookmark" href="<?= $post->url; ?>">
-                        <time datetime="<?= $updated->format('r'); ?>" class="entry-date">
+                        <time datetime="<?= $updated->format('c'); ?>" class="entry-date">
                             <?= Yii::$app->formatter->asDate($post->post_date); ?>
                         </time>
                     </a>
@@ -51,9 +75,20 @@ CommentAsset::register($this);
                 </span>
             </div>
         </header>
+        <?php endif ?>
         <div class="entry-content">
             <?= $post->post_content; ?>
         </div>
+        <footer class="footer-meta">
+            <h3>
+                <?php
+                $tags = $post->getTerms()->innerJoinWith(['taxonomy'])->andWhere(['taxonomy_slug' => 'tag'])->all();
+                foreach ($tags as $tag) {
+                    echo Html::a($tag->term_name, $tag->url, ['class' => 'badge']) . "\n";
+                }
+                ?>
+            </h3>
+        </footer>
     </article>
     <nav id="single-pagination" class="clearfix">
         <?= $post->getPrevPostLink(true, false, '<span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span> PREV', ['class' => 'pull-left']); ?>

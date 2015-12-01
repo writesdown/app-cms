@@ -155,15 +155,6 @@ h6{
     padding-right: 0;
     padding-left: 0;
 }
-/*
-#breadcrumb-primary .breadcrumb > li > a{
-    color: #ff0000;
-}
-#breadcrumb-primary .breadcrumb > li > a:focus,
-#breadcrumb-primary .breadcrumb > li > a:hover {
-    color: #00A000;
-}
-*/
 #search-form-top .btn,
 #search-form-top .form-control{
     border-radius: 0;
@@ -354,6 +345,44 @@ h6{
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 3px double #eee;
+}
+
+/* ALIGN AND CAPTION */
+p.align-center{
+    text-align: center;
+}
+p.align-right{
+    text-align: right;
+}
+p.align-left{
+    text-align: left;
+}
+.media-caption{
+    max-width: 100%;
+}
+.media-caption img{
+    float: none !important;
+}
+.media-caption .media-caption-text{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.media-caption.align-left,
+img.align-left{
+    float: left;
+    margin-right: 10px;
+}
+.media-caption.align-right,
+img.align-right{
+    float: right;
+    margin-left: 10px;
+}
+.media-caption.align-center,
+img.align-center{
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 /* RESPONSIVE */

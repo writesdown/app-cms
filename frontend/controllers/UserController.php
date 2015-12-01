@@ -64,7 +64,7 @@ class UserController extends Controller
             }
 
             return $this->render($render, [
-                'model' => $model,
+                'user'     => $model,
                 'posts'    => $posts,
                 'pages'    => isset($pages) ? $pages : null
             ]);

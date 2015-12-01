@@ -11,14 +11,15 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
 /* @var $exception Exception */
 
-$this->title = $name;
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $name  . ' - ' . Option::get('sitetitle');
+$this->params['breadcrumbs'][] = $name;
 $this->registerMetaTag([
     'name'    => 'robots',
     'content' => 'noindex, nofollow'

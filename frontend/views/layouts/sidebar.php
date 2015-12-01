@@ -15,39 +15,28 @@ use common\models\Taxonomy;
 /* @var $this yii\web\View */
 /* @var $taxonomies common\models\Taxonomy[] */
 ?>
-<div class="col-md-4">
-    <div id="sidebar">
-        <div class="widget">
-            <?= $this->render('search-form'); ?>
-        </div>
-        <?php
-        $taxonomies = Taxonomy::find()->all();
-        $items = [];
-        foreach ($taxonomies as $taxonomy) {
-            foreach ($taxonomy->terms as $term) {
-                if ($term->getPosts()->andWhere(['post_status' => 'publish'])->count()) {
-                    $items[ $taxonomy->id ][ $term->id ]['label'] = $term->term_name;
-                    $items[ $taxonomy->id ][ $term->id ]['url'] = $term->url;
-                }
-            } ?>
-            <div class="widget">
-                <div class="widget-title">
-                    <h4><?= $taxonomy->taxonomy_pn; ?></h4>
-                </div>
-                <?= isset($items[ $taxonomy->id ]) ?
-                    Nav::widget(['items' => $items[ $taxonomy->id ]]) : '' ?>
-            </div>
-        <?php
-        }
-        ?>
+<div id="sidebar">
+    <div class="widget">
+        <?= $this->render('search-form'); ?>
+    </div>
+    <?php
+    $taxonomies = Taxonomy::find()->all();
+    $items = [];
+    foreach ($taxonomies as $taxonomy) {
+        foreach ($taxonomy->terms as $term) {
+            if ($term->getPosts()->andWhere(['post_status' => 'publish'])->count()) {
+                $items[ $taxonomy->id ][ $term->id ]['label'] = $term->term_name;
+                $items[ $taxonomy->id ][ $term->id ]['url'] = $term->url;
+            }
+        } ?>
         <div class="widget">
             <div class="widget-title">
-                <h4>Meta</h4>
+                <h4><?= $taxonomy->taxonomy_pn; ?></h4>
             </div>
-            <?= Nav::widget(['items' => [
-                ['label' => 'Entries RSS', 'url' => ['/feed']],
-                ['label' => 'Sitemap', 'url' => ['/sitemap']],
-            ]]); ?>
+            <?= isset($items[ $taxonomy->id ]) ?
+                Nav::widget(['items' => $items[ $taxonomy->id ]]) : '' ?>
         </div>
-    </div>
+    <?php
+    }
+    ?>
 </div>

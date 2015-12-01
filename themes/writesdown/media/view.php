@@ -10,17 +10,18 @@
 
 use frontend\assets\CommentAsset;
 use yii\helpers\Html;
+use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $media common\models\Media */
 /* @var $metadata [] */
 /* @var $comment common\models\MediaComment */
 
-$this->title = $media->media_title;
+$this->title = Html::encode($media->media_title . ' - ' . Option::get('sitetitle'));
 if ($media->mediaPost) {
-    $this->params['breadcrumbs'][] = ['label' => $media->mediaPost->post_title, 'url' => $media->mediaPost->url];
+    $this->params['breadcrumbs'][] = ['label' => Html::encode($media->mediaPost->post_title), 'url' => $media->mediaPost->url];
 }
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = Html::encode($media->media_title);
 
 CommentAsset::register($this);
 ?>

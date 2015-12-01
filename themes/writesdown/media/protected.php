@@ -10,33 +10,37 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\Option;
 
 /* @var $media common\models\Media */
 
-$this->title = $media->media_title;
+$this->title = Html::encode($media->media_title . ' - ' . Option::get('sitetitle'));
 if ($media->mediaPost) {
-    $this->params['breadcrumbs'][] = ['label' => $media->mediaPost->post_title, 'url' => $media->mediaPost->url];
+    $this->params['breadcrumbs'][] = ['label' => Html::encode($media->mediaPost->post_title), 'url' => $media->mediaPost->url];
 }
-$this->params['breadcrumbs'][] = $this->title;
-$this->registerMetaTag([
-    'name'    => 'robots',
-    'content' => 'noindex, nofollow'
-]);
+$this->params['breadcrumbs'][] = Html::encode($media->media_title);
 ?>
 
-<div class="post-protected">
-    <?php $form = ActiveForm::begin(); ?>
+<div class="single media-protected">
+    <article class="hentry">
+        <header class="entry-header page-header">
+            <h1 class="entry-title"><?= Html::encode($media->media_title) ?></h1>
+        </header>
+        <div class="entry-content">
+            <?php $form = ActiveForm::begin(); ?>
 
-    <p><?= Yii::t('writesdown', 'The media is protected, therefore, please type the right password to view the media.'); ?></p>
+            <p><?= Yii::t('writesdown', '{media_title} is protected, please submit the right password to view the Media.', ['media_title' => Html::encode($media->media_title)]); ?></p>
 
-    <div class="form-group field-posttype-post_type_name required">
-        <?= Html::label(Yii::t('writesdown', 'Password'), 'post-post_password', ['class' => 'control-label']); ?>
-        <?= Html::passwordInput('password', null, ['class' => 'form-control', 'id' => 'post-post_password']); ?>
-    </div>
+            <div class="form-group field-media-media_password required">
+                <?= Html::label(Yii::t('writesdown', 'Password'), 'media-media_password', ['class' => 'control-label']); ?>
+                <?= Html::passwordInput('password', null, ['class' => 'form-control', 'id' => 'media-media_password']); ?>
+            </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('writesdown', 'Submit Password'), ['class' => 'btn btn-flat btn-primary']); ?>
-    </div>
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('writesdown', 'Submit Password'), ['class' => 'btn btn-flat btn-primary']); ?>
+            </div>
 
-    <?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </article>
 </div>

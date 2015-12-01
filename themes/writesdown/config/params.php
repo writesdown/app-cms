@@ -15,12 +15,18 @@ return [
                 'primary' => 'Primary',
             ]
         ],
-        'metaBox'   => [
+        'postType'  => [
             'post' => [
-                ['class' => 'themes\writesdown\metabox\MetaBox'],
+                'metaBox' => [
+                    ['class' => 'themes\writesdown\metabox\MetaBox']
+                ],
+                'support' => []
             ],
             'page' => [
-                ['class' => 'themes\writesdown\metabox\MetaBox'],
+                'metaBox' => [
+                    ['class' => 'themes\writesdown\metabox\MetaBox'],
+                ],
+                'support' => []
             ]
         ],
         'widget'    => [

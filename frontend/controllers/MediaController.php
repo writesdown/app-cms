@@ -48,10 +48,6 @@ class MediaController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if($model->media_password && $model->media_password !== Yii::$app->request->post('password')){
-            return $this->render('protected', ['media' => $model]);
-        }
-
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
             if (!$comment->comment_parent)
                 $model->media_comment_count++;
@@ -59,6 +55,10 @@ class MediaController extends Controller
             if ($model->save()) {
                 $this->refresh();
             }
+        }
+
+        if($model->media_password && $model->media_password !== Yii::$app->request->post('password')){
+            return $this->render('protected', ['media' => $model]);
         }
 
         if (is_file($this->view->theme->basePath . '/media/view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1)) . '.php')) {

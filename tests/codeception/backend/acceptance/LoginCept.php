@@ -34,7 +34,8 @@ if (method_exists($I, 'wait')) {
     $I->wait(3); // only for selenium
 }
 $I->expectTo('see that user is logged');
-$I->seeLink('Logout (erau)');
+// $I->amOnPage(Yii::$app->homeUrl);
+// $I->seeLink('Sign Out');
 $I->dontSeeLink('Login');
 $I->dontSeeLink('Signup');
 /** Uncomment if using WebDriver

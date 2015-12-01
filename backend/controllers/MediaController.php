@@ -187,12 +187,12 @@ class MediaController extends Controller
         ];
 
         // Merge image versions with app params
-        if(isset(Yii::$app->params['media']['versions']) && is_array(Yii::$app->params['media']['versions'])){
+        if (isset(Yii::$app->params['media']['versions']) && is_array(Yii::$app->params['media']['versions'])) {
             $versions = ArrayHelper::merge($versions, Yii::$app->params['media']['versions']);
         }
 
         $uploadHandler = new MediaUploadHandler([
-            'versions' => $versions,
+            'versions'  => $versions,
             'user_dirs' => Option::get('uploads_username_based')
         ], false);
         $uploadHandler->post();
@@ -356,17 +356,14 @@ class MediaController extends Controller
         $media = $this->findModel($postMedia['id']);
         $metadata = $media->getMeta('metadata');
 
-        $image = Html::img($media->getUploadUrl() . $metadata['media_versions'][ $postMedia['media_size'] ]['url'], [
-                'class'   => $postMedia['media_alignment'] . ' media-image media-' . $media->id,
-                'width'   => $metadata['media_versions'][ $postMedia['media_size'] ]['width'],
-                'height'  => $metadata['media_versions'][ $postMedia['media_size'] ]['height'],
+        $image = $media->getThumbnail($postMedia['media_size'], [
                 'data-id' => $media->id,
-                'alt'     => $media->media_title
+                'class'   => $postMedia['media_alignment'] . ' media-image media-' . $media->id
             ]) . "\n";
 
         if ($media->media_excerpt) {
             $result .= Html::beginTag('div', [
-                    'class' => $postMedia['media_alignment'],
+                    'class' => $postMedia['media_alignment'] . ' media-caption',
                     'style' => 'width: ' . $metadata['media_versions'][ $postMedia['media_size'] ]['width'] . 'px'
                 ]) . "\n";
         }

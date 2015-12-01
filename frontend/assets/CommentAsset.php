@@ -32,7 +32,7 @@ class CommentAsset extends AssetBundle
      * @var array
      */
     public $js = [
-        'js/comment.js'
+        YII_ENV_DEV ? 'js/comment.js' : 'js/min/comment.js'
     ];
     /**
      * @var array

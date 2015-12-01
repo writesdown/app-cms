@@ -64,7 +64,7 @@ class TermController extends Controller{
         return $this->render( $render, [
             'posts' => $posts,
             'pages' => $pages,
-            'model' => $model
+            'term'  => $model
         ]);
     }
 

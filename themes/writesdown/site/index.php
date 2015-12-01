@@ -15,26 +15,27 @@ use yii\widgets\LinkPager;
 use common\models\Option;
 
 /* @var $this yii\web\View */
-/* @var $post common\models\Post */
+/* @var $posts common\models\Post[] */
+/* @var $tags common\models\Term[] */
 /* @var $image common\models\Media */
-/* @var $pages yii\web\ */
+/* @var $pages yii\data\Pagination */
 
-$this->title = Option::get('sitetitle') . ' - ' . Option::get('tagline');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Html::encode(Option::get('sitetitle') . ' - ' . Option::get('tagline'));
+$this->params['breadcrumbs'][] = Html::encode(Option::get('sitetitle'));
 ?>
 <div class="archive site-index">
     <?php if ($posts): ?>
         <?php foreach ($posts as $post) : ?>
             <article class="hentry">
                 <header class="entry-header">
-                    <h2 class="entry-title"><?= Html::a($post->post_title, $post->url); ?></h2>
+                    <h2 class="entry-title"><?= Html::a(Html::encode($post->post_title), $post->url); ?></h2>
                     <?php
                     $updated = new \DateTime($post->post_modified, new DateTimeZone(Yii::$app->timeZone));
                     ?>
                     <div class="entry-meta">
                         <span class="entry-date">
                             <a rel="bookmark" href="<?= $post->url; ?>">
-                                <time datetime="<?= $updated->format('r'); ?>" class="entry-date">
+                                <time datetime="<?= $updated->format('c'); ?>" class="entry-date">
                                     <?= Yii::$app->formatter->asDate($post->post_date); ?>
                                 </time>
                             </a>
@@ -57,16 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php
                     $image = $post->getMedia()->where(['LIKE', 'media_mime_type', 'image/'])->one();
                     if ($image) {
-                        $image_metadata = $image->getMeta('metadata');
-                        $image_src = $image_metadata['media_versions']['thumbnail']['url'];
-                        $image_width = $image_metadata['media_versions']['thumbnail']['width'];
-                        $image_height = $image_metadata['media_versions']['thumbnail']['height'];
-                        echo Html::a(Html::img($image->uploadUrl . $image_src, [
-                            'width'  => $image_width,
-                            'height' => $image_height,
-                            'alt'    => $image->media_title,
-                            'class'  => 'post-thumbnail'
-                        ]), $post->url, ['class' => 'media-left entry-thumbnail']);
+                        echo Html::a($image->getThumbnail('thumbnail', ['class' => 'post-thumbnail']), $post->url, ['class' => 'media-left entry-thumbnail']);
                     }
                     ?>
                     <div class="media-body">
@@ -89,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
         <nav id="archive-pagination">
             <?php
-            // display pagination
             echo LinkPager::widget([
                 'pagination'           => $pages,
                 'activePageCssClass'   => 'active',

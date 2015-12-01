@@ -10,48 +10,49 @@
 
 use frontend\assets\CommentAsset;
 use yii\helpers\Html;
+use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $media common\models\Media */
 /* @var $metadata [] */
 /* @var $comment common\models\MediaComment */
 
-$this->title = $media->media_title;
+$this->title = Html::encode($media->media_title . ' - ' . Option::get('sitetitle'));
 if ($media->mediaPost) {
-    $this->params['breadcrumbs'][] = ['label' => $media->mediaPost->post_title, 'url' => $media->mediaPost->url];
+    $this->params['breadcrumbs'][] = ['label' => Html::encode($media->mediaPost->post_title), 'url' => $media->mediaPost->url];
 }
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = Html::encode($media->media_title);
 
 CommentAsset::register($this);
 ?>
 <div class="single media-view">
     <article class="hentry">
-        <header class="entry-header">
-            <h1 class="entry-title"><?= $media->media_title ?></h1>
+        <header class="entry-header page-header">
+            <h1 class="entry-title"><?= Html::encode($media->media_title) ?></h1>
             <?php $updated = new \DateTime($media->media_modified, new DateTimeZone(Yii::$app->timeZone)); ?>
             <div class="entry-meta">
                 <span class="entry-date">
+                    <span aria-hidden="true" class="glyphicon glyphicon-time"></span>
                     <a rel="bookmark" href="<?= $media->url; ?>">
-                        <time datetime="<?= $updated->format('r'); ?>"
-                              class="entry-date"><?= Yii::$app->formatter->asDate($media->media_date); ?></time>
+                        <time datetime="<?= $updated->format('c'); ?>" class="entry-date"><?= Yii::$app->formatter->asDate($media->media_date); ?></time>
                     </a>
                 </span>
                 <span class="byline">
                     <span class="author vcard">
-                        <a rel="author" href="<?= $media->mediaAuthor->url; ?>"
-                           class="url fn"><?= $media->mediaAuthor->display_name; ?></a>
+                        <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                        <a rel="author" href="<?= $media->mediaAuthor->url; ?>" class="url fn"><?= $media->mediaAuthor->display_name; ?></a>
                     </span>
                 </span>
                 <span class="comments-link">
-                    <a title="<?= Yii::t('writesdown', 'Comment on Kombikongo Post 1'); ?>"
-                       href="<?= $media->url ?>#respond"><?= Yii::t('writesdown', 'Leave a comment'); ?></a>
+                    <span aria-hidden="true" class="glyphicon glyphicon-comment"></span>
+                    <a title="<?= Yii::t('writesdown', 'Comment on {mediaTitle}', ['mediaTitle' => $media->media_title]) ?>" href="<?= $media->url ?>#respond"><?= Yii::t('writesdown', 'Leave a comment'); ?></a>
                 </span>
             </div>
         </header>
         <div class="entry-content">
             <?= $media->media_content; ?>
             <?= Html::a($media->media_title, $media->uploadUrl . $metadata['media_versions']['full']['url']); ?>
-            <?= $media->mediaPost ? Html::tag('h3', Html::a(Yii::t('writesdown', 'Back to ') . $media->mediaPost->post_title, $media->mediaPost->url)) : ''; ?>
+            <?= $media->mediaPost ? Html::tag('h3', Html::a('<span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span>' . Yii::t('writesdown', 'Back to ') . $media->mediaPost->post_title, $media->mediaPost->url)) : ''; ?>
         </div>
     </article>
     <?= $this->render('/media-comment/comments', ['media' => $media, 'comment' => $comment]); ?>

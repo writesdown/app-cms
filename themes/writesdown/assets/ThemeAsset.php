@@ -30,9 +30,7 @@ class ThemeAsset extends AssetBundle
     /**
      * @var array
      */
-    public $css = [
-        'css/site.css'
-    ];
+    public $css = YII_ENV_DEV ? ['css/site.css'] : ['css/min/site.css'];
     /**
      * @var array
      */

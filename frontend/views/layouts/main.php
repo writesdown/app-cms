@@ -44,14 +44,8 @@ if (Option::get('disable_site_indexing')) {
         'content' => 'noindex, nofollow'
     ]);
 }
-
-// Get site-title and tag-line
-$sitetitle = Option::get('sitetitle');
-$tagline = Option::get('tagline');
-
 $this->beginPage()
 ?>
-
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -59,7 +53,7 @@ $this->beginPage()
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title>
-        <?= Yii::$app->controller->route == 'site/index' ? $this->title : Option::get('sitetitle') . ' - ' . $this->title; ?>
+        <?= $this->title ?>
     </title>
     <?php $this->head() ?>
 </head>
@@ -67,10 +61,10 @@ $this->beginPage()
 <?php $this->beginBody() ?>
 <?php
 NavBar::begin([
-    'brandLabel' => Html::img(Yii::getAlias('@web/img/logo-mini.png'), ['alt' => 'WritsDown Mini Logo']),
+    'brandLabel' => Option::get('sitetitle'),
     'brandUrl'   => Yii::$app->homeUrl,
     'options'    => [
-        'class' => 'navbar-inverse navbar-static-top',
+        'class' => 'navbar-static-top',
         'id'    => 'navbar-primary'
     ],
 ]);
@@ -83,13 +77,24 @@ NavBar::end();
 ?>
 <header id="header-primary">
     <div class="container">
-        <?= Html::a(Html::img(Yii::getAlias('@web/img/logo.png'), ['alt' => 'Writes Down Logo']), Yii::$app->homeUrl, ['id' => 'logo']); ?>
-        <?php if (Yii::$app->controller->route == 'site/index') {
-            echo Html::tag('h1', $sitetitle . ' - ' . $tagline, [
+        <?php
+        if (Yii::$app->controller->route == 'site/index') {
+            echo Html::tag('h1', Option::get('sitetitle'), [
                 'id'    => 'site-title',
                 'class' => 'site-title'
             ]);
-        } ?>
+        } else {
+            echo Html::tag('span', Option::get('sitetitle'), [
+                'id'    => 'site-title',
+                'class' => 'h1 site-title'
+            ]);
+        }
+
+        echo Html::tag('span', Option::get('tagline'), [
+            'id'    => 'site-tagline',
+            'class' => 'h3 site-tagline',
+        ]);
+        ?>
     </div>
 </header>
 <div id="breadcrumb-primary" class="hidden-xs">
@@ -108,7 +113,9 @@ NavBar::end();
                     <?= $content ?>
                 </div>
             </div>
-            <?= $this->render('sidebar') ?>
+            <div class="col-md-4">
+                <?= $this->render('sidebar') ?>
+            </div>
         </div>
     </div>
 </div>

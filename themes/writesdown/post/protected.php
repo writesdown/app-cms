@@ -10,30 +10,61 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\Option;
 
 /* @var $post common\models\Post */
 
-$this->title = Yii::t('writesdown', '{post_title} is protected', ['post_title' => $post->post_title]);
-$this->params['breadcrumbs'][] = $this->title;
-$this->registerMetaTag([
-    'name'    => 'robots',
-    'content' => 'noindex, nofollow'
-]);
+if ($seo = $post->getMeta('seo')) {
+    if(isset($seo['description']) && $seo['description'] != ''){
+        $this->registerMetaTag([
+            'name'    => 'description',
+            'content' => $seo['description'],
+        ]);
+    }else{
+        $this->registerMetaTag([
+            'name'    => 'description',
+            'content' => substr($post->post_excerpt, 0, 350),
+        ]);
+    }
+    if(isset($seo['keywords'])  && $seo['keywords'] != ''){
+        $this->registerMetaTag([
+            'name'    => 'keywords',
+            'content' => $seo['keywords'],
+        ]);
+    }
+}
+
+$this->title = Html::encode($post->post_title . ' - ' . Option::get('sitetitle'));
+$this->params['breadcrumbs'][] = ['label' => Html::encode($post->postType->post_type_sn), 'url' => ['/post/index', 'id' => $post->postType->id]];
+$category = $post->getTerms()->innerJoinWith(['taxonomy'])->andWhere(['taxonomy_slug' => 'category'])->one();
+if ($category) {
+    $this->params['breadcrumbs'][] = ['label' => Html::encode($category->term_name), 'url' => $category->url];
+}
+$this->params['breadcrumbs'][] = Html::encode($post->post_title);
 ?>
 
-<div class="post-protected">
-    <?php $form = ActiveForm::begin(); ?>
+<div class="single post-protected">
+    <article class="hentry">
+        <header class="entry-header">
+            <h1 class="entry-title"><?= Html::encode($post->post_title) ?></h1>
+        </header>
+        <div class="entry-content">
+            <div class="entry-content">
+                <?php $form = ActiveForm::begin(); ?>
 
-    <p><?= Yii::t('writesdown', 'The {post_type} protected, therefore, please type the right password to view the {post_type}.', ['post_type' => $post->postType->post_type_sn]); ?></p>
+                <p><?= Yii::t('writesdown', '{post_title} is protected, please submit the right password to view the {post_type}.', ['post_title' => Html::encode($post->post_title), 'post_type' => Html::encode($post->postType->post_type_sn)]); ?></p>
 
-    <div class="form-group field-posttype-post_type_name required">
-        <?= Html::label(Yii::t('writesdown', 'Password'), 'post-post_password', ['class' => 'control-label']); ?>
-        <?= Html::passwordInput('password', null, ['class' => 'form-control', 'id' => 'post-post_password']); ?>
-    </div>
+                <div class="form-group field-post-post_password required">
+                    <?= Html::label(Yii::t('writesdown', 'Password'), 'post-post_password', ['class' => 'control-label']); ?>
+                    <?= Html::passwordInput('password', null, ['class' => 'form-control', 'id' => 'post-post_password']); ?>
+                </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('writesdown', 'Submit Password'), ['class' => 'btn btn-flat btn-primary']); ?>
-    </div>
+                <div class="form-group">
+                    <?= Html::submitButton(Yii::t('writesdown', 'Submit Password'), ['class' => 'btn btn-flat btn-primary']); ?>
+                </div>
 
-    <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    </article>
 </div>

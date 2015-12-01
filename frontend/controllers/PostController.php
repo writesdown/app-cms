@@ -97,10 +97,6 @@ class PostController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if($model->post_password && $model->post_password !== Yii::$app->request->post('password')){
-            return $this->render('protected', ['post' => $model]);
-        }
-
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
 
             if (!$comment->comment_parent)
@@ -109,6 +105,10 @@ class PostController extends Controller
             if ($model->save()) {
                 $this->refresh();
             }
+        }
+
+        if($model->post_password && $model->post_password !== Yii::$app->request->post('password')){
+            return $this->render('protected', ['post' => $model]);
         }
 
         if ( is_file($this->view->theme->basePath . '/post/view-' . $model->postType->post_type_slug . '.php')) {

@@ -54,12 +54,14 @@ use common\models\Menu;
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <h1 class="navbar-brand">
-                <?= Html::beginTag('a', ['href' => Yii::$app->homeUrl]); ?>
-                <?= Html::img($assetBundle->baseUrl . '/img/logo.png', ['alt' => 'Website Logo']); ?>
-                <?= Html::tag('span', $siteTitle); ?>
-                <?= Html::endTag('a'); ?>
-            </h1>
+            <?php $brandTag = Yii::$app->controller->route == 'site/index' ? 'h1' : 'div' ?>
+            <?= Html::beginTag($brandTag, ['class'=>'navbar-brand']) .
+                Html::beginTag('a', ['href' => Yii::$app->homeUrl]) .
+                Html::img($assetBundle->baseUrl . '/img/logo.png', ['alt' => 'Website Logo']).
+                Html::tag('span', Html::encode($siteTitle)) .
+                Html::endTag('a') .
+                Html::endTag($brandTag)
+            ?>
         </div>
         <div id="menu-primary" class="collapse navbar-collapse">
             <?= Nav::widget([
@@ -91,9 +93,8 @@ use common\models\Menu;
                 <div class="input-group">
                     <?= Html::textInput('s', Yii::$app->request->get('s'), ['class' => 'form-control', 'placeholder' => 'Search for...']); ?>
                     <span class="input-group-btn">
-                        <?= Html::button('<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search', [
+                        <?= Html::submitButton('<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search', [
                             'class' => ' btn btn-default',
-                            'type'  => 'submit'
                         ]); ?>
                     </span>
                 </div>

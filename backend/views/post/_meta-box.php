@@ -14,16 +14,14 @@ use yii\helpers\ArrayHelper;
 /* @var $postType common\models\PostType */
 /* @var $form yii\widgets\ActiveForm */
 
-$metaBox = isset(Yii::$app->params['metaBox']) ? Yii::$app->params['metaBox'] : [];
+$metaBox = isset(Yii::$app->params['postType'][$postType->post_type_name]['metaBox']) ?
+    Yii::$app->params['postType'][$postType->post_type_name]['metaBox'] :
+    [];
 
-foreach($metaBox as $postTypeName => $configs){
-    if($postType->post_type_name === $postTypeName){
-        foreach ($configs as $config) {
-            $config = ArrayHelper::merge($config, [
-                'model'     => $model,
-                'form'      => $form,
-            ]);
-            Yii::createObject($config);
-        }
-    }
+foreach($metaBox as $config){
+    $config = ArrayHelper::merge($config, [
+        'model'     => $model,
+        'form'      => $form,
+    ]);
+    Yii::createObject($config);
 }
