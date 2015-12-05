@@ -13,18 +13,14 @@
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
 if (!extension_loaded('openssl')) {
     die('The OpenSSL PHP extension is required by Yii2.');
 }
-
 $params = getParams();
 $root = str_replace('\\', '/', __DIR__);
 $envs = require("$root/environments/index.php");
 $envNames = array_keys($envs);
-
 echo "Yii Application Initialization Tool v1.0\n\n";
-
 $envName = null;
 if (empty($params['env']) || $params['env'] === '1') {
     echo "Which environment do you want the application to be initialized in?\n\n";
@@ -33,27 +29,22 @@ if (empty($params['env']) || $params['env'] === '1') {
     }
     echo "\n  Your choice [0-" . (count($envs) - 1) . ', or "q" to quit] ';
     $answer = trim(fgets(STDIN));
-
     if (!ctype_digit($answer) || !in_array($answer, range(0, count($envs) - 1))) {
         echo "\n  Quit initialization.\n";
         exit(0);
     }
-
     if (isset($envNames[$answer])) {
         $envName = $envNames[$answer];
     }
 } else {
     $envName = $params['env'];
 }
-
 if (!in_array($envName, $envNames)) {
     $envsList = implode(', ', $envNames);
     echo "\n  $envName is not a valid environment. Try one of the following: $envsList. \n";
     exit(2);
 }
-
 $env = $envs[$envName];
-
 if (empty($params['env'])) {
     echo "\n  Initialize the application under '{$envNames[$answer]}' environment? [yes|no] ";
     $answer = trim(fgets(STDIN));
@@ -62,7 +53,6 @@ if (empty($params['env'])) {
         exit(0);
     }
 }
-
 echo "\n  Start initialization ...\n\n";
 $files = getFileList("$root/environments/{$env['path']}");
 if (isset($env['skipFiles'])) {
@@ -76,16 +66,13 @@ foreach ($files as $file) {
         break;
     }
 }
-
 $callbacks = ['setCookieValidationKey', 'setWritable', 'setExecutable', 'createSymlink'];
 foreach ($callbacks as $callback) {
     if (!empty($env[$callback])) {
         $callback($root, $env[$callback]);
     }
 }
-
 echo "\n  ... initialization completed.\n\n";
-
 function getFileList($root, $basePath = '')
 {
     $files = [];
@@ -105,7 +92,6 @@ function getFileList($root, $basePath = '')
     closedir($handle);
     return $files;
 }
-
 function copyFile($root, $source, $target, &$all, $params)
 {
     if (!is_file($root . '/' . $source)) {
@@ -122,8 +108,6 @@ function copyFile($root, $source, $target, &$all, $params)
         } else {
             echo "      exist $target\n";
             echo "            ...overwrite? [Yes|No|All|Quit] ";
-
-
             $answer = !empty($params['overwrite']) ? $params['overwrite'] : trim(fgets(STDIN));
             if (!strncasecmp($answer, 'q', 1)) {
                 return false;
@@ -149,7 +133,6 @@ function copyFile($root, $source, $target, &$all, $params)
     file_put_contents($root . '/' . $target, file_get_contents($root . '/' . $source));
     return true;
 }
-
 function getParams()
 {
     $rawParams = [];
@@ -157,7 +140,6 @@ function getParams()
         $rawParams = $_SERVER['argv'];
         array_shift($rawParams);
     }
-
     $params = [];
     foreach ($rawParams as $param) {
         if (preg_match('/^--(\w+)(=(.*))?$/', $param, $matches)) {
@@ -169,15 +151,17 @@ function getParams()
     }
     return $params;
 }
-
 function setWritable($root, $paths)
 {
     foreach ($paths as $writable) {
-        echo "      chmod 0777 $writable\n";
-        @chmod("$root/$writable", 0777);
+        if (is_dir("$root/$writable")) {
+            echo "      chmod 0777 $writable\n";
+            @chmod("$root/$writable", 0777);
+        } else {
+            echo "\n  Error. Directory $writable does not exist. \n";
+        }
     }
 }
-
 function setExecutable($root, $paths)
 {
     foreach ($paths as $executable) {
@@ -185,7 +169,6 @@ function setExecutable($root, $paths)
         @chmod("$root/$executable", 0755);
     }
 }
-
 function setCookieValidationKey($root, $paths)
 {
     foreach ($paths as $file) {
@@ -198,7 +181,6 @@ function setCookieValidationKey($root, $paths)
         file_put_contents($file, $content);
     }
 }
-
 function createSymlink($root, $links) {
     foreach ($links as $link => $target) {
         echo "      symlink " . $root . "/" . $target . " " . $root . "/" . $link . "\n";

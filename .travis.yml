@@ -43,6 +43,8 @@ install:
     cd ../frontend && codecept build
     cd ../../../
 before_script:
+  - chmod +x init
+  - chmod +x init.bat
   - mysql -e 'CREATE DATABASE writesdown_tests;';
   - cd tests/codeception/bin && php yii migrate --interactive=0 && cd ../../..
 
