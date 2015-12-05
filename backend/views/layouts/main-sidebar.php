@@ -68,10 +68,10 @@ use common\models\PostType;
         ], 'visible'                  => Yii::$app->user->can('administrator')];
         $adminSiteMenu[40] = ['label' => Yii::t('writesdown', 'Taxonomies'), 'icon' => 'fa fa-tags', 'items' => [
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Taxonomies'), 'url' => ['/taxonomy/index']],
-            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Taxonomy'), 'url' => ['/taxonomy/index']],
+            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New Taxonomy'), 'url' => ['/taxonomy/create']],
         ], 'visible'                  => Yii::$app->user->can('administrator')];
         $adminSiteMenu[50] = ['label' => Yii::t('writesdown', 'Users'), 'icon' => 'fa fa-user', 'items' => [
-            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All User'), 'url' => ['/user/index'], 'visible' => Yii::$app->user->can('administrator')],
+            ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'All Users'), 'url' => ['/user/index'], 'visible' => Yii::$app->user->can('administrator')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Add New User'), 'url' => ['/user/create'], 'visible' => Yii::$app->user->can('administrator')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'My Profile'), 'url' => ['/user/profile'], 'visible' => Yii::$app->user->can('subscriber')],
             ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', 'Reset Password'), 'url' => ['/user/reset-password'], 'visible' => Yii::$app->user->can('subscriber')],
