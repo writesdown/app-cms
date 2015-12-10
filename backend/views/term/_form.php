@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
 <div class="term-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'term-form']); ?>
 
     <?= $form->field($model, 'term_name')->textInput([
         'maxlength'   => 200,

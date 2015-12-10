@@ -2,6 +2,7 @@
 
 namespace tests\codeception\common\_support;
 
+use tests\codeception\common\fixtures\AuthAssignmentFixture;
 use tests\codeception\common\fixtures\UserFixture;
 use Codeception\Module;
 use yii\test\FixtureTrait;
@@ -66,7 +67,11 @@ class FixtureHelper extends Module
         return [
             'user' => [
                 'class' => UserFixture::className(),
-                'dataFile' => '@tests/codeception/common/fixtures/data/init_login.php',
+                'dataFile' => '@tests/codeception/common/fixtures/data/init_user.php',
+            ],
+            'auth_assignment' => [
+                'class' => AuthAssignmentFixture::className(),
+                'dataFile' => '@tests/codeception/common/fixtures/data/init_auth_assignment.php',
             ],
         ];
     }

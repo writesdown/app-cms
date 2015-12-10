@@ -14,11 +14,12 @@ use yii\widgets\ActiveForm;
 /* @var $postType common\models\PostType */
 
 $this->title = Yii::t('writesdown', 'Add New {postType}', ['postType' => $postType->post_type_sn]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Posts'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Posts'), 'url' => ['index', 'post_type' => $postType->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php $form = ActiveForm::begin([
+    'id'      => 'post-create-form',
     'options' => [
         'class' => 'post-create'
     ]
@@ -38,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
 
             <?= $this->render('_meta-box', [
-                'model'     => $model,
-                'form'      => $form,
-                'postType'  => $postType
+                'model'    => $model,
+                'form'     => $form,
+                'postType' => $postType
             ]); ?>
 
         </div>

@@ -35,6 +35,7 @@ use yii\helpers\Html;
                 'toolbar'            => "bold | italic | strikethrough | underline | link | image | bullist | numlist",
             ],
             'options'         => [
+                'id'    => 'postcomment-comment_content',
                 'style' => 'height:200px;'
             ],
         ]

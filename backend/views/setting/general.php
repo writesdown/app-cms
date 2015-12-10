@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="options-form">
 
-        <?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+        <?php $form = ActiveForm::begin(['id' => 'option-general-form', 'options' => ['class' => 'form-horizontal']]); ?>
 
         <div class="form-group">
             <?= Html::label(Yii::t('writesdown', 'Site Title'), 'option-sitetitle', ['class' => 'col-sm-2 control-label']); ?>

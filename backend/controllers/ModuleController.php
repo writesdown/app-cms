@@ -69,7 +69,7 @@ class ModuleController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Module();
+        $model = new Module(['scenario' => 'create']);
         $moduleDir = Yii::getAlias('@modules/');
         $moduleTempDir = Yii::getAlias('@common/temp/modules/');
 

@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Media'), 'url
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => $model->url];
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'media-update-form']); ?>
 
     <div class="media-update">
         <div class="row">

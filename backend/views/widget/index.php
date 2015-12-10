@@ -35,7 +35,7 @@ WidgetAsset::register($this);
         </div>
     </div>
     <div class="col-sm-pull-6 col-md-pull-7 col-sm-6 col-md-5">
-        <h4><?= Yii::t('writesdown', 'Available Widget'); ?></h4>
+        <h4><?= Yii::t('writesdown', 'Available Widgets'); ?></h4>
 
         <p class="description">
             <?= Yii::t('writesdown', 'To activate widget, click on + (plus), choose the location and click activate'); ?>

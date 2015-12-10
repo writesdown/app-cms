@@ -80,7 +80,8 @@ abstract class BaseComment extends ActiveRecord
             [['comment_author', 'comment_content'], 'string'],
             [['comment_date'], 'safe'],
             [['comment_author_email', 'comment_author_ip'], 'string', 'max' => 100],
-            [['comment_author_url', 'comment_agent'], 'string', 'max' => 255],
+            [['comment_agent'], 'string', 'max' => 255],
+            [['comment_author_url'], 'url']
         ];
     }
 

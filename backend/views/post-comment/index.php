@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = [
 ];
 if ($post) {
     $this->params['breadcrumbs'][] = [
-        'label' => $post->id,
+        'label' => $postType->post_type_sn . ': ' . $post->id,
         'url' => ['index', 'post_type' => $postType->id, 'post_id' => $post->id]
     ];
     $this->title = Yii::t('writesdown', '{postType} {post} Comments', [

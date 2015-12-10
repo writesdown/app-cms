@@ -25,6 +25,7 @@ cache:
     - $HOME/.composer/cache
 
 install:
+#  - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
   - travis_retry composer self-update && composer --version
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.0"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -43,6 +44,9 @@ install:
     cd ../frontend && codecept build
     cd ../../../
 before_script:
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
+#  - java -jar selenium-server-standalone-2.42.2.jar -port 4444 >/dev/null 2>&1 &
   - chmod +x init
   - chmod +x init.bat
   - mysql -e 'CREATE DATABASE writesdown_tests;';

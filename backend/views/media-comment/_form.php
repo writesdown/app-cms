@@ -35,6 +35,7 @@ use codezeen\yii2\tinymce\TinyMce;
                 'toolbar'            => "bold | italic | strikethrough | underline | link | image | bullist | numlist",
             ],
             'options'         => [
+                'id'    => 'mediacomment-comment_content',
                 'style' => 'height:200px;'
             ],
         ]

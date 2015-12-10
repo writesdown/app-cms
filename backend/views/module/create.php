@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content">
 
             <?php $form = ActiveForm::begin([
+                'id'      => 'module-create-form',
                 'options' => [
                     'enctype' => 'multipart/form-data'
                 ]

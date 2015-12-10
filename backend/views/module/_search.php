@@ -41,7 +41,7 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'module_dir') ?>
 
-            <?= $form->field($model, 'module_fb')->dropDownList($model->backendBootstrap, ['prompt' => false]) ?>
+            <?= $form->field($model, 'module_bb')->dropDownList($model->backendBootstrap, ['prompt' => false]) ?>
 
         </div>
     </div>

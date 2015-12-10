@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = [
 ];
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Reply Comment: {id}', ['id' => $model->id]);
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'media-comment-reply-form']); ?>
 
     <div class="row">
         <div class="col-md-8 post-comment-update">

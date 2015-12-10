@@ -14,7 +14,7 @@ use yii\bootstrap\Modal;
 /* @var $themes [] */
 /* @var $installed string */
 
-$this->title = Yii::t('writesdown', 'Theme');
+$this->title = Yii::t('writesdown', 'Themes');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

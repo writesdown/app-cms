@@ -5,9 +5,21 @@ namespace tests\codeception\common\fixtures;
 use yii\test\ActiveFixture;
 
 /**
- * User fixture
+ * Class UserFixture
+ *
+ * @package tests\codeception\common\fixtures
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.1.2
  */
 class UserFixture extends ActiveFixture
 {
+    /**
+     * @var string
+     */
     public $modelClass = 'common\models\User';
+
+    /**
+     * @var string
+     */
+    public $dataFile = '@tests/codeception/common/fixtures/data/init_user.php';
 }

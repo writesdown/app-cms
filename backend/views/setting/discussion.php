@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="options-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'option-discussion-form', 'options' => ['class' => 'form-horizontal']]); ?>
 
     <div class="form-group">
         <?= Html::label($model->default_comment_status->option_label, null, ['class' => 'col-sm-2 control-label']); ?>

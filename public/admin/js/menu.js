@@ -523,7 +523,7 @@
         e.preventDefault();
         var _this = $(this),
             _form = $(this).closest('form');
-        if(_form.find('#select-menu').val() === ''){
+        if(_form.find('#select-menu-list').val() === ''){
             alert(_this.data('error'));
         }else if (confirm(_this.data('message'))){
             _form.attr('method', 'post');

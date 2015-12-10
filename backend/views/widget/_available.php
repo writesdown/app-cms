@@ -54,6 +54,7 @@ foreach ($availableWidget as $dir => $widget) {
         } ?>
 
         <?php $form = ActiveForm::begin([
+            'id'      => 'widget-available-form-' . $widget['widget_dir'],
             'action'  => Url::to(['/site/forbidden']),
             'options' => [
                 'data-url' => Url::to(['ajax-activate', 'id' => $widget['widget_dir']]),

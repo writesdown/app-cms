@@ -53,6 +53,7 @@ use codezeen\yii2\tinymce\TinyMce;
                     ]
                 ],
                 'options'         => [
+                    'id'    => 'post-post_content',
                     'style' => 'height:400px;'
                 ],
             ]

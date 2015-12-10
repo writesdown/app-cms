@@ -70,7 +70,7 @@ class Module extends ActiveRecord
             [['module_bb'], 'in', 'range' => [self::MODULE_FB, self::MODULE_FNB]],
             [['module_bb'], 'default', 'value' => self::MODULE_FNB],
             [['module_file'], 'required', 'on' => 'create'],
-            [['module_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'zip'],
+            [['module_file'], 'file', 'extensions' => 'zip'],
         ];
     }
 

@@ -37,7 +37,7 @@ $this->title = Yii::t('writesdown', 'Sing Up');
 
         <p class="login-box-msg"><?= Yii::t('writesdown', 'Register a new membership'); ?></p>
 
-        <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+        <?php $form = ActiveForm::begin(['id' => 'signup-form']); ?>
 
         <?= $form->field($model, 'username', ['template' => '<div class="form-group has-feedback">{input}<span class="glyphicon glyphicon-user form-control-feedback"></span></div>{error}'])->textInput(['placeholder' => $model->getAttributeLabel('username')]); ?>
 

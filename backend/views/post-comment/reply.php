@@ -19,19 +19,20 @@ $this->title = Yii::t('writesdown', 'Reply {post_type} Comment', [
     'post_type' => $commentParent->commentPost->postType->post_type_sn,
 ]);
 $this->params['breadcrumbs'][] = [
-    'label' => Yii::t('writesdown', '{postType} Comment', [
-        'postType' => $commentParent->commentPost->postType->post_type_sn
-    ]),
+    'label' => Yii::t('writesdown', '{postTypeSN} Comments', ['postTypeSN' => $commentParent->commentPost->postType->post_type_sn]),
     'url'   => ['index', 'post_type' => $commentParent->commentPost->postType->id]
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => $commentParent->id,
+    'label' => Yii::t('writesdown', '{postTypeSN} Comment: {postCommentId}', [
+        'postCommentId' => $commentParent->id,
+        'postTypeSN'    => $commentParent->commentPost->postType->post_type_sn
+    ]),
     'url'   => ['update', 'id' => $commentParent->id]
 ];
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Reply');
 
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'post-comment-reply-form']); ?>
 
     <div class="row">
         <div class="col-md-8 post-comment-update">

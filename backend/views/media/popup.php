@@ -101,11 +101,11 @@ MediaPopupAsset::register($this);
                         <div class="dropzone-inner">
                             <?= Yii::t('writesdown', 'Drop files here'); ?> <br/>
                             <?= Yii::t('writesdown', 'OR'); ?><br/>
-                        <span class="btn btn-default btn-flat fileinput-button">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <span><?= Yii::t('writesdown', 'Add files...'); ?></span>
-                            <?= $form->field($model, 'file', ['template' => '{input}', 'options' => ['class' => '']])->fileInput(['multiple' => 'multiple']); ?>
-                        </span>
+                            <div class="btn btn-default btn-flat fileinput-button">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span><?= Yii::t('writesdown', 'Add files...'); ?></span>
+                                <?= $form->field($model, 'file', ['template' => '{input}', 'options' => ['class' => '']])->fileInput(['multiple' => 'multiple']); ?>
+                            </div>
                         </div>
                     </div>
 

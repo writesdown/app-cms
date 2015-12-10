@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
 <div class="option-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'option-form']); ?>
 
     <?= $form->field($model, 'option_name')->textInput(['maxlength' => 64, 'placeholder' => $model->getAttributeLabel('option_name')]) ?>
 

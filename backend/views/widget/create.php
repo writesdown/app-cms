@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Widget */
 
-$this->title = Yii::t('writesdown', 'Create Widget');
+$this->title = Yii::t('writesdown', 'Add New Widget');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Widgets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content">
 
             <?php $form = ActiveForm::begin([
+                'id'      => 'widget-create-form',
                 'options' => [
                     'enctype' => 'multipart/form-data'
                 ]

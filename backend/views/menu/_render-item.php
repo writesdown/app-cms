@@ -22,14 +22,14 @@ use yii\helpers\Url;
     <div class="dd-handle"><?= $item->menu_label; ?></div>
     <div class="menu-header clearfix">
         <?= Html::button('<i class="fa fa-caret-down"></i>', [
-            'aria-controls' => $item->id,
+            'aria-controls' => 'menu-item-' . $item->id,
             'class'         => 'btn btn-flat btn-default btn-detail-menu',
             'data-toggle'   => 'collapse',
-            'data-target'   => '#' . $item->id,
+            'data-target'   => '#menu-item-' . $item->id,
         ]); ?>
     </div>
 
-<?= Html::beginTag('div', ['id' => $item->id, 'class' => 'collapse menu-body clearfix', 'aria-expanded' => 'true']); ?>
+<?= Html::beginTag('div', ['id' => 'menu-item-' . $item->id, 'class' => 'collapse menu-body clearfix']); ?>
 
     <div class="row">
         <div class="col-sm-6">

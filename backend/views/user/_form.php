@@ -19,7 +19,7 @@ use yii\helpers\ArrayHelper;
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'user-form']); ?>
 
     <?= $form->field($model, 'username')->textInput([
         'maxlength'   => 255,

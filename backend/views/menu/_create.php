@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Menu */
 
 $form = ActiveForm::begin([
+    'id'     => 'create-menu-form',
     'action' => Url::to(['/menu/create'])
 ]);
 ?>

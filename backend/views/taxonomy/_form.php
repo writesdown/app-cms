@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
 <div class="taxonomy-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'taxonomy-form']); ?>
 
     <?= $form->field($model, 'taxonomy_name')->textInput([
         'maxlength' => 200,

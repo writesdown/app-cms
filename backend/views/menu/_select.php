@@ -17,13 +17,14 @@ use yii\widgets\ActiveForm;
 /* @var $selectedMenu common\models\Menu */
 
 $form = ActiveForm::begin([
+    'id'     => 'select-menu-form',
     'action' => Url::to(['/menu/index']),
     'method' => 'get'
 ]); ?>
 
     <div class="menu-select_menu">
         <div class="input-group">
-            <?= Html::dropDownList('id', isset($selectedMenu) ? $selectedMenu->id : null, $availableMenu, ['id' => 'select-menu', 'class' => 'form-control']); ?>
+            <?= Html::dropDownList('id', isset($selectedMenu) ? $selectedMenu->id : null, $availableMenu, ['id' => 'select-menu-list', 'class' => 'form-control']); ?>
             <div class="input-group-btn">
                 <?= Html::submitButton(Yii::t('writesdown', 'Select Menu'), ['class' => 'btn btn-flat btn-primary submit-button']); ?>
             </div>

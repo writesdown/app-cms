@@ -20,7 +20,7 @@ $moduleConfig = $model->getConfig();
 
 <div class="module-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'module-update-form']); ?>
 
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">

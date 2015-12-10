@@ -9,10 +9,12 @@ $security = Yii::$app->getSecurity();
 return [
     'username'             => $faker->userName,
     'email'                => $faker->email,
-    'auth_key'             => $security->generateRandomString(),
+    'full_name'            => $faker->name,
+    'display_name'         => $faker->name,
     'password_hash'        => $security->generatePasswordHash('password_' . $index),
     'password_reset_token' => $security->generateRandomString() . '_' . time(),
-    'created_at'           => date('Y m d H:i:s'),
-    'updated_at'           => date('Y m d H:i:s'),
-    'login_at'             => date('Y m d H:i:s'),
+    'auth_key'             => $security->generateRandomString(),
+    'created_at'           => time(),
+    'updated_at'           => time(),
+    'login_at'             => time(),
 ];

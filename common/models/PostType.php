@@ -70,14 +70,15 @@ class PostType extends ActiveRecord
     public function rules()
     {
         return [
-            [['post_type_name', 'post_type_slug', 'post_type_sn', 'post_type_pn', 'post_type_permission'], 'required'],
+            [['post_type_name', 'post_type_sn', 'post_type_pn', 'post_type_permission'], 'required'],
             [['post_type_description'], 'string'],
             [['post_type_smb'], 'integer'],
             ['post_type_smb', 'in', 'range' => [self::SMB, self::NON_SMB]],
             ['post_type_smb', 'default', 'value' => self::NON_SMB],
             [['post_type_name', 'post_type_slug', 'post_type_permission'], 'string', 'max' => 64],
             [['post_type_icon', 'post_type_sn', 'post_type_pn'], 'string', 'max' => 255],
-            [['post_type_name', 'post_type_slug'], 'unique']
+            [['post_type_name', 'post_type_slug'], 'unique'],
+            [['post_type_slug'], 'safe']
         ];
     }
 

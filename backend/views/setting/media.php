@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="options-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'option-media-form', 'options' => ['class' => 'form-horizontal']]); ?>
 
     <h2><?= Yii::t('writesdown', 'Image sizes') ?></h2>
 

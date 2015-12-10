@@ -33,7 +33,7 @@ SelectizeAsset::register($this);
 
     <div class="options-form">
 
-        <?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+        <?php $form = ActiveForm::begin(['id' => 'option-reading-form', 'options' => ['class' => 'form-horizontal']]); ?>
 
         <div class="form-group">
             <?= Html::label(Yii::t('writesdown', 'Front page displays'), null, ['class' => 'col-sm-2 control-label']); ?>

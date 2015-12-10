@@ -23,17 +23,17 @@ $this->title = Yii::t('writesdown', 'Update {postType} Comment: {commentId}', [
     'commentId' => $model->id
 ]);
 $this->params['breadcrumbs'][] = [
-    'label' => $model->commentPost->postType->post_type_sn,
+    'label' => Yii::t('writesdown', '{postTypeSN} Comments', ['postTypeSN' => $model->commentPost->postType->post_type_sn]),
     'url'   => ['index', 'post_type' => $model->commentPost->postType->id]
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => $model->commentPost->id,
+    'label' => $model->commentPost->postType->post_type_sn . ': '. $model->commentPost->id,
     'url'   => ['index', 'post_type' => $model->commentPost->postType->id, 'post_id' => $model->commentPost->id]
 ];
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment: {commentId}', ['commentId' => $model->id]);
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'post-comment-update-form']); ?>
 
     <div class="post-comment-update row">
         <div class="col-md-8">

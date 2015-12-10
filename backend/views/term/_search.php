@@ -24,15 +24,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'term_name') ?>
+    <?= $form->field($model, 'term_name')->textInput(['id' => 'term-search-term_name']) ?>
 
-    <?= $form->field($model, 'term_slug') ?>
+    <?= $form->field($model, 'term_slug')->textInput(['id' => 'term-search-term_slug']) ?>
 
-    <?= $form->field($model, 'term_description') ?>
+    <?= $form->field($model, 'term_description')->textInput(['id' => 'term-search-term_description']) ?>
 
-    <?= $form->field($model, 'term_parent') ?>
+    <?= $form->field($model, 'term_parent')->textInput(['id' => 'term-search-term_parent']) ?>
 
-    <?= $form->field($model, 'term_count') ?>
+    <?= $form->field($model, 'term_count')->textInput(['id' => 'term-search-term_count']) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Search'), ['class' => 'btn btn-flat btn-primary']) ?>

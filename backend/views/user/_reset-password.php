@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'user-reset-password-form']); ?>
 
     <?= $form->field($model, 'password_old')->passwordInput(['maxlength' => 255, 'placeholder' => $model->getAttributeLabel('password_old')]) ?>
 
