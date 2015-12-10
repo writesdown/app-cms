@@ -1,11 +1,11 @@
 <?php
 /**
- * @file    index.php.
- * @date    6/4/2015
- * @time    6:15 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @file      index.php.
+ * @date      6/4/2015
+ * @time      6:15 AM
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['label' => 'All Posts', 'url' => ['/post/index', 'post_type' => $postType->id]],
                         ],
                     ],
+                    'split'       => true,
                     'encodeLabel' => false,
                     'options'     => [
                         'class' => 'btn btn-flat btn-danger'
@@ -84,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'username',
-                    'value' => function($model){
+                    'value'     => function ($model) {
                         /* @var $model common\models\Post */
                         return $model->postAuthor->username;
                     }
@@ -102,11 +103,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'post_comment_count',
 
                 [
-                    'class' => 'yii\grid\ActionColumn',
-                    'buttons'=>[
-                        'view' => function ($url, $model) {
+                    'class'   => 'yii\grid\ActionColumn',
+                    'buttons' => [
+                        'view'   => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $model->url, [
-                                'title' => Yii::t('yii', 'View'),
+                                'title'     => Yii::t('yii', 'View'),
                                 'data-pjax' => '0',
                             ]);
                         },
@@ -118,8 +119,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             } elseif (!Yii::$app->user->can('author') && $model->post_status !== $model::POST_STATUS_REVIEW) {
                                 return '';
                             }
+
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                'title' => Yii::t('yii', 'Update'),
+                                'title'     => Yii::t('yii', 'Update'),
                                 'data-pjax' => '0',
                             ]);
                         },
@@ -131,11 +133,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             } elseif (!Yii::$app->user->can('author') && $model->post_status !== $model::POST_STATUS_REVIEW) {
                                 return '';
                             }
+
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                'title' => Yii::t('yii', 'Delete'),
+                                'title'        => Yii::t('yii', 'Delete'),
                                 'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                'data-method' => 'post',
-                                'data-pjax' => '0',
+                                'data-method'  => 'post',
+                                'data-pjax'    => '0',
                             ]);
                         }
                     ]
