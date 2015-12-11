@@ -32,11 +32,15 @@ class MenuAsset extends AssetBundle{
     /**
      * @var array
      */
-    public $css = YII_ENV_PROD ? ['css/min/menu.css'] : ['css/menu.css'];
+    public $css = [
+        YII_ENV_PROD ? 'css/min/menu.css' : 'css/menu.css'
+    ];
     /**
      * @var array
      */
-    public $js = YII_ENV_PROD ? ['js/min/menu.js'] : ['js/menu.js'];
+    public $js = [
+        YII_ENV_PROD ? 'js/min/menu.js' : 'js/menu.js'
+    ];
     /**
      * @var array
      */

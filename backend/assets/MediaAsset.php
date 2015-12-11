@@ -33,7 +33,9 @@ class MediaAsset extends AssetBundle
     /**
      * @var array
      */
-    public $js = YII_ENV_PROD ? ['js/min/media.js'] : ['js/media.js'];
+    public $js = [
+        YII_ENV_PROD ? 'js/min/media.js' : 'js/media.js'
+    ];
     /**
      * @var array
      */

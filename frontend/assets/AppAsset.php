@@ -33,7 +33,7 @@ class AppAsset extends AssetBundle
      * @var array
      */
     public $css = [
-        YII_ENV_DEV ? 'css/site.css' : 'css/min/site.css',
+        YII_ENV_PROD ? 'css/min/site.css' : 'css/site.css'
     ];
     /**
      * @var array
