@@ -213,10 +213,10 @@ class ThemeController extends Controller
         $themeConfig['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png') ?
             $this->_thumbBaseUrl . $theme . '.png' :
             Yii::getAlias('@web/img/themes.png');
-        $themeConfig['Dir'] = $theme;
+        $themeConfig['info']['Dir'] = $theme;
 
         if (!isset($themeConfig['Name'])) {
-            $themeConfig['Name'] = $theme;
+            $themeConfig['info']['Name'] = $theme;
         }
 
         return $this->render('detail', [
@@ -292,10 +292,10 @@ class ThemeController extends Controller
         $themeConfig['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png') ?
             $this->_thumbBaseUrl . $theme . '.png' :
             Yii::getAlias('@web/img/themes.png');
-        $themeConfig['Dir'] = $theme;
+        $themeConfig['info']['Dir'] = $theme;
 
         if (!isset($themeConfig['Name'])) {
-            $themeConfig['Name'] = $theme;
+            $themeConfig['info']['Name'] = $theme;
         }
 
         return $this->renderPartial('_theme-detail', [
