@@ -34,7 +34,7 @@ install:
   - travis_retry composer global require "codeception/codeception=2.0.*" "codeception/specify=*" "codeception/verify=*"
 # setup application:
   - |
-    ./init --env=Development
+    php init --env=Development
     sed -i s/root/travis/ common/config/main-local.php
     sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" frontend/config/main.php
     sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" backend/config/main.php
@@ -47,8 +47,6 @@ before_script:
 #  - export DISPLAY=:99.0
 #  - sh -e /etc/init.d/xvfb start
 #  - java -jar selenium-server-standalone-2.42.2.jar -port 4444 >/dev/null 2>&1 &
-  - chmod +x init
-  - chmod +x init.bat
   - mysql -e 'CREATE DATABASE writesdown_tests;';
   - cd tests/codeception/bin && php yii migrate --interactive=0 && cd ../../..
 
