@@ -34,9 +34,7 @@ class WidgetAsset extends AssetBundle
     /**
      * @var array
      */
-    public $js = [
-        'js/widget.js'
-    ];
+    public $js = YII_ENV_PROD ? ['js/min/widget.js'] : ['js/widget.js'];
     /**
      * @var array
      */

@@ -32,15 +32,11 @@ class MediaPopupAsset extends AssetBundle
     /**
      * @var array
      */
-    public $css = [
-        'css/media.popup.css'
-    ];
+    public $css = YII_ENV_PROD ? ['css/min/media.popup.css'] : ['css/media.popup.css'];
     /**
      * @var array
      */
-    public $js = [
-        'js/media.popup.js'
-    ];
+    public $js = YII_ENV_PROD ? ['js/min/media.popup.js'] : ['js/media.popup.js'];
     /**
      * @var array
      */
