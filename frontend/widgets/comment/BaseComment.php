@@ -220,8 +220,10 @@ abstract class BaseComment extends Widget
 
     /**
      * Get comment children.
+     *
+     * @param int $id
      */
-    protected function getChildren(){}
+    protected function getChildren($id){}
 
     /**
      * Set comment model and pagination.

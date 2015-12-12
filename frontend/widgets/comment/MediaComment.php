@@ -65,7 +65,7 @@ class MediaComment extends BaseComment{
     /**
      * Get comment children based on comment ID.
      *
-     * @param $id
+     * @param int $id
      *
      * @return array|null
      */
