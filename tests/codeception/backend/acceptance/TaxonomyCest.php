@@ -203,7 +203,6 @@ class TaxonomyCest
         $I->see('Taxonomies', 'h1');
 
         $I->seeElement('a[href="' . Url::to(['/taxonomy/delete', 'id' => 1]) . '"]');
-        $I->click('a[href="' . Url::to(['/taxonomy/delete', 'id' => 1]) . '"]');
 
         if (method_exists($I, 'acceptPopup') && method_exists($I, 'wait')) {
             $I->click('a[href="' . Url::to(['/taxonomy/delete', 'id' => 1]) . '"]');

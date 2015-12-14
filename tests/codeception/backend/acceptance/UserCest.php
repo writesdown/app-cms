@@ -162,6 +162,9 @@ class UserCest
             'display_name'         => 'Editor',
             'full_name'            => 'Editor at WritesDown'
         ]);
+
+        \Yii::$app->authManager->revokeAll(3);
+        \Yii::$app->authManager->assign(\Yii::$app->authManager->getRole('editor'), 3);
     }
 
     /**
@@ -177,7 +180,7 @@ class UserCest
         if(method_exists($I, 'acceptPopup') && method_exists($I, 'wait')){
             $I->click('#user-grid-view a[href="' . Url::to(['/user/delete', 'id' => 6]) . '"]');
             $I->acceptPopup();
-            $I->wait(3);
+            $I->wait(5);
             $I->dontSee('subscriber', '#user-grid-view');
         }
     }

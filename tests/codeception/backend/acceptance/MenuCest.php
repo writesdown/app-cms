@@ -101,7 +101,8 @@ class MenuCest
         $I->see('Menu Primary', 'h2');
 
         $I->selectOption('#select-menu-list', 'Menu Secondary');
-        $I->click('Select', '#select-menu-form');
+        // $I->click('Select', '#select-menu-form');
+        $I->click('#select-menu-form button[type="submit"]');
         if(method_exists($I, 'wait')){
             $I->wait(3);
         }

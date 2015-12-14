@@ -38,7 +38,8 @@ class CreatePage extends BasePage
             $fieldType = $field == 'post_type_description' ? 'textarea' : 'input';
             $this->actor->fillField($fieldType . '[name="PostType[' . $field . ']"]', $value);
         }
-        $this->actor->click('Save', '#post-type-form');
+        // $this->actor->click('Save', '#post-type-form');
+        $this->actor->click('#post-type-form button[type="submit"]');
 
         // Wait to submit
         if (method_exists($this->actor, 'wait')){

@@ -38,7 +38,8 @@ class UpdatePage extends BasePage
             $fieldType = $field == 'post_type_description' ? 'textarea' : 'input';
             $this->actor->fillField($fieldType . '[name="PostType[' . $field . ']"]', $value);
         }
-        $this->actor->click('Update', '#post-type-form');
+        // $this->actor->click('Update', '#post-type-form');
+        $this->actor->click('#post-type-form button[type="submit"]');
 
         // Wait
         if (method_exists($this->actor, 'wait')){
