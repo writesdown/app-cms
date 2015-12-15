@@ -54,18 +54,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'module_status',
                     'format'    => 'boolean',
-                    'filter'    => $searchModel->status
+                    'filter'    => $searchModel->getStatus()
                 ],
                 'module_dir',
                 [
                     'attribute' => 'module_fb',
                     'format'    => 'boolean',
-                    'filter'    => $searchModel->frontendBootstrap
+                    'filter'    => $searchModel->getFrontendBootstrap()
                 ],
                 [
                     'attribute' => 'module_bb',
                     'format'    => 'boolean',
-                    'filter'    => $searchModel->backendBootstrap
+                    'filter'    => $searchModel->getBackendBootstrap()
                 ],
 
                 ['class' => 'yii\grid\ActionColumn'],

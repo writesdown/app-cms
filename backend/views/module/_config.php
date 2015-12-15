@@ -10,6 +10,7 @@
 
 /* @var $key string */
 /* @var $label string */
+/* @var $model common\models\Module */
 ?>
 
 <?php

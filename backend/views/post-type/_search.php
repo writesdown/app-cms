@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'post_type_pn') ?>
 
-            <?= $form->field($model, 'post_type_smb')->dropDownList($model->smb, ['prompt' => '']) ?>
+            <?= $form->field($model, 'post_type_smb')->dropDownList($model->getSmb(), ['prompt' => '']) ?>
 
         </div>
     </div>

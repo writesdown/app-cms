@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'display_name',
             [
                 'attribute' => 'status',
-                'value'     => $model->statustext
+                'value'     => $model->getStatusText()
             ],
             [
                 'attribute' => 'role',

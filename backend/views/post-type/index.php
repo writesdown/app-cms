@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'post_type_smb',
                     'format'    => 'boolean',
-                    'filter'    => $searchModel->smb
+                    'filter'    => $searchModel->getSmb()
                 ],
 
                 ['class' => 'yii\grid\ActionColumn'],

@@ -68,7 +68,7 @@ use rmrevin\yii\fontawesome\FA;
         'uncheck' => 0
     ]) ?>
 
-    <?= Html::hiddenInput('PostTypeTaxonomy[taxonomy_ids]', null, ['id' => 'posttypetaxonomy-taxonomy_ids']) ?>
+    <?= Html::hiddenInput('PostTypeTaxonomy[taxonomyIds]', '[]', ['id' => 'posttypetaxonomy-taxonomy_ids']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('writesdown', 'Save') : Yii::t('writesdown', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-flat btn-success' : 'btn btn-flat btn-primary']) ?>

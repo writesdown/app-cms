@@ -144,7 +144,8 @@ class PostTypeCest
             'post_type_pn'   => 'Test Post Types',
         ]);
         $I->expect('new post-type created');
-        $I->see('View Post Type: Test Post Type', 'h1');
+        // $I->see('View Post Type: Test Post Type', 'h1');
+        $I->see('View Post Type: Test Post Type');
 
         PostType::deleteAll(['post_type_name' => 'test-post-type']);
         Taxonomy::deleteAll(['taxonomy_name' => 'test-taxonomy']);
@@ -166,7 +167,8 @@ class PostTypeCest
             'post_type_description' => 'New post-type description',
         ]);
         $I->expectTo('post-type updated');
-        $I->see('View Post Type: Post', 'h1');
+        // $I->see('View Post Type: Post', 'h1');
+        $I->see('View Post Type: Post');
 
         PostType::findOne(1)->update(['post_type_smb' => '0', 'post_type_permission' => 'contributor', 'post_type_description' => '']);
         Taxonomy::deleteAll(['taxonomy_name' => 'test-taxonomy']);

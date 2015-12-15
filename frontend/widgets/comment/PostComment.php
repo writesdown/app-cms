@@ -1,11 +1,11 @@
 <?php
 /**
- * @file    PostComment.php.
- * @date    6/4/2015
- * @time    11:21 PM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @file      PostComment.php.
+ * @date      6/4/2015
+ * @time      11:21 PM
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets\comment;
@@ -20,14 +20,17 @@ use common\models\PostComment as Comment;
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   1.0
  */
-class PostComment extends BaseComment{
+class PostComment extends BaseComment
+{
 
     /**
      * Set comment and pagination.
      * Select all comments from database and create pagination.
      * Get child of current comment.
      */
-    protected function setComments(){
+    protected function setComments()
+    {
+        /* @var $models \common\models\BaseComment */
 
         $comments = [];
 
@@ -51,8 +54,8 @@ class PostComment extends BaseComment{
             ->all();
 
         foreach ($models as $model) {
-            $comments[$model->id] = $model;
-            $comments[$model->id]['child'] = $this->getChildren($model->id);
+            $comments[ $model->id ] = $model;
+            $comments[ $model->id ]['child'] = $this->getChildren($model->id);
         }
 
         $this->comments = $comments;
@@ -66,7 +69,8 @@ class PostComment extends BaseComment{
      *
      * @return array|null
      */
-    protected function getChildren($id){
+    protected function getChildren($id)
+    {
         /* @var $models \common\models\PostComment[] */
 
         $comments = [];
@@ -78,13 +82,12 @@ class PostComment extends BaseComment{
             ->orderBy(['id' => $this->commentOrder])
             ->all();
 
-        if(empty($models)){
+        if (empty($models)) {
             $comments = null;
-        } else{
-            /* @var $model \common\models\PostComment */
+        } else {
             foreach ($models as $model) {
-                $comments[$model->id] = $model;
-                $comments[$model->id]['child'] = $this->getChildren($model->id);
+                $comments[ $model->id ] = $model;
+                $comments[ $model->id ]['child'] = $this->getChildren($model->id);
             }
         }
 

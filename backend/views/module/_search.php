@@ -32,16 +32,16 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'module_description') ?>
 
-            <?= $form->field($model, 'module_fb')->dropDownList($model->frontendBootstrap, ['prompt' => false]) ?>
+            <?= $form->field($model, 'module_fb')->dropDownList($model->getFrontendBootstrap(), ['prompt' => false]) ?>
 
         </div>
         <div class="col-md-6">
 
-            <?= $form->field($model, 'module_status')->dropDownList($model->status, ['prompt' => false]) ?>
+            <?= $form->field($model, 'module_status')->dropDownList($model->getStatus(), ['prompt' => false]) ?>
 
             <?= $form->field($model, 'module_dir') ?>
 
-            <?= $form->field($model, 'module_bb')->dropDownList($model->backendBootstrap, ['prompt' => false]) ?>
+            <?= $form->field($model, 'module_bb')->dropDownList($model->getBackendBootstrap(), ['prompt' => false]) ?>
 
         </div>
     </div>

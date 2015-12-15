@@ -102,9 +102,8 @@
 .menu-body {
     padding: 15px;
     background: #FFFFFF;
-    border-width: 0 1px 1px 1px;
-    border-style: solid;
-    border-color: #EEEEEE;
+    border: 1px solid #EEEEEE;
+    border-top-width: 0;
 }
 
 .menu-body .dd-placeholder {

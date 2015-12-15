@@ -12,6 +12,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $model common\models\MediaComment */
 ?>
 
 <div class="post-comment-form">

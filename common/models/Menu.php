@@ -117,6 +117,7 @@ class Menu extends ActiveRecord
      */
     protected static function getListMenuItem($menu_location, $menu_parent = 0)
     {
+        /* @var $menuItemModel \common\models\MenuItem[] */
         $menuItem = [];
 
         $menuItemModel = MenuItem::find()->innerJoinWith(['menu'])->andWhere(['menu_location' => $menu_location])->andWhere(['menu_parent' => $menu_parent])->orderBy('menu_order')->all();

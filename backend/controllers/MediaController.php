@@ -109,10 +109,17 @@ class MediaController extends Controller
      * @param integer $id
      *
      * @return mixed
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        }
+
         $metadata = $model->getMeta('metadata');
 
         if ($model->load(Yii::$app->request->post())) {
@@ -139,9 +146,15 @@ class MediaController extends Controller
      * @param integer $id
      *
      * @return mixed
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('editor') && $this->findModel($id)->media_author !== Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        }
+
         $uploadHandler = new MediaUploadHandler(null, false);
         $uploadHandler->delete($id, false);
 
@@ -204,10 +217,13 @@ class MediaController extends Controller
     public function actionAjaxUpdate()
     {
         if ($model = $this->findModel(Yii::$app->request->post('id'))) {
+
             if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
                 throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
             }
+
             $model->{Yii::$app->request->post('attribute')} = Yii::$app->request->post('attribute_value');
+
             if ($model->save()) {
                 echo Yii::t('writesdown', 'Updated, {attribute}: {attribute_value}', [
                     'attribute'       => Yii::$app->request->post('attribute'),
@@ -224,9 +240,15 @@ class MediaController extends Controller
      * @param $id
      *
      * @return array
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionAjaxDelete($id)
     {
+        if (!Yii::$app->user->can('editor') && $this->findModel($id)->media_author !== Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        }
+
         $uploadHandler = new MediaUploadHandler(null, false);
         $uploadHandler->delete($id);
     }

@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $postType common\models\PostType */
+/* @var $model common\models\Post */
 
 $this->title = Yii::t('writesdown', 'Add New {postType}', ['postType' => $postType->post_type_sn]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Posts'), 'url' => ['index', 'post_type' => $postType->id]];

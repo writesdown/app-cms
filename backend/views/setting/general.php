@@ -18,6 +18,7 @@ use dosamigos\selectize\SelectizeDropDownList;
 /* @var $model common\models\Option */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $group string */
+/* @var $model object */
 
 $this->title = Yii::t('writesdown', '{group} Settings', ['group' => ucwords($group)]);
 

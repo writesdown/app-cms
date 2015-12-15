@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns'      => [
                 [
                     'class'           => 'yii\grid\CheckboxColumn',
-                    'checkboxOptions' => function ($model, $key, $index, $column) {
+                    'checkboxOptions' => function ($model) {
                         if ((!Yii::$app->user->can('editor') && $model->post_author !== Yii::$app->user->id) || !Yii::$app->user->can($model->postType->post_type_permission)) {
                             return ['disabled' => 'disabled'];
                         }
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-pjax' => '0',
                             ]);
                         },
-                        'update' => function ($url, $model, $key) {
+                        'update' => function ($url, $model) {
                             if (!$model->postType || !Yii::$app->user->can($model->postType->post_type_permission)) {
                                 return '';
                             } else if (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $model->post_author) {
@@ -125,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-pjax' => '0',
                             ]);
                         },
-                        'delete' => function ($url, $model, $key) {
+                        'delete' => function ($url, $model) {
                             if (!$model->postType || !Yii::$app->user->can($model->postType->post_type_permission)) {
                                 return '';
                             } else if (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $model->post_author) {

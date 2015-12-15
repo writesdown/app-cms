@@ -102,7 +102,7 @@
     });
 
     /* CHANGE VALUE OF HIDDEN INPUT POST TYPE TAXONOMY ON _FORM.PHP OF POST TYPE CREATE BEFORE SUBMIT*/
-    $("#post-type-form").on('submit', function(e){
+    $("#post-type-form").on('submit', function(){
         var d = $('#taxonomy_list').find('input[type="checkbox"]').serializeArray(),
             o = [];
         for(var i = 0; i < d.length; i++){

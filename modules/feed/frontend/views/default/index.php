@@ -8,7 +8,7 @@ use common\models\Option;
 /* @var $language string */
 /* @var $generator string */
 /* @var $postTypes common\models\PostType[] */
-/* @var $post common\models\Post */
+/* @var $posts common\models\Post[] */
 
 ?>
 <?= '<?xml version="1.0" encoding="UTF-8"?>' ?>
@@ -31,8 +31,7 @@ use common\models\Option;
         <?php foreach ($posts as $post) { ?>
             <item>
                 <title><?= $post->post_title; ?></title>
-                <link>
-                <![CDATA[<?= $post->url; ?>]]></link>
+                <link><![CDATA[<?= $post->url; ?>]]></link>
                 <comments><![CDATA[<?= $post->url; ?>#comments]]></comments>
                 <pubDate>
                     <?php

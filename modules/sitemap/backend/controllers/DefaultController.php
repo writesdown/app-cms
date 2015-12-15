@@ -3,7 +3,6 @@
 namespace modules\sitemap\backend\controllers;
 
 use Yii;
-use yii\base\Model;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;

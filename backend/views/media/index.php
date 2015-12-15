@@ -45,8 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel'  => $searchModel,
             'id'           => 'media-grid-view',
             'columns'      => [
-                ['class' => 'yii\grid\CheckboxColumn'],
+                [
+                    'class'           => 'yii\grid\CheckboxColumn',
+                    'checkboxOptions' => function ($model) {
+                        if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
+                            return ['disabled' => 'disabled'];
+                        }
 
+                        return ['value' => $model->id];
+                    },
+                ],
                 [
                     'attribute' => Yii::t('writesdown', 'Preview'),
                     'format'    => 'raw',
@@ -95,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-pjax' => '0',
                             ]);
                         },
-                        'update' => function ($url, $model, $key) {
+                        'update' => function ($url, $model) {
                             if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
                                 return '';
                             }
@@ -105,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-pjax' => '0',
                             ]);
                         },
-                        'delete' => function ($url, $model, $key) {
+                        'delete' => function ($url, $model) {
                             if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
                                 return '';
                             }

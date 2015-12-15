@@ -82,7 +82,7 @@
         e.preventDefault();
         var $this = $(this);
 
-        $this.closest("ul").find("li").removeClass("active")
+        $this.closest("ul").find("li").removeClass("active");
         $this.parent("li").addClass("active");
 
         if ($this.hasClass('all')) {
@@ -226,8 +226,7 @@
     $(document).on("submit", "#media-filter", function(e){
         e.preventDefault();
         e.stopImmediatePropagation();
-        var $this = $(this),
-            data  = $(this).serialize();
+        var data  = $(this).serialize();
         $.ajax({
             url: ad.data('json-url'),
             data: data,

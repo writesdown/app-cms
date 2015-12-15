@@ -101,11 +101,12 @@ class PostTypeController extends Controller
         $taxonomies = ArrayHelper::map(Taxonomy::find()->all(), 'id', 'taxonomy_name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if (($postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy')) && ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomy_ids']))) {
-                foreach ($taxonomyIds as $taxonomy_id) {
+            $postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy');
+            if ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomyIds'])){
+                foreach ($taxonomyIds as $taxonomyId) {
                     $postTypeTaxonomy = new PostTypeTaxonomy();
                     $postTypeTaxonomy->post_type_id = $model->id;
-                    $postTypeTaxonomy->taxonomy_id = $taxonomy_id;
+                    $postTypeTaxonomy->taxonomy_id = $taxonomyId;
                     $postTypeTaxonomy->save();
                 }
             }
@@ -137,11 +138,12 @@ class PostTypeController extends Controller
             // Delete all PostTypeTaxonomy where post_type_id this id
             PostTypeTaxonomy::deleteAll(['post_type_id' => $id]);
             // Refill PostTypeTaxonomy for this model
-            if (($postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy')) && ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomy_ids']))) {
-                foreach ($taxonomyIds as $taxonomy_id) {
+            $postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy');
+            if ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomyIds'])){
+                foreach ($taxonomyIds as $taxonomyId) {
                     $postTypeTaxonomy = new PostTypeTaxonomy();
                     $postTypeTaxonomy->post_type_id = $model->id;
-                    $postTypeTaxonomy->taxonomy_id = $taxonomy_id;
+                    $postTypeTaxonomy->taxonomy_id = $taxonomyId;
                     $postTypeTaxonomy->save();
                 }
             }

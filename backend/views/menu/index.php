@@ -14,6 +14,7 @@ use backend\assets\MenuAsset;
 /* @var $selectedMenu common\models\Menu */
 /* @var $postTypes common\models\PostType[] */
 /* @var $taxonomies common\models\Taxonomy[] */
+/* @var $model common\models\Menu */
 
 $this->title = Yii::t('writesdown', 'Menus');
 $this->params['breadcrumbs'][] = $this->title;

@@ -142,7 +142,7 @@
             var data,
                 depth = 0,
                 list  = this;
-            step  = function(level, depth)
+            var step  = function(level, depth)
             {
                 var array = [ ],
                     items = level.children(list.options.itemNodeName);
@@ -286,7 +286,7 @@
             }
         },
 
-        dragStop: function(e)
+        dragStop: function()
         {
             var el = this.dragEl.children(this.options.itemNodeName).first();
             el[0].parentNode.removeChild(el[0]);
@@ -513,7 +513,7 @@
         threshold       : 20
     }).on("change", updateOutput);
 
-    $(".menu-items-form").on("submit", function (e) {
+    $(".menu-items-form").on("submit", function () {
         var menu_items = $(".dd");
         updateOutput( menu_items.data("output", $("#menu-output")));
     });
@@ -559,7 +559,7 @@
             url: _this.data('url'),
             data: { id: _this.data('id'), '_csrf': yii.getCsrfToken()},
             type: "POST",
-            success: function (response) {
+            success: function () {
                 _parent.append(_child.html());
                 _child.remove();
                 _this.closest(".dd-item").remove();

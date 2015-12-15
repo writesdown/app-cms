@@ -74,7 +74,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         NavBar::begin([
             'id'                    => 'wd-frontend-toolbar',
             'brandLabel'            => Html::img('@web/img/logo-mini.png'),
-            'brandUrl'              => Yii::$app->urlManagerBack->baseUrl,
+            'brandUrl'              => $urlManagerBack->baseUrl,
             'innerContainerOptions' => [
                 'class' => 'container-fluid'
             ],
