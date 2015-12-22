@@ -16,6 +16,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
+use Imagine\Image\ManipulatorInterface;
 
 /* IMAGE */
 use yii\imagine\Image;
@@ -473,7 +474,7 @@ class MediaUploadHandler {
                     'x' . $maxHeight .
                     '.' . $this->_media->file->extension;
                 $newFilePath = $this->getFilePath($newFileName);
-                $success = $image->thumbnail(new Box($newWidth, $newHeight))
+                $success = $image->thumbnail(new Box($newWidth, $newHeight), ManipulatorInterface::THUMBNAIL_OUTBOUND)
                     ->crop(new Point($pointX, $pointY), new Box($maxWidth, $maxHeight))
                     ->save($newFilePath);
                 if ($success) {
