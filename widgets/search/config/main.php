@@ -11,7 +11,7 @@
 return [
     'widget_title'  => 'Search',
     'widget_config' => [
-        'class' => 'widgets\search\Search',
+        'class' => 'widgets\search\SearchWidget',
         'title' => ''
     ]
 ];

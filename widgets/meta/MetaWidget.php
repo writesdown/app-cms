@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file      Meta.php
+ * @file      MetaWidget.php
  * @date      9/5/2015
  * @time      3:10 AM
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
@@ -15,20 +15,20 @@ use Yii;
 use yii\widgets\Menu;
 use common\components\BaseWidget;
 
-class Meta extends BaseWidget
+class MetaWidget extends BaseWidget
 {
     /**
-     * @var string
+     * @var string The text to be displayed by the widget.
      */
     public $text;
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function run()
     {
         echo $this->beforeWidget;
-        if( $this->title ){
+        if ($this->title) {
             echo $this->beforeTitle . $this->title . $this->afterTitle;
         }
         echo Menu::widget([
@@ -50,12 +50,11 @@ class Meta extends BaseWidget
                     'template' => '<a href="{url}" data-method="post">{label}</a>'
                 ],
                 [
-                    'label'    => 'WritesDown.com',
-                    'url'      => 'http://www.writesdown.com',
+                    'label' => 'WritesDown.com',
+                    'url'   => 'http://www.writesdown.com/',
                 ]
             ],
         ]);
         echo $this->afterWidget;
-
     }
 }

@@ -1,5 +1,10 @@
 WritesDown Change Log
 =====================
+(December 23, 2015)
+-------------------
+* (ENH) Refactoring widget
+* (BUG) MediaUploadHandler incorrect crop size
+
 (November 29, 2015)
 -------------------
 * (ENH) Move directory web to public

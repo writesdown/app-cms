@@ -42,7 +42,6 @@ backend
 common
     components/          contains shared components
     config/              contains shared configurations
-    db/                  contains db.sql, db.mwb, database structure, migations
     mail/                contains view files for e-mails
     models/              contains model classes used in both backend and frontend
     temp/                temporary directory

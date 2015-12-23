@@ -13,20 +13,20 @@ namespace widgets\text;
 use yii\helpers\Html;
 use common\components\BaseWidget;
 
-class Text extends BaseWidget
+class TextWidget extends BaseWidget
 {
     /**
      * @var string
      */
-    public $text;
+    public $text = '';
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function run()
     {
         echo $this->beforeWidget;
-        if($this->title){
+        if ($this->title) {
             echo $this->beforeTitle . $this->title . $this->afterTitle;
         }
         echo Html::tag('div', $this->text, [

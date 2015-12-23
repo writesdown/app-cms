@@ -17,15 +17,36 @@ use yii\helpers\ArrayHelper;
 /* MODELS */
 use common\models\Widget;
 
+/**
+ * Render active widget to frontend.
+ *
+ * The following example shows how to use RenderWidget:
+ *
+ * ~~~
+ * RenderWidget::widget([
+ *    'location' => 'sidebar',
+ *    'config'   => [
+ *        'beforeWidget' => '<div class="widget">',
+ *        'afterWidget'  => '</div>',
+ *        'beforeTitle'  => '<h4 class="widget-title">',
+ *        'afterTitle'   => '</h4>',
+ *   ]
+ * ])
+ * ~~~
+ *
+ * @package frontend\widgets
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.2.0
+ */
 class RenderWidget extends \yii\base\Widget
 {
     /**
-     * @var array Loaded activated widgets
+     * @var array Loaded activated widget.
      */
     private $_widget = [];
 
     /**
-     * @var array Default configuration of widgets
+     * @var array Default configuration of widget.
      */
     private $defaultConfig = [
         'beforeTitle'  => '',
@@ -35,12 +56,12 @@ class RenderWidget extends \yii\base\Widget
     ];
 
     /**
-     * @var array configuration of widget
+     * @var array Configuration of widget.
      */
     public $config;
 
     /**
-     * @var string Location of activated widgets
+     * @var string Location of active widget.
      */
     public $location;
 
@@ -53,13 +74,13 @@ class RenderWidget extends \yii\base\Widget
          * @var $activeWidgets \common\models\Widget
          */
         $activeWidgets = Widget::find()
-            ->where(['widget_location'=> $this->location])
+            ->where(['widget_location' => $this->location])
             ->orderBy(['widget_order' => SORT_ASC])
             ->all();
 
         if ($activeWidgets) {
             foreach ($activeWidgets as $activeWidget) {
-                $this->_widget[] = ArrayHelper::merge($this->defaultConfig, $this->config, $activeWidget->getConfig());
+                $this->_widget[] = ArrayHelper::merge($this->defaultConfig, $this->config, $activeWidget->getConfig(), ['id' => $activeWidget->id]);
             }
         }
     }
@@ -70,9 +91,10 @@ class RenderWidget extends \yii\base\Widget
     public function run()
     {
         foreach ($this->_widget as $widget) {
-            try{
+            try {
                 Yii::createObject($widget);
-            }catch (Exception $e){}
+            } catch (Exception $e) {
+            }
         }
     }
 }

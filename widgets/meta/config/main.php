@@ -11,7 +11,7 @@
 return [
     'widget_title'  => 'Meta',
     'widget_config' => [
-        'class' => 'widgets\meta\Meta',
-        'title' => 'Meta'
+        'class' => 'widgets\meta\MetaWidget',
+        'title' => 'Site Meta'
     ]
 ];
