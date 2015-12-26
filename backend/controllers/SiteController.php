@@ -96,12 +96,12 @@ class SiteController extends Controller
         $userQuery = User::find()->andWhere(['status' => '10']);
         $userCloneQuery = clone $userQuery;
         $userCount = $userCloneQuery->count();
-        $users = $userQuery->limit(12)->orderBy(['id' => SORT_DESC])->all();
+        $users = $userQuery->limit(8)->orderBy(['id' => SORT_DESC])->all();
 
         $postQuery = Post::find()->andWhere(['post_status' => 'publish']);
         $postCloneQuery = clone $postQuery;
         $postCount = $postCloneQuery->count();
-        $posts = $postQuery->limit(10)->orderBy(['id' => SORT_DESC])->all();
+        $posts = $postQuery->limit(5)->orderBy(['id' => SORT_DESC])->all();
 
         $commentQuery = PostComment::find()->andWhere(['comment_approved' => 'approved']);
         $commentCloneQuery = clone $commentQuery;
