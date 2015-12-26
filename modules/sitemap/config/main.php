@@ -19,5 +19,6 @@ return [
         'frontend' => [
             'class' => 'modules\sitemap\frontend\Module'
         ]
-    ]
+    ],
+	'module_fb'     => 1,
 ];

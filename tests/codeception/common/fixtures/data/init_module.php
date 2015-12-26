@@ -38,7 +38,7 @@ return [
         'module_status'      => '0',
         'module_dir'         => 'sitemap',
         'module_bb'          => '0',
-        'module_fb'          => '0',
+        'module_fb'          => '1',
         'module_date'        => '2015-09-11 03:38:25',
         'module_modified'    => '2015-09-11 03:38:25',
     ],
