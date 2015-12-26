@@ -22,7 +22,6 @@ use common\models\Option;
         <atom:link href="<?= $link ?>" rel="self" type="application/rss+xml"/>
         <link><?= $link ?></link>
         <description><![CDATA[<?= $description ?>]]></description>
-        <description><![CDATA[<?= $description ?>]]></description>
         <lastBuildDate><?= $lastBuildDate->format('r'); ?></lastBuildDate>
         <language><?= Yii::$app->language; ?></language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
@@ -47,7 +46,7 @@ use common\models\Option;
                     <![CDATA[<?= Yii::$app->urlManager->createAbsoluteUrl(['post/view', 'id' => $post->id]); ?>]]>
                 </guid>
                 <description><![CDATA[<?= $post->post_excerpt; ?>]]></description>
-                <?php if (Option::get('rss_use_excerpt')) { ?>
+                <?php if (!Option::get('rss_use_excerpt')) { ?>
                     <content:encoded><![CDATA[<?= $post->post_content; ?>]]></content:encoded>
                 <?php } ?>
                 <wfw:commentRss><![CDATA[<?= $post->url; ?>]]></wfw:commentRss>
