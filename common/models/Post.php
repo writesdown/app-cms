@@ -328,7 +328,7 @@ class Post extends ActiveRecord
      *
      * @return string
      */
-    public function getNextPostLink($sameType = true, $sameTerm = false, $title = '{post_title}', $options = [])
+    public function getNextPostLink($title = '{post_title}', $sameType = true, $sameTerm = false, $options = [])
     {
         if ($nextPost = $this->getNextPost($sameType, $sameTerm)) {
             $title = preg_replace_callback('/\\{([\w\-\/]+)\\}/', function ($matches) use ($nextPost) {
@@ -374,16 +374,16 @@ class Post extends ActiveRecord
      *
      * @return string
      */
-    public function getPrevPostLink($sameType = true, $sameTerm = false, $title = 'PREV {post_title}', $options = [])
+    public function getPrevPostLink($title = '{post_title}', $sameType = true, $sameTerm = false, $options = [])
     {
-        if ($nextPost = $this->getPrevPost($sameType, $sameTerm)) {
-            $title = preg_replace_callback('/\\{([\w\-\/]+)\\}/', function ($matches) use ($nextPost) {
+        if ($prevPost = $this->getPrevPost($sameType, $sameTerm)) {
+            $title = preg_replace_callback('/\\{([\w\-\/]+)\\}/', function ($matches) use ($prevPost) {
                 $attribute = $matches[1];
 
-                return $nextPost->{$attribute};
+                return $prevPost->{$attribute};
             }, $title);
 
-            return Html::a($title, $nextPost->url, $options);
+            return Html::a($title, $prevPost->url, $options);
         }
 
         return '';
