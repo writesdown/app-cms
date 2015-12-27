@@ -8,6 +8,7 @@
  * @license   http://www.writesdown.com/license/
  */
 
+use frontend\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
@@ -26,6 +27,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Contact');
             <h1 class="entry-title"><?= Html::encode($this->title) ?></h1>
         </header>
         <div class="entry-content">
+            <?= Alert::widget() ?>
             <p>
                 If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
             </p>
