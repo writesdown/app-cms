@@ -10,15 +10,13 @@ $params = array_merge(
 
 // Replace url
 $request = new Request();
-
 $baseUrlBack = $request->getBaseUrl() . '/admin';
-$scriptUrlBack = str_replace('/index.php', '/admin/index.php', $request->getScriptUrl());
 
 return [
     'id'                  => 'app-frontend',
     'basePath'            => dirname(__DIR__),
-    'bootstrap'           => ['log', 'common\components\FrontendBootstrap'],
     'controllerNamespace' => 'frontend\controllers',
+    'bootstrap'           => ['log', 'common\components\FrontendBootstrap'],
     'modules'             => [],
     'components'          => [
         'user'            => [
@@ -54,7 +52,7 @@ return [
         ],
         'urlManagerBack'  => [
             'class'     => 'yii\web\urlManager',
-            'scriptUrl' => $scriptUrlBack,
+            'scriptUrl' => $baseUrlBack . '/index.php',
             'baseUrl'   => $baseUrlBack,
         ],
         'authManager'     => [

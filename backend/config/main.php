@@ -10,9 +10,7 @@ $params = array_merge(
 
 // Replace url
 $request = new Request();
-
 $baseUrlFront = str_replace('/admin', '', $request->getBaseUrl());
-$scriptUrlFront = str_replace('/admin', '', $request->getScriptUrl());
 
 return [
     'id'                  => 'app-backend',
@@ -51,7 +49,7 @@ return [
         ],
         'urlManagerFront' => [
             'class'     => 'yii\web\urlManager',
-            'scriptUrl' => $scriptUrlFront,
+            'scriptUrl' => $baseUrlFront . '/index.php',
             'baseUrl'   => $baseUrlFront,
         ],
         'urlManagerBack'  => [
