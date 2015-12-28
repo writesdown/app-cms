@@ -25,7 +25,7 @@ use yii\helpers\Html;
             'comment_word'  => $media->media_comment_count > 1 ? 'Replies' : 'Reply',
             'media_title'   => $media->media_title
         ]);
-        echo '</h3>';
+        echo '</h2>';
         echo MediaComment::widget([
             'model' => $media,
             'id'    => 'comments'

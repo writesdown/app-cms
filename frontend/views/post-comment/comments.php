@@ -26,7 +26,7 @@ use common\models\Option;
             'comment_word'  => $post->post_comment_count > 1 ? 'Replies' : 'Reply',
             'post_title'    => $post->post_title
         ]);
-        echo '</h3>';
+        echo '</h2>';
         echo PostComment::widget([
             'model' => $post,
             'id'    => 'comments'
