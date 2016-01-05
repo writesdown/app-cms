@@ -1,21 +1,16 @@
 <?php
 /**
- * @file      User.php.
- * @date      6/4/2015
- * @time      5:00 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\User as UserModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-
-/* MODEL */
-use common\models\User as UserModel;
 
 /**
  * User represents the model behind the search form about `common\models\User`.
@@ -29,7 +24,21 @@ class User extends UserModel
     {
         return [
             [['id', 'status'], 'integer'],
-            [['username', 'email', 'full_name', 'display_name', 'password_hash', 'password_reset_token', 'auth_key', 'created_at', 'updated_at', 'login_at'], 'safe'],
+            [
+                [
+                    'username',
+                    'email',
+                    'full_name',
+                    'display_name',
+                    'password_hash',
+                    'password_reset_token',
+                    'auth_key',
+                    'created_at',
+                    'updated_at',
+                    'login_at',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -60,7 +69,7 @@ class User extends UserModel
             'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
+                ],
             ],
         ]);
 
@@ -74,7 +83,7 @@ class User extends UserModel
 
         $query->andFilterWhere([
             'id'     => $this->id,
-            'status' => $this->status
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

@@ -1,28 +1,22 @@
 <?php
 /**
- * @file      MediaComment.php.
- * @date      6/4/2015
- * @time      4:55 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\MediaComment as MediaCommentModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/* MODEL */
-use common\models\MediaComment as MediaCommentModel;
-
 /**
  * MediaComment represents the model behind the search form about `common\models\MediaComment`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MediaComment extends MediaCommentModel
 {
@@ -33,7 +27,20 @@ class MediaComment extends MediaCommentModel
     {
         return [
             [['id', 'comment_media_id', 'comment_parent', 'comment_user_id'], 'integer'],
-            [['comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_ip', 'comment_date', 'comment_content', 'comment_approved', 'comment_agent', 'media_title'], 'safe'],
+            [
+                [
+                    'comment_author',
+                    'comment_author_email',
+                    'comment_author_url',
+                    'comment_author_ip',
+                    'comment_date',
+                    'comment_content',
+                    'comment_approved',
+                    'comment_agent',
+                    'media_title',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -49,19 +56,20 @@ class MediaComment extends MediaCommentModel
     /**
      * Creates data provider instance with search query applied
      *
-     * @param array $params
-     *
-     * @param int   $media_id
+     * @param array    $params
+     * @param int|null $media_id
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $media_id)
+    public function search($params, $media_id = null)
     {
         $query = MediaCommentModel::find();
-        $query->innerJoinWith(['commentMedia' => function ($query) {
-            /* @var $query \yii\db\ActiveQuery */
-            return $query->from(['media' => Media::tableName()]);
-        }]);
+        $query->innerJoinWith([
+            'commentMedia' => function ($query) {
+                /* @var $query \yii\db\ActiveQuery */
+                return $query->from(['media' => Media::tableName()]);
+            },
+        ]);
 
         if ($media_id) {
             $query->andWhere(['media.id' => $media_id]);
@@ -72,8 +80,8 @@ class MediaComment extends MediaCommentModel
             'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->load($params);

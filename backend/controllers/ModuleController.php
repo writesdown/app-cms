@@ -1,22 +1,28 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace backend\controllers;
 
+use common\components\Json;
+use common\models\Module;
+use common\models\search\Module as ModuleSearch;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\components\Json;
-
-/* MODELS */
-use common\models\Module;
-use common\models\search\Module as ModuleSearch;
 
 /**
- * ModuleController implements the CRUD actions for Module model.
+ * Class ModuleController, controlling the actions for Module model.
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.2.0
  */
 class ModuleController extends Controller
 {
@@ -30,9 +36,9 @@ class ModuleController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'update','view', 'delete', 'bulk-action'],
+                        'actions' => ['index', 'create', 'update', 'view', 'delete', 'bulk-action'],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                 ],
             ],
@@ -63,7 +69,10 @@ class ModuleController extends Controller
 
     /**
      * Creates a new Module model.
-     * If creation is successful, the browser will be redirected to the 'view' page. Check:
+     * Module zip uploaded to temporary directory and extracted there.
+     * Check the module directory and move the first directory of the extracted module.
+     * If the module configuration is valid, save the module, if not remove the module.
+     * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @return mixed
      */
@@ -104,8 +113,8 @@ class ModuleController extends Controller
                         $configPath = $moduleTempDir . $baseDir . '/config/main.php';
 
                         if (is_file($configPath)) {
-                            $moduleConfig = require($configPath);
-                            $model->setAttributes($moduleConfig);
+                            $config = require($configPath);
+                            $model->setAttributes($config);
                             $model->module_dir = $baseDir;
                             $model->module_status = 0;
 
@@ -116,12 +125,18 @@ class ModuleController extends Controller
                                 rename($moduleTempDir . $baseDir, $moduleDir . $baseDir);
 
                                 // Check configuration
-                                if (isset($model->module_config['frontend']['class']) || isset($model->module_config['backend']['class'])) {
-
+                                if (isset($model->module_config['frontend']['class'])
+                                    || isset($model->module_config['backend']['class'])
+                                ) {
                                     // Check class whether exist or not
-                                    if (isset($model->module_config['backend']['class']) && !class_exists($model->module_config['backend']['class'])) {
+                                    if (isset($model->module_config['backend']['class'])
+                                        && !class_exists($model->module_config['backend']['class'])
+                                    ) {
                                         FileHelper::removeDirectory($moduleDir . $baseDir);
-                                        Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Invalid configuration.'));
+                                        Yii::$app->getSession()->setFlash(
+                                            'danger',
+                                            Yii::t('writesdown', 'Invalid configuration.')
+                                        );
 
                                         return $this->render('create', [
                                             'model' => $model,
@@ -129,40 +144,53 @@ class ModuleController extends Controller
                                     }
 
                                     // Check class whether exist or not
-                                    if (isset($model->module_config['frontend']['class']) && !class_exists($model->module_config['frontend']['class'])) {
+                                    if (isset($model->module_config['frontend']['class'])
+                                        && !class_exists($model->module_config['frontend']['class'])
+                                    ) {
                                         FileHelper::removeDirectory($moduleDir . $baseDir);
-                                        Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Invalid configuration.'));
+                                        Yii::$app->getSession()->setFlash(
+                                            'danger',
+                                            Yii::t('writesdown', 'Invalid configuration.')
+                                        );
 
                                         return $this->render('create', [
                                             'model' => $model,
                                         ]);
                                     }
 
-                                    // Convert module_config to JSON
+                                    // Encode module_config to JSON
                                     $model->module_config = Json::encode($model->module_config);
 
-                                    if ($model->validate(['module_title', 'module_config']) && $model->save(false)) {
-                                        Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Module successfully installed'));
+                                    if ($model->validate(['module_title', 'module_config'])
+                                        && $model->save(false)
+                                    ) {
+                                        Yii::$app->getSession()->setFlash(
+                                            'success',
+                                            Yii::t('writesdown', 'Module successfully installed')
+                                        );
 
                                         return $this->redirect(['index']);
                                     } else {
                                         FileHelper::removeDirectory($moduleDir . $baseDir);
                                         Yii::$app->getSession()->setFlash('danger', $model->getFirstErrors());
                                     }
-
                                 } else {
                                     FileHelper::removeDirectory($moduleDir . $baseDir);
-                                    Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Invalid configuration.'));
+                                    Yii::$app->getSession()->setFlash(
+                                        'danger',
+                                        Yii::t('writesdown', 'Invalid configuration.')
+                                    );
                                 }
-
                             } else {
                                 FileHelper::removeDirectory($moduleTempDir);
                                 Yii::$app->getSession()->setFlash('danger', $model->getFirstErrors());
                             }
-
                         } else {
                             FileHelper::removeDirectory($moduleTempDir);
-                            Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'File configuration does not exist.'));
+                            Yii::$app->getSession()->setFlash(
+                                'danger',
+                                Yii::t('writesdown', 'File configuration does not exist.')
+                            );
                         }
                     }
                 }
@@ -200,7 +228,9 @@ class ModuleController extends Controller
 
     /**
      * Displays a single Module model.
+     *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionView($id)
@@ -232,31 +262,26 @@ class ModuleController extends Controller
     }
 
     /**
-     * Action bulk for modules.
-     *
-     * @throws NotFoundHttpException
-     * @throws \Exception
+     * Bulk action for Module triggered when button 'Apply' clicked.
+     * The action depends on the value of the dropdown next to the button.
+     * Only accept POST HTTP method.
      */
     public function actionBulkAction()
     {
-        if (($action = Yii::$app->request->post('action')) && ($ids = Yii::$app->request->post('ids'))) {
-            if ($action === 'activated') {
-                foreach ($ids as $id) {
-                    $this->findModel($id)->updateAttributes(['module_status' => 1]);
-                }
-            } else if ($action === 'unactivated') {
-                foreach ($ids as $id) {
-                    $this->findModel($id)->updateAttributes(['module_status' => 0]);
-                }
-            } else if ($action === 'deleted') {
-                foreach ($ids as $id) {
-                    $model = $this->findModel($id);
-                    $modulePath = Yii::getAlias('@modules/' . $model->module_dir);
-
-                    // Delete module and its directory
-                    if ($model->delete()) {
-                        FileHelper::removeDirectory($modulePath);
-                    }
+        if (Yii::$app->request->post('action') === 'activated') {
+            foreach (Yii::$app->request->post('ids') as $id) {
+                $this->findModel($id)->updateAttributes(['module_status' => 1]);
+            }
+        } elseif (Yii::$app->request->post('action') === 'unactivated') {
+            foreach (Yii::$app->request->post('ids') as $id) {
+                $this->findModel($id)->updateAttributes(['module_status' => 0]);
+            }
+        } elseif (Yii::$app->request->post('action') === 'deleted') {
+            foreach (Yii::$app->request->post('ids') as $id) {
+                $model = $this->findModel($id);
+                $modulePath = Yii::getAlias('@modules/' . $model->module_dir);
+                if ($model->delete()) {
+                    FileHelper::removeDirectory($modulePath);
                 }
             }
         }
@@ -276,7 +301,7 @@ class ModuleController extends Controller
         if (($model = Module::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 }

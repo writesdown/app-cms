@@ -1,40 +1,33 @@
 <?php
 /**
- * @file    MediaUploadHandler.php.
- * @date    6/4/2015
- * @time    3:57 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\components;
 
-use Yii;
-use yii\web\Response;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
-use yii\data\Pagination;
-use yii\web\UploadedFile;
-use Imagine\Image\ManipulatorInterface;
-
-/* IMAGE */
-use yii\imagine\Image;
-use Imagine\Image\Box;
-use Imagine\Image\Point;
-
-/* MODEL */
 use common\models\Media;
 use common\models\Post;
+use Imagine\Image\Box;
+use Imagine\Image\ManipulatorInterface;
+use Imagine\Image\Point;
+use Yii;
+use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\imagine\Image;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
- * Upload handler for media.
+ * Upload handler for Media model.
  *
- * @package common\components
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
-class MediaUploadHandler {
+class MediaUploadHandler
+{
     /**
      * @var Media
      */
@@ -184,6 +177,7 @@ class MediaUploadHandler {
     protected function sendContentTypeHeader()
     {
         $this->setHeader('Vary', 'Accept');
+
         if (strpos($this->getServerVar('HTTP_ACCEPT'), 'application/json') !== false) {
             $this->setHeader('Content-type', 'application/json');
         } else {
@@ -197,7 +191,10 @@ class MediaUploadHandler {
     protected function sendAccessControlHeaders()
     {
         $this->setHeader('Access-Control-Allow-Origin', $this->options['access_control_allow_origin']);
-        $this->setHeader('Access-Control-Allow-Credentials', $this->options['access_control_allow_credentials'] ? 'true' : 'false');
+        $this->setHeader('Access-Control-Allow-Credentials', $this->options['access_control_allow_credentials']
+            ? 'true'
+            : 'false'
+        );
         $this->setHeader('Access-Control-Allow-Methods', implode(', ', $this->options['access_control_allow_methods']));
         $this->setHeader('Access-Control-Allow-Headers', implode(', ', $this->options['access_control_allow_headers']));
     }
@@ -304,6 +301,7 @@ class MediaUploadHandler {
     {
         setlocale(LC_ALL, 'en_US.UTF8');
         $fileName = trim($fileName);
+
         if (!empty($replace)) {
             $fileName = strtr($fileName, $replace);
         }
@@ -388,14 +386,19 @@ class MediaUploadHandler {
         if (!function_exists('exif_read_data')) {
             return false;
         }
+
         $exif = @exif_read_data($filePath);
+
         if ($exif === false) {
             return false;
         }
+
         $orientation = (int)@$exif['Orientation'];
+
         if ($orientation < 2 || $orientation > 8) {
             return false;
         }
+
         switch ($orientation) {
             case 8:
                 $image->rotate(-90);
@@ -671,12 +674,11 @@ class MediaUploadHandler {
                     'height'  => $version['height']
                 ];
             }
-
         } else {
             $response['media_icon_url'] = Yii::getAlias('@web') . '/' . $metadata['media_icon_url'];
             if (preg_match('/^video\//', $media->media_mime_type)) {
                 $response['media_render_type'] = 'video';
-            } else if (preg_match('/^audio\//', $media->media_mime_type)) {
+            } elseif (preg_match('/^audio\//', $media->media_mime_type)) {
                 $response['media_render_type'] = 'audio';
             } else {
                 $response['media_render_type'] = 'file';
@@ -833,7 +835,6 @@ class MediaUploadHandler {
         $this->_media->file = UploadedFile::getInstance($this->_media, 'file');
 
         if ($this->_media->file !== null && $this->_media->validate(['file'])) {
-
             if ($post_id = Yii::$app->request->get('post_id')) {
                 $post = $this->findPost($post_id);
                 $this->_media->media_post_id = $post->id;
@@ -843,14 +844,14 @@ class MediaUploadHandler {
             $this->_media->media_mime_type = $this->_media->file->type;
             $this->handleFileUpload($this->_media->file);
 
-            if ($this->_media->save()) {
+            if ($this->_media->save(false)) {
                 if ($this->_media->setMeta('metadata', $this->_meta)) {
                     $response = $this->generateResponse($this->_media);
                 }
             }
         } else {
-            $response[] = [
-                'media_error'     => $this->_media->getErrors('file'),
+            $response = [
+                'media_error'     => $this->_media->getFirstError('file'),
                 'media_filename'  => isset($this->_media->file->name) ? $this->_media->file->name : null,
                 'media_file_size' => isset($this->_media->file->size) ? $this->_media->file->size : null,
             ];
@@ -891,4 +892,4 @@ class MediaUploadHandler {
 
         return $this->getResponse($printResponse);
     }
-} 
+}

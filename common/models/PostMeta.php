@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      PostMeta.php.
- * @date      6/4/2015
- * @time      4:33 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -23,9 +20,8 @@ use yii\db\ActiveRecord;
  *
  * @property Post    $post
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostMeta extends ActiveRecord
 {
@@ -46,7 +42,7 @@ class PostMeta extends ActiveRecord
             [['post_id', 'meta_name', 'meta_value'], 'required'],
             [['post_id'], 'integer'],
             [['meta_value'], 'string'],
-            [['meta_name'], 'string', 'max' => 255]
+            [['meta_name'], 'string', 'max' => 255],
         ];
     }
 

@@ -1,31 +1,27 @@
 <?php
 /**
- * @file    TermControl.php.
- * @date    6/4/2015
- * @time    10:20 PM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
 
+use common\models\Option;
+use common\models\Term;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-
-/* MODEL */
-use common\models\Term;
-use common\models\Option;
 
 /**
  * Class TermController
  *
  * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
-class TermController extends Controller{
+class TermController extends Controller
+{
     /**
      * Displays a single Term model.
      *
@@ -41,7 +37,7 @@ class TermController extends Controller{
 
         if ($id) {
             $model = $this->findModel($id);
-        } else if ($term_slug) {
+        } elseif ($term_slug) {
             $model = $this->findModelBySlug($term_slug);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -51,20 +47,20 @@ class TermController extends Controller{
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page')
+            'pageSize'   => Option::get('posts_per_page'),
         ]);
         $posts = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
-        if( is_file($this->view->theme->basePath . '/term/view-' . $model->taxonomy->taxonomy_slug . '.php')){
+        if (is_file($this->view->theme->basePath . '/term/view-' . $model->taxonomy->taxonomy_slug . '.php')) {
             $render = 'view-' . $model->taxonomy->taxonomy_slug;
         }
 
-        return $this->render( $render, [
+        return $this->render($render, [
             'posts' => $posts,
             'pages' => $pages,
-            'term'  => $model
+            'term'  => $model,
         ]);
     }
 
@@ -80,6 +76,7 @@ class TermController extends Controller{
     protected function findModel($id)
     {
         $model = Term::findOne(['id' => $id]);
+
         if ($model) {
             return $model;
         } else {
@@ -101,6 +98,7 @@ class TermController extends Controller{
     protected function findModelBySlug($term_slug)
     {
         $model = Term::findOne(['term_slug' => $term_slug]);
+
         if ($model) {
             return $model;
         } else {

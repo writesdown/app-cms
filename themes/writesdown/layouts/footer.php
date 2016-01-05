@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      footer.php
- * @date      8/23/2015
- * @time      6:48 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -24,8 +22,9 @@ use frontend\widgets\RenderWidget;
                         'afterWidget'  => '</div>',
                         'beforeTitle'  => '<div class="widget-title"> <h4>',
                         'afterTitle'   => '</div></h4>',
-                    ]
-                ]); ?>
+                    ],
+                ]) ?>
+
             </div>
             <div class="col-md-3">
                 <?= RenderWidget::widget([
@@ -35,8 +34,9 @@ use frontend\widgets\RenderWidget;
                         'afterWidget'  => '</div>',
                         'beforeTitle'  => '<div class="widget-title"> <h4>',
                         'afterTitle'   => '</div></h4>',
-                    ]
-                ]); ?>
+                    ],
+                ]) ?>
+
             </div>
             <div class="col-md-3">
                 <?= RenderWidget::widget([
@@ -46,8 +46,9 @@ use frontend\widgets\RenderWidget;
                         'afterWidget'  => '</div>',
                         'beforeTitle'  => '<div class="widget-title"> <h4>',
                         'afterTitle'   => '</div></h4>',
-                    ]
-                ]); ?>
+                    ],
+                ]) ?>
+
             </div>
         </div>
     </div>
@@ -55,11 +56,9 @@ use frontend\widgets\RenderWidget;
 <footer id="footer-secondary">
     <div class="container">
         <h5>
-            Copyright &copy; 2015 WritesDown all right reserved. Powered by
-            <a rel="external nofollow" href="http://www.yiiframework.com/">
-                Yii Framework
-            </a>
+            Copyright &copy; 2015 <a href="http://www.writesdown.com/">WritesDown all right reserved</a>.
+            Powered by <a rel="external nofollow" href="http://www.yiiframework.com/">Yii Framework</a>
         </h5>
     </div>
 </footer>
-<?php $this->registerJs('(function($){$(".widget ul").addClass("nav")})(jQuery);', $this::POS_END);
+<?php $this->registerJs('(function($){$(".widget ul").addClass("nav")})(jQuery);', $this::POS_END) ?>

@@ -1,29 +1,23 @@
 <?php
 /**
- * @file      TermRelationshipController.php.
- * @date      6/4/2015
- * @time      5:12 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-
-/* MODEL */
 use common\models\Term;
 use common\models\TermRelationship;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * TermRelationshipController implements the CRUD actions for TermRelationship model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -35,18 +29,20 @@ class TermRelationshipController extends Controller
     public function behaviors()
     {
         return [
-
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['ajax-change-hierarchical', 'ajax-create-non-hierarchical', 'ajax-delete-non-hierarchical'],
+                        'actions' => [
+                            'ajax-change-hierarchical',
+                            'ajax-create-non-hierarchical',
+                            'ajax-delete-non-hierarchical',
+                        ],
                         'allow'   => true,
-                        'roles'   => ['subscriber']
+                        'roles'   => ['subscriber'],
                     ],
                 ],
             ],
-
             'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
@@ -60,8 +56,9 @@ class TermRelationshipController extends Controller
     }
 
     /**
-     * If user change the value of checkbox when updating a post, it will trigger this action.
-     * If the checkbox checked it will trigger addItem while if checked will trigger remItem (remove term relationship).
+     * If user change the value of checkbox when updating a post, this action will be triggered.
+     * If the checkbox checked it will trigger addItem (create TermRelationship) while if unchecked will trigger
+     * remItem (remove TermRelationship).
      *
      * @throws \Exception
      * @throws \yii\web\NotFoundHttpException
@@ -73,38 +70,38 @@ class TermRelationshipController extends Controller
             $model->load(Yii::$app->request->post());
             if ($model->save()) {
                 if ($term = $this->findTerm($model->term_id)) {
-                    $term->term_count++;
-                    $term->save();
+                    $term->updateAttributes(['term_count' => $term->term_count++]);
                 }
             }
-        } else if (Yii::$app->request->post('action') === 'remItem' && $termRelationship = Yii::$app->request->post('TermRelationship')) {
+        } elseif (Yii::$app->request->post('action') === 'remItem'
+            && $termRelationship = Yii::$app->request->post('TermRelationship')
+        ) {
             $model = $this->findModel($termRelationship['post_id'], $termRelationship['term_id']);
             if ($model->delete()) {
                 if ($term = $this->findTerm($model->term_id)) {
-                    $term->term_count--;
-                    $term->save();
+                    $term->updateAttributes(['term_count' => $term->term_count--]);
                 }
             }
         }
     }
 
     /**
-     * Ajax to create term-relationship triggered when the user add new item in selectize box.
+     * Create new TermRelationship model through AJAX via Seletize box on 'create' and 'update post' page.
      */
     public function actionAjaxCreateNonHierarchical()
     {
         $model = new TermRelationship();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($term = $this->findTerm($model->term_id)) {
-                $term->term_count++;
-                $term->save();
+                $term->updateAttributes(['term_count' => $term->term_count++]);
             }
         }
     }
 
     /**
-     * Delete term-relationship for non-hierarchical taxonomy which is triggered when the user remove item in selectize
-     * box.
+     * Delete TermRelationship for non-hierarchical Taxonomy
+     * which is triggered when the user remove item in Selectize box.
      *
      * @throws \Exception
      * @throws \yii\web\NotFoundHttpException
@@ -115,8 +112,7 @@ class TermRelationshipController extends Controller
             $model = $this->findModel($termRelationship['post_id'], $termRelationship['term_id']);
             if ($model->delete()) {
                 if ($term = $this->findTerm($model->term_id)) {
-                    $term->term_count--;
-                    $term->save();
+                    $term->updateAttributes(['term_count' => $term->term_count--]);
                 }
             }
         }

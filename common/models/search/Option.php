@@ -1,28 +1,22 @@
 <?php
 /**
- * @file    Option.php.
- * @date    6/4/2015
- * @time    4:56 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\Option as OptionModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/* MODEL */
-use common\models\Option as OptionModel;
-
 /**
  * Option represents the model behind the search form about `common\models\Option`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Option extends OptionModel
 {

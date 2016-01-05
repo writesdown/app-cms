@@ -2,11 +2,21 @@
 
 use yii\db\Schema;
 
+/**
+ * Class m000000_000021_widget
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.2.0
+ */
 class m000000_000021_widget extends \yii\db\Migration
 {
+    /**
+     * @inheritdoc
+     */
     public function up()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
@@ -23,6 +33,9 @@ class m000000_000021_widget extends \yii\db\Migration
         ], $tableOptions);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function down()
     {
         $this->dropTable('{{%widget}}');

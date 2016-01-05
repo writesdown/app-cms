@@ -1,52 +1,46 @@
 <?php
 /**
- * @file      ThemeController.php.
- * @date      6/4/2015
- * @time      5:12 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
+use common\models\Option;
 use Yii;
 use yii\base\DynamicModel;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\UploadedFile;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\FileHelper;
-
-/* MODEL */
-use common\models\Option;
 
 /**
- * Class ThemeController.
- * Controller that handle theme configuration.
+ * ThemeController, controlling the actions for theme.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.1.0
  */
 class ThemeController extends Controller
 {
     /**
-     * @var string
+     * @var string Path to theme directory.
      */
     private $_themeDir;
 
     /**
-     * @var string
+     * @var string Path to temporary directory of theme.
      */
     private $_themeTempDir;
 
     /**
-     * @var string
+     * @var string Path to thumbnail directory of theme.
      */
     private $_thumbDir;
 
     /**
-     * @var string
+     * @var string Base url of theme.
      */
     private $_thumbBaseUrl;
 
@@ -77,14 +71,14 @@ class ThemeController extends Controller
     }
 
     /**
-     * Render index in which there are available theme
+     * Scan theme directory to get list of all available themes.
      *
      * @return string
      */
     public function actionIndex()
     {
         $themes = [];
-        $themeConfig = [];
+        $config = [];
 
         if (!is_dir($this->_themeDir)) {
             FileHelper::createDirectory($this->_themeDir, 0755);
@@ -97,24 +91,19 @@ class ThemeController extends Controller
         $arrThemes = scandir($this->_themeDir);
 
         foreach ($arrThemes as $theme) {
-
             if (is_dir($this->_themeDir . $theme) && $theme !== '.' && $theme !== '..') {
                 $configPath = $this->_themeDir . $theme . '/config/main.php';
-
                 if (is_file($configPath)) {
-                    $themeConfig = require($configPath);
+                    $config = require($configPath);
                 }
-
-                $themeConfig['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png') ?
-                    $this->_thumbBaseUrl . $theme . '.png' :
-                    Yii::getAlias('@web/img/themes.png');
-                $themeConfig['Dir'] = $theme;
-
-                if (!isset($themeConfig['Name'])) {
-                    $themeConfig['Name'] = $theme;
+                $config['info']['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
+                    ? $this->_thumbBaseUrl . $theme . '.png'
+                    : Yii::getAlias('@web/img/themes.png');
+                $config['info']['Dir'] = $theme;
+                if (!isset($config['info']['Name'])) {
+                    $config['info']['Name'] = $theme;
                 }
-
-                $themes[] = $themeConfig;
+                $themes[] = $config['info'];
             }
         }
 
@@ -125,17 +114,21 @@ class ThemeController extends Controller
     }
 
     /**
-     * Upload new theme to the site
+     * Register new theme.
+     * Theme zip uploaded to temporary directory and extracted there.
+     * Check the theme directory and move the first directory of the extracted theme.
+     * If registration is successful, the browser will be redirected to the 'index' page.
      *
      * @return string
      */
     public function actionUpload()
     {
         $model = new DynamicModel([
-            'theme'
+            'theme',
         ]);
 
-        $model->addRule(['theme'], 'required')
+        $model
+            ->addRule(['theme'], 'required')
             ->addRule(['theme'], 'file', ['extensions' => 'zip']);
 
         // Create temporary directory
@@ -173,14 +166,29 @@ class ThemeController extends Controller
                         // Check theme exist in theme directory
                         if (is_dir($this->_themeDir . $baseDir)) {
                             FileHelper::removeDirectory($this->_themeTempDir);
-                            Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Theme with the same directory already exist.'));
+                            Yii::$app->getSession()->setFlash(
+                                'danger',
+                                Yii::t('writesdown', 'Theme with the same directory already exist.')
+                            );
                         } else {
                             rename($this->_themeTempDir . $baseDir, $this->_themeDir . $baseDir);
                             if (is_file($this->_themeDir . $baseDir . '/screenshot.png')) {
                                 copy($this->_themeDir . $baseDir . '/screenshot.png', $this->_thumbDir . $baseDir . '.png');
                             }
                             FileHelper::removeDirectory($this->_themeTempDir);
-                            Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Theme successfully uploaded'));
+                            $fileConfig = $this->_themeDir . $baseDir . '/config/main.php';
+
+                            if (is_file($fileConfig)) {
+                                $config = require($fileConfig);
+                                if (isset($config['upload'])) {
+                                    /* TODO */
+                                }
+                            }
+
+                            Yii::$app->getSession()->setFlash(
+                                'success',
+                                Yii::t('writesdown', 'Theme successfully uploaded')
+                            );
 
                             return $this->redirect(['index']);
                         }
@@ -190,12 +198,12 @@ class ThemeController extends Controller
         }
 
         return $this->render('upload', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
     /**
-     * Show theme detail based on theme name then render theme detail view.
+     * Show theme detail based on theme dir then render theme detail view.
      *
      * @param string $theme
      *
@@ -203,30 +211,30 @@ class ThemeController extends Controller
      */
     public function actionDetail($theme)
     {
-        $themeConfig = [];
-        $themeInfo = $this->_themeDir . $theme . '/config/main.php';
+        $config = [];
+        $fileConfig = $this->_themeDir . $theme . '/config/main.php';
 
-        if (is_file($themeInfo)) {
-            $themeConfig = require($themeInfo);
+        if (is_file($fileConfig)) {
+            $config = require($fileConfig);
         }
 
-        $themeConfig['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png') ?
-            $this->_thumbBaseUrl . $theme . '.png' :
-            Yii::getAlias('@web/img/themes.png');
-        $themeConfig['info']['Dir'] = $theme;
-
-        if (!isset($themeConfig['Name'])) {
-            $themeConfig['info']['Name'] = $theme;
+        if (!isset($config['Name'])) {
+            $config['info']['Name'] = $theme;
         }
+
+        $config['info']['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
+            ? $this->_thumbBaseUrl . $theme . '.png'
+            : Yii::getAlias('@web/img/themes.png');
+        $config['info']['Dir'] = $theme;
 
         return $this->render('detail', [
-            'themeConfig' => $themeConfig,
-            'installed'   => Option::get('theme'),
+            'config'    => $config['info'],
+            'installed' => Option::get('theme'),
         ]);
     }
 
     /**
-     * Install selected theme.
+     * Install selected theme and run install and uninstall action based on config.
      *
      * @param string $theme
      *
@@ -234,26 +242,31 @@ class ThemeController extends Controller
      */
     public function actionInstall($theme)
     {
-        $fileConfig = $this->_themeDir . $theme . '/config/main.php';
-        if (is_file($fileConfig)) {
-            $config = require_once $fileConfig;
-            if (!is_array($config)) {
-                Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', "File config must return an array."));
-            } else {
-                if (Option::set('theme', $theme)) {
-                    Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', "Theme successfully installed."));
-                }
+        if (is_file($fileConfigInstall = $this->_themeDir . $theme . '/config/main.php')) {
+            $configInstall = require($fileConfigInstall);
+            if (isset($configInstall['install'])) {
+                /* TODO */
             }
-        } else {
-            Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', "Theme not successfully installed. Error: invalid config file"));
         }
 
-        // Redirect to index when the theme successfully installed
+        if (is_file($fileConfigInstalled = $this->_themeDir . Option::get('theme') . '/config/main.php')) {
+            $configInstalled = require($fileConfigInstalled);
+            if (isset($configInstalled['uninstall'])) {
+                /* TODO */
+            }
+        }
+
+        if (Option::set('theme', $theme)) {
+            Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', "Theme successfully installed."));
+        } else {
+            Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', "File config must return an array."));
+        }
+
         return $this->redirect(['index']);
     }
 
     /**
-     * Delete theme.
+     * Delete and existing theme and run action based on config.
      *
      * @param string $theme
      *
@@ -262,19 +275,26 @@ class ThemeController extends Controller
     public function actionDelete($theme)
     {
         if ($theme != Option::get('theme')) {
-            FileHelper::removeDirectory($this->_themeDir . $theme);
+            $fileConfig = $this->_themeDir . $theme . '/config/main.php';
 
+            if (is_file($fileConfig)) {
+                $config = require($fileConfig);
+                if (isset($config['delete'])) {
+                    /* TODO */
+                }
+            }
+
+            FileHelper::removeDirectory($this->_themeDir . $theme);
             if (is_file($this->_thumbDir . $theme . '.png')) {
                 unlink($this->_thumbDir . $theme . '.png');
             }
         }
 
-        // Redirect to index when theme deleted successfully
         return $this->redirect(['index']);
     }
 
     /**
-     * Detail theme via ajax for model
+     * Detail selected theme via AJAX then show it on modal.
      *
      * @param string $theme
      *
@@ -282,25 +302,25 @@ class ThemeController extends Controller
      */
     public function actionAjaxDetail($theme)
     {
-        $themeConfig = [];
-        $themeInfo = $this->_themeDir . $theme . '/config/main.php';
+        $config = [];
+        $fileConfig = $this->_themeDir . $theme . '/config/main.php';
 
-        if (is_file($themeInfo)) {
-            $themeConfig = require($themeInfo);
+        if (is_file($fileConfig)) {
+            $config = require($fileConfig);
         }
 
-        $themeConfig['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png') ?
-            $this->_thumbBaseUrl . $theme . '.png' :
-            Yii::getAlias('@web/img/themes.png');
-        $themeConfig['info']['Dir'] = $theme;
-
-        if (!isset($themeConfig['Name'])) {
-            $themeConfig['info']['Name'] = $theme;
+        if (!isset($config['Name'])) {
+            $config['info']['Name'] = $theme;
         }
+
+        $config['info']['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
+            ? $this->_thumbBaseUrl . $theme . '.png'
+            : Yii::getAlias('@web/img/themes.png');
+        $config['info']['Dir'] = $theme;
 
         return $this->renderPartial('_theme-detail', [
-            'themeConfig' => $themeConfig,
-            'installed'   => Option::get('theme'),
+            'config'    => $config['info'],
+            'installed' => Option::get('theme'),
         ]);
     }
 

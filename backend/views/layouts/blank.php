@@ -1,25 +1,22 @@
 <?php
 /**
- * @file      blank.php.
- * @date      6/4/2015
- * @time      5:23 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-use yii\helpers\Html;
 use backend\assets\AppAsset;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $content string */
 
 // Favicon
-$this->registerLinkTag([
-    'rel'  => 'icon',
-    'href' => Yii::getAlias('@web/favicon.ico'),
-    'type' => 'image/x-icon'
-]);
+$this->registerLinkTag(['rel' => 'icon', 'href' => Yii::getAlias('@web/favicon.ico'), 'type' => 'image/x-icon']);
+
+// Body CSS class
+$bodyClass = isset(Yii::$app->params['bodyClass']) ? Yii::$app->params['bodyClass'] : "skin-blue sidebar-mini";
 
 AppAsset::register($this);
 ?>
@@ -34,10 +31,10 @@ AppAsset::register($this);
     <title>WritesDown &raquo; <?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="<?= isset(Yii::$app->params['bodyClass']) ? Yii::$app->params['bodyClass'] : "skin-blue sidebar-mini"; ?>">
-<?php $this->beginBody() ?>
-<?= $content; ?>
-<?php $this->endBody() ?>
+<body class="<?= $bodyClass ?>">
+    <?php $this->beginBody() ?>
+    <?= $content ?>
+    <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

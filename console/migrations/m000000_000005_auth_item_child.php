@@ -6,7 +6,8 @@ use yii\db\Schema;
  * Class m000000_000005_auth_item_child.
  * Migration class for auth_item_child.
  *
- * @author Agiel K. Saputra
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since  0.1.0
  */
 class m000000_000005_auth_item_child extends \yii\db\Migration
 {
@@ -16,6 +17,7 @@ class m000000_000005_auth_item_child extends \yii\db\Migration
     public function up()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }

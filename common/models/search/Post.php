@@ -1,29 +1,23 @@
 <?php
 /**
- * @file    Post.php.
- * @date    6/4/2015
- * @time    4:56 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\Post as PostModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
-/* MODEL */
-use common\models\Post as PostModel;
-
 /**
  * Post represents the model behind the search form about `common\models\Post`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Post extends PostModel
 {
@@ -34,7 +28,10 @@ class Post extends PostModel
     {
         return [
             [['id', 'post_author', 'post_type', 'post_comment_count'], 'integer'],
-            [['post_title', 'post_excerpt', 'post_content', 'post_date', 'post_modified', 'post_status', 'post_password', 'post_slug', 'post_comment_status', 'username'], 'safe'],
+            [[
+                'post_title', 'post_excerpt', 'post_content', 'post_date', 'post_modified', 'post_status',
+                'post_password', 'post_slug', 'post_comment_status', 'username',
+            ], 'safe'],
         ];
     }
 
@@ -71,15 +68,15 @@ class Post extends PostModel
         ]);
 
         $dataProvider->setSort([
-            'attributes' => ArrayHelper::merge($dataProvider->sort->attributes, [
+            'attributes'   => ArrayHelper::merge($dataProvider->sort->attributes, [
                 'username' => [
                     'asc'   => ['username' => SORT_ASC],
                     'desc'  => ['username' => SORT_DESC],
                     'label' => 'Author',
-                    'value' => 'username'
+                    'value' => 'username',
                 ],
             ]),
-            'defaultOrder' => [ 'id' => SORT_DESC ]
+            'defaultOrder' => ['id' => SORT_DESC],
         ]);
 
         $this->load($params);

@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      update.php
- * @date      9/1/2015
- * @time      8:45 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -18,9 +16,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
 ?>
 
 <div class="module-update">
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
 </div>

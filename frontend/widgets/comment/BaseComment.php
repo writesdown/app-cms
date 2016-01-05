@@ -1,31 +1,26 @@
 <?php
 /**
- * @file    BaseComment.php.
- * @date    6/4/2015
- * @time    11:16 PM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets\comment;
 
+use cebe\gravatar\Gravatar;
+use common\models\Option;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use cebe\gravatar\Gravatar;
-
-/* MODEL */
-use common\models\Option;
 
 /**
  * Class BaseComment
  *
  * @package frontend\widgets\comment
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 abstract class BaseComment extends Widget
 {
@@ -98,17 +93,21 @@ abstract class BaseComment extends Widget
                 break;
         }
 
-        if (!$this->pageSize)
+        if (!$this->pageSize) {
             $this->pageSize = Option::get('comments_per_page');
+        }
 
-        if (!$this->maxDepth)
+        if (!$this->maxDepth) {
             $this->maxDepth = Option::get('thread_comments_depth');
+        }
 
-        if (!$this->commentOrder)
+        if (!$this->commentOrder) {
             $this->commentOrder = Option::get('comment_order') === 'asc' ? SORT_ASC : SORT_DESC;
+        }
 
-        if (!$this->enableThreadComments)
+        if (!$this->enableThreadComments) {
             $this->enableThreadComments = Option::get('thread_comments');
+        }
 
         Html::addCssClass($this->itemOptions, 'comment');
         $this->setComments();
@@ -121,7 +120,6 @@ abstract class BaseComment extends Widget
     {
         if ($this->comments) {
             Pjax::begin();
-
             echo Html::beginTag($this->tag, ArrayHelper::merge(['id' => $this->id], $this->options));
             $this->renderComments($this->comments);
             echo Html::endTag($this->tag);
@@ -131,8 +129,8 @@ abstract class BaseComment extends Widget
                 'activePageCssClass'   => 'active',
                 'disabledPageCssClass' => 'disabled',
                 'options'              => [
-                    'class' => 'pagination'
-                ]
+                    'class' => 'pagination',
+                ],
             ]);
             echo Html::endTag('nav');
             Pjax::end();
@@ -147,10 +145,11 @@ abstract class BaseComment extends Widget
      */
     protected function displayComment($comment, $depth = 0)
     {
-        echo Html::beginTag('div', ['id' => 'comment-' . $comment->id, 'class' => $comment->child ? 'parent depth-' . $depth : 'depth-' . $depth]);
-        ?>
+        echo Html::beginTag('div', [
+            'id'    => 'comment-' . $comment->id,
+            'class' => $comment->child ? 'parent depth-' . $depth : 'depth-' . $depth,
+        ]);
 
-        <?php
         if (Option::get('show_avatars')) {
             ?>
             <div class="media-left avatar">
@@ -164,31 +163,33 @@ abstract class BaseComment extends Widget
                     ],
                     'defaultImage' => Option::get('avatar_default'),
                     'rating'       => Option::get('avatar_rating'),
-                    'size'         => $this->avatarSize
-                ]); ?>
+                    'size'         => $this->avatarSize,
+                ]) ?>
             </div>
-        <?php
+            <?php
+
         }
         ?>
         <div class="media-body comment-body">
             <p class="meta">
                 <strong class="author vcard">
                     <span class="fn">
-                        <?= $comment->comment_author ? $comment->comment_author : \Yii::t('writesdown', 'Anonymous'); ?>
+                        <?= $comment->comment_author ? $comment->comment_author : \Yii::t('writesdown', 'Anonymous') ?>
                     </span>
                 </strong>
                 -
                 <time class="date published" datetime="<?= \Yii::$app->formatter->asDatetime($comment->comment_date) ?>">
-                    <?= \Yii::$app->formatter->asDate($comment->comment_date); ?>
+                    <?= \Yii::$app->formatter->asDate($comment->comment_date) ?>
                 </time>
                 <?php
                 if ($depth < $this->maxDepth && $this->enableThreadComments) {
-                    echo Html::a(\Yii::t('writesdown', 'Reply'), '#', ['class' => 'comment-reply-link', 'data-id' => $comment->id]);
+                    echo Html::a(\Yii::t('writesdown', 'Reply'), '#',
+                        ['class' => 'comment-reply-link', 'data-id' => $comment->id]);
                 }
-                ?>
+        ?>
             </p>
             <div class="comment-content">
-                <?= $comment->comment_content; ?>
+                <?= $comment->comment_content ?>
             </div>
         </div>
         <?php
@@ -223,10 +224,14 @@ abstract class BaseComment extends Widget
      *
      * @param int $id
      */
-    protected function getChildren($id){}
+    protected function getChildren($id)
+    {
+    }
 
     /**
      * Set comment model and pagination.
      */
-    protected function setComments(){}
+    protected function setComments()
+    {
+    }
 }

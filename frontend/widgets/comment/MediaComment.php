@@ -1,26 +1,24 @@
 <?php
 /**
- * @file    MediaComment.php.
- * @date    6/4/2015
- * @time    11:20 PM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets\comment;
 
-use yii\data\Pagination;
 use common\models\MediaComment as Comment;
+use yii\data\Pagination;
 
 /**
  * Class MediaComment
  *
  * @package frontend\widgets\comment
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
-class MediaComment extends BaseComment{
+class MediaComment extends BaseComment
+{
 
     /**
      * Set comment and pagination.
@@ -28,11 +26,18 @@ class MediaComment extends BaseComment{
      * Get child of current comment.
      */
 
-    protected function setComments(){
-
+    protected function setComments()
+    {
         $comments = [];
 
-        $query = Comment::find()->select(['id', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_date', 'comment_content'])
+        $query = Comment::find()->select([
+            'id',
+            'comment_author',
+            'comment_author_email',
+            'comment_author_url',
+            'comment_date',
+            'comment_content',
+        ])
             ->andWhere(['comment_parent' => 0])
             ->andWhere(['comment_media_id' => $this->model->id])
             ->andWhere(['comment_approved' => 'approved'])
@@ -42,12 +47,13 @@ class MediaComment extends BaseComment{
 
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => $this->pageSize
+            'pageSize'   => $this->pageSize,
         ]);
 
         $this->pages = $pages;
 
-        $models = $query->offset($pages->offset)
+        $models = $query
+            ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
@@ -58,7 +64,6 @@ class MediaComment extends BaseComment{
         }
 
         $this->comments = $comments;
-
     }
 
 
@@ -69,19 +74,27 @@ class MediaComment extends BaseComment{
      *
      * @return array|null
      */
-    protected function getChildren($id){
+    protected function getChildren($id)
+    {
         $comments = [];
 
-        $models = Comment::find()->select(['id', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_date', 'comment_content'])
+        $models = Comment::find()->select([
+            'id',
+            'comment_author',
+            'comment_author_email',
+            'comment_author_url',
+            'comment_date',
+            'comment_content',
+        ])
             ->andWhere(['comment_parent' => $id])
             ->andWhere(['comment_media_id' => $this->model->id])
             ->andWhere(['comment_approved' => 'approved'])
             ->orderBy(['id' => $this->commentOrder])
             ->all();
 
-        if(empty($models)){
+        if (empty($models)) {
             $comments = null;
-        } else{
+        } else {
             /* @var $model \common\models\PostComment */
             foreach ($models as $model) {
                 $comments[$model->id] = $model;

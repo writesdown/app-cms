@@ -1,33 +1,27 @@
 <?php
 /**
- * @file      PostTypeControl.php.
- * @date      6/4/2015
- * @time      5:14 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
 use common\components\Json;
-
-/* MODEL */
 use common\models\PostType;
-use common\models\Taxonomy;
 use common\models\PostTypeTaxonomy;
 use common\models\search\PostType as PostTypeSearch;
+use common\models\Taxonomy;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * PostTypeController implements the CRUD actions for PostType model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -45,7 +39,7 @@ class PostTypeController extends Controller
                     [
                         'actions' => ['index', 'view', 'create', 'update', 'delete', 'bulk-action'],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                 ],
             ],
@@ -102,11 +96,13 @@ class PostTypeController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy');
-            if ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomyIds'])){
+            if ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomyIds'])) {
                 foreach ($taxonomyIds as $taxonomyId) {
                     $postTypeTaxonomy = new PostTypeTaxonomy();
-                    $postTypeTaxonomy->post_type_id = $model->id;
-                    $postTypeTaxonomy->taxonomy_id = $taxonomyId;
+                    $postTypeTaxonomy->setAttributes([
+                        'post_type_id' => $model->id,
+                        'taxonomy_id'  => $taxonomyId,
+                    ]);
                     $postTypeTaxonomy->save();
                 }
             }
@@ -135,15 +131,15 @@ class PostTypeController extends Controller
         $taxonomies = ArrayHelper::map(Taxonomy::find()->all(), 'id', 'taxonomy_name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // Delete all PostTypeTaxonomy where post_type_id this id
             PostTypeTaxonomy::deleteAll(['post_type_id' => $id]);
-            // Refill PostTypeTaxonomy for this model
             $postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy');
-            if ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomyIds'])){
+            if ($taxonomyIds = Json::decode($postTypeTaxonomy['taxonomyIds'])) {
                 foreach ($taxonomyIds as $taxonomyId) {
                     $postTypeTaxonomy = new PostTypeTaxonomy();
-                    $postTypeTaxonomy->post_type_id = $model->id;
-                    $postTypeTaxonomy->taxonomy_id = $taxonomyId;
+                    $postTypeTaxonomy->setAttributes([
+                        'post_type_id' => $model->id,
+                        'taxonomy_id'  => $taxonomyId,
+                    ]);
                     $postTypeTaxonomy->save();
                 }
             }
@@ -174,7 +170,9 @@ class PostTypeController extends Controller
     }
 
     /**
-     * Bulk action for Taxonomy
+     * Bulk action for PostType triggered when button 'Apply' clicked.
+     * The action depends on the value of the dropdown next to the button.
+     * Only accept POST HTTP method.
      */
     public function actionBulkAction()
     {

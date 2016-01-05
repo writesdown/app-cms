@@ -1,35 +1,29 @@
 <?php
 /**
- * @file      MenuController.php.
- * @date      6/4/2015
- * @time      5:03 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
+use common\components\Json;
+use common\models\Menu;
+use common\models\MenuItem;
+use common\models\Post;
+use common\models\PostType;
+use common\models\Taxonomy;
+use common\models\Term;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use common\components\Json;
-
-/* MODEL */
-use common\models\Menu;
-use common\models\PostType;
-use common\models\Taxonomy;
-use common\models\MenuItem;
-use common\models\Post;
-use common\models\Term;
 
 /**
- * MenuController implements the CRUD actions for Menu model.
+ * MenuController, controlling the actions for Menu and MenuItem model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -47,7 +41,7 @@ class MenuController extends Controller
                     [
                         'actions' => ['index', 'update', 'create', 'delete', 'create-menu-item', 'delete-menu-item'],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                 ],
             ],
@@ -64,7 +58,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Lists all Menu models.
+     * Generates menu page consists of CRUD Menu and MenuItem model.
      *
      * @param null $id
      *
@@ -73,12 +67,12 @@ class MenuController extends Controller
     public function actionIndex($id = null)
     {
         $model = new Menu();
-        // list all post types
+        // List all post types
         $postTypes = PostType::find()->where(['post_type_smb' => 1])->all();
-        // list all taxonomies
+        // List all taxonomies
         $taxonomies = Taxonomy::find()->where(['taxonomy_smb' => 1])->all();
 
-        // get available menu
+        // Get available menu
         if ($availableMenu = ArrayHelper::map(Menu::find()->all(), 'id', 'menu_title')) {
             if ($id === null && $availableMenu) {
                 foreach ($availableMenu as $key => $menu) {
@@ -107,6 +101,7 @@ class MenuController extends Controller
     public function actionCreate()
     {
         $model = new Menu();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->id]);
         } else {
@@ -127,13 +122,13 @@ class MenuController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
             if ($menuOrder = Yii::$app->request->post('MenuOrder')) {
                 $this->saveMenuItem(Json::decode($menuOrder));
             }
-
         }
+
         Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Menu successfully saved.'));
+
         return $this->redirect(['/menu/index', 'id' => $id]);
     }
 
@@ -154,7 +149,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Create menu item by post
+     * Create MenuItem models.
      *
      * @param int $id
      */
@@ -166,25 +161,29 @@ class MenuController extends Controller
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 echo $this->renderPartial('_render-item', ['item' => $model, 'wrapper' => 'true']);
             }
-        } else if (Yii::$app->request->post('type') === 'post' && $postIds = Yii::$app->request->post('postIds')) {
+        } elseif (Yii::$app->request->post('type') === 'post' && $postIds = Yii::$app->request->post('postIds')) {
             foreach ($postIds as $postId) {
                 if ($postModel = $this->findPost($postId)) {
                     $model = new MenuItem();
-                    $model->menu_id = $id;
-                    $model->menu_label = $postModel->post_title;
-                    $model->menu_url = $postModel->url;
+                    $model->setAttributes([
+                        'menu_id'    => $id,
+                        'menu_label' => $postModel->post_title,
+                        'menu_url'   => $postModel->getUrl(),
+                    ]);
                     if ($model->save()) {
                         echo $this->renderPartial('_render-item', ['item' => $model, 'wrapper' => 'true']);
                     }
                 }
             }
-        } else if (Yii::$app->request->post('type') === 'taxonomy' && $termIds = Yii::$app->request->post('termIds')) {
+        } elseif (Yii::$app->request->post('type') === 'taxonomy' && $termIds = Yii::$app->request->post('termIds')) {
             foreach ($termIds as $termId) {
                 if ($termModel = $this->findTerm($termId)) {
                     $model = new MenuItem();
-                    $model->menu_id = $id;
-                    $model->menu_label = $termModel->term_name;
-                    $model->menu_url = $termModel->url;
+                    $model->setAttributes([
+                        'menu_id'    => $id,
+                        'menu_label' => $termModel->term_name,
+                        'menu_url'   => $termModel->getUrl(),
+                    ]);
                     if ($model->save()) {
                         echo $this->renderPartial('_render-item', ['item' => $model, 'wrapper' => 'true']);
                     }
@@ -194,7 +193,7 @@ class MenuController extends Controller
     }
 
     /**
-     * Delete menu item via ajax post.
+     * Delete an existing MenuItem model via AJAX request.
      *
      * @throws NotFoundHttpException
      * @throws \Exception
@@ -207,8 +206,7 @@ class MenuController extends Controller
             if ($model && $model->delete()) {
                 $children = MenuItem::find()->where(['menu_parent' => $model->id])->all();
                 foreach ($children as $child) {
-                    $child->menu_parent = $model->menu_parent;
-                    $child->save();
+                    $child->updateAttributes(['menu_parent' => $model->menu_parent]);
                 }
             } else {
                 throw new NotFoundHttpException('writesdown', 'The requested page does not exist.');
@@ -219,17 +217,19 @@ class MenuController extends Controller
     /**
      * Save menu item recursively based on parent and child.
      *
-     * @param     $menuOrder
-     * @param int $menuParent
+     * @param array $menuOrder
+     * @param int   $menuParent
      */
     protected function saveMenuItem($menuOrder, $menuParent = 0)
     {
         foreach ($menuOrder as $key => $order) {
-            $menuItem = Yii::$app->request->post('MenuItem')[ $order['id'] ];
+            $menuItem = Yii::$app->request->post('MenuItem')[$order['id']];
             if ($model = $this->findMenuItem($order['id'])) {
                 $model->setAttributes($menuItem);
-                $model->menu_parent = $menuParent;
-                $model->menu_order = $key;
+                $model->setAttributes([
+                    'menu_parent' => $menuParent,
+                    'menu_order'  => $key,
+                ]);
                 if ($model->save()) {
                     if (isset($order['items'])) {
                         $this->saveMenuItem($order['items'], $model->id);
@@ -253,7 +253,7 @@ class MenuController extends Controller
         if (($model = Menu::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 
@@ -263,7 +263,7 @@ class MenuController extends Controller
      *
      * @param integer $id
      *
-     * @return MenuItem|bool|null|static
+     * @return bool|MenuItem
      */
     protected function findMenuItem($id)
     {
@@ -280,7 +280,7 @@ class MenuController extends Controller
      *
      * @param integer $id
      *
-     * @return Post|bool|null|static
+     * @return bool|Post
      */
     protected function findPost($id)
     {
@@ -297,7 +297,7 @@ class MenuController extends Controller
      *
      * @param integer $id
      *
-     * @return Term|bool|null|static
+     * @return bool|Term
      */
     protected function findTerm($id)
     {

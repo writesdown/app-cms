@@ -1,21 +1,16 @@
 <?php
 /**
- * @file      Widget.php
- * @date      9/5/2015
- * @time      1:30 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets;
 
+use common\models\Widget;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
-
-/* MODELS */
-use common\models\Widget;
 
 /**
  * Render active widget to frontend.
@@ -80,7 +75,8 @@ class RenderWidget extends \yii\base\Widget
 
         if ($activeWidgets) {
             foreach ($activeWidgets as $activeWidget) {
-                $this->_widget[] = ArrayHelper::merge($this->defaultConfig, $this->config, $activeWidget->getConfig(), ['id' => $activeWidget->id]);
+                $this->_widget[] = ArrayHelper::merge($this->defaultConfig, $this->config, $activeWidget->getConfig(),
+                    ['id' => $activeWidget->id]);
             }
         }
     }

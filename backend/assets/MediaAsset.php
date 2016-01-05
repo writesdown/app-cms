@@ -1,46 +1,29 @@
 <?php
 /**
- * @file      MediaAsset.php.
- * @date      6/4/2015
- * @time      3:41 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\assets;
 
-
 use yii\web\AssetBundle;
 
 /**
- * Asset bundle for media.
+ * MediaAsset is used to register file assets on 'create media' page.
  *
- * @package backend\assets
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
 class MediaAsset extends AssetBundle
 {
-    /**
-     * @var string
-     */
     public $basePath = '@webroot';
-    /**
-     * @var string
-     */
     public $baseUrl = '@web';
-    /**
-     * @var array
-     */
     public $js = [
-        'js/media.js'
+        'js/media.js',
     ];
-    /**
-     * @var array
-     */
     public $depends = [
         'backend\assets\AppAsset',
-        'dosamigos\fileupload\FileUploadUIAsset'
+        'dosamigos\fileupload\FileUploadUIAsset',
     ];
-} 
+}

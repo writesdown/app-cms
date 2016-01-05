@@ -1,11 +1,9 @@
 <?php
 /**
- * @file    view.php.
- * @date    6/4/2015
- * @time    6:34 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -19,9 +17,13 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Post Types'),
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-type-view">
-
     <p>
-        <?= Html::a(Yii::t('writesdown', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-flat btn-primary']) ?>
+        <?= Html::a(
+            Yii::t('writesdown', 'Update'),
+            ['update', 'id' => $model->id],
+            ['class' => 'btn btn-flat btn-primary']
+        ) ?>
+
         <?= Html::a(Yii::t('writesdown', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-flat btn-danger',
             'data'  => [
@@ -29,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method'  => 'post',
             ],
         ]) ?>
-    </p>
 
+    </p>
     <?= DetailView::widget([
         'model'      => $model,
         'attributes' => [
@@ -51,17 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
-
 <div class="taxonomy-view">
-    <?php if($taxonomies = $model->taxonomies){ ?>
-        <h3><?= Yii::t('writesdown', 'Taxonomies'); ?></h3>
-        <?php foreach ($taxonomies as $taxonomy){ ?>
-            <?= Html::a($taxonomy->taxonomy_name, [
-                '/taxonomy/view/',
-                'id' => $taxonomy->id
-            ], [
-                'class' => 'btn btn-xs btn-warning btn-flat'
-            ]); ?>
-        <?php } ?>
-    <?php } ?>
+    <?php if ($taxonomies = $model->taxonomies): ?>
+        <h3><?= Yii::t('writesdown', 'Taxonomies') ?></h3>
+
+        <?php foreach ($taxonomies as $taxonomy): ?>
+            <?= Html::a($taxonomy->taxonomy_name, ['/taxonomy/view/', 'id' => $taxonomy->id], [
+                'class' => 'btn btn-xs btn-warning btn-flat',
+            ]) ?>
+        <?php endforeach ?>
+
+    <?php endif ?>
 </div>

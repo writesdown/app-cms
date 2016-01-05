@@ -6,7 +6,8 @@ use yii\db\Schema;
  * Class m000000_000001_option.
  * Migration for table option.
  *
- * @author Agiel K. Saputra
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since  0.1.0
  */
 class m000000_000001_option extends \yii\db\Migration
 {
@@ -56,7 +57,12 @@ class m000000_000001_option extends \yii\db\Migration
             ['page_comments', '5', 'Break comments into pages with', 'discussion'],
             ['thread_comments_depth', '5', 'Thread Comments Depth', 'discussion'],
             ['comments_per_page', '10', 'Top level comments per page', 'discussion'],
-            ['default_comments_page', 'newest', 'page displayed by default\nComments should be displayed with the', 'discussion'],
+            [
+                'default_comments_page',
+                'newest',
+                'page displayed by default\nComments should be displayed with the',
+                'discussion',
+            ],
             ['comments_notify', '1', 'Notify when anyone posts a comment', 'discussion'],
             ['moderation_notify', '0', 'Notify when a comment is held for moderation', 'discussion'],
             ['comment_moderation', '1', 'Comment must be manually approved', 'discussion'],
@@ -76,7 +82,7 @@ class m000000_000001_option extends \yii\db\Migration
             ['uploads_yearmonth_based', '1', 'Organize my uploads into month- and year-based folders', 'media'],
             ['uploads_username_based', '0', 'Organize my uploads into username-based folders', 'media'],
             /* APPEARANCE */
-            ['theme', 'default', 'Theme', NULL]
+            ['theme', 'default', 'Theme', null],
         ]);
     }
 

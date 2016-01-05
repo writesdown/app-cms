@@ -1,31 +1,25 @@
 <?php
 /**
- * @file      PostCommentControl.php.
- * @date      6/4/2015
- * @time      5:04 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
+use common\models\Post;
+use common\models\PostComment;
+use common\models\PostType;
+use common\models\search\PostComment as PostCommentSearch;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-
-/* MODEL */
-use common\models\Post;
-use common\models\PostType;
-use common\models\PostComment;
-use common\models\search\PostComment as PostCommentSearch;
 
 /**
- * PostCommentController implements the CRUD actions for PostComment model.
+ * PostCommentController, controlling the actions for PostComment model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -43,7 +37,7 @@ class PostCommentController extends Controller
                     [
                         'actions' => ['index', 'update', 'delete', 'bulk-action', 'reply'],
                         'allow'   => true,
-                        'roles'   => ['editor']
+                        'roles'   => ['editor'],
                     ],
                 ],
             ],
@@ -59,7 +53,8 @@ class PostCommentController extends Controller
 
 
     /**
-     * Lists all PostComment models.
+     * Lists all PostComment models on specific post type.
+     * If there is post_id the action will generate list of all PostComment models based on post_id.
      *
      * @param integer      $post_type
      * @param null|integer $post_id
@@ -104,7 +99,7 @@ class PostCommentController extends Controller
             $model->comment_date = Yii::$app->formatter->asDatetime($model->comment_date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['update', 'id' => $model->id]);
-            };
+            }
         }
 
         return $this->render('update', [
@@ -124,10 +119,10 @@ class PostCommentController extends Controller
     {
         $model = $this->findModel($id);
         $post = $model->commentPost;
+
         if ($model->delete()) {
             if (!$model->comment_parent) {
-                $post->post_comment_count--;
-                $post->save();
+                $post->updateAttributes(['post_comment_count', $post->post_comment_count--]);
             }
             PostComment::deleteAll(['comment_parent' => $model->id]);
         }
@@ -136,42 +131,43 @@ class PostCommentController extends Controller
     }
 
     /**
-     * Bulk action for post comments
+     * Bulk action for PostComment triggered when button 'Apply' clicked.
+     * The action depends on the value of the dropdown next to the button.
+     * Only accept POST HTTP method.
      */
     public function actionBulkAction()
     {
-        if ($_POST['action'] === 'delete') {
+        if (Yii::$app->request->post('action') === PostComment::COMMENT_APPROVED) {
+            foreach (Yii::$app->request->post('ids') as $id) {
+                $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_APPROVED]);
+            }
+        } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_UNAPPROVED) {
+            foreach ($_POST['ids'] as $id) {
+                $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_UNAPPROVED]);
+            }
+        } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_TRASH) {
+            foreach ($_POST['ids'] as $id) {
+                $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_TRASH]);
+            }
+        } elseif (Yii::$app->request->post('action') === 'delete') {
             foreach ($_POST['ids'] as $id) {
                 $model = $this->findModel($id);
                 $post = $model->commentPost;
                 if ($model->delete()) {
                     if (!$model->comment_parent) {
-                        $post->post_comment_count--;
-                        $post->save();
+                        $post->updateAttributes(['post_comment_count', $post->post_comment_count--]);
                     }
                     PostComment::deleteAll(['comment_parent' => $model->id]);
                 }
-            }
-        } else if ($_POST['action'] === PostComment::COMMENT_APPROVED) {
-            foreach ($_POST['ids'] as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => 'approved']);
-            }
-        } else if ($_POST['action'] === PostComment::COMMENT_UNAPPROVED) {
-            foreach ($_POST['ids'] as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => 'unapproved']);
-            }
-        } else if ($_POST['action'] === PostComment::COMMENT_TRASH) {
-            foreach ($_POST['ids'] as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => 'trash']);
             }
         }
     }
 
     /**
-     * Action for replying a comment.
-     * It's based on comment_id
+     * Reply an existing PostComment model.
+     * If reply is successful, the browser will be redirected to 'update' page.
      *
-     * @param int $id
+     * @param int $id Find PostComment model based on id as parent.
      *
      * @return string
      */
@@ -181,10 +177,8 @@ class PostCommentController extends Controller
         $model = new PostComment(['scenario' => 'reply']);
 
         if ($model->load(Yii::$app->request->post())) {
-
             $model->comment_post_id = $commentParent->comment_post_id;
             $model->comment_parent = $commentParent->id;
-
             if ($model->save()) {
                 $this->redirect(['post-comment/update', 'id' => $model->id]);
             }

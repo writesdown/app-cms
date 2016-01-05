@@ -1,28 +1,22 @@
 <?php
 /**
- * @file      Taxonomy.php.
- * @date      6/4/2015
- * @time      4:58 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\Taxonomy as TaxonomyModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/* MODEL */
-use common\models\Taxonomy as TaxonomyModel;
-
 /**
  * Taxonomy represents the model behind the search form about `common\models\Taxonomy`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Taxonomy extends TaxonomyModel
 {
@@ -62,8 +56,8 @@ class Taxonomy extends TaxonomyModel
             'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->load($params);

@@ -1,11 +1,8 @@
 <?php
 /**
- * @file    SignupForm.php.
- * @date    6/4/2015
- * @time    4:29 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -16,9 +13,8 @@ use yii\base\Model;
 /**
  * Class SignupForm
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class SignupForm extends Model
 {
@@ -47,18 +43,28 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            [
+                'username',
+                'unique',
+                'targetClass' => '\common\models\User',
+                'message'     => 'This username has already been taken.',
+            ],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            [
+                'email',
+                'unique',
+                'targetClass' => '\common\models\User',
+                'message'     => 'This email address has already been taken.',
+            ],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
 
-            ['term_condition', 'required']
+            ['term_condition', 'required'],
         ];
     }
 
@@ -76,7 +82,8 @@ class SignupForm extends Model
             $user->setPassword($this->password);
             $user->generateAuthKey();
             if ($user->save()) {
-                Yii::$app->authManager->assign( Yii::$app->authManager->getRole( Option::get('default_role') ), $user->id );
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(Option::get('default_role')), $user->id);
+
                 return $user;
             }
         }

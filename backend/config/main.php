@@ -1,5 +1,5 @@
 <?php
-use \yii\web\Request;
+use yii\web\Request;
 
 $params = array_merge(
     require(__DIR__ . '/../../common/config/params.php'),
@@ -8,9 +8,7 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
-// Replace url
-$request = new Request();
-$baseUrlFront = str_replace('/admin', '', $request->getBaseUrl());
+$baseUrlFront = str_replace('/admin', '', (new Request())->getBaseUrl());
 
 return [
     'id'                  => 'app-backend',

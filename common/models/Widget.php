@@ -2,11 +2,11 @@
 
 namespace common\models;
 
+use common\components\Json;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\UploadedFile;
-use common\components\Json;
 
 /**
  * This is the model class for table "{{%widget}}".
@@ -67,7 +67,7 @@ class Widget extends ActiveRecord
             'widget_dir'      => Yii::t('writesdown', 'Directory'),
             'widget_date'     => Yii::t('writesdown', 'Assigned'),
             'widget_modified' => Yii::t('writesdown', 'Updated'),
-            'widget_file'     => Yii::t('writesdown', 'Widget (ZIP)')
+            'widget_file'     => Yii::t('writesdown', 'Widget (ZIP)'),
         ];
     }
 
@@ -88,7 +88,8 @@ class Widget extends ActiveRecord
      *
      * @return mixed
      */
-    public function getConfig(){
+    public function getConfig()
+    {
         return Json::decode($this->widget_config);
     }
 

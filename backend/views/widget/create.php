@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      create.php
- * @date      9/10/2015
- * @time      5:29 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -19,10 +17,8 @@ $this->title = Yii::t('writesdown', 'Add New Widget');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Widgets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="widget-create">
     <div id="nav-tabs-custom" class="nav-tabs-custom">
-
         <?= Nav::widget([
             'items'        => [
                 [
@@ -31,28 +27,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
             'encodeLabels' => false,
-            'options'      => [
-                'class' => 'nav-tabs nav-theme',
-                'id'    => 'nav-theme'
-            ],
-        ]); ?>
+            'options'      => ['class' => 'nav-tabs nav-theme', 'id' => 'nav-theme'],
+        ]) ?>
 
         <div class="tab-content">
-
             <?php $form = ActiveForm::begin([
                 'id'      => 'widget-create-form',
-                'options' => [
-                    'enctype' => 'multipart/form-data'
-                ]
-            ]); ?>
+                'options' => ['enctype' => 'multipart/form-data'],
+            ]) ?>
 
-            <?= $form->field($model, 'widget_file')->fileInput(); ?>
+            <?= $form->field($model, 'widget_file')->fileInput() ?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('writesdown', 'Upload'), ['class' => 'btn btn-flat btn-primary']) ?>
-            </div>
 
-            <?php ActiveForm::end(); ?>
+            </div>
+            <?php ActiveForm::end() ?>
 
         </div>
     </div>

@@ -1,23 +1,19 @@
 <?php
 /**
- * @file      main.php.
- * @date      6/4/2015
- * @time      10:04 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use common\models\Menu;
+use common\models\Option;
 use frontend\assets\AppAsset;
 use frontend\widgets\Alert;
-
-/* MODEL */
-use common\models\Option;
-use common\models\Menu;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -25,25 +21,16 @@ use common\models\Menu;
 AppAsset::register($this);
 
 // Canonical
-$this->registerLinkTag([
-    'rel'  => 'canonical',
-    'href' => Yii::$app->request->absoluteUrl
-]);
+$this->registerLinkTag(['rel' => 'canonical', 'href' => Yii::$app->request->absoluteUrl]);
 
 // Favicon
-$this->registerLinkTag([
-    'rel'  => 'icon',
-    'href' => Yii::getAlias('@web/favicon.ico'),
-    'type' => 'image/x-icon'
-]);
+$this->registerLinkTag(['rel' => 'icon', 'href' => Yii::getAlias('@web/favicon.ico'), 'type' => 'image/x-icon']);
 
 // Add meta robots noindex, nofollow when option disable_site_indexing = true
 if (Option::get('disable_site_indexing')) {
-    $this->registerMetaTag([
-        'name'    => 'robots',
-        'content' => 'noindex, nofollow'
-    ]);
+    $this->registerMetaTag(['name' => 'robots', 'content' => 'noindex, nofollow']);
 }
+
 $this->beginPage()
 ?>
 <!DOCTYPE html>
@@ -52,9 +39,7 @@ $this->beginPage()
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title>
-        <?= $this->title ?>
-    </title>
+    <title><?= $this->title ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -65,43 +50,32 @@ NavBar::begin([
     'brandUrl'   => Yii::$app->homeUrl,
     'options'    => [
         'class' => 'navbar-static-top',
-        'id'    => 'navbar-primary'
+        'id'    => 'navbar-primary',
     ],
 ]);
 echo Nav::widget([
     'options'      => ['class' => 'navbar-nav'],
     'items'        => Menu::getMenu('primary'),
-    'encodeLabels' => false
+    'encodeLabels' => false,
 ]);
 NavBar::end();
 ?>
 <header id="header-primary">
     <div class="container">
-        <?php
-        if (Yii::$app->controller->route == 'site/index') {
-            echo Html::tag('h1', Option::get('sitetitle'), [
-                'id'    => 'site-title',
-                'class' => 'site-title'
-            ]);
-        } else {
-            echo Html::tag('span', Option::get('sitetitle'), [
-                'id'    => 'site-title',
-                'class' => 'h1 site-title'
-            ]);
-        }
 
-        echo Html::tag('span', Option::get('tagline'), [
-            'id'    => 'site-tagline',
-            'class' => 'h3 site-tagline',
-        ]);
-        ?>
+        <?php if (Yii::$app->controller->route == 'site/index'): ?>
+            <h1 id="site-title" class="site-title"><?= Option::get('sitetitle'); ?></h1>
+        <?php else: ?>
+            <span id="site-title" class="h1 site-title"><?= Option::get('sitetitle'); ?></span>
+        <?php endif ?>
+
+        <span id="site-tagline" class="h3 site-tagline"><?= Option::get('tagline'); ?></span>
     </div>
 </header>
 <div id="breadcrumb-primary" class="hidden-xs">
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+        <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]) ?>
+
     </div>
 </div>
 <div class="container">
@@ -110,7 +84,9 @@ NavBar::end();
             <div class="col-md-8">
                 <div id="content">
                     <?= Alert::widget() ?>
+
                     <?= $content ?>
+
                 </div>
             </div>
             <div class="col-md-4">

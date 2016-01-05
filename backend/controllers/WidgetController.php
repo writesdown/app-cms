@@ -1,31 +1,37 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace backend\controllers;
 
+use common\components\Json;
+use common\models\Widget;
 use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
-use common\components\Json;
-
-/* MODELS */
-use common\models\Widget;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
- * WidgetController implements the CRUD actions for Widget model.
+ * WidgetController, controlling the actions for Widget model.
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.2.0
  */
 class WidgetController extends Controller
 {
     /**
-     * @var string
+     * @var string Path to widget directory.
      */
     private $_widgetDir;
 
     /**
-     * @var string
+     * @var string Path to temporary directory of widget.
      */
     private $_widgetTempDir;
 
@@ -39,9 +45,17 @@ class WidgetController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'delete-widget', 'ajax-activate', 'ajax-update', 'ajax-delete', 'ajax-save-order'],
+                        'actions' => [
+                            'index',
+                            'create',
+                            'delete-widget',
+                            'ajax-activate',
+                            'ajax-update',
+                            'ajax-delete',
+                            'ajax-save-order',
+                        ],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                 ],
             ],
@@ -58,7 +72,7 @@ class WidgetController extends Controller
     }
 
     /**
-     * Lists all Widget by scan directory widgets.
+     * Scan widget directory to get list of all available widgets and list all active widgets.
      *
      * @return mixed
      */
@@ -66,7 +80,7 @@ class WidgetController extends Controller
     {
         $availableWidget = [];
         $activatedWidget = [];
-        $widgetConfig = [];
+        $config = [];
         $widgetSpace = isset(Yii::$app->params['widget']) ? Yii::$app->params['widget'] : [];
 
         if (!is_dir($this->_widgetDir)) {
@@ -78,19 +92,17 @@ class WidgetController extends Controller
         foreach ($arrWidgets as $widget) {
             if (is_dir($this->_widgetDir . $widget) && $widget !== '.' && $widget !== '..') {
                 $configPath = $this->_widgetDir . $widget . '/config/main.php';
-
                 if (is_file($configPath)) {
-                    $widgetConfig = require($configPath);
-                    $widgetConfig['widget_dir'] = $widget;
+                    $config = require($configPath);
+                    $config['widget_dir'] = $widget;
                 }
-
-                $availableWidget[ $widget ] = $widgetConfig;
+                $availableWidget[$widget] = $config;
             }
         }
 
         foreach ($widgetSpace as $space) {
             $model = Widget::find()->where(['widget_location' => $space['location']])->orderBy(['widget_order' => SORT_ASC])->all();
-            $activatedWidget[ $space['location'] ] = $model;
+            $activatedWidget[$space['location']] = $model;
         }
 
         return $this->render('index', [
@@ -101,8 +113,11 @@ class WidgetController extends Controller
     }
 
     /**
-     * Creates a new Widget model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Register new widget.
+     * Widget zip uploaded to temporary directory and extracted there.
+     * Check the widget directory and move the first directory of the extracted widget.
+     * If the widget configuration is valid, save the widget, if not remove the widget.
+     * If registration is successful, the browser will be redirected to the 'index' page.
      *
      * @return mixed
      */
@@ -141,7 +156,10 @@ class WidgetController extends Controller
                         // Check if widget with the same directory already exist
                         if (is_dir($this->_widgetDir . $baseDir)) {
                             FileHelper::removeDirectory($this->_widgetTempDir);
-                            Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Widget with the same directory already exist.'));
+                            Yii::$app->getSession()->setFlash(
+                                'danger',
+                                Yii::t('writesdown', 'Widget with the same directory already exist.')
+                            );
                         } else {
 
                             // Move widget directory
@@ -154,17 +172,29 @@ class WidgetController extends Controller
                                     $widgetConfig = require_once($configPath);
 
                                     // Check where widget config is valid or not
-                                    if (isset($widgetConfig['widget_title']) && isset($widgetConfig['widget_config']['class']) && class_exists($widgetConfig['widget_config']['class'])) {
-                                        Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Widget successfully installed'));
+                                    if (isset($widgetConfig['widget_title'])
+                                        && isset($widgetConfig['widget_config']['class'])
+                                        && class_exists($widgetConfig['widget_config']['class'])
+                                    ) {
+                                        Yii::$app->getSession()->setFlash(
+                                            'success',
+                                            Yii::t('writesdown', 'Widget successfully installed')
+                                        );
 
                                         return $this->redirect(['index']);
                                     } else {
                                         FileHelper::removeDirectory($this->_widgetDir . $baseDir);
-                                        Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'Invalid Configuration'));
+                                        Yii::$app->getSession()->setFlash(
+                                            'danger',
+                                            Yii::t('writesdown', 'Invalid Configuration')
+                                        );
                                     }
                                 } else {
                                     FileHelper::removeDirectory($this->_widgetDir . $baseDir);
-                                    Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', 'File configuration does not exist.'));
+                                    Yii::$app->getSession()->setFlash(
+                                        'danger',
+                                        Yii::t('writesdown', 'File configuration does not exist.')
+                                    );
                                 }
                             }
                         }
@@ -174,7 +204,7 @@ class WidgetController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -219,7 +249,7 @@ class WidgetController extends Controller
             if ($model->save()) {
                 return $this->renderPartial('_activated', [
                     'activatedWidget' => $model,
-                    'availableWidget' => [$model->widget_dir => $widgetConfig]
+                    'availableWidget' => [$model->widget_dir => $widgetConfig],
                 ]);
             }
         }
@@ -235,6 +265,7 @@ class WidgetController extends Controller
     public function actionAjaxUpdate($id)
     {
         $model = $this->findModel($id);
+
         if ($model->load(Yii::$app->request->post())) {
             $model->widget_config = Json::encode($model->widget_config);
             $model->save();
@@ -242,7 +273,7 @@ class WidgetController extends Controller
     }
 
     /**
-     * Delete activated widget via ajax
+     * Delete active widget via ajax.
      *
      * @param $id integer
      */
@@ -252,7 +283,7 @@ class WidgetController extends Controller
     }
 
     /**
-     * Save order for widget
+     * Save order for widget.
      */
     public function actionAjaxSaveOrder()
     {
@@ -268,10 +299,10 @@ class WidgetController extends Controller
      */
     public function beforeAction($action)
     {
-        // Disable csrf validation before action
         if (in_array($this->action->id, ['ajax-activate', 'ajax-update', 'ajax-delete', 'ajax-save-order'])) {
             $this->enableCsrfValidation = false;
         }
+
         if (parent::beforeAction($action)) {
             $this->_widgetDir = Yii::getAlias('@widgets/');
             $this->_widgetTempDir = Yii::getAlias('@common/temp/widgets/');

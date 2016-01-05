@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      ContactForm.php.
- * @date      6/4/2015
- * @time      10:12 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -16,9 +13,8 @@ use yii\base\Model;
 /**
  * Class ContactForm
  *
- * @package frontend\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class ContactForm extends Model
 {

@@ -1,35 +1,30 @@
 <?php
 /**
- * @file      SiteController.php.
- * @date      6/4/2015
- * @time      10:08 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
 
-use Yii;
-use yii\data\Pagination;
-use yii\web\Controller;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\ForbiddenHttpException;
-use yii\web\NotFoundHttpException;
-
-/* MODEL */
 use common\models\Option;
 use common\models\Post;
 use common\models\PostComment;
 use frontend\models\ContactForm;
+use Yii;
+use yii\data\Pagination;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class SiteController
  *
  * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class SiteController extends Controller
 {
@@ -101,7 +96,7 @@ class SiteController extends Controller
             if ($post) {
                 return $this->render($render, [
                     'post'    => $post,
-                    'comment' => $comment
+                    'comment' => $comment,
                 ]);
             } else {
                 return new NotFoundHttpException();
@@ -113,14 +108,14 @@ class SiteController extends Controller
             $countQuery = clone $query;
             $pages = new Pagination([
                 'totalCount' => $countQuery->count(),
-                'pageSize'   => Option::get('posts_per_page')
+                'pageSize'   => Option::get('posts_per_page'),
             ]);
             $query->offset($pages->offset)->limit($pages->limit);
             $posts = $query->all();
             if ($posts) {
                 return $this->render('index', [
                     'posts' => $posts,
-                    'pages' => isset($pages) ? $pages : null
+                    'pages' => isset($pages) ? $pages : null,
                 ]);
             } else {
                 throw new NotFoundHttpException(Yii::t('writesdown', 'Page not found.'));
@@ -144,6 +139,7 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Option::get('admin_email'))) {
                 Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
@@ -177,15 +173,16 @@ class SiteController extends Controller
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page')
+            'pageSize'   => Option::get('posts_per_page'),
         ]);
         $query->offset($pages->offset)->limit($pages->limit);
         $posts = $query->all();
+
         if ($posts) {
             return $this->render('/site/search', [
                 'posts' => $posts,
                 'pages' => $pages,
-                's'     => $s
+                's'     => $s,
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -207,4 +204,4 @@ class SiteController extends Controller
     {
         throw new NotFoundHttpException(Yii::t('writesdown', 'Page not found'));
     }
-} 
+}

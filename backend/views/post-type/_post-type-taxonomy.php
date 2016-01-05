@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _post-type-taxonomy.php.
- * @date      6/4/2015
- * @time      6:32 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -23,7 +21,7 @@ use yii\widgets\ActiveForm;
 <div id="post-type-taxonomy-create" class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">
-            <?= Yii::t("writesdown", "Taxonomies"); ?>
+            <?= Yii::t("writesdown", "Taxonomies") ?>
         </h3>
 
         <div class="box-tools pull-right">
@@ -32,7 +30,12 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="box-body">
-        <?= Html::checkboxList('taxonomy_ids', $model->isNewRecord ? null : ArrayHelper::getColumn($model->taxonomies, 'id'), $taxonomies, ['separator' => '<br />', 'id' => 'taxonomy_list', 'class' => 'checkbox']); ?>
+        <?= Html::checkboxList('taxonomy_ids',
+            $model->isNewRecord ? null : ArrayHelper::getColumn($model->taxonomies, 'id'), $taxonomies, [
+                'separator' => '<br />',
+                'id'        => 'taxonomy_list',
+                'class'     => 'checkbox',
+            ]) ?>
     </div>
 
     <?php $form = ActiveForm::begin([
@@ -42,20 +45,28 @@ use yii\widgets\ActiveForm;
             'class'    => 'ajax-create-taxonomy-create box-footer',
             'data-url' => Url::to(['taxonomy/ajax-create']),
         ],
-    ]); ?>
+    ]) ?>
 
     <div class="hint-block form-group">
-        <?= Yii::t('writesdown', 'Please, fill out the form below to create new taxonomy '); ?>
+        <?= Yii::t('writesdown', 'Please, fill out the form below to create new taxonomy ') ?>
     </div>
 
-    <?= $form->field($taxonomy, 'taxonomy_name', ['template' => '{input}{error}'])->textInput(['placeholder' => $taxonomy->getAttributeLabel('taxonomy_name')]); ?>
+    <?= $form->field($taxonomy, 'taxonomy_name', ['template' => '{input}{error}'])->textInput([
+        'placeholder' => $taxonomy->getAttributeLabel('taxonomy_name'),
+    ]) ?>
 
-    <?= $form->field($taxonomy, 'taxonomy_sn', ['template' => '{input}{error}'])->textInput(['placeholder' => $taxonomy->getAttributeLabel('taxonomy_sn')]); ?>
+    <?= $form->field($taxonomy, 'taxonomy_sn', ['template' => '{input}{error}'])->textInput([
+        'placeholder' => $taxonomy->getAttributeLabel('taxonomy_sn'),
+    ]) ?>
 
-    <?= $form->field($taxonomy, 'taxonomy_pn', ['template' => '{input}{error}'])->textInput(['placeholder' => $taxonomy->getAttributeLabel('taxonomy_pn')]); ?>
+    <?= $form->field($taxonomy, 'taxonomy_pn', ['template' => '{input}{error}'])->textInput([
+        'placeholder' => $taxonomy->getAttributeLabel('taxonomy_pn'),
+    ]) ?>
 
-    <?= Html::submitButton(Yii::t('writesdown', 'Add New Taxonomy'), ['class' => 'btn btn-flat btn-success form-control']) ?>
+    <?= Html::submitButton(Yii::t('writesdown', 'Add New Taxonomy'), [
+        'class' => 'btn btn-flat btn-success form-control',
+    ]) ?>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end() ?>
 
 </div>

@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _search.php.
- * @date      6/4/2015
- * @time      6:00 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -18,18 +16,13 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div id="media-comment-search" class="collapse media-comment-search">
-
     <?php $form = ActiveForm::begin([
-        'action' => [
-            'index',
-            'media_id' => isset($media) ? $media->id : null
-        ],
+        'action' => ['index', 'media_id' => isset($media) ? $media->id : null],
         'method' => 'get',
-    ]); ?>
+    ]) ?>
 
     <div class="row">
         <div class="col-sm-6">
-
             <?= $form->field($model, 'media_title') ?>
 
             <?= $form->field($model, 'comment_author') ?>
@@ -42,12 +35,13 @@ use yii\widgets\ActiveForm;
 
         </div>
         <div class="col-sm-6">
-
             <?= $form->field($model, 'comment_date') ?>
 
             <?= $form->field($model, 'comment_content') ?>
 
-            <?= $form->field($model, 'comment_approved')->dropDownList($model->getCommentApproved(), ['prompt' => '']) ?>
+            <?= $form->field($model, 'comment_approved')->dropDownList($model->getCommentApproved(), [
+                'prompt' => '',
+            ]) ?>
 
             <?= $form->field($model, 'comment_agent') ?>
 
@@ -55,13 +49,18 @@ use yii\widgets\ActiveForm;
 
         </div>
     </div>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Search'), ['class' => 'btn btn-flat btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
-        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-level-up']), ['class' => 'index-search-button btn btn-flat btn-default', "data-toggle" => "collapse", "data-target" => "#media-comment-search"]); ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+        <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
+
+        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-level-up']), [
+            'class'       => 'index-search-button btn btn-flat btn-default',
+            "data-toggle" => "collapse",
+            "data-target" => "#media-comment-search",
+        ]) ?>
+
+    </div>
+    <?php ActiveForm::end() ?>
 
 </div>

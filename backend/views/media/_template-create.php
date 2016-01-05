@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _template-create.php.
- * @date      6/4/2015
- * @time      5:43 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -27,10 +25,7 @@
         </div>
     {% } %}
 {% } %}
-
-
 </script>
-
 <script id="template-download" type="text/x-tmpl">
 {% if (o.files) { %}
     {% for (var i=0, file; file=o.files[i]; i++) { %}

@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      MediaComment.php.
- * @date      6/4/2015
- * @time      4:41 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -20,9 +17,8 @@ use yii\helpers\ArrayHelper;
  *
  * @property Media   $commentMedia
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MediaComment extends BaseComment
 {
@@ -46,7 +42,7 @@ class MediaComment extends BaseComment
     {
         return ArrayHelper::merge(parent::rules(), [
             ['comment_media_id', 'required'],
-            ['comment_media_id', 'integer']
+            ['comment_media_id', 'integer'],
         ]);
     }
 

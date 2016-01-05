@@ -1,18 +1,15 @@
 <?php
 /**
- * @file      Option.php.
- * @date      6/4/2015
- * @time      3:54 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
 
+use common\components\Json;
 use Yii;
 use yii\db\ActiveRecord;
-use common\components\Json;
 
 /**
  * This is the model class for table "{{%option}}".
@@ -23,9 +20,8 @@ use common\components\Json;
  * @property string  $option_label
  * @property string  $option_group
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Option extends ActiveRecord
 {
@@ -45,7 +41,7 @@ class Option extends ActiveRecord
         return [
             [['option_name', 'option_value'], 'required'],
             [['option_value'], 'string'],
-            [['option_name', 'option_label', 'option_group'], 'string', 'max' => 64]
+            [['option_name', 'option_label', 'option_group'], 'string', 'max' => 64],
         ];
     }
 
@@ -80,10 +76,11 @@ class Option extends ActiveRecord
         $model = static::findOne(['option_name' => $option_name]);
 
         if ($model) {
-            if (Json::isJson($model->option_value))
+            if (Json::isJson($model->option_value)) {
                 return Json::decode($model->option_value);
-            else
+            } else {
                 return $model->option_value;
+            }
         }
 
         return null;
@@ -131,6 +128,7 @@ class Option extends ActiveRecord
     {
         /* @var $model \common\models\Option */
         $model = static::findOne(['option_name' => $option_name]);
+
         if (is_array($option_value) || is_object($option_value)) {
             $model->option_value = Json::encode($option_value);
         } else {
@@ -149,8 +147,8 @@ class Option extends ActiveRecord
      */
     public static function getMenu($position = 30)
     {
-        $adminSiteMenu[ $position ] = ['label' => Yii::t('writesdown', 'Settings'), 'icon' => 'fa fa-cogs'];
-        $adminSiteMenu[ $position ]['items'] = static::getSubMenu();
+        $adminSiteMenu[$position] = ['label' => Yii::t('writesdown', 'Settings'), 'icon' => 'fa fa-cogs'];
+        $adminSiteMenu[$position]['items'] = static::getSubMenu();
 
         return $adminSiteMenu;
     }
@@ -163,12 +161,22 @@ class Option extends ActiveRecord
     protected static function getSubMenu()
     {
         /* @var $model \common\models\Option */
-        $models = static::find()->groupBy('option_group')->andWhere(['<>', 'option_group', ''])->andWhere(['<>', 'option_group', 'appearance'])->all();
+        $models = static::find()
+            ->groupBy('option_group')
+            ->andWhere(['<>', 'option_group', ''])
+            ->andWhere(['<>', 'option_group', 'appearance'])
+            ->all();
         $adminSiteSubmenu = null;
+
         foreach ($models as $model) {
-            $adminSiteSubmenu[] = ['icon' => 'fa fa-circle-o', 'label' => Yii::t('writesdown', ucwords($model->option_group)), 'url' => ['/setting/group/', 'id' => strtolower($model->option_group)], 'visible' => Yii::$app->user->can('administrator')];
+            $adminSiteSubmenu[] = [
+                'icon'    => 'fa fa-circle-o',
+                'label'   => Yii::t('writesdown', ucwords($model->option_group)),
+                'url'     => ['/setting/group/', 'id' => strtolower($model->option_group)],
+                'visible' => Yii::$app->user->can('administrator'),
+            ];
         }
 
         return $adminSiteSubmenu;
     }
-} 
+}

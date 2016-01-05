@@ -1,11 +1,8 @@
 <?php
 /**
- * @file    TermRelationship.php.
- * @date    6/4/2015
- * @time    4:26 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -22,9 +19,8 @@ use yii\db\ActiveRecord;
  * @property Post    $post
  * @property Term    $term
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class TermRelationship extends ActiveRecord
 {
@@ -43,7 +39,7 @@ class TermRelationship extends ActiveRecord
     {
         return [
             [['post_id', 'term_id'], 'required'],
-            [['post_id', 'term_id'], 'integer']
+            [['post_id', 'term_id'], 'integer'],
         ];
     }
 

@@ -16,7 +16,7 @@ use yii\helpers\Html;
 
 ?>
 
-<?php $widgetConfig = $widget->getConfig(); ?>
+<?php $widgetConfig = $widget->getConfig() ?>
 
 <?= Html::hiddenInput('Widget[widget_config][class]', $widgetConfig['class']) ?>
 

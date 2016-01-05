@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      MenuItem.php.
- * @date      6/4/2015
- * @time      4:39 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -27,9 +24,8 @@ use yii\db\ActiveRecord;
  *
  * @property Menu    $menu
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MenuItem extends ActiveRecord
 {
@@ -53,7 +49,7 @@ class MenuItem extends ActiveRecord
             [['menu_id', 'menu_order', 'menu_parent'], 'integer'],
             [['menu_url', 'menu_description', 'menu_options'], 'string'],
             [['menu_label'], 'string', 'max' => 255],
-            [['menu_url'], 'string', 'max' => 255]
+            [['menu_url'], 'string', 'max' => 255],
         ];
     }
 

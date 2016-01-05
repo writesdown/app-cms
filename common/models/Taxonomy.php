@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      Taxonomy.php.
- * @date      6/4/2015
- * @time      4:28 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -11,8 +8,8 @@
 namespace common\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\behaviors\SluggableBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%taxonomy}}".
@@ -31,7 +28,6 @@ use yii\behaviors\SluggableBehavior;
  * @property PostType[]         $postTypes
  * @property Term[]             $terms
  *
- * @package  common\models
  * @author   Agiel K. Saputra <13nightevil@gmail.com>
  * @since    1.0
  */
@@ -114,7 +110,8 @@ class Taxonomy extends ActiveRecord
      */
     public function getPostTypes()
     {
-        return $this->hasMany(PostType::className(), ['id' => 'post_type_id'])->viaTable('{{%post_type_taxonomy}}', ['taxonomy_id' => 'id']);
+        return $this->hasMany(PostType::className(), ['id' => 'post_type_id'])->viaTable('{{%post_type_taxonomy}}',
+            ['taxonomy_id' => 'id']);
     }
 
     /**
@@ -134,7 +131,7 @@ class Taxonomy extends ActiveRecord
     {
         return [
             self::HIERARCHICAL     => "Yes",
-            self::NON_HIERARCHICAL => "No"
+            self::NON_HIERARCHICAL => "No",
         ];
     }
 
@@ -147,7 +144,7 @@ class Taxonomy extends ActiveRecord
     {
         return [
             self::SMB     => "Yes",
-            self::NON_SMB => "No"
+            self::NON_SMB => "No",
         ];
     }
 }

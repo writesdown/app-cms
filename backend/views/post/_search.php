@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _search.php.
- * @date      6/4/2015
- * @time      6:14 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -20,11 +18,12 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div id="post-search" class="post-search collapse">
-
     <?php $form = ActiveForm::begin([
-        'action' => isset($user) ? ['index', 'post_type' => $postType->id, 'user' => $user] : ['index', 'post_type' => $postType->id],
+        'action' => isset($user)
+            ? ['index', 'post_type' => $postType->id, 'user' => $user]
+            : ['index', 'post_type' => $postType->id],
         'method' => 'get',
-    ]); ?>
+    ]) ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -39,6 +38,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'post_excerpt') ?>
 
             <?= $form->field($model, 'post_content') ?>
+
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'post_modified') ?>
@@ -49,18 +49,27 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'post_date') ?>
 
-            <?= $form->field($model, 'post_comment_status')->dropDownList($model->getCommentStatus(), ['prompt' => '']) ?>
+            <?= $form->field($model, 'post_comment_status')->dropDownList(
+                $model->getCommentStatus(),
+                ['prompt' => '']
+            ) ?>
 
             <?= $form->field($model, 'post_comment_count') ?>
+
         </div>
     </div>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Search'), ['class' => 'btn btn-flat btn-primary']) ?>
+
         <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
-        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), ['class' => 'index-search-button btn btn-flat btn-default', "data-toggle" => "collapse", "data-target" => "#post-search"]); ?>
+
+        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
+            'class'       => 'index-search-button btn btn-flat btn-default',
+            "data-toggle" => "collapse",
+            "data-target" => "#post-search",
+        ]) ?>
+
     </div>
-
-    <?php ActiveForm::end(); ?>
-
+    <?php ActiveForm::end() ?>
+    
 </div>

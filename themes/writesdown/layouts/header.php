@@ -1,21 +1,17 @@
 <?php
 /**
- * @file      header.php
- * @date      8/23/2015
- * @time      6:50 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
+use common\models\Menu;
+use themes\writesdown\widgets\Nav;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
-use themes\writesdown\widgets\Nav;
-
-/* MODELS */
-use common\models\Menu;
 
 /* @var $this yii\web\View */
 /* @var $assetBundle themes\writesdown\assets\ThemeAsset */
@@ -39,7 +35,7 @@ use common\models\Menu;
                 <a href="#"><i class="fa fa-youtube"></i> </a>
             </li>
             <li class="rss">
-                <?= Html::a('<i class="fa fa-rss"></i>', ['/feed']); ?>
+                <?= Html::a('<i class="fa fa-rss"></i>', ['/feed']) ?>
             </li>
         </ul>
     </div>
@@ -55,21 +51,23 @@ use common\models\Menu;
                 <span class="icon-bar"></span>
             </button>
             <?php $brandTag = Yii::$app->controller->route == 'site/index' ? 'h1' : 'div' ?>
-            <?= Html::beginTag($brandTag, ['class'=>'navbar-brand']) .
-                Html::beginTag('a', ['href' => Yii::$app->homeUrl]) .
-                Html::img($assetBundle->baseUrl . '/img/logo.png', ['alt' => 'Website Logo']).
-                Html::tag('span', Html::encode($siteTitle)) .
-                Html::endTag('a') .
-                Html::endTag($brandTag)
-            ?>
+            <?= Html::beginTag($brandTag, ['class' => 'navbar-brand']) ?>
+
+            <a href="<?= Url::base(true) ?>">
+                <img src="<?= $assetBundle->baseUrl . '/img/logo.png' ?>" alt="Website Logo">
+                <span><?= Html::encode($siteTitle) ?></span>
+            </a>
+            <?= Html::endTag($brandTag) ?>
+
         </div>
         <div id="menu-primary" class="collapse navbar-collapse">
             <?= Nav::widget([
                 'activateParents' => true,
                 'options'         => ['class' => 'nav navbar-nav navbar-right'],
                 'items'           => Menu::getMenu('primary'),
-                'encodeLabels'    => false
-            ]); ?>
+                'encodeLabels'    => false,
+            ]) ?>
+
         </div>
     </div>
 </nav>
@@ -81,6 +79,7 @@ use common\models\Menu;
                     <?= Breadcrumbs::widget([
                         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                     ]) ?>
+
                 </nav>
             </div>
             <div class="col-md-4">
@@ -88,17 +87,25 @@ use common\models\Menu;
                     'action'  => Url::to(['/site/search']),
                     'method'  => 'get',
                     'id'      => 'search-form-top',
-                    'options' => ['class' => 'form-search']
-                ]); ?>
+                    'options' => ['class' => 'form-search'],
+                ]) ?>
+
                 <div class="input-group">
-                    <?= Html::textInput('s', Yii::$app->request->get('s'), ['class' => 'form-control', 'placeholder' => 'Search for...']); ?>
+                    <?= Html::textInput('s', Yii::$app->request->get('s'), [
+                        'class'       => 'form-control',
+                        'placeholder' => 'Search for...',
+                    ]) ?>
+
                     <span class="input-group-btn">
-                        <?= Html::submitButton('<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search', [
-                            'class' => ' btn btn-default',
-                        ]); ?>
+                        <?= Html::submitButton(
+                            '<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search',
+                            ['class' => ' btn btn-default']
+                        ) ?>
+
                     </span>
                 </div>
-                <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end() ?>
+
             </div>
         </div>
     </div>

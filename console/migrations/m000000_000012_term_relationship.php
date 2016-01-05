@@ -6,6 +6,7 @@ use yii\db\Schema;
  * Class m000000_000012_term_relationship
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since  0.1.0
  */
 class m000000_000012_term_relationship extends \yii\db\Migration
 {
@@ -15,10 +16,11 @@ class m000000_000012_term_relationship extends \yii\db\Migration
     public function up()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
-        
+
         $this->createTable('{{%term_relationship}}', [
             'post_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
             'term_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
@@ -32,7 +34,7 @@ class m000000_000012_term_relationship extends \yii\db\Migration
          */
         $this->batchInsert('{{%term_relationship}}', ['post_id', 'term_id'], [
             [1, 1],
-            [1, 2]
+            [1, 2],
         ]);
     }
 

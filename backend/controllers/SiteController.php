@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      SiteController.php.
- * @date      6/4/2015
- * @time      5:09 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -30,7 +27,6 @@ use yii\web\NotFoundHttpException;
 /**
  * Site controller.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -47,7 +43,12 @@ class SiteController extends Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'login', 'request-password-reset', 'reset-password', 'forbidden', 'not-found', 'terms'
+                            'login',
+                            'request-password-reset',
+                            'reset-password',
+                            'forbidden',
+                            'not-found',
+                            'terms',
                         ],
                         'allow'   => true,
                     ],
@@ -93,20 +94,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // Get list User model
         $userQuery = User::find()->andWhere(['status' => '10']);
         $userCloneQuery = clone $userQuery;
         $userCount = $userCloneQuery->count();
         $users = $userQuery->limit(8)->orderBy(['id' => SORT_DESC])->all();
-
+        // Get list Post model
         $postQuery = Post::find()->andWhere(['post_status' => 'publish']);
         $postCloneQuery = clone $postQuery;
         $postCount = $postCloneQuery->count();
         $posts = $postQuery->limit(5)->orderBy(['id' => SORT_DESC])->all();
-
+        // Get list PostComment model
         $commentQuery = PostComment::find()->andWhere(['comment_approved' => 'approved']);
         $commentCloneQuery = clone $commentQuery;
         $commentCount = $commentCloneQuery->count();
-        $comments = $commentQuery->limit(5)->orderBy(['id' => SORT_DESC])->all();
+        $comments = $commentQuery->limit(3)->orderBy(['id' => SORT_DESC])->all();
 
         return $this->render('index', [
             'users'        => $users,
@@ -119,26 +121,27 @@ class SiteController extends Controller
     }
 
     /**
-     * Show login page.
+     * Show login page and process login page.
      *
      * @return string|\yii\web\Response
      */
     public function actionLogin()
     {
-        // Change layout and bodyClass of login-page
+        // Set layout and bodyClass for login-page
         $this->layout = 'blank';
         Yii::$app->params['bodyClass'] = 'login-page';
 
-        if (!\Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
             return $this->render('login', [
-                'model' => $model,
+                'model' => $model
             ]);
         }
     }
@@ -162,11 +165,11 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        // Change layout and body class of register-page
+        // Set layout and body class of register-page
         $this->layout = 'blank';
         Yii::$app->params['bodyClass'] = 'register-page';
-
         $model = new SignupForm();
+
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
@@ -190,16 +193,18 @@ class SiteController extends Controller
         // Change layout and body class of register page
         $this->layout = 'blank';
         Yii::$app->params['bodyClass'] = 'register-page';
-
         $model = new PasswordResetRequestForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
 
                 return $this->goHome();
             } else {
-                Yii::$app->getSession()->setFlash('error',
-                    'Sorry, we are unable to reset password for email provided.');
+                Yii::$app->getSession()->setFlash(
+                    'error',
+                    'Sorry, we are unable to reset password for email provided.'
+                );
             }
         }
 

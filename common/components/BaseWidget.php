@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      BaseWidget.php
- * @date      9/10/2015
- * @time      3:15 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -15,10 +12,8 @@ use yii\base\Object;
 /**
  * Class BaseWidget
  *
- * @package common\components
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.2.0
- *
  */
 abstract class BaseWidget extends Object
 {

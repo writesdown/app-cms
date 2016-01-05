@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      update.php.
- * @date      6/4/2015
- * @time      11:52 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -16,11 +14,8 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Setting'), 'u
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
 ?>
-
 <div class="option-update">
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
 </div>

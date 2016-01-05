@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      User.php.
- * @date      6/4/2015
- * @time      4:17 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -11,10 +8,10 @@
 namespace common\models;
 
 use Yii;
+use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
-use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -40,9 +37,8 @@ use yii\base\NotSupportedException;
  * @property Media[] $media
  * @property Post[]  $posts
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -70,7 +66,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'email', 'full_name', 'display_name', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
+            [
+                ['username', 'email', 'full_name', 'display_name', 'password_hash', 'password_reset_token'],
+                'string',
+                'max' => 255,
+            ],
             [['username', 'email'], 'required'],
             [['username', 'email'], 'unique'],
             ['username', 'filter', 'filter' => 'trim'],
@@ -273,7 +273,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function passwordValidation()
     {
-        $user = self::findOne(Yii::$app->user->id);
+        $user = static::findOne(Yii::$app->user->id);
         if (!$user || !$user->validatePassword($this->password_old)) {
             $this->addError('password_old', Yii::t('writesdown', 'The old password is not correct.'));
         }
@@ -302,7 +302,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $status = $this->getStatus();
 
-        return isset($status[ $this->status ]) ? $status[ $this->status ] : "unknown($this->status)";
+        return isset($status[$this->status]) ? $status[$this->status] : "unknown($this->status)";
     }
 
     /**

@@ -1,15 +1,13 @@
 <?php
 /**
- * @file    RenderMenu.php.
- * @date    6/4/2015
- * @time    6:09 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\widgets;
 
+use common\models\MenuItem;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
@@ -17,7 +15,8 @@ use yii\helpers\Html;
 /**
  * Class MenuRenderer to render menu item in admin menu.
  *
- * @package backend\widgets\menubuilder
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.1.0
  */
 class RenderMenu extends Widget
 {
@@ -33,8 +32,9 @@ class RenderMenu extends Widget
     {
         echo Html::beginTag('ul', ['class' => 'list-menu dd-list']);
 
-        if ($this->items)
+        if ($this->items) {
             $this->renderRecursive($this->items);
+        }
 
         echo Html::endTag('ul');
     }
@@ -42,24 +42,18 @@ class RenderMenu extends Widget
     /**
      * Render menu item recursively.
      *
-     * @param $items
+     * @param MenuItem[] $items
      */
     protected function renderRecursive($items)
     {
-        /**
-         * @var $item \common\models\MenuItem
-         */
         foreach ($items as $item) {
             echo Html::beginTag('li', ['class' => 'dd-item', 'data-id' => $item->id]);
-
-            // echo $this->render('render', ['item' => $item]);
             echo $this->renderFile('@app/views/menu/_render-item.php', ['item' => $item]);
             if (isset($item->items) && count($item->items)) {
                 echo Html::beginTag('ul', ['class' => 'dd-list children']);
                 $this->renderRecursive($item['items']);
                 echo Html::endTag('ul');
             }
-
             echo Html::endTag('li');
         }
     }

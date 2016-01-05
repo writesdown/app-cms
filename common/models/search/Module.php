@@ -2,13 +2,16 @@
 
 namespace common\models\search;
 
+use common\models\Module as ModuleModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Module as ModuleModel;
 
 /**
  * Module represents the model behind the search form about `common\models\Module`.
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.2.0
  */
 class Module extends ModuleModel
 {
@@ -19,7 +22,18 @@ class Module extends ModuleModel
     {
         return [
             [['id', 'module_status', 'module_bb', 'module_fb'], 'integer'],
-            [['module_name', 'module_title', 'module_description', 'module_config', 'module_dir', 'module_date', 'module_modified'], 'safe'],
+            [
+                [
+                    'module_name',
+                    'module_title',
+                    'module_description',
+                    'module_config',
+                    'module_dir',
+                    'module_date',
+                    'module_modified',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -50,15 +64,16 @@ class Module extends ModuleModel
         $this->load($params);
         if (!$this->validate()) {
             $query->where('1=0');
+
             return $dataProvider;
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'module_status' => $this->module_status,
-            'module_bb' => $this->module_bb,
-            'module_fb' => $this->module_fb,
-            'module_date' => $this->module_date,
+            'id'              => $this->id,
+            'module_status'   => $this->module_status,
+            'module_bb'       => $this->module_bb,
+            'module_fb'       => $this->module_fb,
+            'module_date'     => $this->module_date,
             'module_modified' => $this->module_modified,
         ]);
 

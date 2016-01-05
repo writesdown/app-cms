@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _search.php.
- * @date      6/4/2015
- * @time      12:01 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -16,13 +14,11 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $taxonomy common\models\Taxonomy */
 ?>
-
 <div id="term-search" class="term-search collapse">
-
     <?php $form = ActiveForm::begin([
         'action' => ['view', 'id' => $taxonomy->id],
         'method' => 'get',
-    ]); ?>
+    ]) ?>
 
     <?= $form->field($model, 'term_name')->textInput(['id' => 'term-search-term_name']) ?>
 
@@ -36,10 +32,16 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Search'), ['class' => 'btn btn-flat btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
-        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), ['class' => 'index-search-button btn btn-flat btn-default', "data-toggle" => "collapse", "data-target" => "#term-search"]); ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+        <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
+
+        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
+            'class'       => 'index-search-button btn btn-flat btn-default',
+            "data-toggle" => "collapse",
+            "data-target" => "#term-search",
+        ]) ?>
+
+    </div>
+    <?php ActiveForm::end() ?>
 
 </div>

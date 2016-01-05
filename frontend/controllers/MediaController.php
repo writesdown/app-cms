@@ -1,37 +1,32 @@
 <?php
 /**
- * @file      MediaController.php.
- * @date      6/4/2015
- * @time      10:17 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
 
+use common\models\Media;
+use common\models\MediaComment as Comment;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-
-/* MODEL */
-use common\models\Media;
-use common\models\MediaComment as Comment;
 
 /**
  * Class MediaController
  *
  * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MediaController extends Controller
 {
     /**
-     * @param null $id
-     * @param null $media_slug
+     * @param integer|null $id
+     * @param string|null  $media_slug
      *
-     * @return string
+     * @return mixed
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionView($id = null, $media_slug = null)
@@ -42,26 +37,28 @@ class MediaController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-        } else if ($media_slug) {
+        } elseif ($media_slug) {
             $model = $this->findModelBySlug($media_slug);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
-            if (!$comment->comment_parent)
+            if (!$comment->comment_parent) {
                 $model->media_comment_count++;
-
+            }
             if ($model->save()) {
                 $this->refresh();
             }
         }
 
-        if($model->media_password && $model->media_password !== Yii::$app->request->post('password')){
+        if ($model->media_password && $model->media_password !== Yii::$app->request->post('password')) {
             return $this->render('protected', ['media' => $model]);
         }
 
-        if (is_file($this->view->theme->basePath . '/media/view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1)) . '.php')) {
+        if (is_file($this->view->theme->basePath . '/media/view-'
+            . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1)) . '.php')
+        ) {
             $render = 'view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1));
         }
 

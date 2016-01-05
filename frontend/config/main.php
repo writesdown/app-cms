@@ -1,5 +1,5 @@
 <?php
-use \yii\web\Request;
+use yii\web\Request;
 
 $params = array_merge(
     require(__DIR__ . '/../../common/config/params.php'),
@@ -8,9 +8,7 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
-// Replace url
-$request = new Request();
-$baseUrlBack = $request->getBaseUrl() . '/admin';
+$baseUrlBack = (new Request())->getBaseUrl() . '/admin';
 
 return [
     'id'                  => 'app-frontend',
@@ -58,7 +56,7 @@ return [
         'authManager'     => [
             'class' => 'yii\rbac\DbManager',
         ],
-        'view' => ['theme' => []],
+        'view'            => ['theme' => []],
     ],
     'params'              => $params,
 ];

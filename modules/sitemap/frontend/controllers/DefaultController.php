@@ -1,22 +1,31 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace modules\sitemap\frontend\controllers;
 
-use Yii;
-use yii\filters\AccessControl;
-use yii\helpers\Url;
-use yii\web\Controller;
-use yii\data\Pagination;
-use yii\helpers\ArrayHelper;
-
-/* MODEL */
+use common\models\Media;
 use common\models\Option;
-use common\models\PostType;
 use common\models\Post;
+use common\models\PostType;
 use common\models\Taxonomy;
 use common\models\Term;
-use common\models\Media;
+use Yii;
+use yii\data\Pagination;
+use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\web\Controller;
 
+/**
+ * Class DefaultController
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.2.0
+ */
 class DefaultController extends Controller
 {
     /**
@@ -40,7 +49,7 @@ class DefaultController extends Controller
                             $option = Option::get('sitemap');
 
                             return $option['enable_sitemap'];
-                        }
+                        },
                     ],
                 ],
             ],
@@ -66,8 +75,9 @@ class DefaultController extends Controller
         $items = [];
 
         foreach ($postTypes as $postType) {
-
-            if (!isset($this->_option['post_type'][ $postType->id ]['enable']) || !$this->_option['post_type'][ $postType->id ]['enable']) {
+            if (!isset($this->_option['post_type'][$postType->id]['enable'])
+                || !$this->_option['post_type'][$postType->id]['enable']
+            ) {
                 continue;
             }
 
@@ -81,34 +91,38 @@ class DefaultController extends Controller
                 $countQuery = clone $query;
                 $pages = new Pagination([
                     'totalCount' => $countQuery->count(),
-                    'pageSize'   => $this->_option['entries_per_page']
+                    'pageSize'   => $this->_option['entries_per_page'],
                 ]);
                 for ($i = 1; $i <= $pages->pageCount; $i++) {
                     $items[] = [
                         'loc'     => Yii::$app->urlManager->hostInfo . Url::to([
                                 'view',
                                 'type' => 'p',
-                                'slug' => $postType->post_type_slug, 'page' => $i
+                                'slug' => $postType->post_type_slug,
+                                'page' => $i,
                             ]),
-                        'lastmod' => $lastmod->format('r')
+                        'lastmod' => $lastmod->format('r'),
                     ];
                 }
             }
         }
 
         foreach ($taxonomies as $taxonomy) {
-
-            if (!isset($this->_option['taxonomy'][ $taxonomy->id ]['enable']) || !$this->_option['taxonomy'][ $taxonomy->id ]['enable']) {
+            if (!isset($this->_option['taxonomy'][$taxonomy->id]['enable'])
+                || !$this->_option['taxonomy'][$taxonomy->id]['enable']
+            ) {
                 continue;
             }
 
             if ($terms = $taxonomy->terms) {
                 $post = Post::find()
                     ->from(['post' => Post::tableName()])
-                    ->innerJoinWith(['terms' => function ($query) {
-                        /* @var $query \yii\db\ActiveQuery */
-                        $query->from(['term' => Term::tableName()]);
-                    }])
+                    ->innerJoinWith([
+                        'terms' => function ($query) {
+                            /* @var $query \yii\db\ActiveQuery */
+                            $query->from(['term' => Term::tableName()]);
+                        },
+                    ])
                     ->where(['IN', 'term.id', ArrayHelper::getColumn($terms, 'id')])
                     ->andWhere(['post.post_status' => 'publish'])
                     ->orderBy(['post.id' => SORT_DESC])
@@ -120,7 +134,7 @@ class DefaultController extends Controller
                     $countQuery = clone $query;
                     $pages = new Pagination([
                         'totalCount' => $countQuery->count(),
-                        'pageSize'   => $this->_option['entries_per_page']
+                        'pageSize'   => $this->_option['entries_per_page'],
                     ]);
 
                     for ($i = 1; $i <= $pages->pageCount; $i++) {
@@ -129,9 +143,9 @@ class DefaultController extends Controller
                                     'view',
                                     'type' => 'c',
                                     'slug' => $taxonomy->taxonomy_slug,
-                                    'page' => $i
+                                    'page' => $i,
                                 ]),
-                            'lastmod' => $lastmod->format('r')
+                            'lastmod' => $lastmod->format('r'),
                         ];
                     }
                 }
@@ -143,7 +157,7 @@ class DefaultController extends Controller
             $countQuery = clone $query;
             $pages = new Pagination([
                 'totalCount' => $countQuery->count(),
-                'pageSize'   => $this->_option['entries_per_page']
+                'pageSize'   => $this->_option['entries_per_page'],
             ]);
 
             if ($lastMedia = $query->orderBy(['id' => SORT_DESC])->one()) {
@@ -154,9 +168,9 @@ class DefaultController extends Controller
                                 'view',
                                 'type' => 'm',
                                 'slug' => 'media',
-                                'page' => $i
+                                'page' => $i,
                             ]),
-                        'lastmod' => $lastmod->format('r')
+                        'lastmod' => $lastmod->format('r'),
                     ];
                 }
             }
@@ -205,7 +219,7 @@ class DefaultController extends Controller
             $item['priority'] = $this->_option['home']['priority'];
 
             return $this->renderPartial('home', ['item' => $item]);
-        } else if ($type === 'p') {
+        } elseif ($type === 'p') {
             $postType = PostType::find()->where(['post_type_slug' => $slug])->one();
             $posts = $postType->getPosts()
                 ->andWhere(['post_status' => 'publish'])
@@ -215,20 +229,20 @@ class DefaultController extends Controller
 
             foreach ($posts as $post) {
                 $lastmod = new \DateTime($post->post_modified, new \DateTimeZone(Option::get('time_zone')));
-                $items[ $post->id ]['loc'] = $post->url;
-                $items[ $post->id ]['lastmod'] = $lastmod->format('r');
-                $items[ $post->id ]['changefreq'] = $this->_option['post_type'][ $postType->id ]['changefreq'];
-                $items[ $post->id ]['priority'] = $this->_option['post_type'][ $postType->id ]['priority'];
+                $items[$post->id]['loc'] = $post->url;
+                $items[$post->id]['lastmod'] = $lastmod->format('r');
+                $items[$post->id]['changefreq'] = $this->_option['post_type'][$postType->id]['changefreq'];
+                $items[$post->id]['priority'] = $this->_option['post_type'][$postType->id]['priority'];
 
                 if ($images = $post->getMedia()->where(['LIKE', 'media_mime_type', 'image/'])->all()) {
                     foreach ($images as $image) {
                         $metadata = $image->getMeta('metadata');
-                        $items[ $post->id ]['image'][ $image->id ]['loc'] = $image->uploadUrl .
+                        $items[$post->id]['image'][$image->id]['loc'] = $image->uploadUrl .
                             $metadata['media_versions']['full']['url'];
-                        $items[ $post->id ]['image'][ $image->id ]['title'] = $image->media_title ?
+                        $items[$post->id]['image'][$image->id]['title'] = $image->media_title ?
                             $image->media_title :
                             null;
-                        $items[ $post->id ]['image'][ $image->id ]['caption'] = $image->media_excerpt ?
+                        $items[$post->id]['image'][$image->id]['caption'] = $image->media_excerpt ?
                             $image->media_excerpt :
                             null;
                     }
@@ -236,7 +250,7 @@ class DefaultController extends Controller
             }
 
             return $this->renderPartial('post-type', ['items' => $items]);
-        } else if ($type === 'c') {
+        } elseif ($type === 'c') {
             $taxonomy = Taxonomy::find()->where(['taxonomy_slug' => $slug])->one();
             $terms = $taxonomy->getTerms()
                 ->offset($page * $this->_option['entries_per_page'])
@@ -251,23 +265,22 @@ class DefaultController extends Controller
 
                 if ($post) {
                     $lastmod = new \DateTime($post->post_modified, new \DateTimeZone(Option::get('time_zone')));
-                    $items[ $term->id ]['loc'] = $term->url;
-                    $items[ $term->id ]['lastmod'] = $lastmod->format('r');
-                    $items[ $term->id ]['changefreq'] = $this->_option['taxonomy'][ $taxonomy->id ]['changefreq'];
-                    $items[ $term->id ]['priority'] = $this->_option['taxonomy'][ $taxonomy->id ]['priority'];
+                    $items[$term->id]['loc'] = $term->url;
+                    $items[$term->id]['lastmod'] = $lastmod->format('r');
+                    $items[$term->id]['changefreq'] = $this->_option['taxonomy'][$taxonomy->id]['changefreq'];
+                    $items[$term->id]['priority'] = $this->_option['taxonomy'][$taxonomy->id]['priority'];
                 }
             }
 
             return $this->renderPartial('taxonomy', ['items' => $items]);
-
-        } else if ($type === 'm') {
+        } elseif ($type === 'm') {
             $mediaSet = Media::find()->offset($page * $this->_option['entries_per_page'])->limit($this->_option['entries_per_page'])->all();
             foreach ($mediaSet as $media) {
                 $lastmod = new \DateTime($media->media_modified, new \DateTimeZone(Option::get('time_zone')));
-                $items[ $media->id ]['loc'] = $media->url;
-                $items[ $media->id ]['lastmod'] = $lastmod->format('r');
-                $items[ $media->id ]['changefreq'] = $this->_option['media']['changefreq'];
-                $items[ $media->id ]['priority'] = $this->_option['media']['priority'];
+                $items[$media->id]['loc'] = $media->url;
+                $items[$media->id]['lastmod'] = $lastmod->format('r');
+                $items[$media->id]['changefreq'] = $this->_option['media']['changefreq'];
+                $items[$media->id]['priority'] = $this->_option['media']['priority'];
             }
 
             return $this->renderPartial('media', ['items' => $items]);
@@ -284,7 +297,6 @@ class DefaultController extends Controller
         /*  @var $postType \common\models\PostType */
         /*  @var $taxonomy \common\models\Taxonomy */
         if (parent::beforeAction($action)) {
-
             $this->_option = Option::get('sitemap');
 
             return true;

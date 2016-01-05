@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      index.php
- * @date      9/3/2015
- * @time      2:00 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -23,5 +21,5 @@ $this->params['breadcrumbs'][] = $this->title;
         'option'     => $option,
         'postTypes'  => $postTypes,
         'taxonomies' => $taxonomies,
-    ]); ?>
+    ]) ?>
 </div>

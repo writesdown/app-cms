@@ -1,22 +1,19 @@
 <?php
 /**
- * @file      Media.php.
- * @date      6/4/2015
- * @time      4:44 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
 
-use Yii;
-use yii\db\ActiveRecord;
-use yii\behaviors\SluggableBehavior;
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\web\UploadedFile;
 use common\components\Json;
+use Yii;
+use yii\behaviors\SluggableBehavior;
+use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%media}}".
@@ -43,9 +40,8 @@ use common\components\Json;
  * @property MediaComment[] $mediaComments
  * @property MediaMeta[]    $mediaMeta
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Media extends ActiveRecord
 {
@@ -73,9 +69,7 @@ class Media extends ActiveRecord
             [
                 'class'      => SluggableBehavior::className(),
                 'attribute'  => 'media_title',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['media_slug'],
-                ],
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['media_slug']],
             ],
         ];
     }
@@ -104,7 +98,15 @@ class Media extends ActiveRecord
             [['media_mime_type'], 'string', 'max' => 100],
             [['media_comment_status'], 'string', 'max' => 20],
             [['media_date', 'media_modified', 'media_slug'], 'safe'],
-            [['file'], 'file', 'maxSize' => 1024 * 1024 * 25],
+            [
+                ['file'],
+                'file',
+                'maxSize'    => 1024 * 1024 * 25,
+                'extensions' => 'jpg, jpeg, png, gif,'
+                    . 'pdf, doc, docx, key, ppt, pptx, pps, ppsx, odt, xls, xlsx, zip,'
+                    . 'mp3, m4a, ogg, wav'
+                    . 'mp4, m4v, mov, wmv, avi, mpg,ogv, 3gp, 3g2',
+            ],
             [['file'], 'required', 'on' => 'upload'],
         ];
     }
@@ -190,7 +192,6 @@ class Media extends ActiveRecord
         $model = MediaMeta::findOne(['meta_name' => $meta_name, 'media_id' => $this->id]);
 
         if ($model) {
-
             if (Json::isJson($model->meta_value)) {
                 return Json::decode($model->meta_value);
             }
@@ -225,7 +226,6 @@ class Media extends ActiveRecord
 
             return $model->save();
         }
-
     }
 
     /**
@@ -241,8 +241,9 @@ class Media extends ActiveRecord
         /* @var $model \common\models\MediaMeta */
         $model = MediaMeta::findOne(['meta_name' => $meta_name, 'media_id' => $this->id]);
 
-        if (is_array($meta_value) || is_object($meta_value))
+        if (is_array($meta_value) || is_object($meta_value)) {
             $meta_value = Json::encode($meta_value);
+        }
 
         $model->meta_value = $meta_value;
 
@@ -277,16 +278,17 @@ class Media extends ActiveRecord
      *
      * @return string
      */
-    public function getThumbnail($version = 'thumbnail', $options = []){
+    public function getThumbnail($version = 'thumbnail', $options = [])
+    {
         $thumbnail = '';
         $metadata = $this->getMeta('metadata');
 
-        if(preg_match("/^image/", $this->media_mime_type)){
-            if(isset($metadata['media_versions'][$version])){
+        if (preg_match("/^image/", $this->media_mime_type)) {
+            if (isset($metadata['media_versions'][$version])) {
                 $image_src = $metadata['media_versions'][$version]['url'];
                 $image_width = $metadata['media_versions'][$version]['width'];
                 $image_height = $metadata['media_versions'][$version]['height'];
-            }else{
+            } else {
                 $image_src = $metadata['media_versions']['full']['url'];
                 $image_width = $metadata['media_versions']['full']['width'];
                 $image_height = $metadata['media_versions']['full']['height'];

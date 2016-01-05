@@ -1,28 +1,22 @@
 <?php
 /**
- * @file      PostComment.php.
- * @date      6/4/2015
- * @time      4:57 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\PostComment as PostCommentModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/* MODEL */
-use common\models\PostComment as PostCommentModel;
-
 /**
  * PostComment represents the model behind the search form about `common\models\PostComment`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostComment extends PostCommentModel
 {
@@ -33,7 +27,20 @@ class PostComment extends PostCommentModel
     {
         return [
             [['id', 'comment_post_id', 'comment_parent', 'comment_user_id'], 'integer'],
-            [['comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_ip', 'comment_date', 'comment_content', 'comment_approved', 'comment_agent', 'post_title'], 'safe'],
+            [
+                [
+                    'comment_author',
+                    'comment_author_email',
+                    'comment_author_url',
+                    'comment_author_ip',
+                    'comment_date',
+                    'comment_content',
+                    'comment_approved',
+                    'comment_agent',
+                    'post_title',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -60,10 +67,12 @@ class PostComment extends PostCommentModel
     {
         $query = PostCommentModel::find();
 
-        $query->innerJoinWith(['commentPost' => function ($query) {
-            /* @var $query \yii\db\ActiveQuery */
-            return $query->from(['post' => Post::tableName()]);
-        }]);
+        $query->innerJoinWith([
+            'commentPost' => function ($query) {
+                /* @var $query \yii\db\ActiveQuery */
+                return $query->from(['post' => Post::tableName()]);
+            },
+        ]);
 
         $query->andWhere(['post.post_type' => $post_type]);
 
@@ -76,8 +85,8 @@ class PostComment extends PostCommentModel
             'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->load($params);

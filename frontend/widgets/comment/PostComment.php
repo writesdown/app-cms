@@ -1,24 +1,21 @@
 <?php
 /**
- * @file      PostComment.php.
- * @date      6/4/2015
- * @time      11:21 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets\comment;
 
-use yii\data\Pagination;
 use common\models\PostComment as Comment;
+use yii\data\Pagination;
 
 /**
  * Class PostComment
  *
  * @package frontend\widgets\comment
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostComment extends BaseComment
 {
@@ -34,7 +31,14 @@ class PostComment extends BaseComment
 
         $comments = [];
 
-        $query = Comment::find()->select(['id', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_date', 'comment_content'])
+        $query = Comment::find()->select([
+            'id',
+            'comment_author',
+            'comment_author_email',
+            'comment_author_url',
+            'comment_date',
+            'comment_content',
+        ])
             ->andWhere(['comment_parent' => 0])
             ->andWhere(['comment_post_id' => $this->model->id])
             ->andWhere(['comment_approved' => 'approved'])
@@ -44,22 +48,22 @@ class PostComment extends BaseComment
 
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => $this->pageSize
+            'pageSize'   => $this->pageSize,
         ]);
 
         $this->pages = $pages;
 
-        $models = $query->offset($pages->offset)
+        $models = $query
+            ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
         foreach ($models as $model) {
-            $comments[ $model->id ] = $model;
-            $comments[ $model->id ]['child'] = $this->getChildren($model->id);
+            $comments[$model->id] = $model;
+            $comments[$model->id]['child'] = $this->getChildren($model->id);
         }
 
         $this->comments = $comments;
-
     }
 
     /**
@@ -75,7 +79,14 @@ class PostComment extends BaseComment
 
         $comments = [];
 
-        $models = Comment::find()->select(['id', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_date', 'comment_content'])
+        $models = Comment::find()->select([
+            'id',
+            'comment_author',
+            'comment_author_email',
+            'comment_author_url',
+            'comment_date',
+            'comment_content',
+        ])
             ->andWhere(['comment_parent' => $id])
             ->andWhere(['comment_post_id' => $this->model->id])
             ->andWhere(['comment_approved' => 'approved'])
@@ -86,8 +97,8 @@ class PostComment extends BaseComment
             $comments = null;
         } else {
             foreach ($models as $model) {
-                $comments[ $model->id ] = $model;
-                $comments[ $model->id ]['child'] = $this->getChildren($model->id);
+                $comments[$model->id] = $model;
+                $comments[$model->id]['child'] = $this->getChildren($model->id);
             }
         }
 

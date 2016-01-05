@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      PasswordResetRequestForm.php.
- * @date      6/4/2015
- * @time      4:37 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -16,9 +13,8 @@ use yii\base\Model;
 /**
  * Password reset request form
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PasswordResetRequestForm extends Model
 {
@@ -36,10 +32,12 @@ class PasswordResetRequestForm extends Model
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'exist',
+            [
+                'email',
+                'exist',
                 'targetClass' => '\common\models\User',
                 'filter'      => ['status' => User::STATUS_ACTIVE],
-                'message'     => 'There is no user with such email.'
+                'message'     => 'There is no user with such email.',
             ],
         ];
     }
@@ -63,7 +61,10 @@ class PasswordResetRequestForm extends Model
             }
 
             if ($user->save()) {
-                return Yii::$app->mailer->compose(['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'], ['user' => $user])
+                return Yii::$app->mailer->compose([
+                    'html' => 'passwordResetToken-html',
+                    'text' => 'passwordResetToken-text',
+                ], ['user' => $user])
                     ->setFrom([Option::get('admin_email') => Yii::$app->name . ' robot'])
                     ->setTo($this->email)
                     ->setSubject('Password reset for ' . Yii::$app->name)

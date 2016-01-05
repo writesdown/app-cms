@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      PostComment.php.
- * @date      6/4/2015
- * @time      4:34 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -20,9 +17,8 @@ use yii\helpers\ArrayHelper;
  *
  * @property Post    $commentPost
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostComment extends BaseComment
 {
@@ -57,7 +53,7 @@ class PostComment extends BaseComment
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'comment_post_id' => Yii::t('writesdown', 'Comment to'),
-            'post_title'      => Yii::t('writesdown', 'Post Title')
+            'post_title'      => Yii::t('writesdown', 'Post Title'),
         ]);
     }
 

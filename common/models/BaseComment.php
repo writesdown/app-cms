@@ -1,11 +1,8 @@
 <?php
 /**
- * @file    BaseComment.php.
- * @date    6/4/2015
- * @time    3:53 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -28,36 +25,28 @@ use yii\db\ActiveRecord;
  * @property integer $comment_parent
  * @property integer $comment_user_id
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 abstract class BaseComment extends ActiveRecord
 {
-    /**
-     * Constant of approved comment
-     */
     const COMMENT_APPROVED = "approved";
-    /**
-     * Constant of unapproved comment
-     */
     const COMMENT_UNAPPROVED = "unapproved";
-    /**
-     * Constant of trash
-     */
     const COMMENT_TRASH = "trash";
 
     /**
-     * @var
+     * @var BaseComment[]
      */
     public $child;
 
     /**
      * @return array
      */
-    public function scenarios(){
+    public function scenarios()
+    {
         $scenarios = parent::scenarios();
         $scenarios['reply'] = $scenarios['default'];
+
         return $scenarios;
     }
 
@@ -67,21 +56,29 @@ abstract class BaseComment extends ActiveRecord
     public function rules()
     {
         return [
-            [['comment_author', 'comment_author_email'], 'required', 'when' => function () {
-                return Option::get('require_name_email') && Yii::$app->user->isGuest ? true : false;
-            }],
+            [
+                ['comment_author', 'comment_author_email'],
+                'required',
+                'when' => function () {
+                    return Option::get('require_name_email') && Yii::$app->user->isGuest ? true : false;
+                },
+            ],
             ['comment_author_email', 'filter', 'filter' => 'trim'],
             ['comment_author_email', 'email'],
             [['comment_content'], 'required'],
             ['comment_approved', 'default', 'value' => self::COMMENT_UNAPPROVED],
-            ['comment_approved', 'in', 'range' => [self::COMMENT_APPROVED, self::COMMENT_UNAPPROVED, self::COMMENT_TRASH]],
+            [
+                'comment_approved',
+                'in',
+                'range' => [self::COMMENT_APPROVED, self::COMMENT_UNAPPROVED, self::COMMENT_TRASH],
+            ],
             [['comment_parent', 'comment_user_id'], 'integer'],
             ['comment_parent', 'default', 'value' => 0],
             [['comment_author', 'comment_content'], 'string'],
             [['comment_date'], 'safe'],
             [['comment_author_email', 'comment_author_ip'], 'string', 'max' => 100],
             [['comment_agent'], 'string', 'max' => 255],
-            [['comment_author_url'], 'url']
+            [['comment_author_url'], 'url'],
         ];
     }
 
@@ -123,26 +120,26 @@ abstract class BaseComment extends ActiveRecord
         return [
             self::COMMENT_APPROVED   => 'Approved',
             self::COMMENT_UNAPPROVED => 'Unapproved',
-            self::COMMENT_TRASH      => 'Trash'
+            self::COMMENT_TRASH      => 'Trash',
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert){
-
-        if(parent::beforeSave($insert)){
-            if( $this->isNewRecord ){
-                if(!Yii::$app->user->isGuest) {
-                    $this->comment_user_id      = Yii::$app->user->id;
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                if (!Yii::$app->user->isGuest) {
+                    $this->comment_user_id = Yii::$app->user->id;
                     $this->comment_author_email = Yii::$app->user->identity->email;
-                    $this->comment_author       = Yii::$app->user->identity->display_name;
+                    $this->comment_author = Yii::$app->user->identity->display_name;
                 }
-                $this->comment_agent        = $_SERVER['HTTP_USER_AGENT'];
-                $this->comment_author_ip    = $_SERVER['REMOTE_ADDR'];
-                $this->comment_date         = date('Y-m-d H:i:s');
-                $this->comment_approved     = self::COMMENT_APPROVED;
+                $this->comment_agent = $_SERVER['HTTP_USER_AGENT'];
+                $this->comment_author_ip = $_SERVER['REMOTE_ADDR'];
+                $this->comment_date = date('Y-m-d H:i:s');
+                $this->comment_approved = self::COMMENT_APPROVED;
                 if (Option::get('comment_moderation') && Yii::$app->user->isGuest) {
                     if (Option::get('comment_whitelist') && Option::get('require_name_email')) {
                         $hasComment = static::find()
@@ -157,8 +154,10 @@ abstract class BaseComment extends ActiveRecord
                     }
                 }
             }
+
             return true;
         }
+
         return false;
     }
 }

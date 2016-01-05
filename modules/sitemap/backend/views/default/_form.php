@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _form.php
- * @date      9/3/2015
- * @time      2:01 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -42,7 +40,7 @@ $priority = [
 ?>
 
 <div class="sitemap-default-index-form">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin() ?>
 
     <div class="nav-tabs-custom">
         <?php
@@ -51,31 +49,36 @@ $priority = [
             'options'      => ['class' => 'nav-tabs'],
             'items'        => [
                 [
-                    'label'       => '<i class="fa fa-cog"></i> <span class="hidden-xs">' . Yii::t('sitemap', 'Basic') . '</span>',
+                    'label'       => '<i class="fa fa-cog"></i> <span class="hidden-xs">'
+                        . Yii::t('sitemap', 'Basic') . '</span>',
                     'url'         => '#sitemap-basic-option',
                     'options'     => ['class' => 'active'],
                     'linkOptions' => ['data-toggle' => 'tab'],
                 ],
                 [
-                    'label'       => '<i class="fa fa-home"></i> <span class="hidden-xs">' . Yii::t('sitemap', 'Home') . '</span>',
+                    'label'       => '<i class="fa fa-home"></i> <span class="hidden-xs">'
+                        . Yii::t('sitemap', 'Home') . '</span>',
                     'url'         => '#sitemap-home-option',
                     'linkOptions' => ['data-toggle' => 'tab'],
                 ],
                 [
-                    'label'       => '<i class="fa fa-files-o"></i> <span class="hidden-xs">' . Yii::t('sitemap', 'Post Types') . '</span>',
+                    'label'       => '<i class="fa fa-files-o"></i> <span class="hidden-xs">'
+                        . Yii::t('sitemap', 'Post Types') . '</span>',
                     'url'         => '#sitemap-post-types-option',
                     'linkOptions' => ['data-toggle' => 'tab'],
                 ],
                 [
-                    'label'       => '<i class="fa fa-tags"></i> <span class="hidden-xs">' . Yii::t('sitemap', 'Taxonomies') . '</span>',
+                    'label'       => '<i class="fa fa-tags"></i> <span class="hidden-xs">'
+                        . Yii::t('sitemap', 'Taxonomies') . '</span>',
                     'url'         => '#sitemap-taxonomies-option',
                     'linkOptions' => ['data-toggle' => 'tab'],
                 ],
                 [
-                    'label'       => '<i class="fa fa-picture-o"></i> <span class="hidden-xs">' . Yii::t('sitemap', 'Media') . '</span>',
+                    'label'       => '<i class="fa fa-picture-o"></i> <span class="hidden-xs">'
+                        . Yii::t('sitemap', 'Media') . '</span>',
                     'url'         => '#sitemap-media-option',
                     'linkOptions' => ['data-toggle' => 'tab'],
-                ]
+                ],
             ],
 
         ]);
@@ -85,33 +88,33 @@ $priority = [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
-            ]); ?>
+            ]) ?>
 
             <?= $this->render('_home', [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
-            ]); ?>
+            ]) ?>
 
             <?= $this->render('_post-types', [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
-                'postTypes'  => $postTypes
-            ]); ?>
+                'postTypes'  => $postTypes,
+            ]) ?>
 
             <?= $this->render('_taxonomies', [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
-                'taxonomies' => $taxonomies
-            ]); ?>
+                'taxonomies' => $taxonomies,
+            ]) ?>
 
             <?= $this->render('_media', [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
-            ]); ?>
+            ]) ?>
 
         </div>
     </div>
@@ -121,6 +124,6 @@ $priority = [
         <?= Html::submitButton(Yii::t('sitemap', 'Update'), ['class' => 'btn btn-flat btn-primary']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end() ?>
 </div>
 

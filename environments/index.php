@@ -30,14 +30,14 @@
  */
 return [
     'Development' => [
-        'path' => 'dev',
-        'setWritable' => [
+        'path'                   => 'dev',
+        'setWritable'            => [
             'backend/runtime',
             'public/admin/assets',
             'frontend/runtime',
             'public/assets',
         ],
-        'setExecutable' => [
+        'setExecutable'          => [
             'yii',
             'tests/codeception/bin/yii',
         ],
@@ -46,15 +46,15 @@ return [
             'frontend/config/main-local.php',
         ],
     ],
-    'Production' => [
-        'path' => 'prod',
-        'setWritable' => [
+    'Production'  => [
+        'path'                   => 'prod',
+        'setWritable'            => [
             'backend/runtime',
             'public/admin/assets',
             'frontend/runtime',
             'public/assets',
         ],
-        'setExecutable' => [
+        'setExecutable'          => [
             'yii',
         ],
         'setCookieValidationKey' => [

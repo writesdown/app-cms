@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      _search.php.
- * @date      6/4/2015
- * @time      5:42 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -17,15 +15,13 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div id="media-search" class="collapse media-search">
-
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-    ]); ?>
+    ]) ?>
 
     <div class="row">
         <div class="col-sm-6">
-
             <?= $form->field($model, 'username') ?>
 
             <?= $form->field($model, 'post_title') ?>
@@ -40,7 +36,6 @@ use yii\widgets\ActiveForm;
 
         </div>
         <div class="col-sm-6">
-
             <?= $form->field($model, 'media_password') ?>
 
             <?= $form->field($model, 'media_date') ?>
@@ -49,7 +44,9 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'media_mime_type') ?>
 
-            <?= $form->field($model, 'media_comment_status')->dropDownList($model->getCommentStatus(), ['prompt' => '']) ?>
+            <?= $form->field($model, 'media_comment_status')->dropDownList($model->getCommentStatus(), [
+                'prompt' => '',
+            ]) ?>
 
             <?= $form->field($model, 'media_comment_count') ?>
 
@@ -58,10 +55,16 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Search'), ['class' => 'btn-flat btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn-flat btn btn-default']) ?>
-        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), ['class' => 'index-search-button btn btn-flat btn-default', "data-toggle" => "collapse", "data-target" => "#media-search"]); ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+        <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn-flat btn btn-default']) ?>
+
+        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
+            'class'       => 'index-search-button btn btn-flat btn-default',
+            "data-toggle" => "collapse",
+            "data-target" => "#media-search",
+        ]) ?>
+
+    </div>
+    <?php ActiveForm::end() ?>
 
 </div>

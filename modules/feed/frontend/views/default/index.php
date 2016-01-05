@@ -1,4 +1,11 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
+
 use common\models\Option;
 
 /* @var $title string */
@@ -16,22 +23,21 @@ use common\models\Option;
      xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
      xmlns:slash="http://purl.org/rss/1.0/modules/slash/">
-
     <channel>
         <title><?= $title ?></title>
         <atom:link href="<?= $link ?>" rel="self" type="application/rss+xml"/>
         <link><?= $link ?></link>
         <description><![CDATA[<?= $description ?>]]></description>
-        <lastBuildDate><?= $lastBuildDate->format('r'); ?></lastBuildDate>
-        <language><?= Yii::$app->language; ?></language>
+        <lastBuildDate><?= $lastBuildDate->format('r') ?></lastBuildDate>
+        <language><?= Yii::$app->language ?></language>
         <sy:updatePeriod>hourly</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-        <generator><?= $generator; ?></generator>
-        <?php foreach ($posts as $post) { ?>
+        <generator><?= $generator ?></generator>
+        <?php foreach ($posts as $post): ?>
             <item>
-                <title><?= $post->post_title; ?></title>
-                <link><![CDATA[<?= $post->url; ?>]]></link>
-                <comments><![CDATA[<?= $post->url; ?>#comments]]></comments>
+                <title><?= $post->post_title ?></title>
+                <link><![CDATA[<?= $post->url ?>]]></link>
+                <comments><![CDATA[<?= $post->url ?>#comments]]></comments>
                 <pubDate>
                     <?php
                     $postDate = new DateTime($post->post_date, new DateTimeZone(Option::get('time_zone')));
@@ -39,19 +45,19 @@ use common\models\Option;
                     ?>
                 </pubDate>
                 <dc:creator><![CDATA[<?= $post->postAuthor->display_name ?>]]></dc:creator>
-                <?php foreach ($post->terms as $term) { ?>
-                    <category><![CDATA[<?= $term->term_name; ?>]]></category>
-                <?php } ?>
+                <?php foreach ($post->terms as $term): ?>
+                    <category><![CDATA[<?= $term->term_name ?>]]></category>
+                <?php endforeach ?>
                 <guid isPermaLink="false">
-                    <![CDATA[<?= Yii::$app->urlManager->createAbsoluteUrl(['post/view', 'id' => $post->id]); ?>]]>
+                    <![CDATA[<?= Yii::$app->urlManager->createAbsoluteUrl(['post/view', 'id' => $post->id]) ?>]]>
                 </guid>
-                <description><![CDATA[<?= $post->post_excerpt; ?>]]></description>
-                <?php if (!Option::get('rss_use_excerpt')) { ?>
-                    <content:encoded><![CDATA[<?= $post->post_content; ?>]]></content:encoded>
-                <?php } ?>
-                <wfw:commentRss><![CDATA[<?= $post->url; ?>]]></wfw:commentRss>
-                <slash:comments><?= $post->post_comment_count; ?></slash:comments>
+                <description><![CDATA[<?= $post->post_excerpt ?>]]></description>
+                <?php if (!Option::get('rss_use_excerpt')): ?>
+                    <content:encoded><![CDATA[<?= $post->post_content ?>]]></content:encoded>
+                <?php endif ?>
+                <wfw:commentRss><![CDATA[<?= $post->url ?>]]></wfw:commentRss>
+                <slash:comments><?= $post->post_comment_count ?></slash:comments>
             </item>
-        <?php } ?>
+        <?php endforeach ?>
     </channel>
 </rss>

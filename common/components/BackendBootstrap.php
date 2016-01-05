@@ -1,24 +1,25 @@
 <?php
 /**
- * @file      BackendBootstrap.php
- * @date      9/3/2015
- * @time      11:39 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\components;
 
+use common\models\Module;
+use common\models\Option;
 use Yii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 
-/* MODEL */
-use common\models\Option;
-use common\models\Module;
-
+/**
+ * Class BackendBootstrap
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.1.0
+ */
 class BackendBootstrap implements BootstrapInterface
 {
     /**
@@ -38,7 +39,8 @@ class BackendBootstrap implements BootstrapInterface
      *
      * @param Application $app the application currently running
      */
-    protected function setTime($app){
+    protected function setTime($app)
+    {
         /* TIME ZONE */
         $app->timeZone = Option::get('time_zone');
 
@@ -53,12 +55,14 @@ class BackendBootstrap implements BootstrapInterface
      *
      * @param Application $app the application currently running
      */
-    protected function setTheme($app){
+    protected function setTheme($app)
+    {
         /* THEME CONFIG */
         $themeParamPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
-        if(is_file($themeParamPath)){
+
+        if (is_file($themeParamPath)) {
             $themeParam = require($themeParamPath);
-            if(isset($themeParam['backend'])){
+            if (isset($themeParam['backend'])) {
                 $app->params = ArrayHelper::merge($app->params, $themeParam['backend']);
             }
         }

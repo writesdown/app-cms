@@ -1,23 +1,25 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace modules\sitemap\backend\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-
-/* MODELS */
 use common\models\Option;
 use common\models\PostType;
 use common\models\Taxonomy;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
 
 /**
  * Class DefaultController
  *
- * @package modules\sitemap\backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.2.0
  */
 class DefaultController extends Controller
 {
@@ -37,7 +39,7 @@ class DefaultController extends Controller
                     [
                         'actions' => ['index', 'install'],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                 ],
             ],
@@ -67,8 +69,8 @@ class DefaultController extends Controller
         $postTypes = PostType::find()->all();
         $taxonomies = Taxonomy::find()->all();
 
-        if( $post = Yii::$app->request->post('Option')) {
-            if( Option::set( $this->_optionName, $post['option_value']) ){
+        if ($post = Yii::$app->request->post('Option')) {
+            if (Option::set($this->_optionName, $post['option_value'])) {
                 return $this->redirect(['index']);
             }
         }
@@ -99,31 +101,30 @@ class DefaultController extends Controller
         /*  @var $postType \common\models\PostType */
         /*  @var $taxonomy \common\models\Taxonomy */
         if (parent::beforeAction($action)) {
-
             $this->_defaultOption['enable_sitemap'] = 1;
             $this->_defaultOption['entries_per_page'] = 1000;
 
             // Home
             $this->_defaultOption['home'] = [
                 'priority'   => '1.0',
-                'changefreq' => 'daily'
+                'changefreq' => 'daily',
             ];
 
             // Post type default option
             foreach (PostType::find()->all() as $postType) {
-                $this->_defaultOption['post_type'][ $postType->id ] = [
+                $this->_defaultOption['post_type'][$postType->id] = [
                     'enable'     => 1,
                     'priority'   => '0.6',
-                    'changefreq' => 'weekly'
+                    'changefreq' => 'weekly',
                 ];
             }
 
             // Taxonomy default option
             foreach (Taxonomy::find()->all() as $taxonomy) {
-                $this->_defaultOption['taxonomy'][ $taxonomy->id ] = [
+                $this->_defaultOption['taxonomy'][$taxonomy->id] = [
                     'enable'     => 1,
                     'priority'   => '0.2',
-                    'changefreq' => 'weekly'
+                    'changefreq' => 'weekly',
                 ];
             }
 
@@ -131,7 +132,7 @@ class DefaultController extends Controller
             $this->_defaultOption['media'] = [
                 'enable'     => 0,
                 'priority'   => '0.2',
-                'changefreq' => 'monthly'
+                'changefreq' => 'monthly',
             ];
 
             return true;

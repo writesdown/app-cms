@@ -2,11 +2,11 @@
 
 namespace common\models;
 
+use common\components\Json;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\UploadedFile;
-use common\components\Json;
 
 /**
  * This is the model class for table "{{%module}}".
@@ -91,7 +91,7 @@ class Module extends ActiveRecord
             'module_bb'          => Yii::t('writesdown', 'Backend Bootstrap'),
             'module_date'        => Yii::t('writesdown', 'Installed'),
             'module_modified'    => Yii::t('writesdown', 'Updated'),
-            'module_file'        => Yii::t('writesdown', 'Module (ZIP)')
+            'module_file'        => Yii::t('writesdown', 'Module (ZIP)'),
         ];
     }
 
@@ -129,6 +129,11 @@ class Module extends ActiveRecord
     }
 
 
+    /**
+     * Get active modules.
+     *
+     * @return array|Module[]
+     */
     public static function getActiveModules()
     {
         return static::find()->where(['module_status' => 1])->all();
@@ -152,24 +157,28 @@ class Module extends ActiveRecord
     public function getBackendConfig()
     {
         $config = $this->getConfig();
+
         if (isset($config['backend'])) {
             return $config['backend'];
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
      * Get module frontend config.
+     *
+     * @return array
      */
     public function getFrontendConfig()
     {
         $config = $this->getConfig();
+
         if (isset($config['frontend'])) {
             return $config['frontend'];
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**

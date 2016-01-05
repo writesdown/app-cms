@@ -1,18 +1,14 @@
 <?php
 /**
- * @file      _form.php
- * @date      8/23/2015
- * @time      9:39 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
+use common\models\Option;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-/* MODEL */
-use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\PostComment */
@@ -21,37 +17,41 @@ use common\models\Option;
 ?>
 
 <div id="respond" class="post-comment-form">
+    <h3 class="reply-title"><?= Yii::t('writesdown', 'Leave a Reply') ?></h3>
 
-    <h3 class="reply-title">
-        <?= Yii::t('writesdown', 'Leave a Reply'); ?>
-    </h3>
+    <?php if (!Yii::$app->user->isGuest): ?>
+        <p>
+            <?= Yii::t('writesdown', 'Login as {username}, {logout}{cancelReply}', [
+                'username'    => '<strong>' . Yii::$app->user->identity->username . '</strong>',
+                'logout'      => Html::a(Yii::t(
+                    'writesdown', '<strong>Sign Out</strong>'),
+                    ['/site/logout'],
+                    ['data-method' => 'post']
+                ),
+                'cancelReply' => Html::a('<strong>' . Yii::t('writesdown', ', Cancel Reply') . '</strong>', '#', [
+                    'id'    => 'cancel-reply',
+                    'class' => 'cancel-reply',
+                    'style' => 'display:none;',
+                ]),
+            ]) ?>
 
-    <?php
-    if (!Yii::$app->user->isGuest) {
-        echo Html::tag('p', Yii::t('writesdown', 'Login as {username}, {logout}{cancel-reply}', [
-            'username'     => '<strong>' . Yii::$app->user->identity->username . '</strong>',
-            'logout'       => Html::a(Yii::t('writesdown', '<strong>Sign Out</strong>'), ['/site/logout'], ['data-method' => 'post']),
-            'cancel-reply' => Html::a('<strong>' . Yii::t('writesdown', ', Cancel Reply') . '</strong>', '#', [
+        </p>
+    <?php else: ?>
+        <p>
+            <?= Html::a('<strong>' . Yii::t('writesdown', 'Cancel Reply') . '</strong>', '#', [
                 'id'    => 'cancel-reply',
                 'class' => 'cancel-reply',
-                'style' => 'display:none;'
-            ])
-        ]));
-    } else {
-        echo Html::tag('p', Html::a('<strong>' . Yii::t('writesdown', 'Cancel Reply') . '</strong>', '#', [
-            'id'    => 'cancel-reply',
-            'class' => 'cancel-reply',
-            'style' => 'display:none;'
-        ]));
-    }
-    ?>
+                'style' => 'display:none;',
+            ]) ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+        </p>
+    <?php endif ?>
 
-    <?php if (Yii::$app->user->isGuest && Option::get('require_name_email')) { ?>
+    <?php $form = ActiveForm::begin() ?>
+
+    <?php if (Yii::$app->user->isGuest && Option::get('require_name_email')): ?>
         <div class="row">
             <div class="col-md-7">
-
                 <?= $form->field($model, 'comment_author')->textInput() ?>
 
                 <?= $form->field($model, 'comment_author_email')->textInput(['maxlength' => 100]) ?>
@@ -60,19 +60,18 @@ use common\models\Option;
 
             </div>
         </div>
-
-    <?php } ?>
+    <?php endif ?>
 
     <?= $form->field($model, 'comment_content')->textarea(['rows' => 6]) ?>
 
-    <?= Html::activeHiddenInput($model, 'comment_parent', ['value' => 0, 'class' => 'comment-parent-field']); ?>
+    <?= Html::activeHiddenInput($model, 'comment_parent', ['value' => 0, 'class' => 'comment-parent-field']) ?>
 
-    <?= Html::activeHiddenInput($model, 'comment_media_id', ['value' => $media->id]); ?>
+    <?= Html::activeHiddenInput($model, 'comment_media_id', ['value' => $media->id]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Submit'), ['class' => 'btn btn-primary']) ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+    </div>
+    <?php ActiveForm::end() ?>
 
 </div>

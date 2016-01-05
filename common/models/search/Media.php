@@ -1,29 +1,23 @@
 <?php
 /**
- * @file      Med.php.
- * @date      6/4/2015
- * @time      4:52 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\Media as MediaModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
-/* MODEL */
-use common\models\Media as MediaModel;
-
 /**
  * Media represents the model behind the search form about `common\models\Media`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Media extends MediaModel
 {
@@ -34,7 +28,22 @@ class Media extends MediaModel
     {
         return [
             [['id', 'media_author', 'media_post_id', 'media_comment_count'], 'integer'],
-            [['media_title', 'media_excerpt', 'media_content', 'media_password', 'media_date', 'media_modified', 'media_slug', 'media_mime_type', 'media_comment_status', 'username', 'post_title'], 'safe'],
+            [
+                [
+                    'media_title',
+                    'media_excerpt',
+                    'media_content',
+                    'media_password',
+                    'media_date',
+                    'media_modified',
+                    'media_slug',
+                    'media_mime_type',
+                    'media_comment_status',
+                    'username',
+                    'post_title',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -61,7 +70,7 @@ class Media extends MediaModel
             'mediaAuthor' => function ($query) {
                 /* @var $query \yii\db\ActiveQuery */
                 return $query->from(['author' => User::tableName()]);
-            }
+            },
         ]);
         $query->leftJoin(['post' => Post::tableName()], 'media.media_post_id = post.id');
 
@@ -75,10 +84,10 @@ class Media extends MediaModel
                     'asc'   => ['username' => SORT_ASC],
                     'desc'  => ['username' => SORT_DESC],
                     'label' => 'Author',
-                    'value' => 'username'
+                    'value' => 'username',
                 ],
             ]),
-            'defaultOrder' => ['id' => SORT_DESC]
+            'defaultOrder' => ['id' => SORT_DESC],
         ]);
 
         $this->load($params);

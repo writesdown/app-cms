@@ -1,29 +1,23 @@
 <?php
 /**
- * @file    SettingController.php.
- * @date    6/4/2015
- * @time    5:08 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-
-/* MODEL */
 use common\models\Option;
 use common\models\search\Option as OptionSearch;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * SettingController implements the CRUD actions for Option model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -42,19 +36,19 @@ class SettingController extends Controller
                     [
                         'actions' => ['index', 'create', 'view', 'update', 'delete'],
                         'allow'   => true,
-                        'roles'   => ['superadmin']
+                        'roles'   => ['superadmin'],
                     ],
                     [
                         'actions' => ['group'],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                 ],
             ],
             'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post']
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -77,7 +71,7 @@ class SettingController extends Controller
     }
 
     /**
-     * Displays a single Option model.
+     * Displays single Option model.
      *
      * @param integer $id
      *
@@ -156,7 +150,6 @@ class SettingController extends Controller
      */
     public function actionGroup($id)
     {
-
         $model = Option::find()->where(['option_group' => $id])->indexBy('option_name')->all();
 
         if ($options = Yii::$app->request->post('Option')) {
@@ -164,6 +157,7 @@ class SettingController extends Controller
                 Option::up($option_name, $option['option_value']);
             }
             Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Settings successfully saved.'));
+
             return $this->redirect(['group', 'id' => $id]);
         }
 
@@ -171,14 +165,13 @@ class SettingController extends Controller
             if (is_file($viewFile = $this->getViewPath() . '/' . strtolower($id) . '.php')) {
                 return $this->render(strtolower($id), [
                     'model' => (object)$model,
-                    'group' => $id
+                    'group' => $id,
                 ]);
             } else {
                 return $this->redirect(['index']);
             }
-
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 
@@ -196,7 +189,7 @@ class SettingController extends Controller
         if (($model = Option::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 }

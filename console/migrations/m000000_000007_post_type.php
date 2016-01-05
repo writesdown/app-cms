@@ -6,7 +6,8 @@ use yii\db\Schema;
  * Class m000000_000007_post_type.
  * Migration class for post_type.
  *
- * @author Agiel K. Saputra
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since  0.1.0
  */
 class m000000_000007_post_type extends \yii\db\Migration
 {
@@ -16,6 +17,7 @@ class m000000_000007_post_type extends \yii\db\Migration
     public function up()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
@@ -35,9 +37,18 @@ class m000000_000007_post_type extends \yii\db\Migration
         /**
          * Initialize post type with "post" and "page"
          */
-        $this->batchInsert('{{%post_type}}', ['id', 'post_type_name', 'post_type_slug', 'post_type_icon', 'post_type_sn', 'post_type_pn', 'post_type_smb', 'post_type_permission'], [
+        $this->batchInsert('{{%post_type}}', [
+            'id',
+            'post_type_name',
+            'post_type_slug',
+            'post_type_icon',
+            'post_type_sn',
+            'post_type_pn',
+            'post_type_smb',
+            'post_type_permission',
+        ], [
             ['1', 'post', 'post', 'fa fa-thumb-tack', 'Post', 'Posts', 0, 'contributor'],
-            ['2', 'page', 'page', 'fa fa-file-o', 'Page', 'Pages', 1, 'editor']
+            ['2', 'page', 'page', 'fa fa-file-o', 'Page', 'Pages', 1, 'editor'],
         ]);
     }
 

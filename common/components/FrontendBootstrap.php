@@ -1,24 +1,25 @@
 <?php
 /**
- * @file      FrontendBootstrap.php
- * @date      9/3/2015
- * @time      11:38 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\components;
 
+use common\models\Module;
+use common\models\Option;
 use Yii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 
-/* MODEL */
-use common\models\Option;
-use common\models\Module;
-
+/**
+ * Class FrontendBootstrap
+ *
+ * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @since   0.1.0
+ */
 class FrontendBootstrap implements BootstrapInterface
 {
     /**
@@ -60,9 +61,10 @@ class FrontendBootstrap implements BootstrapInterface
         $app->view->theme->baseUrl = '@web/themes/' . Option::get('theme');
         $app->view->theme->pathMap = [
             '@app/views'      => '@themes/' . Option::get('theme'),
-            '@app/views/post' => '@themes/' . Option::get('theme') . '/post'
+            '@app/views/post' => '@themes/' . Option::get('theme') . '/post',
         ];
         $themeParamPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
+
         if (is_file($themeParamPath)) {
             $themeParam = require($themeParamPath);
             if (isset($themeParam['frontend'])) {

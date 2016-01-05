@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      index.php.
- * @date      6/4/2015
- * @time      12:03 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -17,35 +15,32 @@ use yii\bootstrap\Modal;
 $this->title = Yii::t('writesdown', 'Themes');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="theme">
+    <div id="nav-tabs-custom" class="nav-tabs-custom">
+        <?= $this->render('_navigation') ?>
+        <div class="tab-content">
+            <div class="row">
 
-    <div class="theme">
-        <div id="nav-tabs-custom" class="nav-tabs-custom">
-            <?= $this->render('_navigation'); ?>
-            <div class="tab-content">
-                <div class="row">
-                    <?php
-                    foreach ($themes as $dir=>$theme) {
-                        echo $this->render('_theme-thumbnail', [
-                            'theme' => $theme,
-                            'installed'=> $installed
-                        ]);
-                    } ?>
-                </div>
+                <?php foreach ($themes as $dir => $theme): ?>
+                    <?= $this->render('_theme-thumbnail', [
+                        'theme'     => $theme,
+                        'installed' => $installed,
+                    ]) ?>
+                <?php endforeach ?>
+
             </div>
         </div>
     </div>
-
-<?php
-Modal::begin([
+</div>
+<?php Modal::begin([
     'header' => Yii::t('writesdown', 'Detail Theme'),
     'id'     => 'modal-for-theme-detail',
-    'size'   => Modal::SIZE_LARGE
-]);
+    'size'   => Modal::SIZE_LARGE,
+]) ?>
 
-Modal::end();
+<?php Modal::end() ?>
 
-$this->registerJs('
-$(".btn-detail").on("click", function(e){
+<?php $this->registerJs('$(".btn-detail").on("click", function(e){
     e.preventDefault();
     $.ajax({
         url: $(this).data("ajax-detail"),
@@ -55,5 +50,4 @@ $(".btn-detail").on("click", function(e){
         }
     });
     $("#modal-for-theme-detail").modal("show");
-});
-');
+});') ?>

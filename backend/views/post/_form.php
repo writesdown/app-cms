@@ -1,68 +1,79 @@
 <?php
 /**
- * @file      _form.php.
- * @date      6/4/2015
- * @time      6:13 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
+use codezeen\yii2\tinymce\TinyMce;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use codezeen\yii2\tinymce\TinyMce;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<div class="post-form">
+    <?= $form->field($model, 'post_title', ['template' => '{input}{error}'])->textInput([
+        'placeholder' => $model->getAttributeLabel('post_title'),
+    ]) ?>
 
-    <div class="post-form">
+    <?= $form->field($model, 'post_slug', [
+        'template' => '<span class="input-group-addon">' . $model->getAttributeLabel('post_slug') . '</span>{input}',
+        'options'  => [
+            'class' => 'input-group form-group input-group-sm',
+        ],
+    ])->textInput(['maxlength' => 255, 'placeholder' => $model->getAttributeLabel('post_slug')]) ?>
 
-        <?= $form->field($model, 'post_title', ['template' => '{input}{error}'])->textInput([
-            'placeholder' => $model->getAttributeLabel('post_title')
-        ]) ?>
+    <?php if (Yii::$app->user->can('author')): ?>
+        <div class="form-group">
+            <?= Html::button('<i class="fa fa-folder-open"></i> ' . Yii::t('writesdown', 'Open Media'), [
+                'data-url' => Url::to(['/media/popup', 'post_id' => $model->id, 'editor' => true]),
+                'class'    => 'open-editor-media btn btn-default btn-flat',
+            ]) ?>
 
-        <?= $form->field($model, 'post_slug', [
-            'template' => '<span class="input-group-addon">' . $model->getAttributeLabel('post_slug') . '</span>{input}',
-            'options'  => [
-                'class' => 'input-group form-group input-group-sm'
+        </div>
+    <?php endif ?>
+
+    <?= $form->field($model, 'post_content', ["template" => "{input}\n{error}"])->widget(
+        TinyMce::className(),
+        [
+            'compressorRoute' => 'helper/tiny-mce-compressor',
+            'settings'        => [
+                'menubar'            => false,
+                'skin_url'           => Url::base(true) . '/editor-skins/writesdown',
+                'toolbar_items_size' => 'medium',
+                'toolbar'            => 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter '
+                    . 'alignright alignjustify | bullist numlist outdent indent | link image | code fullscreen',
+                'formats'            => [
+                    'alignleft'   => [
+                        'selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
+                        'classes'  => 'align-left',
+                    ],
+                    'aligncenter' => [
+                        'selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
+                        'classes'  => 'align-center',
+                    ],
+                    'alignright'  => [
+                        'selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
+                        'classes'  => 'align-right',
+                    ],
+                    'alignfull'   => [
+                        'selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
+                        'classes'  => 'align-full',
+                    ],
+                ],
             ],
-        ])->textInput(['maxlength' => 255, 'placeholder' => $model->getAttributeLabel('post_slug')]) ?>
+            'options'         => [
+                'id'    => 'post-post_content',
+                'style' => 'height:400px;',
+            ],
+        ]
+    ) ?>
 
-        <?php if (Yii::$app->user->can('author')) {
-            echo '<div class="form-group">';
-            echo Html::button('<i class="fa fa-folder-open"></i> ' . Yii::t('writesdown', 'Open Media'), ['data-url' => Url::to(['/media/popup', 'post_id' => $model->id, 'editor' => true]), 'class' => 'open-editor-media btn btn-default btn-flat']);
-            echo '</div>';
-        } ?>
-
-        <?= $form->field($model, 'post_content', ["template" => "{input}\n{error}"])->widget(
-            TinyMce::className(),
-            [
-                'compressorRoute' => 'helper/tiny-mce-compressor',
-                'settings'        => [
-                    'menubar'            => false,
-                    'skin_url'           => Yii::$app->urlManager->baseUrl . '/editor-skins/writesdown',
-                    'toolbar_items_size' => 'medium',
-                    'toolbar'            => "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code fullscreen",
-                    'formats'            => [
-                        'alignleft'   => ['selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' => 'align-left'],
-                        'aligncenter' => ['selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' => 'align-center'],
-                        'alignright'  => ['selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' => 'align-right'],
-                        'alignfull'   => ['selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' => 'align-full']
-                    ]
-                ],
-                'options'         => [
-                    'id'    => 'post-post_content',
-                    'style' => 'height:400px;'
-                ],
-            ]
-        ) ?>
-
-    </div>
-
-<?php $this->registerJs('
-$(function () {
+</div>
+<?php $this->registerJs('$(function () {
     "use strict";
     $(".open-editor-media ").click(function (e) {
         e.preventDefault();
@@ -83,5 +94,4 @@ $(function () {
             close_previous : "no"
         });
     });
-});
-');
+});') ?>

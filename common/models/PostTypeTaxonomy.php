@@ -1,11 +1,8 @@
 <?php
 /**
- * @file    PostTypeTaxonomy.php.
- * @date    6/4/2015
- * @time    4:32 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -16,15 +13,14 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%post_type_taxonomy}}".
  *
- * @property integer $post_type_id
- * @property integer $taxonomy_id
+ * @property integer  $post_type_id
+ * @property integer  $taxonomy_id
  *
  * @property PostType $postType
  * @property Taxonomy $taxonomy
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostTypeTaxonomy extends ActiveRecord
 {
@@ -43,7 +39,7 @@ class PostTypeTaxonomy extends ActiveRecord
     {
         return [
             [['post_type_id', 'taxonomy_id'], 'required'],
-            [['post_type_id', 'taxonomy_id'], 'integer']
+            [['post_type_id', 'taxonomy_id'], 'integer'],
         ];
     }
 
@@ -54,7 +50,7 @@ class PostTypeTaxonomy extends ActiveRecord
     {
         return [
             'post_type_id' => Yii::t('writesdown', 'Post Type ID'),
-            'taxonomy_id' => Yii::t('writesdown', 'Taxonomy ID'),
+            'taxonomy_id'  => Yii::t('writesdown', 'Taxonomy ID'),
         ];
     }
 

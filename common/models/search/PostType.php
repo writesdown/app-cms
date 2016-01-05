@@ -1,28 +1,22 @@
 <?php
 /**
- * @file      PostType.php.
- * @date      6/4/2015
- * @time      4:58 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\PostType as PostTypeModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/* MODEL */
-use common\models\PostType as PostTypeModel;
-
 /**
  * PostType represents the model behind the search form about `common\models\PostType`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostType extends PostTypeModel
 {
@@ -33,7 +27,18 @@ class PostType extends PostTypeModel
     {
         return [
             [['id', 'post_type_smb'], 'integer'],
-            [['post_type_name', 'post_type_slug', 'post_type_description', 'post_type_icon', 'post_type_sn', 'post_type_pn', 'post_type_permission'], 'safe'],
+            [
+                [
+                    'post_type_name',
+                    'post_type_slug',
+                    'post_type_description',
+                    'post_type_icon',
+                    'post_type_sn',
+                    'post_type_pn',
+                    'post_type_permission',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -62,10 +67,9 @@ class PostType extends PostTypeModel
             'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
-            ]
+                ],
+            ],
         ]);
-
 
         $this->load($params);
 

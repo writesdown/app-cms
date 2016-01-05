@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      profile.php.
- * @date      6/4/2015
- * @time      12:06 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -18,9 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view',
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Profile');
 ?>
 <div class="user-update">
-
     <?= $this->render('_profile', [
         'model' => $model,
     ]) ?>
-
 </div>

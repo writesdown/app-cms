@@ -1,15 +1,13 @@
 <?php
 /**
- * @file      index.php.
- * @date      6/4/2015
- * @time      5:35 AM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-use yii\helpers\Html;
 use cebe\gravatar\Gravatar;
+use yii\helpers\Html;
 
 /* @var $postCount int */
 /* @var $commentCount int */
@@ -29,7 +27,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                 <div class="info-box-content">
                     <span class="info-box-text">Github</span>
                     <span class="info-box-number">
-                        <a aria-label="Follow @writesdown on GitHub" href="https://github.com/writesdown" class="github-button">@writesdown</a>
+                        <a aria-label="Follow @writesdown on GitHub" href="https://github.com/writesdown"
+                           class="github-button">@writesdown</a>
                     </span>
                 </div>
             </div>
@@ -38,8 +37,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
             <div class="info-box bg-red">
                 <span class="info-box-icon"><i class="fa fa-files-o"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text"><?= Yii::t('writesdown', 'Posts'); ?></span>
-                    <span class="info-box-number"><?= $postCount; ?></span>
+                    <span class="info-box-text"><?= Yii::t('writesdown', 'Posts') ?></span>
+                    <span class="info-box-number"><?= $postCount ?></span>
                 </div>
             </div>
         </div>
@@ -48,8 +47,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
             <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text"><?= Yii::t('writesdown', 'Comments'); ?></span>
-                    <span class="info-box-number"><?= $commentCount; ?></span>
+                    <span class="info-box-text"><?= Yii::t('writesdown', 'Comments') ?></span>
+                    <span class="info-box-number"><?= $commentCount ?></span>
                 </div>
             </div>
         </div>
@@ -57,8 +56,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
             <div class="info-box bg-yellow">
                 <span class="info-box-icon"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text"><?= Yii::t('writesdown', 'Members'); ?></span>
-                    <span class="info-box-number"><?= $userCount; ?></span>
+                    <span class="info-box-text"><?= Yii::t('writesdown', 'Members') ?></span>
+                    <span class="info-box-number"><?= $userCount ?></span>
                 </div>
             </div>
         </div>
@@ -67,12 +66,11 @@ $this->title = Yii::t('writesdown', 'Dashboard');
         <div class="col-sm-12">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Posts'); ?></h3>
+                    <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Posts') ?></h3>
                     <div class="box-tools pull-right">
                         <span class="label label-danger">
-                            <?= Yii::t('writesdown', '{postCount} Posts', [
-                                'postCount' => $postCount
-                            ]); ?>
+                            <?= Yii::t('writesdown', '{postCount} Posts', ['postCount' => $postCount]) ?>
+
                         </span>
                         <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
                         <button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
@@ -82,23 +80,31 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th><?= Yii::t('writesdown', 'Author'); ?></th>
-                            <th><?= Yii::t('writesdown', 'Content'); ?></th>
-                            <th><?= Yii::t('writesdown', 'Published'); ?></th>
-                            <th><?= Yii::t('writesdown', 'Comments'); ?></th>
+                            <th><?= Yii::t('writesdown', 'Author') ?></th>
+                            <th><?= Yii::t('writesdown', 'Content') ?></th>
+                            <th><?= Yii::t('writesdown', 'Published') ?></th>
+                            <th><?= Yii::t('writesdown', 'Comments') ?></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($posts as $post) { ?>
+
+                        <?php foreach ($posts as $post): ?>
                             <tr>
                                 <td><?= $post->postAuthor->display_name ?></td>
                                 <td><?= substr(strip_tags($post->post_excerpt), 0, 180) . '...' ?></td>
-                                <td><?= Yii::$app->formatter->asDatetime( $post->post_date ); ?></td>
-                                <td><?= $post->post_comment_count; ?></td>
-                                <td><?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $post->url, ['title' => Yii::t('writesdown', 'View Post')]); ?></td>
+                                <td><?= Yii::$app->formatter->asDatetime($post->post_date) ?></td>
+                                <td><?= $post->post_comment_count ?></td>
+                                <td>
+                                    <?= Html::a(
+                                        '<span class="glyphicon glyphicon-eye-open"></span>',
+                                        $post->url,
+                                        ['title' => Yii::t('writesdown', 'View Post')]
+                                    ) ?>
+                                </td>
                             </tr>
-                        <?php } ?>
+                        <?php endforeach ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -109,12 +115,11 @@ $this->title = Yii::t('writesdown', 'Dashboard');
         <div class="col-sm-4">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Members'); ?></h3>
+                    <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Members') ?></h3>
                     <div class="box-tools pull-right">
                         <span class="label label-warning">
-                            <?= Yii::t('writesdown', '{userCount} Members', [
-                                'userCount' => $userCount
-                            ]); ?>
+                            <?= Yii::t('writesdown', '{userCount} Members', ['userCount' => $userCount]) ?>
+
                         </span>
                         <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
                         <button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
@@ -122,23 +127,26 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                 </div>
                 <div class="box-body no-padding">
                     <ul class="users-list clearfix">
-                        <?php foreach ($users as $user) { ?>
+
+                        <?php foreach ($users as $user): ?>
                             <li>
                                 <?= Gravatar::widget([
                                     'email'   => $user->email,
-                                    'options' => [
-                                        'alt'   => $user->username,
-                                    ],
-                                    'size'    => 128
-                                ]); ?>
-                                <?= Html::a( $user->display_name, $user->url, [
-                                        'class' => 'users-list-name']
-                                ); ?>
-                                <?= Html::tag('span', Yii::$app->formatter->asDate($user->created_at), [
-                                    'class' => 'users-list-date'
-                                ]); ?>
+                                    'options' => ['alt' => $user->username],
+                                    'size'    => 128,
+                                ]) ?>
+
+                                <?= Html::a($user->display_name, $user->url, ['class' => 'users-list-name']) ?>
+
+                                <?= Html::tag(
+                                    'span',
+                                    Yii::$app->formatter->asDate($user->created_at),
+                                    ['class' => 'users-list-date']
+                                ) ?>
+
                             </li>
-                        <?php } ?>
+                        <?php endforeach ?>
+
                     </ul>
                 </div>
             </div>
@@ -146,12 +154,15 @@ $this->title = Yii::t('writesdown', 'Dashboard');
         <div class="col-sm-8">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Comments'); ?></h3>
+                    <h3 class="box-title"><?= Yii::t('writesdown', 'Latest Comments') ?></h3>
                     <div class="box-tools pull-right">
                         <span class="label label-success">
-                            <?= Yii::t('writesdown', '{commentCount} Comments', [
-                                'commentCount' => $commentCount
-                            ]); ?>
+                            <?= Yii::t(
+                                'writesdown',
+                                '{commentCount} Comments',
+                                ['commentCount' => $commentCount]
+                            ) ?>
+
                         </span>
                         <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
                         <button data-widget="remove" class="btn btn-box-tool"><i class="fa fa-times"></i></button>
@@ -161,24 +172,28 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th><?= Yii::t('writesdown', 'Author'); ?></th>
-                            <th><?= Yii::t('writesdown', 'Comments'); ?></th>
+                            <th><?= Yii::t('writesdown', 'Author') ?></th>
+                            <th><?= Yii::t('writesdown', 'Comments') ?></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($comments as $comment) { ?>
+
+                        <?php foreach ($comments as $comment): ?>
                             <tr>
                                 <td><?= $comment->comment_author ?></td>
                                 <td><?= substr(strip_tags($comment->comment_content), 0, 180) . '...' ?></td>
                                 <td>
-                                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
+                                    <?= Html::a(
+                                        '<span class="glyphicon glyphicon-eye-open"></span>',
                                         $comment->commentPost->url . '#comment-' . $comment->id,
                                         ['title' => Yii::t('writesdown', 'View Comment')]
-                                    ); ?>
+                                    ) ?>
+
                                 </td>
                             </tr>
-                        <?php } ?>
+                        <?php endforeach ?>
+
                         </tbody>
                     </table>
                 </div>

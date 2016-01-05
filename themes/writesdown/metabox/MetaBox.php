@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      MetaBox.php
- * @date      8/25/2015
- * @time      10:29 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -18,7 +15,7 @@ use yii\base\Object;
  *
  * @package frontend\themes\writesdown\metabox
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class MetaBox extends Object
 {
@@ -35,12 +32,14 @@ class MetaBox extends Object
     /**
      * @inheritdoc
      */
-    public function init(){
+    public function init()
+    {
         $this->renderBox();
     }
 
-    public function renderBox(){
-        echo Yii::$app->view->renderFile( __DIR__ . '/views/_metabox.php', [
+    public function renderBox()
+    {
+        echo Yii::$app->view->renderFile(__DIR__ . '/views/_metabox.php', [
             'model' => $this->model,
             'form'  => $this->form
         ]);

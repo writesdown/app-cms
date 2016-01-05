@@ -11,20 +11,24 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Modules'), 'u
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="module-view">
-
     <p>
-        <?= Html::a(Yii::t('writesdown', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-flat btn-primary']) ?>
+        <?= Html::a(
+            Yii::t('writesdown', 'Update'),
+            ['update', 'id' => $model->id],
+            ['class' => 'btn btn-flat btn-primary']
+        ) ?>
+
         <?= Html::a(Yii::t('writesdown', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-flat btn-danger',
-            'data' => [
+            'data'  => [
                 'confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+                'method'  => 'post',
             ],
         ]) ?>
-    </p>
 
+    </p>
     <?= DetailView::widget([
-        'model' => $model,
+        'model'      => $model,
         'attributes' => [
             'module_name',
             'module_title:ntext',

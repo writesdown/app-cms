@@ -1,18 +1,15 @@
 <?php
 /**
- * @file    Term.php.
- * @date    6/4/2015
- * @time    4:28 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\behaviors\SluggableBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%term}}".
@@ -30,9 +27,8 @@ use yii\behaviors\SluggableBehavior;
  * @property TermRelationship[] $termRelationships
  * @property Post[]             $posts
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Term extends ActiveRecord
 {
@@ -47,15 +43,14 @@ class Term extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function behaviors(){
+    public function behaviors()
+    {
         return [
             [
-                'class' => SluggableBehavior::className(),
-                'attribute' => 'term_name',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['term_slug']
-                ]
-            ]
+                'class'      => SluggableBehavior::className(),
+                'attribute'  => 'term_name',
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['term_slug']],
+            ],
         ];
     }
 
@@ -70,7 +65,7 @@ class Term extends ActiveRecord
             [['term_description'], 'string'],
             [['term_name', 'term_slug'], 'string', 'max' => 200],
             [['term_name'], 'unique'],
-            [['term_slug'], 'unique']
+            [['term_slug'], 'unique'],
         ];
     }
 
@@ -111,13 +106,15 @@ class Term extends ActiveRecord
      */
     public function getPosts()
     {
-        return $this->hasMany(Post::className(), ['id' => 'post_id'])->viaTable('{{%term_relationship}}', ['term_id' => 'id']);
+        return $this->hasMany(Post::className(), ['id' => 'post_id'])->viaTable('{{%term_relationship}}',
+            ['term_id' => 'id']);
     }
 
     /**
      * Get URL of current term
      */
-    public function getUrl(){
-        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/term/view', 'id'=> $this->id]);
+    public function getUrl()
+    {
+        return Yii::$app->urlManagerFront->createAbsoluteUrl(['/term/view', 'id' => $this->id]);
     }
 }

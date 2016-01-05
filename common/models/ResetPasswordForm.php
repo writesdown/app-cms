@@ -1,25 +1,21 @@
 <?php
 /**
- * @file    ResetPasswordForm.php.
- * @date    6/4/2015
- * @time    4:31 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
 
 use Yii;
-use yii\base\Model;
 use yii\base\InvalidParamException;
+use yii\base\Model;
 
 /**
  * Password reset form
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class ResetPasswordForm extends Model
 {
@@ -37,8 +33,9 @@ class ResetPasswordForm extends Model
     /**
      * Creates a form model given a token.
      *
-     * @param  string                          $token
-     * @param  array                           $config name-value pairs that will be used to initialize the object properties
+     * @param  string $token
+     * @param  array  $config name-value pairs that will be used to initialize the object properties
+     *
      * @throws \yii\base\InvalidParamException if token is empty or not valid
      */
     public function __construct($token, $config = [])
@@ -46,10 +43,13 @@ class ResetPasswordForm extends Model
         if (empty($token) || !is_string($token)) {
             throw new InvalidParamException('Password reset token cannot be blank.');
         }
+
         $this->_user = User::findByPasswordResetToken($token);
+
         if (!$this->_user) {
             throw new InvalidParamException('Wrong password reset token.');
         }
+        
         parent::__construct($config);
     }
 

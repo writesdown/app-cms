@@ -1,30 +1,25 @@
 <?php
 /**
- * @file    UserController.php.
- * @date    6/4/2015
- * @time    10:20 PM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
 
-use Yii;
+use common\models\Option;
 use common\models\User;
+use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-
-/* MODEL */
-use common\models\Option;
 
 /**
  * Class UserController
  *
  * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class UserController extends Controller
 {
@@ -43,7 +38,7 @@ class UserController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-        } else if ($username) {
+        } elseif ($username) {
             $model = $this->findModelByUsername($username);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -53,7 +48,7 @@ class UserController extends Controller
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page')
+            'pageSize'   => Option::get('posts_per_page'),
         ]);
         $query->offset($pages->offset)->limit($pages->limit);
         $posts = $query->all();
@@ -64,9 +59,9 @@ class UserController extends Controller
             }
 
             return $this->render($render, [
-                'user'     => $model,
-                'posts'    => $posts,
-                'pages'    => isset($pages) ? $pages : null
+                'user'  => $model,
+                'posts' => $posts,
+                'pages' => isset($pages) ? $pages : null,
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -76,7 +71,9 @@ class UserController extends Controller
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param int $id
+     *
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -92,7 +89,9 @@ class UserController extends Controller
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param string $username
+     *
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

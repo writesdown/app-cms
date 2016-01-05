@@ -1,8 +1,6 @@
 <?php
 /**
- * @file      reset-password.php.
- * @date      6/4/2015
- * @time      12:06 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
@@ -16,9 +14,8 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Profile'), 'u
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">
-    <p><?= Yii::t('writesdown', 'Please fill out the following fields to reset password:'); ?></p>
+    <p><?= Yii::t('writesdown', 'Please fill out the following fields to reset password:') ?></p>
     <?= $this->render('_reset-password', [
         'model' => $model,
     ]) ?>
-
 </div>

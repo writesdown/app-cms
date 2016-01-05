@@ -1,28 +1,22 @@
 <?php
 /**
- * @file    Term.php.
- * @date    6/4/2015
- * @time    4:59 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
 
+use common\models\Term as TermModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/* MODEL */
-use common\models\Term as TermModel;
-
 /**
  * Term represents the model behind the search form about `common\models\Term`.
  *
- * @package common\models\search
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class Term extends TermModel
 {
@@ -65,8 +59,8 @@ class Term extends TermModel
             'sort'  => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->load($params);

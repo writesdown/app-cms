@@ -1,20 +1,22 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace modules\feed\frontend\controllers;
 
+use common\models\Post;
+use common\models\Option;
 use Yii;
 use yii\web\Controller;
-
-/* MODEL */
-use common\models\Post;
-use common\models\search\Option;
 
 /**
  * Class DefaultController
  *
- * @package modules\feed\frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.2.0
  */
 class DefaultController extends Controller
 {
@@ -42,7 +44,7 @@ class DefaultController extends Controller
             'language'      => Yii::$app->language,
             'generator'     => 'http://www.writesdown.com',
             'posts'         => $posts,
-            'rssUseExcerpt' => Option::get('rss_use_excerpt')
+            'rssUseExcerpt' => Option::get('rss_use_excerpt'),
         ]);
     }
 }

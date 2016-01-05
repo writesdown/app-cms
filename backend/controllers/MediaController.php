@@ -1,44 +1,36 @@
 <?php
 /**
- * @file      MediaController.php.
- * @date      6/4/2015
- * @time      5:02 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
+use common\components\MediaUploadHandler;
+use common\models\Media;
+use common\models\Option;
+use common\models\Post;
+use common\models\search\Media as MediaSearch;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-
-/* UPLOAD HANDLER */
-use common\components\MediaUploadHandler;
-
-/* MODEL */
-use common\models\Post;
-use common\models\Media;
-use common\models\search\Media as MediaSearch;
-use common\models\Option;
 
 /**
- * MediaController implements the CRUD actions for Media model.
+ * MediaController, controlling the actions for for Media model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
 class MediaController extends Controller
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function behaviors()
     {
@@ -48,12 +40,22 @@ class MediaController extends Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'index', 'create', 'update', 'delete', 'bulk-action', 'ajax-upload',
-                            'ajax-update', 'ajax-delete', 'get-json', 'get-pagination', 'popup',
-                            'editor-insert', 'field-insert'
+                            'index',
+                            'create',
+                            'update',
+                            'delete',
+                            'bulk-action',
+                            'ajax-upload',
+                            'ajax-update',
+                            'ajax-delete',
+                            'get-json',
+                            'get-pagination',
+                            'popup',
+                            'editor-insert',
+                            'field-insert',
                         ],
                         'allow'   => true,
-                        'roles'   => ['author']
+                        'roles'   => ['author'],
                     ],
                 ],
             ],
@@ -124,18 +126,16 @@ class MediaController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->media_date = Yii::$app->formatter->asDatetime($model->media_date, 'php:Y-m-d H:i:s');
-
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Media successfully saved.'));
 
                 return $this->redirect(['update', 'id' => $id]);
             }
-
         }
 
         return $this->render('update', [
             'model'    => $model,
-            'metadata' => $metadata
+            'metadata' => $metadata,
         ]);
     }
 
@@ -162,9 +162,9 @@ class MediaController extends Controller
     }
 
     /**
-     * Bulk action for Media triggered when button "Apply" is clicked.
-     * The action depends on value of the dropdown beside the button.
-     * Only accept POST method.
+     * Bulk action for Media triggered when button 'Apply' clicked.
+     * The action depends on the value of the dropdown next to the button.
+     * Only accept POST HTTP method.
      */
     public function actionBulkAction()
     {
@@ -177,7 +177,8 @@ class MediaController extends Controller
     }
 
     /**
-     * Upload file and save to database.
+     * Upload media file and store it to database.
+     * Media versions can be set from application params.
      *
      * @return array
      */
@@ -195,47 +196,45 @@ class MediaController extends Controller
             'thumbnail' => [
                 'max_width'  => Option::get('thumbnail_width'),
                 'max_height' => Option::get('thumbnail_height'),
-                'crop'       => 1
-            ]
+                'crop'       => 1,
+            ],
         ];
 
         // Merge image versions with app params
-        if (isset(Yii::$app->params['media']['versions']) && is_array(Yii::$app->params['media']['versions'])) {
+        if (isset(Yii::$app->params['media']['versions'])
+            && is_array(Yii::$app->params['media']['versions'])
+        ) {
             $versions = ArrayHelper::merge($versions, Yii::$app->params['media']['versions']);
         }
 
         $uploadHandler = new MediaUploadHandler([
             'versions'  => $versions,
-            'user_dirs' => Option::get('uploads_username_based')
+            'user_dirs' => Option::get('uploads_username_based'),
         ], false);
         $uploadHandler->post();
     }
 
     /**
-     * Update attribute of Media by ajax request
+     * Update attributes of Media model via AJAX request.
      */
     public function actionAjaxUpdate()
     {
         if ($model = $this->findModel(Yii::$app->request->post('id'))) {
-
             if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
                 throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
             }
-
             $model->{Yii::$app->request->post('attribute')} = Yii::$app->request->post('attribute_value');
-
             if ($model->save()) {
                 echo Yii::t('writesdown', 'Updated, {attribute}: {attribute_value}', [
                     'attribute'       => Yii::$app->request->post('attribute'),
-                    'attribute_value' => Yii::$app->request->post('attribute_value')
+                    'attribute_value' => Yii::$app->request->post('attribute_value'),
                 ]);
-            };
-
+            }
         }
     }
 
     /**
-     * Delete media and its files based on media primary key.
+     * Delete Media model and its files based on media primary key.
      *
      * @param $id
      *
@@ -254,7 +253,7 @@ class MediaController extends Controller
     }
 
     /**
-     * Get json data from Media
+     * Get JSON data from Media.
      *
      * @param int|null $id
      */
@@ -265,7 +264,7 @@ class MediaController extends Controller
     }
 
     /**
-     * Render pagination for popup
+     * Generate pagination for media popup.
      */
     public function actionGetPagination()
     {
@@ -276,7 +275,7 @@ class MediaController extends Controller
     }
 
     /**
-     * Render file browser for editor and file input
+     * Render file browser for editor and file input.
      *
      * @param int|null $post_id
      * @param bool     $editor
@@ -308,29 +307,30 @@ class MediaController extends Controller
     }
 
     /**
-     * Insert file to editor
+     * Insert file to editor.
      */
     public function actionEditorInsert()
     {
         if (Yii::$app->request->post("media")) {
             foreach (Yii::$app->request->post("media") as $postMedia) {
-
                 if ($postMedia['media_type'] == 'image') {
                     $result = $this->getMediaImage($postMedia);
-                } else if ($postMedia['media_type'] == 'video') {
+                } elseif ($postMedia['media_type'] == 'video') {
                     $result = $this->getMediaVideo($postMedia);
-                } else if ($postMedia['media_type'] == 'audio') {
+                } elseif ($postMedia['media_type'] == 'audio') {
                     $result = $this->getMediaAudio($postMedia);
-                } else
+                } else {
                     $result = $this->getMediaFile($postMedia);
-
+                }
                 echo $result;
             }
         }
     }
 
     /**
-     * Insert url of media
+     * Insert URL of media to input field.
+     *
+     * @todo Insert media to field works
      */
     public function actionFieldInsert()
     {
@@ -339,7 +339,7 @@ class MediaController extends Controller
                 $media = $this->findModel($postMedia['id']);
                 $metadata = $media->getMeta('metadata');
                 if ($postMedia['media_type'] === 'image') {
-                    echo $media->getUploadUrl() . $metadata['media_versions'][ $postMedia['media_size'] ]['url'];
+                    echo $media->getUploadUrl() . $metadata['media_versions'][$postMedia['media_size']]['url'];
                 } else {
                     echo $media->getUploadUrl() . $metadata['media_versions']['full']['url'];
                 }
@@ -362,11 +362,13 @@ class MediaController extends Controller
         if (($model = Media::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 
     /**
+     * Generate image tag for media.
+     *
      * @param array $postMedia
      *
      * @return string
@@ -377,16 +379,17 @@ class MediaController extends Controller
         $result = '';
         $media = $this->findModel($postMedia['id']);
         $metadata = $media->getMeta('metadata');
-
         $image = $media->getThumbnail($postMedia['media_size'], [
                 'data-id' => $media->id,
-                'class'   => $postMedia['media_alignment'] . ' media-image media-' . $media->id
+                'class'   => $postMedia['media_alignment'] . ' media-image media-' . $media->id,
             ]) . "\n";
 
         if ($media->media_excerpt) {
             $result .= Html::beginTag('div', [
                     'class' => $postMedia['media_alignment'] . ' media-caption',
-                    'style' => 'width: ' . $metadata['media_versions'][ $postMedia['media_size'] ]['width'] . 'px'
+                    'style' => 'width: '
+                        . $metadata['media_versions'][$postMedia['media_size']]['width']
+                        . 'px',
                 ]) . "\n";
         }
 
@@ -396,7 +399,6 @@ class MediaController extends Controller
                     'class' => $postMedia['media_alignment'],
                 ]) . "\n";
         }
-
         $result .= $image;
 
         if ($postMedia['media_link_to_value']) {
@@ -405,7 +407,7 @@ class MediaController extends Controller
 
         if ($media->media_excerpt) {
             $result .= Html::tag('div', $media->media_excerpt, [
-                    'class' => 'media-caption-text'
+                    'class' => 'media-caption-text',
                 ]) . "\n";
             $result .= Html::endTag('div') . "\n";
         }
@@ -414,6 +416,8 @@ class MediaController extends Controller
     }
 
     /**
+     * Generate video tag for editor and use HTML5.
+     *
      * @param array $postMedia
      *
      * @return string
@@ -429,7 +433,7 @@ class MediaController extends Controller
             ]) . "\n";
         $result .= Html::tag('source', '', [
                 'src'  => $media->getUploadUrl() . $metadata['media_versions']['full']['url'],
-                'type' => $media->media_mime_type
+                'type' => $media->media_mime_type,
             ]) . "\n";
         $result .= 'Your browser does not support the <code>video</code> element.' . "\n";
         $result .= Html::endTag('video') . "\n";
@@ -438,6 +442,8 @@ class MediaController extends Controller
     }
 
     /**
+     * Generate audio tag for editor and use HTML5.
+     *
      * @param array $postMedia
      *
      * @return string
@@ -453,7 +459,7 @@ class MediaController extends Controller
             ]) . "\n";
         $result .= Html::tag('source', '', [
                 'src'  => $media->getUploadUrl() . $metadata['media_versions']['full']['url'],
-                'type' => $media->media_mime_type
+                'type' => $media->media_mime_type,
             ]) . "\n";
         $result .= 'Your browser does not support the <code>video</code> element.' . "\n";
         $result .= Html::endTag('audio') . "\n";
@@ -462,6 +468,8 @@ class MediaController extends Controller
     }
 
     /**
+     * Generate link to media file for editor.
+     *
      * @param array $postMedia
      *
      * @return string
@@ -471,7 +479,7 @@ class MediaController extends Controller
     {
         $model = $this->findModel($postMedia['id']);
         $result = Html::a($model->media_title, $postMedia['media_link_to_value'], [
-            'class' => 'media-file media-' . $model->id
+            'class' => 'media-file media-' . $model->id,
         ]);
 
         return $result;

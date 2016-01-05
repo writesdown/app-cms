@@ -1,11 +1,9 @@
 <?php
 /**
- * @file    update.php.
- * @date    6/4/2015
- * @time    6:33 AM
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
+ * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license http://www.writesdown.com/license/
+ * @license   http://www.writesdown.com/license/
  */
 
 /* @var $this yii\web\View */
@@ -21,21 +19,15 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
 
 <div class="row">
     <div class="col-md-8 post-type-update">
-
         <?= $this->render('_form', [
             'model' => $model,
         ]) ?>
-
     </div>
-
     <div class="col-md-4">
-
         <?= $this->render('_post-type-taxonomy', [
-            'model'     => $model,
+            'model'      => $model,
             'taxonomy'   => $taxonomy,
-            'taxonomies' => $taxonomies
+            'taxonomies' => $taxonomies,
         ]) ?>
-
     </div>
-
 </div>

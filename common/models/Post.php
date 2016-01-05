@@ -1,22 +1,18 @@
 <?php
 /**
- * @file      Post.php.
- * @date      6/4/2015
- * @time      4:35 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace common\models;
 
+use common\components\Json;
 use Yii;
+use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\behaviors\SluggableBehavior;
-use common\components\Json;
 
 /**
  * This is the model class for table "{{%post}}".
@@ -45,7 +41,6 @@ use common\components\Json;
  * @property TermRelationship[] $termRelationships
  * @property Term[]             $terms
  *
- * @package  common\models
  * @author   Agiel K. Saputra <13nightevil@gmail.com>
  * @since    1.0
  */
@@ -102,7 +97,17 @@ class Post extends ActiveRecord
             ['post_comment_status', 'in', 'range' => [self::COMMENT_STATUS_OPEN, self::COMMENT_STATUS_CLOSE]],
             ['post_comment_status', 'default', 'value' => self::COMMENT_STATUS_CLOSE],
             ['post_comment_count', 'default', 'value' => 0],
-            ['post_status', 'in', 'range' => [self::POST_STATUS_PUBLISH, self::POST_STATUS_DRAFT, self::POST_STATUS_PRIVATE, self::POST_STATUS_REVIEW, self::POST_STATUS_TRASH]],
+            [
+                'post_status',
+                'in',
+                'range' => [
+                    self::POST_STATUS_PUBLISH,
+                    self::POST_STATUS_DRAFT,
+                    self::POST_STATUS_PRIVATE,
+                    self::POST_STATUS_REVIEW,
+                    self::POST_STATUS_TRASH,
+                ],
+            ],
             ['post_status', 'default', 'value' => self::POST_STATUS_PUBLISH],
             [['post_title', 'post_slug'], 'unique'],
         ];
@@ -184,7 +189,8 @@ class Post extends ActiveRecord
      */
     public function getTerms()
     {
-        return $this->hasMany(Term::className(), ['id' => 'term_id'])->viaTable('{{%term_relationship}}', ['post_id' => 'id']);
+        return $this->hasMany(Term::className(), ['id' => 'term_id'])->viaTable('{{%term_relationship}}',
+            ['post_id' => 'id']);
     }
 
     /**
@@ -216,14 +222,13 @@ class Post extends ActiveRecord
 
 
     /**
-     * Get permalink of current post
+     * Get permalink of current post.
      *
      * @return string
      */
     public function getUrl()
     {
         return Yii::$app->urlManagerFront->createAbsoluteUrl(['/post/view', 'id' => $this->id]);
-
     }
 
     /**
@@ -235,11 +240,10 @@ class Post extends ActiveRecord
      */
     public function getMeta($meta_name)
     {
-        /* @var $model \common\models\PostMeta*/
+        /* @var $model \common\models\PostMeta */
         $model = PostMeta::findOne(['meta_name' => $meta_name, 'post_id' => $this->id]);
 
         if ($model) {
-
             if (Json::isJson($model->meta_value)) {
                 return Json::decode($model->meta_value);
             }
@@ -289,8 +293,9 @@ class Post extends ActiveRecord
         /* @var $model \common\models\PostMeta */
         $model = PostMeta::findOne(['meta_name' => $meta_name, 'post_id' => $this->id]);
 
-        if (is_array($meta_value) || is_object($meta_value))
+        if (is_array($meta_value) || is_object($meta_value)) {
             $meta_value = Json::encode($meta_value);
+        }
 
         $model->meta_value = $meta_value;
 
@@ -306,15 +311,27 @@ class Post extends ActiveRecord
     public function getNextPost($sameType = true, $sameTerm = false)
     {
         /* @var $query \yii\db\ActiveQuery */
-        $query = static::find()->from(['post' => $this->tableName()])->andWhere(['>', 'post.id', $this->id])->andWhere(['post_status' => 'publish'])->orderBy(['post.id' => SORT_ASC]);
+        $query = static::find()
+            ->from(['post' => $this->tableName()])
+            ->andWhere(['>', 'post.id', $this->id])
+            ->andWhere(['post_status' => 'publish'])
+            ->orderBy(['post.id' => SORT_ASC]);
+
         if ($sameType) {
             $query->andWhere(['post_type' => $this->post_type]);
         }
+
         if ($sameTerm) {
-            $query->innerJoinWith(['terms' => function ($query) {
-                /* @var $query \yii\db\ActiveQuery */
-                $query->from(['term' => Term::tableName()])->andWhere(['IN', 'term.id', implode(',', ArrayHelper::getColumn($this->terms, 'id'))]);
-            }]);
+            $query->innerJoinWith([
+                'terms' => function ($query) {
+                    /* @var $query \yii\db\ActiveQuery */
+                    $query->from(['term' => Term::tableName()])->andWhere([
+                        'IN',
+                        'term.id',
+                        implode(',', ArrayHelper::getColumn($this->terms, 'id')),
+                    ]);
+                },
+            ]);
         }
 
         return $query->one();
@@ -352,15 +369,27 @@ class Post extends ActiveRecord
     public function getPrevPost($sameType = true, $sameTerm = false)
     {
         /* @var $query \yii\db\ActiveQuery */
-        $query = static::find()->from(['post' => $this->tableName()])->andWhere(['<', 'post.id', $this->id])->andWhere(['post_status' => 'publish'])->orderBy(['post.id' => SORT_DESC]);
+        $query = static::find()
+            ->from(['post' => $this->tableName()])
+            ->andWhere(['<', 'post.id', $this->id, ])
+            ->andWhere(['post_status' => 'publish'])
+            ->orderBy(['post.id' => SORT_DESC]);
+
         if ($sameType) {
             $query->andWhere(['post_type' => $this->post_type]);
         }
+
         if ($sameTerm) {
-            $query->innerJoinWith(['terms' => function ($query) {
-                /* @var $query \yii\db\ActiveQuery */
-                $query->from(['term' => Term::tableName()])->andWhere(['IN', 'term.id', implode(',', ArrayHelper::getColumn($this->terms, 'id'))]);
-            }]);
+            $query->innerJoinWith([
+                'terms' => function ($query) {
+                    /* @var $query \yii\db\ActiveQuery */
+                    $query->from(['term' => Term::tableName()])->andWhere([
+                        'IN',
+                        'term.id',
+                        implode(',', ArrayHelper::getColumn($this->terms, 'id')),
+                    ]);
+                },
+            ]);
         }
 
         return $query->one();
@@ -396,15 +425,18 @@ class Post extends ActiveRecord
      *
      * @return string
      */
-    public function getExcerpt($limit = 55){
-        $excerpt    = preg_replace('/\s{3,}/',' ', strip_tags($this->post_content));
-        $words      = preg_split("/[\n\r\t ]+/", $excerpt, $limit + 1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE);
+    public function getExcerpt($limit = 55)
+    {
+        $excerpt = preg_replace('/\s{3,}/', ' ', strip_tags($this->post_content));
+        $words = preg_split("/[\n\r\t ]+/", $excerpt, $limit + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+
         if (count($words) > $limit) {
             end($words);
             $last_word = prev($words);
 
-            $excerpt =  substr($excerpt, 0, $last_word[1] + strlen($last_word[0]));
+            $excerpt = substr($excerpt, 0, $last_word[1] + strlen($last_word[0]));
         }
+
         return $excerpt;
     }
 
@@ -417,8 +449,8 @@ class Post extends ActiveRecord
             if ($this->isNewRecord) {
                 $this->post_author = Yii::$app->user->id;
             }
-            $this->post_modified = new Expression('NOW()');
-            $this->post_excerpt  = $this->getExcerpt();
+            $this->post_modified = date('Y-m-d H:i:s');
+            $this->post_excerpt = $this->getExcerpt();
 
             return true;
         } else {

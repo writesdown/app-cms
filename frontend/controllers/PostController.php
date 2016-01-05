@@ -1,32 +1,27 @@
 <?php
 /**
- * @file      PostController.php.
- * @date      6/4/2015
- * @time      10:17 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
 
+use common\models\Option;
+use common\models\Post;
+use common\models\PostComment as Comment;
+use common\models\PostType;
 use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-
-/* MODEL */
-use common\models\Option;
-use common\models\PostType;
-use common\models\Post;
-use common\models\PostComment as Comment;
 
 /**
  * Class PostController
  *
  * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class PostController extends Controller
 {
@@ -43,7 +38,7 @@ class PostController extends Controller
 
         if ($id) {
             $postType = $this->findPostType($id);
-        } else if ($post_type) {
+        } elseif ($post_type) {
             $postType = $this->findPostTypeBySlug($post_type);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
@@ -53,7 +48,7 @@ class PostController extends Controller
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page')
+            'pageSize'   => Option::get('posts_per_page'),
         ]);
         $query->offset($pages->offset)->limit($pages->limit);
         $posts = $query->all();
@@ -66,7 +61,7 @@ class PostController extends Controller
             return $this->render($render, [
                 'postType' => $postType,
                 'posts'    => $posts,
-                'pages'    => $pages
+                'pages'    => $pages,
             ]);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
@@ -91,33 +86,32 @@ class PostController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-        } else if ($post_slug) {
+        } elseif ($post_slug) {
             $model = $this->findModelBySlug($post_slug);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
-
-            if (!$comment->comment_parent)
+            if (!$comment->comment_parent) {
                 $model->post_comment_count++;
-
+            }
             if ($model->save()) {
                 $this->refresh();
             }
         }
 
-        if($model->post_password && $model->post_password !== Yii::$app->request->post('password')){
+        if ($model->post_password && $model->post_password !== Yii::$app->request->post('password')) {
             return $this->render('protected', ['post' => $model]);
         }
 
-        if ( is_file($this->view->theme->basePath . '/post/view-' . $model->postType->post_type_slug . '.php')) {
+        if (is_file($this->view->theme->basePath . '/post/view-' . $model->postType->post_type_slug . '.php')) {
             $render = 'view-' . $model->postType->post_type_slug . '.php';
         }
 
         return $this->render($render, [
             'post'    => $model,
-            'comment' => $comment
+            'comment' => $comment,
         ]);
     }
 
@@ -133,6 +127,7 @@ class PostController extends Controller
     protected function findModel($id)
     {
         $model = Post::findOne(['id' => $id, 'post_status' => 'publish']);
+
         if ($model) {
             return $model;
         } else {
@@ -153,6 +148,7 @@ class PostController extends Controller
     protected function findModelBySlug($post_slug)
     {
         $model = Post::findOne(['post_slug' => $post_slug, 'post_status' => 'publish']);
+
         if ($model) {
             return $model;
         } else {
@@ -172,6 +168,7 @@ class PostController extends Controller
     protected function findPostType($id)
     {
         $model = PostType::findOne($id);
+
         if ($model) {
             return $model;
         } else {
@@ -191,10 +188,11 @@ class PostController extends Controller
     protected function findPostTypeBySlug($post_type)
     {
         $model = PostType::findOne(['post_type_slug' => $post_type]);
+
         if ($model) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-} 
+}

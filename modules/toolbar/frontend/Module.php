@@ -1,27 +1,29 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace modules\toolbar\frontend;
 
+use common\models\PostType;
+use common\models\search\Option;
+use common\models\Taxonomy;
 use Yii;
+use yii\base\Application;
+use yii\base\BootstrapInterface;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
-use yii\base\Application;
-use yii\base\BootstrapInterface;
-
-/* MODELS */
-use common\models\PostType;
-use common\models\search\Option;
-use common\models\Taxonomy;
 
 /**
  * Class Module
  *
- * @package modules\toolbar\frontend
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.2.0
  */
 class Module extends \yii\base\Module implements BootstrapInterface
 {
@@ -40,7 +42,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             Yii::$app->i18n->translations['toolbar'] = [
                 'class'          => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => Yii::$app->language,
-                'basePath'       => __DIR__ . '/../messages'
+                'basePath'       => __DIR__ . '/../messages',
             ];
         }
     }
@@ -76,7 +78,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'brandLabel'            => Html::img('@web/img/logo-mini.png'),
             'brandUrl'              => $urlManagerBack->baseUrl,
             'innerContainerOptions' => [
-                'class' => 'container-fluid'
+                'class' => 'container-fluid',
             ],
             'options'               => [
                 'class' => 'navbar navbar-inverse navbar-fixed-top',
@@ -92,33 +94,34 @@ class Module extends \yii\base\Module implements BootstrapInterface
                     'items' => [
                         [
                             'label' => Yii::t('toolbar', 'Dashboard'),
-                            'url'   => $urlManagerBack->baseUrl
+                            'url'   => $urlManagerBack->baseUrl,
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Themes'),
                             'url'     => $urlManagerBack->createUrl(['/theme']),
-                            'visible' => Yii::$app->user->can('administrator')
+                            'visible' => Yii::$app->user->can('administrator'),
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Menus'),
                             'url'     => $urlManagerBack->createUrl(['/menu']),
-                            'visible' => Yii::$app->user->can('administrator')
+                            'visible' => Yii::$app->user->can('administrator'),
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Modules'),
                             'url'     => $urlManagerBack->createUrl(['/module']),
-                            'visible' => Yii::$app->user->can('administrator')
+                            'visible' => Yii::$app->user->can('administrator'),
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Widgets'),
                             'url'     => $urlManagerBack->createUrl(['/widget']),
-                            'visible' => Yii::$app->user->can('administrator')
+                            'visible' => Yii::$app->user->can('administrator'),
                         ],
-                    ]
+                    ],
                 ],
                 [
-                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span> ' . Yii::t('toolbar', 'New'),
-                    'items' => $this->getAddNewMenu() ? $this->getAddNewMenu() : null
+                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span> ' . Yii::t('toolbar',
+                            'New'),
+                    'items' => $this->getAddNewMenu() ? $this->getAddNewMenu() : null,
                 ],
             ],
         ]);
@@ -132,17 +135,17 @@ class Module extends \yii\base\Module implements BootstrapInterface
                     'items' => [
                         [
                             'label' => 'Profile',
-                            'url'   => $urlManagerBack->createUrl(['/user/profile'])
+                            'url'   => $urlManagerBack->createUrl(['/user/profile']),
                         ],
                         [
                             'label'       => 'Logout',
                             'url'         => ['/site/logout'],
                             'linkOptions' => [
-                                'data-method' => 'post'
-                            ]
+                                'data-method' => 'post',
+                            ],
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ]);
 
@@ -167,7 +170,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             $menuItems[] = [
                 'label'   => $postType->post_type_sn,
                 'url'     => $urlManagerBack->createUrl(['/post/create', 'post_type' => $postType->id]),
-                'visible' => Yii::$app->user->can($postType->post_type_permission)
+                'visible' => Yii::$app->user->can($postType->post_type_permission),
             ];
         }
 
@@ -193,7 +196,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             $menuItems[] = [
                 'label'   => $taxonomy->taxonomy_sn,
                 'url'     => $urlManagerBack->createUrl(['/taxonomy/view', 'id' => $taxonomy->id]),
-                'visible' => Yii::$app->user->can('editor')
+                'visible' => Yii::$app->user->can('editor'),
             ];
         }
 
@@ -223,13 +226,13 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 [
                     'label'   => Yii::t('toolbar', 'Taxonomy'),
                     'url'     => $urlManagerBack->createUrl('/taxonomy/create'),
-                    'visible' => Yii::$app->user->can('administrator')
+                    'visible' => Yii::$app->user->can('administrator'),
                 ],
                 [
                     'label'   => Yii::t('toolbar', 'Post Type'),
                     'url'     => $urlManagerBack->createUrl('/post-type/create'),
-                    'visible' => Yii::$app->user->can('administrator')
-                ]
+                    'visible' => Yii::$app->user->can('administrator'),
+                ],
             ]
         );
 

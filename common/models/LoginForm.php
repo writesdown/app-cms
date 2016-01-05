@@ -1,9 +1,6 @@
 <?php
 /**
- * @file      LoginForm.php.
- * @date      6/4/2015
- * @time      4:42 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
@@ -16,9 +13,8 @@ use yii\base\Model;
 /**
  * Login form
  *
- * @package common\models
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   1.0
+ * @since   0.1.0
  */
 class LoginForm extends Model
 {
@@ -27,7 +23,6 @@ class LoginForm extends Model
     public $rememberMe = true;
 
     private $_user = false;
-
 
     /**
      * @inheritdoc

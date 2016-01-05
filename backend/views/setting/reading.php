@@ -140,30 +140,37 @@ SelectizeAsset::register($this);
         </div>
     </div>
     <div class="form-group">
-        <?= Html::label(Yii::t('writesdown', 'Search Engine Visibility'), 'option-site_indexing',
-            ['class' => 'col-sm-2 control-label']) ?>
+        <?= Html::label(
+            Yii::t('writesdown', 'Search Engine Visibility'),
+            'option-site_indexing',
+            ['class' => 'col-sm-2 control-label']
+        ) ?>
+
         <div class="col-sm-7">
             <div class="checkbox">
-                <?= Html::label(Html::checkbox('Option[disable_site_indexing][option_value]',
-                        $model->disable_site_indexing->option_value, [
-                            'id'      => 'option-site_indexing',
-                            'uncheck' => 0,
-                        ])
-                    . Yii::t('writesdown', 'Do not allow search engines to index the site')) ?>
+                <?= Html::label(
+                    Html::checkbox(
+                        'Option[disable_site_indexing][option_value]',
+                        $model->disable_site_indexing->option_value,
+                        ['id' => 'option-site_indexing', 'uncheck' => 0]
+                    ) . Yii::t('writesdown', 'Do not allow search engines to index the site')
+                ) ?>
+
             </div>
             <p class="description">
                 <?= Yii::t('writesdown', "It's up to the search engines to honor this request.") ?>
+
             </p>
         </div>
     </div>
-
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?= Html::submitButton(Yii::t('writesdown', 'Save'), ['class' => 'btn btn-flat btn-success']) ?>
+
         </div>
     </div>
-
     <?php ActiveForm::end() ?>
+
 </div>
 <?php $this->registerJs('(function($){
     $(document).ready(function(){

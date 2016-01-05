@@ -1,32 +1,26 @@
 <?php
 /**
- * @file      TaxonomyController.php.
- * @date      6/4/2015
- * @time      5:10 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
+use common\models\search\Taxonomy as TaxonomySearch;
+use common\models\search\Term as TermSearch;
+use common\models\Taxonomy;
+use common\models\Term;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\Html;
-
-/* MODEL */
-use common\models\Taxonomy;
-use common\models\search\Taxonomy as TaxonomySearch;
-use common\models\Term;
-use common\models\search\Term as TermSearch;
 
 /**
  * TaxonomyController implements the CRUD actions for Taxonomy model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -45,12 +39,12 @@ class TaxonomyController extends Controller
                     [
                         'actions' => ['index', 'create', 'update', 'delete', 'bulk-action', 'ajax-create'],
                         'allow'   => true,
-                        'roles'   => ['administrator']
+                        'roles'   => ['administrator'],
                     ],
                     [
                         'actions' => ['view', 'update-term', 'delete-term'],
                         'allow'   => true,
-                        'roles'   => ['editor']
+                        'roles'   => ['editor'],
                     ],
                 ],
             ],
@@ -83,7 +77,8 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * View single taxonomy and list all term from it.
+     * View single taxonomy, list all Term from it and create a new Term model.
+     * If create Term successful, the browser will be redirected to 'view taxonomy' page.
      *
      * @param integer $id
      *
@@ -166,7 +161,9 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Bulk action for Taxonomy
+     * Bulk action for Taxonomy triggered when button 'Apply' clicked.
+     * The action depends on the value of the dropdown next to the button.
+     * Only accept POST HTTP method.
      */
     public function actionBulkAction()
     {
@@ -178,7 +175,7 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Update a term on page of view taxonomy.
+     * Updates an existing Term on 'view taxonomy' page.
      *
      * @param $id
      * @param $term_id
@@ -189,7 +186,6 @@ class TaxonomyController extends Controller
      */
     public function actionUpdateTerm($id, $term_id)
     {
-
         $term = $this->findTerm($term_id);
         $searchModel = new TermSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
@@ -210,7 +206,7 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Delete an existing term of a taxonomy on 'view taxonomy' page.
+     * Delete an existing Term of a taxonomy on 'view taxonomy' page.
      * If deletion is successful, the browser will be redirected to the 'view taxonomy' page.
      *
      * @param integer $id
@@ -228,13 +224,17 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Create taxonomy via ajax on post type create or update page
+     * Create taxonomy via AJAX request on 'create' and 'update post type' page.
      */
     public function actionAjaxCreate()
     {
         $model = new Taxonomy();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            echo '<br />' . Html::label(Html::checkbox('taxonomy_ids[]', true, ['value' => $model->id]) . ' ' . $model->taxonomy_name);
+            echo '<br />';
+            echo Html::label(Html::checkbox('taxonomy_ids[]', true, ['value' => $model->id])
+                . ' '
+                . $model->taxonomy_name);
         }
     }
 

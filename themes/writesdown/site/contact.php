@@ -1,18 +1,16 @@
 <?php
 /**
- * @file      contact.php
- * @date      8/23/2015
- * @time      9:08 PM
+ * @link      http://www.writesdown.com/
  * @author    Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
+use common\models\Option;
 use frontend\widgets\Alert;
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
-use common\models\Option;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -25,18 +23,19 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Contact');
     <article class="hentry">
         <header class="entry-header">
             <h1 class="entry-title"><?= Html::encode($this->title) ?></h1>
+
         </header>
         <div class="entry-content">
             <?= Alert::widget() ?>
-            <p>
-                If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
-            </p>
 
-            <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+            <p>
+                If you have business inquiries or other questions, please fill out the following form to contact us.
+                Thank you.
+            </p>
+            <?php $form = ActiveForm::begin(['id' => 'contact-form']) ?>
 
             <div class="row">
                 <div class="col-md-7">
-
                     <?= $form->field($model, 'name') ?>
 
                     <?= $form->field($model, 'email') ?>
@@ -49,17 +48,15 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Contact');
 
             <div class="row">
                 <div class="col-md-6">
-
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className()) ?>
 
                 </div>
             </div>
-
             <div class="form-group">
                 <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-            </div>
 
-            <?php ActiveForm::end(); ?>
+            </div>
+            <?php ActiveForm::end() ?>
 
         </div>
     </article>

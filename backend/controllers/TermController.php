@@ -1,31 +1,25 @@
 <?php
 /**
- * @file      TermController.php.
- * @date      6/4/2015
- * @time      5:11 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link      http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
 
+use common\models\Term;
+use common\models\TermRelationship;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use yii\web\Response;
-
-/* MODEL */
-use common\models\Term;
-use common\models\TermRelationship;
 
 /**
  * TermController implements the CRUD actions for Term model.
  *
- * @package backend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -58,7 +52,7 @@ class TermController extends Controller
                     'ajax-create-hierarchical'     => ['post'],
                     'ajax-create-non-hierarchical' => ['post'],
                     'bulk-action'                  => ['post'],
-                    'ajax-search'                  => ['post']
+                    'ajax-search'                  => ['post'],
                 ],
             ],
         ];
@@ -66,7 +60,7 @@ class TermController extends Controller
 
 
     /**
-     * Create term taxonomy non-hierarchical
+     * Create a new Term model for hierarchical Taxonomy through AJAX request.
      */
     public function actionAjaxCreateHierarchical()
     {
@@ -94,7 +88,7 @@ class TermController extends Controller
 
 
     /**
-     * Create term for non-hierarchical taxonomy via selectize box.
+     * Create a new Term for non-hierarchical Taxonomy through Selectize box.
      *
      * @return string
      */
@@ -102,6 +96,7 @@ class TermController extends Controller
     {
         $model = new Term();
         Yii::$app->response->format = Response::FORMAT_JSON;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return ['id' => $model->id, 'term_name' => $model->term_name];
         }
@@ -111,7 +106,7 @@ class TermController extends Controller
 
 
     /**
-     * Ajax search for term and return json.
+     * Search Term through Ajax with JSON as response.
      *
      * @return string
      */
@@ -120,20 +115,24 @@ class TermController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
 
         if ($term = Yii::$app->request->post('Term')) {
-            $model = Term::find()->select(['id', 'term_name'])->where(['like', 'term_name', $term['term_name']])->andWhere(['taxonomy_id' => $term['taxonomy_id']])->limit('10')->all();
+            $model = Term::find()
+                ->select(['id', 'term_name'])
+                ->where(['like', 'term_name', $term['term_name']])
+                ->andWhere(['taxonomy_id' => $term['taxonomy_id']])
+                ->limit('10')
+                ->all();
             if ($model) {
                 return ($model);
             }
-
         }
 
         return [];
     }
 
     /**
-     * Bulk action for term on taxonomy view
-     *
-     * @see \backend\controllers\TaxonomyController::actionView
+     * Bulk action for Term triggered when button 'Apply' clicked.
+     * The action depends on the value of the dropdown next to the button.
+     * Only accept POST HTTP method.
      */
     public function actionBulkAction()
     {
