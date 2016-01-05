@@ -10,24 +10,22 @@
 
 namespace backend\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\web\ForbiddenHttpException;
-use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
-use yii\base\InvalidParamException;
-
-/* MODEL */
-use common\models\User;
+use common\models\LoginForm;
 use common\models\Option;
+use common\models\PasswordResetRequestForm;
 use common\models\Post;
 use common\models\PostComment;
-use common\models\LoginForm;
-use common\models\SignupForm;
 use common\models\ResetPasswordForm;
-use common\models\PasswordResetRequestForm;
+use common\models\SignupForm;
+use common\models\User;
+use Yii;
+use yii\base\InvalidParamException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller.
@@ -48,7 +46,9 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'request-password-reset', 'reset-password', 'forbidden', 'not-found', 'terms'],
+                        'actions' => [
+                            'login', 'request-password-reset', 'reset-password', 'forbidden', 'not-found', 'terms'
+                        ],
                         'allow'   => true,
                     ],
                     [
@@ -198,7 +198,8 @@ class SiteController extends Controller
 
                 return $this->goHome();
             } else {
-                Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                Yii::$app->getSession()->setFlash('error',
+                    'Sorry, we are unable to reset password for email provided.');
             }
         }
 
