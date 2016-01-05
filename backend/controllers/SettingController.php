@@ -96,11 +96,11 @@ class SettingController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -117,11 +117,11 @@ class SettingController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -139,18 +139,18 @@ class SettingController extends Controller
         return $this->redirect(['index']);
     }
 
+
     /**
      * Render option page for specific group of option.
      * It will use group file if exist.
      *
-     * @param string $id group name
+     * @param string $id
      *
-     * @return string|\yii\web\Response
-     * @throws \yii\web\NotFoundHttpException
+     * @return mixed
      */
     public function actionGroup($id)
     {
-        $model = Option::find()->where(['option_group' => $id])->indexBy('option_name')->all();
+        $model = $this->findModelByGroup($id);
 
         if ($options = Yii::$app->request->post('Option')) {
             foreach ($options as $option_name => $option) {
@@ -161,18 +161,14 @@ class SettingController extends Controller
             return $this->redirect(['group', 'id' => $id]);
         }
 
-        if ($model) {
-            if (is_file($viewFile = $this->getViewPath() . '/' . strtolower($id) . '.php')) {
-                return $this->render(strtolower($id), [
-                    'model' => (object)$model,
-                    'group' => $id,
-                ]);
-            } else {
-                return $this->redirect(['index']);
-            }
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
+        if (is_file($this->getViewPath() . '/' . strtolower($id) . '.php')) {
+            return $this->render(strtolower($id), [
+                'model' => (object)$model,
+                'group' => $id,
+            ]);
         }
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -188,8 +184,26 @@ class SettingController extends Controller
     {
         if (($model = Option::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+        
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
+    }
+
+    /**
+     * Finds the Option models based on their group.
+     * If the models are not found, a 404 HTTP exception will be thrown.
+     *
+     * @param string $id
+     *
+     * @return Option the loaded model
+     * @throws NotFoundHttpException if the models cannot be found
+     */
+    protected function findModelByGroup($id)
+    {
+        if ($model = Option::find()->where(['option_group' => $id])->indexBy('option_name')->all()) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }

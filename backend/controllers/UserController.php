@@ -142,9 +142,9 @@ class UserController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
-        } else {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
         }
+
+        throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
     }
 
     /**
@@ -169,9 +169,9 @@ class UserController extends Controller
             $model->delete();
 
             return $this->redirect(['index']);
-        } else {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
         }
+
+        throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
     }
 
     /**
@@ -264,8 +264,8 @@ class UserController extends Controller
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

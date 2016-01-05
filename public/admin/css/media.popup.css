@@ -15,7 +15,7 @@ html, body{
     padding-top: 20px;
     background: #F2F2F2;
 }
-#media-popup .sidebar-left ul > li.active > a ,
+#media-popup .sidebar-left ul > .active > a ,
 #media-popup .sidebar-left ul > li > a:hover ,
 #media-popup .sidebar-left ul > li > a:focus {
     margin-right: -1px;

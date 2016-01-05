@@ -25,7 +25,7 @@ class TimeZoneHelper
         $timezone = [];
         $timestamp = time();
 
-        foreach (timezone_identifiers_list() as $key => $zone) {
+        foreach (timezone_identifiers_list() as $zone) {
             date_default_timezone_set($zone);
             $timezone[$zone] = $zone . ' UTC/GMT ' . date('P', $timestamp);
         }

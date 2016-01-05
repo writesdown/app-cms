@@ -2,9 +2,8 @@
  * Nestable jQuery Plugin - Copyright (c) 2012 David Bushell - http://dbushell.com/
  * Dual-licensed under the BSD or MIT licenses
  */
-;(function($, window, document, undefined)
+(function($, window, document, undefined)
 {
-
     var hasTouch = 'ontouchstart' in document;
 
     /**
@@ -486,7 +485,7 @@
         var list = e.length ? e : $(e.target),
             output = list.data("output");
         if (window.JSON) {
-            if (typeof output != "undefined") {
+            if (typeof output !== "undefined") {
                 output.val(window.JSON.stringify(list.nestable("serialise")));//, null, 2));
             }
         } else {

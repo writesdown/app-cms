@@ -132,9 +132,9 @@ class TermRelationshipController extends Controller
     {
         if (($model = TermRelationship::findOne(['post_id' => $post_id, 'term_id' => $term_id])) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     /**
@@ -149,8 +149,8 @@ class TermRelationshipController extends Controller
     {
         if ($model = Term::findOne($id)) {
             return $model;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

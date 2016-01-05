@@ -300,8 +300,8 @@ class ModuleController extends Controller
     {
         if (($model = Module::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }

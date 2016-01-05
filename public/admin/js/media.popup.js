@@ -40,7 +40,7 @@
                 break;
             }
             node = node.parentNode;
-        } while (node != null);
+        } while (node !== null);
 
         dropZone.removeClass("in hover");
 

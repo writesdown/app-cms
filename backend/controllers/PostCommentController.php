@@ -146,11 +146,11 @@ class PostCommentController extends Controller
                 $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_UNAPPROVED]);
             }
         } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_TRASH) {
-            foreach ($_POST['ids'] as $id) {
+            foreach (Yii::$app->request->post('ids') as $id) {
                 $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_TRASH]);
             }
         } elseif (Yii::$app->request->post('action') === 'delete') {
-            foreach ($_POST['ids'] as $id) {
+            foreach (Yii::$app->request->post('ids') as $id) {
                 $model = $this->findModel($id);
                 $post = $model->commentPost;
                 if ($model->delete()) {
@@ -203,9 +203,9 @@ class PostCommentController extends Controller
     {
         if (($model = PostComment::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     /**
@@ -221,9 +221,9 @@ class PostCommentController extends Controller
     {
         if (($model = PostType::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 
@@ -240,8 +240,8 @@ class PostCommentController extends Controller
     {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

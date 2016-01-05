@@ -201,9 +201,7 @@ class MediaController extends Controller
         ];
 
         // Merge image versions with app params
-        if (isset(Yii::$app->params['media']['versions'])
-            && is_array(Yii::$app->params['media']['versions'])
-        ) {
+        if (isset(Yii::$app->params['media']['versions']) && is_array(Yii::$app->params['media']['versions'])) {
             $versions = ArrayHelper::merge($versions, Yii::$app->params['media']['versions']);
         }
 
@@ -295,9 +293,9 @@ class MediaController extends Controller
                     'model'  => $model,
                     'editor' => $editor,
                 ]);
-            } else {
-                throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
             }
+
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         return $this->render('popup', [
@@ -361,9 +359,9 @@ class MediaController extends Controller
     {
         if (($model = Media::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**

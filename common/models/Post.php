@@ -234,14 +234,14 @@ class Post extends ActiveRecord
     /**
      * Get meta for current post.
      *
-     * @param $meta_name
+     * @param string $metaName
      *
      * @return mixed|null
      */
-    public function getMeta($meta_name)
+    public function getMeta($metaName)
     {
         /* @var $model \common\models\PostMeta */
-        $model = PostMeta::findOne(['meta_name' => $meta_name, 'post_id' => $this->id]);
+        $model = PostMeta::findOne(['meta_name' => $metaName, 'post_id' => $this->id]);
 
         if ($model) {
             if (Json::isJson($model->meta_value)) {
@@ -257,47 +257,47 @@ class Post extends ActiveRecord
     /**
      * Add new meta data for current post.
      *
-     * @param $meta_name
-     * @param $meta_value
+     * @param string       $metaName
+     * @param string|array $metaValue
      *
      * @return bool
      */
-    public function setMeta($meta_name, $meta_value)
+    public function setMeta($metaName, $metaValue)
     {
-        if (is_array($meta_value) || is_object($meta_value)) {
-            $meta_value = Json::encode($meta_value);
+        if (is_array($metaValue) || is_object($metaValue)) {
+            $metaValue = Json::encode($metaValue);
         }
 
-        if ($this->getMeta($meta_name) !== null) {
-            return $this->upMeta($meta_name, $meta_value);
-        } else {
-            $model = new PostMeta();
-            $model->post_id = $this->id;
-            $model->meta_name = $meta_name;
-            $model->meta_value = $meta_value;
-
-            return $model->save();
+        if ($this->getMeta($metaName) !== null) {
+            return $this->upMeta($metaName, $metaValue);
         }
+
+        $model = new PostMeta();
+        $model->post_id = $this->id;
+        $model->meta_name = $metaName;
+        $model->meta_value = $metaValue;
+
+        return $model->save();
     }
 
     /**
      * Update meta data for current post.
      *
-     * @param $meta_name
-     * @param $meta_value
+     * @param string       $metaName
+     * @param string|array $metaValue
      *
      * @return bool
      */
-    public function upMeta($meta_name, $meta_value)
+    public function upMeta($metaName, $metaValue)
     {
         /* @var $model \common\models\PostMeta */
-        $model = PostMeta::findOne(['meta_name' => $meta_name, 'post_id' => $this->id]);
+        $model = PostMeta::findOne(['meta_name' => $metaName, 'post_id' => $this->id]);
 
-        if (is_array($meta_value) || is_object($meta_value)) {
-            $meta_value = Json::encode($meta_value);
+        if (is_array($metaValue) || is_object($metaValue)) {
+            $metaValue = Json::encode($metaValue);
         }
 
-        $model->meta_value = $meta_value;
+        $model->meta_value = $metaValue;
 
         return $model->save();
     }
@@ -371,7 +371,7 @@ class Post extends ActiveRecord
         /* @var $query \yii\db\ActiveQuery */
         $query = static::find()
             ->from(['post' => $this->tableName()])
-            ->andWhere(['<', 'post.id', $this->id, ])
+            ->andWhere(['<', 'post.id', $this->id])
             ->andWhere(['post_status' => 'publish'])
             ->orderBy(['post.id' => SORT_DESC]);
 
@@ -432,9 +432,9 @@ class Post extends ActiveRecord
 
         if (count($words) > $limit) {
             end($words);
-            $last_word = prev($words);
+            $lastWord = prev($words);
 
-            $excerpt = substr($excerpt, 0, $last_word[1] + strlen($last_word[0]));
+            $excerpt = substr($excerpt, 0, $lastWord[1] + strlen($lastWord[0]));
         }
 
         return $excerpt;
@@ -453,8 +453,8 @@ class Post extends ActiveRecord
             $this->post_excerpt = $this->getExcerpt();
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

@@ -20,8 +20,8 @@
         "codezeen/yii2-adminlte": "~1.0",
         "codezeen/yii2-tinymce": "~1.0",
         "2amigos/yii2-selectize-widget": "~1.0",
-        "2amigos/yii2-date-time-picker-widget": "*",
-        "2amigos/yii2-file-upload-widget": "dev-master"
+        "2amigos/yii2-date-time-picker-widget": "~1.0",
+        "2amigos/yii2-file-upload-widget": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

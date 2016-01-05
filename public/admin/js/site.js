@@ -121,7 +121,7 @@
     $('.posttermhierarchical-term_name').keypress(function(e) {
         var _container = $(this).parents('.box').find('.checkbox'),
             _form   = $(this).parents('.input-group');
-        if(e.which == 13) {
+        if(e.which === 13) {
             e.preventDefault();
             create_hierarchical_term(_form, _container)
         }

@@ -1,7 +1,7 @@
 WritesDown CMS Based on Yii2
 ============================
 
-WritesDown CMS is CMS which is developed based on [Yii2 Application Advanced](https://github.com/yiisoft/yii2-app-advanced/). 
+WritesDown is Content Management System which is developed using [Yii2 Application Advanced](https://github.com/yiisoft/yii2-app-advanced/).
 The application consists of three tiers: front end, back end, and console.
 
 Application frontend is consumed by visitor of the website and search engine depends on application settings.
@@ -9,10 +9,16 @@ Application frontend is consumed by visitor of the website and search engine dep
 Backend application, more complex application, has roles consists of Super Administrator, Administrator, Editor, Author, 
 Contributor, and Subscriber.
 
+[![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg)](http://www.yiiframework.com/)
+[![Total Downloads](https://poser.pugx.org/writesdown/app-cms/downloads)](https://packagist.org/packages/writesdown/app-cms)
+[![Build Status](https://travis-ci.org/writesdown/app-cms.svg?branch=master)](https://travis-ci.org/writesdown/app-cms)
+[![Dependency Status](https://www.versioneye.com/user/projects/568b0e86eb4f47003c001066/badge.svg)](https://www.versioneye.com/user/projects/568b0e86eb4f47003c001066)
+[![Code Climate](https://codeclimate.com/github/writesdown/app-cms/badges/gpa.svg)](https://codeclimate.com/github/writesdown/app-cms)
+
 Feature
 -------
 
-* Developed using Yii2
+* Developed using Yii2 Framework
 * Admin-LTE version 2 for admin
 * Custom taxonomies
 * Custom post types
@@ -77,7 +83,7 @@ Like Yii2 Application Advanced, WritesDown CMS also use composer for installatio
 to the command line.
 
 ```
-composer global require "fxp/composer-asset-plugin:~1.1.0"
+composer global require "fxp/composer-asset-plugin:~1.1.1"
 composer create-project --prefer-dist --stability=dev writesdown/app-cms writesdown
 ```
 

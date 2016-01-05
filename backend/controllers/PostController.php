@@ -271,11 +271,11 @@ class PostController extends Controller
             ->andWhere(['LIKE', 'post_title', Yii::$app->request->post('post_title')])
             ->limit(10);
 
-        if ($post_type = Yii::$app->request->post('post_type')) {
-            $query->andWhere(['post_type' => Yii::$app->request->post('post_type')]);
+        if ($postType = Yii::$app->request->post('post_type')) {
+            $query->andWhere(['post_type' => $postType]);
         }
 
-        return $model = $query->all();
+        return $query->all();
     }
 
     /**
@@ -291,9 +291,9 @@ class PostController extends Controller
     {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     /**
@@ -309,9 +309,9 @@ class PostController extends Controller
     {
         if (($model = PostType::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 
@@ -327,8 +327,8 @@ class PostController extends Controller
     {
         if (($model = Term::findOne($id)) !== null) {
             return $model;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

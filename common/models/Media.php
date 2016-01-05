@@ -182,14 +182,14 @@ class Media extends ActiveRecord
     /**
      * Get meta for current media.
      *
-     * @param $meta_name
+     * @param string $metaName
      *
      * @return mixed|null|string
      */
-    public function getMeta($meta_name)
+    public function getMeta($metaName)
     {
         /* @var $model \common\models\MediaMeta */
-        $model = MediaMeta::findOne(['meta_name' => $meta_name, 'media_id' => $this->id]);
+        $model = MediaMeta::findOne(['meta_name' => $metaName, 'media_id' => $this->id]);
 
         if ($model) {
             if (Json::isJson($model->meta_value)) {
@@ -205,47 +205,47 @@ class Media extends ActiveRecord
     /**
      * Add new meta data for current media.
      *
-     * @param $meta_name
-     * @param $meta_value
+     * @param string       $metaName
+     * @param string|array $metaValue
      *
      * @return bool
      */
-    public function setMeta($meta_name, $meta_value)
+    public function setMeta($metaName, $metaValue)
     {
-        if (is_array($meta_value) || is_object($meta_value)) {
-            $meta_value = Json::encode($meta_value);
+        if (is_array($metaValue) || is_object($metaValue)) {
+            $metaValue = Json::encode($metaValue);
         }
 
-        if ($this->getMeta($meta_name) !== null) {
-            return $this->upMeta($meta_name, $meta_value);
-        } else {
-            $model = new MediaMeta();
-            $model->media_id = $this->id;
-            $model->meta_name = $meta_name;
-            $model->meta_value = $meta_value;
-
-            return $model->save();
+        if ($this->getMeta($metaName) !== null) {
+            return $this->upMeta($metaName, $metaValue);
         }
+
+        $model = new MediaMeta();
+        $model->media_id = $this->id;
+        $model->meta_name = $metaName;
+        $model->meta_value = $metaValue;
+
+        return $model->save();
     }
 
     /**
      * Update meta data for current media.
      *
-     * @param $meta_name
-     * @param $meta_value
+     * @param string       $metaName
+     * @param string|array $metaValue
      *
      * @return bool
      */
-    public function upMeta($meta_name, $meta_value)
+    public function upMeta($metaName, $metaValue)
     {
         /* @var $model \common\models\MediaMeta */
-        $model = MediaMeta::findOne(['meta_name' => $meta_name, 'media_id' => $this->id]);
+        $model = MediaMeta::findOne(['meta_name' => $metaName, 'media_id' => $this->id]);
 
-        if (is_array($meta_value) || is_object($meta_value)) {
-            $meta_value = Json::encode($meta_value);
+        if (is_array($metaValue) || is_object($metaValue)) {
+            $metaValue = Json::encode($metaValue);
         }
 
-        $model->meta_value = $meta_value;
+        $model->meta_value = $metaValue;
 
         return $model->save();
     }
@@ -285,18 +285,18 @@ class Media extends ActiveRecord
 
         if (preg_match("/^image/", $this->media_mime_type)) {
             if (isset($metadata['media_versions'][$version])) {
-                $image_src = $metadata['media_versions'][$version]['url'];
-                $image_width = $metadata['media_versions'][$version]['width'];
-                $image_height = $metadata['media_versions'][$version]['height'];
+                $imageSrc = $metadata['media_versions'][$version]['url'];
+                $imageWidth = $metadata['media_versions'][$version]['width'];
+                $imageHeight = $metadata['media_versions'][$version]['height'];
             } else {
-                $image_src = $metadata['media_versions']['full']['url'];
-                $image_width = $metadata['media_versions']['full']['width'];
-                $image_height = $metadata['media_versions']['full']['height'];
+                $imageSrc = $metadata['media_versions']['full']['url'];
+                $imageWidth = $metadata['media_versions']['full']['width'];
+                $imageHeight = $metadata['media_versions']['full']['height'];
             }
 
-            $thumbnail = Html::img($this->uploadUrl . $image_src, ArrayHelper::merge([
-                'width'  => $image_width,
-                'height' => $image_height,
+            $thumbnail = Html::img($this->uploadUrl . $imageSrc, ArrayHelper::merge([
+                'width'  => $imageWidth,
+                'height' => $imageHeight,
                 'alt'    => $this->media_title,
             ], $options));
         }

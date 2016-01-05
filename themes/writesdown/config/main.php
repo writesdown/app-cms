@@ -19,6 +19,7 @@ return [
         'Tags'        => 'grey, simple, clean, bootstrap',
         'Text Domain' => 'wdthemedefault',
     ],
+    'upload'    => [],
     'install'   => [],
     'uninstall' => [],
     'delete'    => [],

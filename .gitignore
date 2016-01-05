@@ -29,3 +29,7 @@ composer.lock
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+# webserver error and access log
+/access.log
+/error.log

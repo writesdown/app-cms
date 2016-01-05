@@ -10,6 +10,7 @@ namespace backend\controllers;
 use common\models\Option;
 use Yii;
 use yii\base\DynamicModel;
+use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
@@ -173,7 +174,8 @@ class ThemeController extends Controller
                         } else {
                             rename($this->_themeTempDir . $baseDir, $this->_themeDir . $baseDir);
                             if (is_file($this->_themeDir . $baseDir . '/screenshot.png')) {
-                                copy($this->_themeDir . $baseDir . '/screenshot.png', $this->_thumbDir . $baseDir . '.png');
+                                copy($this->_themeDir . $baseDir . '/screenshot.png',
+                                    $this->_thumbDir . $baseDir . '.png');
                             }
                             FileHelper::removeDirectory($this->_themeTempDir);
                             $fileConfig = $this->_themeDir . $baseDir . '/config/main.php';
@@ -181,7 +183,10 @@ class ThemeController extends Controller
                             if (is_file($fileConfig)) {
                                 $config = require($fileConfig);
                                 if (isset($config['upload'])) {
-                                    /* TODO */
+                                    try {
+                                        Yii::createObject($config['upload']);
+                                    } catch (Exception $e) {
+                                    }
                                 }
                             }
 
@@ -242,17 +247,23 @@ class ThemeController extends Controller
      */
     public function actionInstall($theme)
     {
-        if (is_file($fileConfigInstall = $this->_themeDir . $theme . '/config/main.php')) {
-            $configInstall = require($fileConfigInstall);
-            if (isset($configInstall['install'])) {
-                /* TODO */
+        if (is_file($fileConfigInstalled = $this->_themeDir . Option::get('theme') . '/config/main.php')) {
+            $configOld = require($fileConfigInstalled);
+            if (isset($configOld['uninstall'])) {
+                try {
+                    Yii::createObject($configOld['uninstall']);
+                } catch (Exception $e) {
+                }
             }
         }
 
-        if (is_file($fileConfigInstalled = $this->_themeDir . Option::get('theme') . '/config/main.php')) {
-            $configInstalled = require($fileConfigInstalled);
-            if (isset($configInstalled['uninstall'])) {
-                /* TODO */
+        if (is_file($fileConfigInstall = $this->_themeDir . $theme . '/config/main.php')) {
+            $configNew = require($fileConfigInstall);
+            if (isset($configNew['install'])) {
+                try {
+                    Yii::createObject($configNew['install']);
+                } catch (Exception $e) {
+                }
             }
         }
 
@@ -280,7 +291,10 @@ class ThemeController extends Controller
             if (is_file($fileConfig)) {
                 $config = require($fileConfig);
                 if (isset($config['delete'])) {
-                    /* TODO */
+                    try {
+                        Yii::createObject($config['delete']);
+                    } catch (Exception $e) {
+                    }
                 }
             }
 

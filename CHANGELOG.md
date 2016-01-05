@@ -1,9 +1,13 @@
 WritesDown Change Log
 =====================
+(January 5, 2016)
+-----------------
+* Reformatting and refactoring code
+* Minor bug fixes
 (December 23, 2015)
 -------------------
 * (ENH) Refactoring widget
-* (BUG) MediaUploadHandler incorrect crop size
+* MediaUploadHandler incorrect crop size
 
 (November 29, 2015)
 -------------------
@@ -13,8 +17,8 @@ WritesDown Change Log
 --------------------
 * (ENH) Update widgets and theme
 * (ENH) Add Nav widget in themes writesdown for item activation
-* (BUG) WidgetController set enableCsrfValidation to false in function beforeAction to avoid error 400 on ajax
-* (BUG) Activated widgets only show on single space
+* WidgetController set enableCsrfValidation to false in function beforeAction to avoid error 400 on ajax
+* Activated widgets only show on single space
 
 (September 12, 2015)
 --------------------

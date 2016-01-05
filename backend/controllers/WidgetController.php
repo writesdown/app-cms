@@ -161,7 +161,6 @@ class WidgetController extends Controller
                                 Yii::t('writesdown', 'Widget with the same directory already exist.')
                             );
                         } else {
-
                             // Move widget directory
                             if (rename($this->_widgetTempDir . $baseDir, $this->_widgetDir . $baseDir)) {
                                 FileHelper::removeDirectory($this->_widgetTempDir);
@@ -326,8 +325,8 @@ class WidgetController extends Controller
     {
         if (($model = Widget::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

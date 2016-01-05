@@ -75,10 +75,8 @@ class MenuController extends Controller
         // Get available menu
         if ($availableMenu = ArrayHelper::map(Menu::find()->all(), 'id', 'menu_title')) {
             if ($id === null && $availableMenu) {
-                foreach ($availableMenu as $key => $menu) {
-                    $id = $key;
-                    break;
-                }
+                reset($availableMenu);
+                $id = key($availableMenu);
             }
             $selectedMenu = $this->findModel($id);
         }
@@ -104,9 +102,9 @@ class MenuController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->id]);
-        } else {
-            return $this->redirect(['index']);
         }
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -208,10 +206,9 @@ class MenuController extends Controller
                 foreach ($children as $child) {
                     $child->updateAttributes(['menu_parent' => $model->menu_parent]);
                 }
-            } else {
-                throw new NotFoundHttpException('writesdown', 'The requested page does not exist.');
             }
-        }
+
+            throw new NotFoundHttpException('writesdown', 'The requested page does not exist.');        }
     }
 
     /**
@@ -252,9 +249,9 @@ class MenuController extends Controller
     {
         if (($model = Menu::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -269,9 +266,9 @@ class MenuController extends Controller
     {
         if (($model = MenuItem::findOne($id)) !== null) {
             return $model;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -286,9 +283,9 @@ class MenuController extends Controller
     {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -303,8 +300,8 @@ class MenuController extends Controller
     {
         if (($model = Term::findOne($id)) !== null) {
             return $model;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

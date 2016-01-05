@@ -53,23 +53,23 @@ class MediaUploadHandler
         ],
         'audio'       => [
             'extensions' => '/\.(m4a|mp3|wav|wma|oga)$/i',
-            'mime_icon'  => 'img/mime/audio.png'
+            'mime_icon'  => 'img/mime/audio.png',
         ],
         'video'       => [
             'extensions' => '/\.(3gp|mkv|flv|og?(a|g)|avi|mov|wmv|mp4|m4p|mp?(g|2|eg|e|v))$/i',
-            'mime_icon'  => 'img/mime/video.png'
+            'mime_icon'  => 'img/mime/video.png',
         ],
         'pdf'         => [
             'extensions' => '/\.(pdf|xps)$/i',
-            'mime_icon'  => 'img/mime/pdf.png'
+            'mime_icon'  => 'img/mime/pdf.png',
         ],
         'spreadsheet' => [
             'extensions' => '/\.(xls|xlsx|ods|csv|xml)$/i',
-            'mime_icon'  => 'img/mime/spreadsheet.png'
+            'mime_icon'  => 'img/mime/spreadsheet.png',
         ],
         'document'    => [
             'extensions' => '/\.(doc?(m|x)|odt)$/i',
-            'mime_icon'  => 'img/mime/document.png'
+            'mime_icon'  => 'img/mime/document.png',
         ],
         'archive'     => [
             'extensions' => '/\.(rar|zip|tar|7zip)$/i',
@@ -77,16 +77,16 @@ class MediaUploadHandler
         ],
         'code'        => [
             'extensions' => '/\.(php|c?pp|java|vb?s|html|js|css)$/i',
-            'mime_icon'  => 'img/mime/audio.png'
+            'mime_icon'  => 'img/mime/audio.png',
         ],
         'interactive' => [
             'extensions' => '/\.(ppt|pptx|odp)$/i',
-            'icon'       => 'img/mime/interactive.png'
+            'icon'       => 'img/mime/interactive.png',
         ],
         'text'        => [
             'extensions' => '/\.(txt|md|bat)$/i',
-            'mime_icon'  => 'img/mime/text.png'
-        ]
+            'mime_icon'  => 'img/mime/text.png',
+        ],
     ];
 
     /**
@@ -142,8 +142,8 @@ class MediaUploadHandler
      */
     protected function getServerVar($id)
     {
-        if (isset($_SERVER[ $id ])) {
-            return $_SERVER[ $id ];
+        if (isset($_SERVER[$id])) {
+            return $_SERVER[$id];
         }
 
         return null;
@@ -211,9 +211,9 @@ class MediaUploadHandler
     {
         if (($model = Media::findOne($id)) !== null) {
             return $model;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -228,9 +228,9 @@ class MediaUploadHandler
     {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -456,7 +456,7 @@ class MediaUploadHandler
                 $success = $image->thumbnail(new Box($newWidth, $newHeight))
                     ->save($newFilePath);
                 if ($success) {
-                    $this->_meta['media_versions'][ $version ] = [
+                    $this->_meta['media_versions'][$version] = [
                         'url'    => $newFileName,
                         'width'  => $newWidth,
                         'height' => $newHeight,
@@ -481,7 +481,7 @@ class MediaUploadHandler
                     ->crop(new Point($pointX, $pointY), new Box($maxWidth, $maxHeight))
                     ->save($newFilePath);
                 if ($success) {
-                    $this->_meta['media_versions'][ $version ] = [
+                    $this->_meta['media_versions'][$version] = [
                         'url'    => $newFileName,
                         'width'  => $maxWidth,
                         'height' => $maxWidth,
@@ -520,9 +520,9 @@ class MediaUploadHandler
             if (preg_match($type['extensions'], $fileName)) {
                 if ($name === 'image') {
                     return $this->_meta['media_versions']['thumbnail']['url'];
-                } else {
-                    return $type['mime_icon'];
                 }
+
+                return $type['mime_icon'];
             }
         }
 
@@ -588,12 +588,12 @@ class MediaUploadHandler
                 'POST',
                 'PUT',
                 'PATCH',
-                'DELETE'
+                'DELETE',
             ],
             'access_control_allow_headers'     => [
                 'Content-Type',
                 'Content-Range',
-                'Content-Disposition'
+                'Content-Disposition',
             ],
             'versions'                         => [
                 'large'     => [
@@ -607,11 +607,11 @@ class MediaUploadHandler
                 'thumbnail' => [
                     'max_width'  => 150,
                     'max_height' => 150,
-                    'crop'       => 1
-                ]
+                    'crop'       => 1,
+                ],
             ],
             'files_per_page'                   => 100,
-            'print_response'                   => true
+            'print_response'                   => true,
         ];
 
         if ($options) {
@@ -638,8 +638,8 @@ class MediaUploadHandler
      */
     public function getOption($id)
     {
-        if (isset($this->options[ $id ])) {
-            return $this->options[ $id ];
+        if (isset($this->options[$id])) {
+            return $this->options[$id];
         }
 
         return null;
@@ -671,7 +671,7 @@ class MediaUploadHandler
                     'version' => $versionName,
                     'url'     => $version['url'],
                     'width'   => $version['width'],
-                    'height'  => $version['height']
+                    'height'  => $version['height'],
                 ];
             }
         } else {
@@ -746,8 +746,8 @@ class MediaUploadHandler
     {
         $query = Media::find();
 
-        if ($post_id = Yii::$app->request->get('post_id')) {
-            $query->andWhere(['media_post_id' => $post_id]);
+        if ($postId = Yii::$app->request->get('post_id')) {
+            $query->andWhere(['media_post_id' => $postId]);
         }
 
         if ($title = Yii::$app->request->get('title')) {
@@ -779,13 +779,13 @@ class MediaUploadHandler
 
         if ($id && $media = $this->findMedia($id)) {
             $response = [
-                $this->getSingularParamName() => $this->generateResponse($media)
+                $this->getSingularParamName() => $this->generateResponse($media),
             ];
         } else {
             $query = Media::find();
 
-            if ($post_id = Yii::$app->request->get('post_id')) {
-                $query->andWhere(['media_post_id' => $post_id]);
+            if ($postId = Yii::$app->request->get('post_id')) {
+                $query->andWhere(['media_post_id' => $postId]);
             }
 
             if ($title = Yii::$app->request->get('title')) {
@@ -801,13 +801,13 @@ class MediaUploadHandler
             ]);
 
             if ($models = $query->offset($pages->offset)->limit($pages->limit)->all()) {
-                foreach ($models as $index => $media) {
+                foreach ($models as $media) {
                     /* @var $media Media */
                     $content[] = $this->generateResponse($media);
                 }
             }
             $response = [
-                $this->getOption('param_name') => $content
+                $this->getOption('param_name') => $content,
             ];
         }
 
@@ -835,8 +835,8 @@ class MediaUploadHandler
         $this->_media->file = UploadedFile::getInstance($this->_media, 'file');
 
         if ($this->_media->file !== null && $this->_media->validate(['file'])) {
-            if ($post_id = Yii::$app->request->get('post_id')) {
-                $post = $this->findPost($post_id);
+            if ($postId = Yii::$app->request->get('post_id')) {
+                $post = $this->findPost($postId);
                 $this->_media->media_post_id = $post->id;
             }
 
@@ -858,7 +858,7 @@ class MediaUploadHandler
         }
 
         $this->setResponse([
-            $this->getOption('param_name') => [$response]
+            $this->getOption('param_name') => [$response],
         ]);
 
         return $this->getResponse($printResponse);
@@ -881,11 +881,11 @@ class MediaUploadHandler
         $metadata = $media->getMeta('metadata');
 
         if ($media->delete()) {
-            foreach ($metadata['media_versions'] as $versionName => $version) {
+            foreach ($metadata['media_versions'] as $version) {
                 $filePath = $this->getFilePath($version['url']);
                 $success = is_file($filePath) && unlink($filePath);
             }
-            $response[ $metadata['media_filename'] ] = $success;
+            $response[$metadata['media_filename']] = $success;
         }
 
         $this->setResponse($response);

@@ -180,6 +180,7 @@ a.desc:after {
     left: 4px;
     margin: 0;
     padding: 6px 12px;
+    background-color: #797979;
     background-color: rgba(0, 0, 0, 0.5);
     font-size: 14px;
     line-height: 1.42857;
