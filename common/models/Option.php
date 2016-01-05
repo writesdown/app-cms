@@ -66,21 +66,21 @@ class Option extends ActiveRecord
      * If option_value is array|object then return value is array.
      * If option_name not found in table then it will return false.
      *
-     * @param string $option_name
+     * @param string $optionName
      *
      * @return string|array|boolean
      */
-    public static function get($option_name)
+    public static function get($optionName)
     {
         /* @var $model \common\models\Option */
-        $model = static::findOne(['option_name' => $option_name]);
+        $model = static::findOne(['option_name' => $optionName]);
 
         if ($model) {
             if (Json::isJson($model->option_value)) {
                 return Json::decode($model->option_value);
-            } else {
-                return $model->option_value;
             }
+
+            return $model->option_value;
         }
 
         return null;
@@ -90,49 +90,49 @@ class Option extends ActiveRecord
      * Add new option, required option_name and option_value.
      * If option_value is array or object, it will be converted to json with Json::encode.
      *
-     * @param string       $option_name
-     * @param string       $option_value
-     * @param string|array $option_label
-     * @param string       $option_group
+     * @param string       $optionName
+     * @param string       $optionValue
+     * @param string|array $optionLabel
+     * @param string       $optionGroup
      *
      * @return bool
      */
-    public static function set($option_name, $option_value, $option_label = null, $option_group = null)
+    public static function set($optionName, $optionValue, $optionLabel = null, $optionGroup = null)
     {
-        if (is_array($option_value) || is_object($option_value)) {
-            $option_value = Json::encode($option_value);
+        if (is_array($optionValue) || is_object($optionValue)) {
+            $optionValue = Json::encode($optionValue);
         }
 
-        if (static::get($option_name) !== null) {
-            return static::up($option_name, $option_value);
-        } else {
-            $model = new Option();
-            $model->option_name = $option_name;
-            $model->option_value = $option_value;
-            $model->option_label = $option_label;
-            $model->option_group = $option_group;
-
-            return $model->save();
+        if (static::get($optionName) !== null) {
+            return static::up($optionName, $optionValue);
         }
+
+        $model = new Option();
+        $model->option_name = $optionName;
+        $model->option_value = $optionValue;
+        $model->option_label = $optionLabel;
+        $model->option_group = $optionGroup;
+
+        return $model->save();
     }
 
     /**
      * Update option with option_name as key.
      *
-     * @param string       $option_name
-     * @param string|array $option_value
+     * @param string       $optionName
+     * @param string|array $optionValue
      *
      * @return bool
      */
-    public static function up($option_name, $option_value)
+    public static function up($optionName, $optionValue)
     {
         /* @var $model \common\models\Option */
-        $model = static::findOne(['option_name' => $option_name]);
+        $model = static::findOne(['option_name' => $optionName]);
 
-        if (is_array($option_value) || is_object($option_value)) {
-            $model->option_value = Json::encode($option_value);
+        if (is_array($optionValue) || is_object($optionValue)) {
+            $model->option_value = Json::encode($optionValue);
         } else {
-            $model->option_value = $option_value;
+            $model->option_value = $optionValue;
         }
 
         return $model->save();

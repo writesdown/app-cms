@@ -95,12 +95,8 @@ class DefaultController extends Controller
                 ]);
                 for ($i = 1; $i <= $pages->pageCount; $i++) {
                     $items[] = [
-                        'loc'     => Yii::$app->urlManager->hostInfo . Url::to([
-                                'view',
-                                'type' => 'p',
-                                'slug' => $postType->post_type_slug,
-                                'page' => $i,
-                            ]),
+                        'loc'     => Yii::$app->urlManager->hostInfo
+                            . Url::to(['view', 'type' => 'p', 'slug' => $postType->post_type_slug, 'page' => $i]),
                         'lastmod' => $lastmod->format('r'),
                     ];
                 }
@@ -139,12 +135,8 @@ class DefaultController extends Controller
 
                     for ($i = 1; $i <= $pages->pageCount; $i++) {
                         $items[] = [
-                            'loc'     => Yii::$app->urlManager->hostInfo . Url::to([
-                                    'view',
-                                    'type' => 'c',
-                                    'slug' => $taxonomy->taxonomy_slug,
-                                    'page' => $i,
-                                ]),
+                            'loc'     => Yii::$app->urlManager->hostInfo
+                                . Url::to(['view', 'type' => 'c', 'slug' => $taxonomy->taxonomy_slug, 'page' => $i]),
                             'lastmod' => $lastmod->format('r'),
                         ];
                     }
@@ -164,12 +156,8 @@ class DefaultController extends Controller
                 $lastmod = new \DateTime($lastMedia->media_modified, new \DateTimeZone(Option::get('time_zone')));
                 for ($i = 1; $i <= $pages->pageCount; $i++) {
                     $items[] = [
-                        'loc'     => Yii::$app->urlManager->hostInfo . Url::to([
-                                'view',
-                                'type' => 'm',
-                                'slug' => 'media',
-                                'page' => $i,
-                            ]),
+                        'loc'     => Yii::$app->urlManager->hostInfo
+                            . Url::to(['view', 'type' => 'm', 'slug' => 'media', 'page' => $i]),
                         'lastmod' => $lastmod->format('r'),
                     ];
                 }
@@ -237,14 +225,14 @@ class DefaultController extends Controller
                 if ($images = $post->getMedia()->where(['LIKE', 'media_mime_type', 'image/'])->all()) {
                     foreach ($images as $image) {
                         $metadata = $image->getMeta('metadata');
-                        $items[$post->id]['image'][$image->id]['loc'] = $image->uploadUrl .
-                            $metadata['media_versions']['full']['url'];
-                        $items[$post->id]['image'][$image->id]['title'] = $image->media_title ?
-                            $image->media_title :
-                            null;
-                        $items[$post->id]['image'][$image->id]['caption'] = $image->media_excerpt ?
-                            $image->media_excerpt :
-                            null;
+                        $items[$post->id]['image'][$image->id]['loc'] = $image->uploadUrl
+                            . $metadata['media_versions']['full']['url'];
+                        $items[$post->id]['image'][$image->id]['title'] = $image->media_title
+                            ? $image->media_title
+                            : null;
+                        $items[$post->id]['image'][$image->id]['caption'] = $image->media_excerpt
+                            ? $image->media_excerpt
+                            : null;
                     }
                 }
             }
@@ -284,9 +272,9 @@ class DefaultController extends Controller
             }
 
             return $this->renderPartial('media', ['items' => $items]);
-        } else {
-            return $this->redirect(['/site/not-found']);
         }
+
+        return $this->redirect(['/site/not-found']);
     }
 
     /**

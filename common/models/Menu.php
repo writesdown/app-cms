@@ -67,16 +67,16 @@ class Menu extends ActiveRecord
     /**
      * Get available menu items recursively
      *
-     * @param int $parent_id
+     * @param int $parentId
      *
      * @return array|null
      */
-    public function getAvailableMenuItem($parent_id = 0)
+    public function getAvailableMenuItem($parentId = 0)
     {
         /* @var $model \common\models\MenuItem */
         $models = $this
             ->getMenuItems()
-            ->andWhere(['menu_parent' => $parent_id])
+            ->andWhere(['menu_parent' => $parentId])
             ->orderBy(['menu_order' => SORT_ASC])
             ->indexBy('id')
             ->all();
@@ -96,38 +96,38 @@ class Menu extends ActiveRecord
      * Get menu by location.
      * Ready to render on frontend.
      *
-     * @param $menu_location
+     * @param $menuLocation
      *
      * @return array|null
      */
-    public static function getMenu($menu_location)
+    public static function getMenu($menuLocation)
     {
-        $menu = static::getListMenuItem($menu_location);
+        $menu = static::getListMenuItem($menuLocation);
 
         if ($menu) {
             return $menu;
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
      * List menu item by menu location;
      *
-     * @param string $menu_location
-     * @param int    $menu_parent
+     * @param string $menuLocation
+     * @param int    $menuParent
      *
      * @return array|null
      */
-    protected static function getListMenuItem($menu_location, $menu_parent = 0)
+    protected static function getListMenuItem($menuLocation, $menuParent = 0)
     {
         /* @var $menuItemModel \common\models\MenuItem[] */
         $menuItem = [];
 
         $menuItemModel = MenuItem::find()
             ->innerJoinWith(['menu'])
-            ->andWhere(['menu_location' => $menu_location])
-            ->andWhere(['menu_parent' => $menu_parent])
+            ->andWhere(['menu_location' => $menuLocation])
+            ->andWhere(['menu_parent' => $menuParent])
             ->orderBy('menu_order')
             ->all();
 
@@ -141,7 +141,7 @@ class Menu extends ActiveRecord
                 'label'  => $model->menu_label,
                 'url'    => $model->menu_url,
                 'parent' => $model->menu_parent,
-                'items'  => static::getListMenuItem($menu_location, $model->id),
+                'items'  => static::getListMenuItem($menuLocation, $model->id),
             ];
         }
 

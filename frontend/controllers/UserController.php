@@ -41,7 +41,7 @@ class UserController extends Controller
         } elseif ($username) {
             $model = $this->findModelByUsername($username);
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         $query = $model->getPosts()->andWhere(['post_status' => 'publish'])->orderBy(['id' => SORT_DESC]);
@@ -63,9 +63,9 @@ class UserController extends Controller
                 'posts' => $posts,
                 'pages' => isset($pages) ? $pages : null,
             ]);
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -81,9 +81,9 @@ class UserController extends Controller
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -99,8 +99,8 @@ class UserController extends Controller
     {
         if (($model = User::findOne(['username' => $username])) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }

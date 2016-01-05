@@ -105,8 +105,8 @@ class Widget extends ActiveRecord
             $this->widget_modified = new Expression('NOW()');
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

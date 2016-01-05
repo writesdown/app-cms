@@ -142,7 +142,7 @@ class PostCommentController extends Controller
                 $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_APPROVED]);
             }
         } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_UNAPPROVED) {
-            foreach ($_POST['ids'] as $id) {
+            foreach (Yii::$app->request->post('ids') as $id) {
                 $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_UNAPPROVED]);
             }
         } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_TRASH) {

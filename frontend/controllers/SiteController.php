@@ -80,13 +80,15 @@ class SiteController extends Controller
     {
         /* @var $post \common\models\Post */
 
-        $query = Post::find()->from(['t' => Post::tableName()])->andWhere(['post_status' => 'publish'])
+        $query = Post::find()
+            ->from(['t' => Post::tableName()])
+            ->andWhere(['post_status' => 'publish'])
             ->orderBy(['t.id' => SORT_DESC]);
 
-        if (Option::get('show_on_front') == 'page' && $front_page = Option::get('front_page')) {
+        if (Option::get('show_on_front') == 'page' && $frontPage = Option::get('front_page')) {
             $render = '/post/view';
             $comment = new PostComment();
-            $query = $query->andWhere(['id' => $front_page]);
+            $query = $query->andWhere(['id' => $frontPage]);
             $post = $query->one();
 
             if (is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php')) {
@@ -98,9 +100,9 @@ class SiteController extends Controller
                     'post'    => $post,
                     'comment' => $comment,
                 ]);
-            } else {
-                return new NotFoundHttpException();
             }
+
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         } else {
             if (Option::get('front_post_type') !== 'all') {
                 $query->innerJoinWith(['postType'])->andWhere(['post_type_name' => Option::get('front_post_type')]);
@@ -117,9 +119,9 @@ class SiteController extends Controller
                     'posts' => $posts,
                     'pages' => isset($pages) ? $pages : null,
                 ]);
-            } else {
-                throw new NotFoundHttpException(Yii::t('writesdown', 'Page not found.'));
             }
+
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 
@@ -148,11 +150,11 @@ class SiteController extends Controller
             }
 
             return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('contact', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -184,9 +186,9 @@ class SiteController extends Controller
                 'pages' => $pages,
                 's'     => $s,
             ]);
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -202,6 +204,6 @@ class SiteController extends Controller
      */
     public function actionNotFound()
     {
-        throw new NotFoundHttpException(Yii::t('writesdown', 'Page not found'));
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }

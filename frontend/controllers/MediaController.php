@@ -40,7 +40,7 @@ class MediaController extends Controller
         } elseif ($media_slug) {
             $model = $this->findModelBySlug($media_slug);
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
@@ -82,9 +82,9 @@ class MediaController extends Controller
     {
         if (($model = Media::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -100,8 +100,8 @@ class MediaController extends Controller
     {
         if (($model = Media::findOne(['media_slug' => $media_slug])) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }

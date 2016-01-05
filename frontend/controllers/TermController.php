@@ -9,6 +9,7 @@ namespace frontend\controllers;
 
 use common\models\Option;
 use common\models\Term;
+use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -40,7 +41,7 @@ class TermController extends Controller
         } elseif ($term_slug) {
             $model = $this->findModelBySlug($term_slug);
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         $query = $model->getPosts()->andWhere(['post_status' => 'publish'])->orderBy(['id' => SORT_DESC]);
@@ -80,7 +81,7 @@ class TermController extends Controller
         if ($model) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 
@@ -102,7 +103,7 @@ class TermController extends Controller
         if ($model) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
     }
 }

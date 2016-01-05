@@ -58,7 +58,6 @@ class TermController extends Controller
         ];
     }
 
-
     /**
      * Create a new Term model for hierarchical Taxonomy through AJAX request.
      */
@@ -77,15 +76,12 @@ class TermController extends Controller
                         echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
                     }
                 }
-            } else {
-                if ($term->save()) {
-                    echo '<br />';
-                    echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
-                }
+            } elseif ($term->save()) {
+                echo '<br />';
+                echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
             }
         }
     }
-
 
     /**
      * Create a new Term for non-hierarchical Taxonomy through Selectize box.
@@ -103,7 +99,6 @@ class TermController extends Controller
 
         return [];
     }
-
 
     /**
      * Search Term through Ajax with JSON as response.

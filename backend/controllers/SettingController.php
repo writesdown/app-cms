@@ -153,8 +153,8 @@ class SettingController extends Controller
         $model = $this->findModelByGroup($id);
 
         if ($options = Yii::$app->request->post('Option')) {
-            foreach ($options as $option_name => $option) {
-                Option::up($option_name, $option['option_value']);
+            foreach ($options as $optionName => $option) {
+                Option::up($optionName, $option['option_value']);
             }
             Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Settings successfully saved.'));
 

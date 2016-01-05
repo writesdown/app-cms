@@ -63,9 +63,9 @@ class PostController extends Controller
                 'posts'    => $posts,
                 'pages'    => $pages,
             ]);
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -89,7 +89,7 @@ class PostController extends Controller
         } elseif ($post_slug) {
             $model = $this->findModelBySlug($post_slug);
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
@@ -130,9 +130,9 @@ class PostController extends Controller
 
         if ($model) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
 
@@ -151,9 +151,9 @@ class PostController extends Controller
 
         if ($model) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -171,9 +171,9 @@ class PostController extends Controller
 
         if ($model) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -191,8 +191,8 @@ class PostController extends Controller
 
         if ($model) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }
