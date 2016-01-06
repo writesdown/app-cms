@@ -80,9 +80,9 @@ class TermController extends Controller
 
         if ($model) {
             return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
     /**
@@ -102,8 +102,8 @@ class TermController extends Controller
 
         if ($model) {
             return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
+
+        throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 }
