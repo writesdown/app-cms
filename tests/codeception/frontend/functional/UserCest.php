@@ -82,7 +82,7 @@ class UserCest
         $I->see('All Posts By Super Administrator', 'h1');
         $I->seeLink('Sample Post');
 
-        $I->amOnPage(Url::to(['/user/view', 'username' => 'superadmin']));
+        $I->amOnPage(Url::to(['/user/view', 'user' => 'superadmin']));
         $I->see('All Posts By Super Administrator', 'h1');
         $I->seeLink('Sample Post');
     }

@@ -69,7 +69,7 @@ class MediaCest
         $I->see('Test Media', 'h1');
         $I->seeLink('Test Media');
 
-        $I->amOnPage(Url::to(['/media/view', 'media_slug' => 'test-media']));
+        $I->amOnPage(Url::to(['/media/view', 'mediaslug' => 'test-media']));
         $I->see('Test Media', 'h1');
         $I->seeLink('Test Media');
     }

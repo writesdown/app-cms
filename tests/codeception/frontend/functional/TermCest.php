@@ -82,7 +82,7 @@ class TermCest
         $I->see('Category: Sample Category', 'h1');
         $I->seeLink('Sample Post');
 
-        $I->amOnPage(Url::to(['/term/view', 'term_slug' => 'sample-category']));
+        $I->amOnPage(Url::to(['/term/view', 'termslug' => 'sample-category']));
         $I->see('Category: Sample Category', 'h1');
         $I->seeLink('Sample Post');
     }

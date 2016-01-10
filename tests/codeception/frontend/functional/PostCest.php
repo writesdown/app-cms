@@ -95,7 +95,7 @@ class PostCest
         $I->amOnPage(Url::to(['/post/view', 'id' => 1]));
         $I->see('Sample Post', 'h1');
 
-        $I->amOnPage(Url::to(['/post/view', 'post_slug' => 'sample-post']));
+        $I->amOnPage(Url::to(['/post/view', 'postslug' => 'sample-post']));
         $I->see('Sample Post', 'h1');
     }
 
