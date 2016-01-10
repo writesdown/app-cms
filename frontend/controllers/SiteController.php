@@ -22,7 +22,6 @@ use yii\web\NotFoundHttpException;
 /**
  * Class SiteController
  *
- * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */

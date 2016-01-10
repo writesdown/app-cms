@@ -15,7 +15,6 @@
 $this->title = Yii::t('sitemap', 'XML Sitemap by WritesDown');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="sitemap-default-index">
     <?= $this->render('_form', [
         'option'     => $option,

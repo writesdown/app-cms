@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      MediaCest.php
- * @date      12/6/2015
- * @time      6:45 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\frontend\acceptance;
-
 
 use common\models\Media;
 use common\models\MediaComment;
@@ -24,7 +19,6 @@ use yii\helpers\Url;
 /**
  * Class MediaCest
  *
- * @package tests\codeception\frontend\acceptance
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -77,7 +71,7 @@ class MediaCest
         $I->see('Test Media');
         $I->seeLink('Test Media');
 
-        $I->amOnPage(Url::to(['/media/view', 'media_slug' => 'test-media']));
+        $I->amOnPage(Url::to(['/media/view', 'mediaslug' => 'test-media']));
         // $I->see('Test Media', 'h1');
         $I->see('Test Media');
         $I->seeLink('Test Media');

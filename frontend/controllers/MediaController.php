@@ -16,7 +16,6 @@ use yii\web\NotFoundHttpException;
 /**
  * Class MediaController
  *
- * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -24,12 +23,12 @@ class MediaController extends Controller
 {
     /**
      * @param integer|null $id
-     * @param string|null  $media_slug
+     * @param string|null  $mediaslug
      *
      * @return mixed
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionView($id = null, $media_slug = null)
+    public function actionView($id = null, $mediaslug = null)
     {
         $render = 'view';
 
@@ -37,8 +36,8 @@ class MediaController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-        } elseif ($media_slug) {
-            $model = $this->findModelBySlug($media_slug);
+        } elseif ($mediaslug) {
+            $model = $this->findModelBySlug($mediaslug);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
@@ -91,14 +90,14 @@ class MediaController extends Controller
      * Finds the Media model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param string $media_slug
+     * @param string $mediaSlug
      *
      * @return Media the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModelBySlug($media_slug)
+    protected function findModelBySlug($mediaSlug)
     {
-        if (($model = Media::findOne(['media_slug' => $media_slug])) !== null) {
+        if (($model = Media::findOne(['media_slug' => $mediaSlug])) !== null) {
             return $model;
         }
 

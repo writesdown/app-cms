@@ -314,7 +314,6 @@ class PostController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-
     /**
      * Finds the Term model based on its primary key value.
      * If the model is not found, it return false.

@@ -13,6 +13,5 @@ return yii\helpers\ArrayHelper::merge(
     require(dirname(__DIR__) . '/config.php'),
     require(dirname(__DIR__) . '/functional.php'),
     require(__DIR__ . '/config.php'),
-    [
-    ]
+    []
 );

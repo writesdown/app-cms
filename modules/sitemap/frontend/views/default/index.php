@@ -13,12 +13,8 @@ use yii\helpers\Url;
 <?= '<?xml-stylesheet type="text/xsl" href="' . Url::to(['style']) . '"?>' ?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <sitemap>
-        <loc><![CDATA[<?= Yii::$app->urlManager->hostInfo . Url::to([
-                'view',
-                'type' => 'h',
-                'slug' => 'home',
-                'page' => 1,
-            ]) ?>]]>
+        <loc><![CDATA[<?= Yii::$app->urlManager->hostInfo
+            . Url::to(['view', 'type' => 'h', 'slug' => 'home', 'page' => 1]) ?>]]>
         </loc>
         <lastmod>
             <?php
@@ -27,10 +23,10 @@ use yii\helpers\Url;
             ?>
         </lastmod>
     </sitemap>
-    <?php foreach ($items as $item) {
-    echo '<sitemap>';
-    echo '<loc><![CDATA[' . $item['loc'] . ']]></loc>';
-    echo '<lastmod>' . $item['lastmod'] . '</lastmod>';
-    echo '</sitemap>';
-} ?>
+    <?php foreach ($items as $item): ?>
+        <?= '<sitemap>' ?>
+        <?= '<loc><![CDATA[' . $item['loc'] . ']]></loc>' ?>
+        <?= '<lastmod>' . $item['lastmod'] . '</lastmod>' ?>
+        <?= '</sitemap>' ?>
+    <?php endforeach ?>
 </sitemapindex>

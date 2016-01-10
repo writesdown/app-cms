@@ -7,7 +7,7 @@
  */
 
 use cebe\gravatar\Gravatar;
-use codezeen\yii2\adminlte\widgets\MainSidebar;
+use codezeen\yii2\adminlte\widgets\Menu;
 use common\models\Option;
 use common\models\PostType;
 use yii\helpers\ArrayHelper;
@@ -172,7 +172,7 @@ use yii\helpers\Html;
         }
 
         ksort($adminSiteMenu);
-        echo MainSidebar::widget([
+        echo Menu::widget([
             'items' => $adminSiteMenu,
         ]);
         ?>

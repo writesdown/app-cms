@@ -1,23 +1,17 @@
 <?php
 /**
- * @file      MenuFixture.php
- * @date      12/6/2015
- * @time      5:58 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\common\fixtures;
-
 
 use yii\test\ActiveFixture;
 
 /**
  * Class MenuFixture
  *
- * @package tests\codeception\common\fixtures
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

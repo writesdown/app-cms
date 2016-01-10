@@ -37,11 +37,9 @@ return [
             'translations' => [
                 'writesdown' => [
                     'class'          => 'yii\i18n\PhpMessageSource',
-                    'basePath'       => '@app/messages', // if advanced application, set @frontend/messages
-                    'sourceLanguage' => 'en',
-                    'fileMap'        => [
-                        //'main' => 'main.php',
-                    ],
+                    'basePath'       => '@app/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap'        => [],
                 ],
             ],
         ],

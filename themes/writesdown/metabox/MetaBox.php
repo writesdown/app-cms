@@ -13,7 +13,6 @@ use yii\base\Object;
 /**
  * Class MetaBox
  *
- * @package frontend\themes\writesdown\metabox
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */

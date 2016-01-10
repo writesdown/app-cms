@@ -181,23 +181,23 @@ class UserController extends Controller
      */
     public function actionBulkAction()
     {
-        if ($action = Yii::$app->request->post('action') === 'activated') {
+        if (Yii::$app->request->post('action') === 'activated') {
             foreach (Yii::$app->request->post('ids') as $id) {
                 $this->findModel($id)->updateAttributes(['status' => 10]);
             }
-        } elseif ($action = Yii::$app->request->post('action') === 'unactivated') {
+        } elseif (Yii::$app->request->post('action') === 'unactivated') {
             foreach (Yii::$app->request->post('ids') as $id) {
                 $this->findModel($id)->updateAttributes(['status' => 5]);
             }
-        } elseif ($action = Yii::$app->request->post('action') === 'removed') {
+        } elseif (Yii::$app->request->post('action') === 'removed') {
             foreach (Yii::$app->request->post('ids') as $id) {
                 $this->findModel($id)->updateAttributes(['status' => 0]);
             }
-        } elseif ($action = Yii::$app->request->post('action') === 'deleted') {
+        } elseif (Yii::$app->request->post('action') === 'deleted') {
             foreach (Yii::$app->request->post('ids') as $id) {
                 $this->findModel($id)->delete();
             }
-        } elseif ($action = Yii::$app->request->post('action') === 'changerole') {
+        } elseif (Yii::$app->request->post('action') === 'changerole') {
             foreach (Yii::$app->request->post('ids') as $id) {
                 Yii::$app->authManager->revokeAll($id);
                 Yii::$app->authManager->assign(Yii::$app->authManager->getRole(Yii::$app->request->post('role')), $id);

@@ -1,13 +1,9 @@
 <?php
 /**
- * @file      PostCest.php
- * @date      12/6/2015
- * @time      9:32 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
-
 
 namespace tests\codeception\frontend\acceptance;
 
@@ -27,7 +23,6 @@ use yii\helpers\Url;
 /**
  * Class PostCest
  *
- * @package tests\codeception\frontend\acceptance
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -103,7 +98,7 @@ class PostCest
         // $I->see('Sample Post', 'h1');
         $I->see('Sample Post');
 
-        $I->amOnPage(Url::to(['/post/view', 'post_slug' => 'sample-post']));
+        $I->amOnPage(Url::to(['/post/view', 'postslug' => 'sample-post']));
         // $I->see('Sample Post', 'h1');
         $I->see('Sample Post');
     }

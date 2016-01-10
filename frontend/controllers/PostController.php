@@ -19,7 +19,6 @@ use yii\web\NotFoundHttpException;
 /**
  * Class PostController
  *
- * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -27,19 +26,19 @@ class PostController extends Controller
 {
     /**
      * @param int|null    $id        ID of post-type.
-     * @param string|null $post_type Slug of post-type.
+     * @param string|null $posttype  Slug of post-type.
      *
      * @return string
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionIndex($id = null, $post_type = null)
+    public function actionIndex($id = null, $posttype = null)
     {
         $render = 'index';
 
         if ($id) {
             $postType = $this->findPostType($id);
-        } elseif ($post_type) {
-            $postType = $this->findPostTypeBySlug($post_type);
+        } elseif ($posttype) {
+            $postType = $this->findPostTypeBySlug($posttype);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
@@ -71,14 +70,14 @@ class PostController extends Controller
     /**
      * Displays a single Post model.
      *
-     * @param null    $post_slug
+     * @param null    $postslug
      *
      * @param integer $id
      *
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
      */
-    public function actionView($id = null, $post_slug = null)
+    public function actionView($id = null, $postslug = null)
     {
         $render = 'view';
 
@@ -86,8 +85,8 @@ class PostController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-        } elseif ($post_slug) {
-            $model = $this->findModelBySlug($post_slug);
+        } elseif ($postslug) {
+            $model = $this->findModelBySlug($postslug);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
@@ -140,14 +139,14 @@ class PostController extends Controller
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param string $post_slug
+     * @param string $postSlug
      *
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModelBySlug($post_slug)
+    protected function findModelBySlug($postSlug)
     {
-        $model = Post::findOne(['post_slug' => $post_slug, 'post_status' => 'publish']);
+        $model = Post::findOne(['post_slug' => $postSlug, 'post_status' => 'publish']);
 
         if ($model) {
             return $model;
@@ -180,14 +179,14 @@ class PostController extends Controller
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param $post_type
+     * @param $postType
      *
      * @throws \yii\web\NotFoundHttpException
      * @return PostType the loaded model
      */
-    protected function findPostTypeBySlug($post_type)
+    protected function findPostTypeBySlug($postType)
     {
-        $model = PostType::findOne(['post_type_slug' => $post_type]);
+        $model = PostType::findOne(['post_type_slug' => $postType]);
 
         if ($model) {
             return $model;

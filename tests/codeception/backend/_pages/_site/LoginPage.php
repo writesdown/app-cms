@@ -1,14 +1,12 @@
 <?php
 /**
- * @file      LoginPage.php
- * @date      12/6/2015
- * @time      11:20 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\_pages\_site;
+
 use yii\codeception\BasePage;
 
 /**
@@ -16,7 +14,6 @@ use yii\codeception\BasePage;
  *
  * @property \tests\codeception\frontend\FunctionalTester | \tests\codeception\frontend\AcceptanceTester | \tests\codeception\backend\FunctionalTester | \tests\codeception\backend\AcceptanceTester $actor
  *
- * @package tests\codeception\backend\_pages\_site
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -35,6 +32,7 @@ class LoginPage extends BasePage
         foreach ($data as $field => $value) {
             $this->actor->fillField('input[name="LoginForm[' . $field . ']"]', $value);
         }
+
         $this->actor->click('Signin', '#login-form');
 
         // Wait

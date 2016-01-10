@@ -38,13 +38,11 @@ $priority = [
     '1.0' => '100%',
 ]
 ?>
-
 <div class="sitemap-default-index-form">
     <?php $form = ActiveForm::begin() ?>
 
     <div class="nav-tabs-custom">
-        <?php
-        echo Nav::widget([
+        <?= Nav::widget([
             'encodeLabels' => false,
             'options'      => ['class' => 'nav-tabs'],
             'items'        => [
@@ -80,50 +78,29 @@ $priority = [
                     'linkOptions' => ['data-toggle' => 'tab'],
                 ],
             ],
-
-        ]);
-        ?>
+        ]) ?>
         <div class="tab-content">
-            <?= $this->render('_basic', [
-                'option'     => $option,
-                'priority'   => $priority,
-                'changeFreq' => $changeFreq,
-            ]) ?>
-
-            <?= $this->render('_home', [
-                'option'     => $option,
-                'priority'   => $priority,
-                'changeFreq' => $changeFreq,
-            ]) ?>
-
+            <?= $this->render('_basic', ['option' => $option, 'priority' => $priority, 'changeFreq' => $changeFreq]) ?>
+            <?= $this->render('_home', ['option' => $option, 'priority' => $priority, 'changeFreq' => $changeFreq]) ?>
             <?= $this->render('_post-types', [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
                 'postTypes'  => $postTypes,
             ]) ?>
-
             <?= $this->render('_taxonomies', [
                 'option'     => $option,
                 'priority'   => $priority,
                 'changeFreq' => $changeFreq,
                 'taxonomies' => $taxonomies,
             ]) ?>
-
-            <?= $this->render('_media', [
-                'option'     => $option,
-                'priority'   => $priority,
-                'changeFreq' => $changeFreq,
-            ]) ?>
-
+            <?= $this->render('_media', ['option' => $option, 'priority' => $priority, 'changeFreq' => $changeFreq,]) ?>
         </div>
     </div>
-
-    <!-- Submit button -->
     <div class="form-group">
         <?= Html::submitButton(Yii::t('sitemap', 'Update'), ['class' => 'btn btn-flat btn-primary']) ?>
+
     </div>
-
     <?php ActiveForm::end() ?>
-</div>
 
+</div>

@@ -1,15 +1,11 @@
 <?php
 /**
- * @file      MediaCest.php
- * @date      12/6/2015
- * @time      10:55 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\functional;
-
 
 use common\models\Media;
 use tests\codeception\common\fixtures\MediaCommentFixture;
@@ -19,11 +15,9 @@ use tests\codeception\frontend\_pages\MediaViewPage;
 use tests\codeception\frontend\FunctionalTester;
 use yii\helpers\Url;
 
-
 /**
  * Class MediaCest
  *
- * @package tests\codeception\frontend\functional
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

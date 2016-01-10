@@ -17,7 +17,7 @@
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-imagine": "~2.0.0",
         "yiisoft/yii2-jui": "~2.0.0",
-        "codezeen/yii2-adminlte": "~1.0",
+        "codezeen/yii2-adminlte": "~1.2",
         "codezeen/yii2-tinymce": "~1.0",
         "2amigos/yii2-selectize-widget": "~1.0",
         "2amigos/yii2-date-time-picker-widget": "~1.0",

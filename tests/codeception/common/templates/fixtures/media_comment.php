@@ -1,12 +1,10 @@
 <?php
 /**
- * @file      media_comment.php
- * @date      12/6/2015
- * @time      5:35 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
+
 
 /**
  * @var $faker \Faker\Generator

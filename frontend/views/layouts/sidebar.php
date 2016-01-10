@@ -12,6 +12,9 @@ use yii\bootstrap\Nav;
 
 /* @var $this yii\web\View */
 /* @var $taxonomies common\models\Taxonomy[] */
+
+$taxonomies = Taxonomy::find()->all();
+$items = [];
 ?>
 <div id="sidebar">
     <div class="widget">
@@ -19,8 +22,6 @@ use yii\bootstrap\Nav;
     </div>
 
     <?php
-    $taxonomies = Taxonomy::find()->all();
-    $items = [];
     foreach ($taxonomies as $taxonomy) {
         foreach ($taxonomy->terms as $term) {
             if ($term->getPosts()->andWhere(['post_status' => 'publish'])->count()) {
@@ -40,7 +41,6 @@ use yii\bootstrap\Nav;
 
         </div>
         <?php
-
     }
     ?>
 

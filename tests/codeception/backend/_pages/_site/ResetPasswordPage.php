@@ -1,25 +1,20 @@
 <?php
 /**
- * @file      ResetPasswordPage.php
- * @date      12/6/2015
- * @time      11:44 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\backend\_pages\_site;
+
 use common\models\User;
 use yii\codeception\BasePage;
-
 
 /**
  * Class ResetPasswordPage
  *
  * @property \tests\codeception\frontend\FunctionalTester | \tests\codeception\frontend\AcceptanceTester | \tests\codeception\backend\FunctionalTester | \tests\codeception\backend\AcceptanceTester $actor
  *
- * @package tests\codeception\backend\_pages\_site
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -42,6 +37,7 @@ class ResetPasswordPage extends BasePage
         foreach ($data as $field => $value) {
             $this->actor->fillField('input[name="ResetPasswordForm[' . $field . ']"]', $value);
         }
+
         $this->actor->click('Save', '#reset-password-form');
 
         // Wait

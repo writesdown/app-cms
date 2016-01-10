@@ -1,10 +1,7 @@
 <?php
 /**
- * @file      init_menu_item.php
- * @date      12/6/2015
- * @time      4:53 AM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
@@ -22,5 +19,5 @@ return [
         'menu_url'    => 'http://www.google.com/',
         'menu_order'  => '0',
         'menu_parent' => '0',
-    ]
+    ],
 ];

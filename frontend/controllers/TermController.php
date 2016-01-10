@@ -17,7 +17,6 @@ use yii\web\NotFoundHttpException;
 /**
  * Class TermController
  *
- * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -27,19 +26,19 @@ class TermController extends Controller
      * Displays a single Term model.
      *
      * @param integer $id
-     * @param null    $term_slug
+     * @param null    $termslug
      *
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
      */
-    public function actionView($id = null, $term_slug = null)
+    public function actionView($id = null, $termslug = null)
     {
         $render = 'view';
 
         if ($id) {
             $model = $this->findModel($id);
-        } elseif ($term_slug) {
-            $model = $this->findModelBySlug($term_slug);
+        } elseif ($termslug) {
+            $model = $this->findModelBySlug($termslug);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
@@ -89,16 +88,16 @@ class TermController extends Controller
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param $term_slug
+     * @param string $termSlug
      *
      * @throws \yii\web\NotFoundHttpException
-     * @internal param string $post_slug
+     * @internal param string $postslug
      *
      * @return Term the loaded model
      */
-    protected function findModelBySlug($term_slug)
+    protected function findModelBySlug($termSlug)
     {
-        $model = Term::findOne(['term_slug' => $term_slug]);
+        $model = Term::findOne(['term_slug' => $termSlug]);
 
         if ($model) {
             return $model;

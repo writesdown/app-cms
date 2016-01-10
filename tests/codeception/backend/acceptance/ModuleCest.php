@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      ModuleCest.php
- * @date      12/8/2015
- * @time      10:07 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\backend\acceptance;
-
 
 use common\models\Module;
 use tests\codeception\backend\_pages\_module\IndexPage;
@@ -23,7 +18,6 @@ use yii\helpers\Url;
 /**
  * Class ModuleCest
  *
- * @package tests\codeception\backend\acceptance
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

@@ -17,7 +17,6 @@ use yii\web\NotFoundHttpException;
 /**
  * Class UserController
  *
- * @package frontend\controllers
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -26,20 +25,20 @@ class UserController extends Controller
     /**
      * Displays a single User model.
      *
-     * @param null $id
-     * @param      $username
+     * @param null        $id
+     * @param string|null $user
      *
      * @return mixed
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionView($id = null, $username = null)
+    public function actionView($id = null, $user = null)
     {
         $render = '/user/view';
 
         if ($id) {
             $model = $this->findModel($id);
-        } elseif ($username) {
-            $model = $this->findModelByUsername($username);
+        } elseif ($user) {
+            $model = $this->findModelByUsername($user);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }

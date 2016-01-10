@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      IndexPage.php
- * @date      12/7/2015
- * @time      9:54 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\backend\_pages\_post;
-
 
 use yii\codeception\BasePage;
 
@@ -19,7 +14,6 @@ use yii\codeception\BasePage;
  *
  * @property \tests\codeception\frontend\FunctionalTester | \tests\codeception\frontend\AcceptanceTester | \tests\codeception\backend\FunctionalTester | \tests\codeception\backend\AcceptanceTester $actor
  *
- * @package tests\codeception\backend\_pages\_post
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -45,6 +39,7 @@ class IndexPage extends BasePage
         foreach ($data as $field => $value) {
             $this->actor->fillField('#post-search input[name="Post[' . $field . ']"]', $value);
         }
+
         $this->actor->click('Search', '#post-search');
 
         // Wait to submit

@@ -49,7 +49,6 @@ if (extension_loaded('gd')) {
  * Adjust requirements according to your application specifics.
  */
 $requirements = array(
-    // Database :
     array(
         'name' => 'PDO extension',
         'mandatory' => true,
@@ -77,7 +76,6 @@ $requirements = array(
         'by' => 'All DB-related classes',
         'memo' => 'Required for PostgreSQL database.',
     ),
-    // Cache :
     array(
         'name' => 'Memcache extension',
         'mandatory' => false,
@@ -91,7 +89,6 @@ $requirements = array(
         'condition' => extension_loaded('apc'),
         'by' => '<a href="http://www.yiiframework.com/doc-2.0/yii-caching-apccache.html">ApcCache</a>',
     ),
-    // CAPTCHA:
     array(
         'name' => 'GD PHP extension with FreeType support',
         'mandatory' => false,

@@ -615,7 +615,6 @@ class MediaUploadHandler
         ];
 
         if ($options) {
-            // $this->options = $options + $this->options;
             $this->options = ArrayHelper::merge($this->options, $options);
         }
     }

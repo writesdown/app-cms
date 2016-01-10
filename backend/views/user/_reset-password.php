@@ -13,7 +13,6 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\User */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="user-form">
     <?php $form = ActiveForm::begin(['id' => 'user-reset-password-form']) ?>
 

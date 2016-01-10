@@ -13,7 +13,6 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\search\User */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="user-search collapse" id="user-search">
     <?php $form = ActiveForm::begin([
         'action' => ['index'],

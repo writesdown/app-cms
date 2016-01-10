@@ -13,13 +13,11 @@ use yii\data\Pagination;
 /**
  * Class PostComment
  *
- * @package frontend\widgets\comment
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
 class PostComment extends BaseComment
 {
-
     /**
      * Set comment and pagination.
      * Select all comments from database and create pagination.
@@ -28,17 +26,17 @@ class PostComment extends BaseComment
     protected function setComments()
     {
         /* @var $models \common\models\BaseComment */
-
         $comments = [];
 
-        $query = Comment::find()->select([
-            'id',
-            'comment_author',
-            'comment_author_email',
-            'comment_author_url',
-            'comment_date',
-            'comment_content',
-        ])
+        $query = Comment::find()
+            ->select([
+                'id',
+                'comment_author',
+                'comment_author_email',
+                'comment_author_url',
+                'comment_date',
+                'comment_content',
+            ])
             ->andWhere(['comment_parent' => 0])
             ->andWhere(['comment_post_id' => $this->model->id])
             ->andWhere(['comment_approved' => 'approved'])
@@ -76,17 +74,16 @@ class PostComment extends BaseComment
     protected function getChildren($id)
     {
         /* @var $models \common\models\PostComment[] */
-
         $comments = [];
-
-        $models = Comment::find()->select([
-            'id',
-            'comment_author',
-            'comment_author_email',
-            'comment_author_url',
-            'comment_date',
-            'comment_content',
-        ])
+        $models = Comment::find()
+            ->select([
+                'id',
+                'comment_author',
+                'comment_author_email',
+                'comment_author_url',
+                'comment_date',
+                'comment_content',
+            ])
             ->andWhere(['comment_parent' => $id])
             ->andWhere(['comment_post_id' => $this->model->id])
             ->andWhere(['comment_approved' => 'approved'])

@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      SiteCest.php
- * @date      12/6/2015
- * @time      10:12 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\frontend\acceptance;
-
 
 use tests\codeception\common\fixtures\PostCommentFixture;
 use tests\codeception\common\fixtures\PostFixture;
@@ -25,7 +20,6 @@ use tests\codeception\frontend\AcceptanceTester;
 /**
  * Class SiteCest
  *
- * @package tests\codeception\frontend\acceptance
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

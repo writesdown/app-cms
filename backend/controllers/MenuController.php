@@ -208,7 +208,8 @@ class MenuController extends Controller
                 }
             }
 
-            throw new NotFoundHttpException('writesdown', 'The requested page does not exist.');        }
+            throw new NotFoundHttpException('writesdown', 'The requested page does not exist.');
+        }
     }
 
     /**

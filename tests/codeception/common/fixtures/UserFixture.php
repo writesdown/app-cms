@@ -7,7 +7,6 @@ use yii\test\ActiveFixture;
 /**
  * Class UserFixture
  *
- * @package tests\codeception\common\fixtures
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

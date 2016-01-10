@@ -29,27 +29,11 @@ use yii\helpers\ArrayHelper;
  * ])
  * ~~~
  *
- * @package frontend\widgets
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.2.0
  */
 class RenderWidget extends \yii\base\Widget
 {
-    /**
-     * @var array Loaded activated widget.
-     */
-    private $_widget = [];
-
-    /**
-     * @var array Default configuration of widget.
-     */
-    private $defaultConfig = [
-        'beforeTitle'  => '',
-        'afterTitle'   => '',
-        'beforeWidget' => '',
-        'afterWidget'  => '',
-    ];
-
     /**
      * @var array Configuration of widget.
      */
@@ -59,6 +43,21 @@ class RenderWidget extends \yii\base\Widget
      * @var string Location of active widget.
      */
     public $location;
+
+    /**
+     * @var array Loaded activated widget.
+     */
+    private $_widget = [];
+
+    /**
+     * @var array Default configuration of widget.
+     */
+    private $_defaultConfig = [
+        'beforeTitle'  => '',
+        'afterTitle'   => '',
+        'beforeWidget' => '',
+        'afterWidget'  => '',
+    ];
 
     /**
      * @inheritdoc
@@ -75,8 +74,12 @@ class RenderWidget extends \yii\base\Widget
 
         if ($activeWidgets) {
             foreach ($activeWidgets as $activeWidget) {
-                $this->_widget[] = ArrayHelper::merge($this->defaultConfig, $this->config, $activeWidget->getConfig(),
-                    ['id' => $activeWidget->id]);
+                $this->_widget[] = ArrayHelper::merge(
+                    $this->_defaultConfig,
+                    $this->config,
+                    $activeWidget->getConfig(),
+                    ['id' => $activeWidget->id]
+                );
             }
         }
     }

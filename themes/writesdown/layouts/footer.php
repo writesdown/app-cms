@@ -56,7 +56,7 @@ use frontend\widgets\RenderWidget;
 <footer id="footer-secondary">
     <div class="container">
         <h5>
-            Copyright &copy; 2015 <a href="http://www.writesdown.com/">WritesDown all right reserved</a>.
+            Copyright &copy; 2015 <a href="http://www.writesdown.com/">WritesDown</a> all right reserved.
             Powered by <a rel="external nofollow" href="http://www.yiiframework.com/">Yii Framework</a>
         </h5>
     </div>

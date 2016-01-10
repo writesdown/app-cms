@@ -52,7 +52,6 @@ class Alert extends Widget
     public function init()
     {
         parent::init();
-
         $session = \Yii::$app->getSession();
         $flashes = $session->getAllFlashes();
         $appendCss = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
@@ -73,7 +72,6 @@ class Alert extends Widget
                         'options'     => $this->options,
                     ]);
                 }
-
                 $session->removeFlash($type);
             }
         }

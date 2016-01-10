@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      TermCest.php
- * @date      12/6/2015
- * @time      11:06 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\frontend\functional;
-
 
 use tests\codeception\common\fixtures\PostCommentFixture;
 use tests\codeception\common\fixtures\PostFixture;
@@ -25,7 +20,6 @@ use yii\helpers\Url;
 /**
  * Class TermCest
  *
- * @package tests\codeception\frontend\functional
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

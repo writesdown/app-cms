@@ -24,8 +24,6 @@ use yii\widgets\ActiveForm;
     'placeholder' => 'Search for...',
 ]) ?>
 
-<?= Html::submitButton('Search', [
-    'class' => 'search-form-btn',
-]) ?>
+<?= Html::submitButton('Search', ['class' => 'search-form-btn']) ?>
 
 <?php ActiveForm::end() ?>

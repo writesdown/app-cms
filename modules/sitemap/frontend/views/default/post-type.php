@@ -20,20 +20,20 @@ use yii\helpers\Url;
             <lastmod><?= $item['lastmod'] ?></lastmod>
             <changefreq><?= $item['changefreq'] ?></changefreq>
             <priority><?= $item['priority'] ?></priority>
-            <?php
-            if (isset($item['image'])) {
-                foreach ($item['image'] as $image) {
-                    ?>
+            <?php if (isset($item['image'])): ?>
+                <?php foreach ($item['image'] as $image): ?>
                     <?= '<image:image>' ?>
-                    <?= '<image:loc><![CDATA[' . $image['loc'] . ']]></image:loc>' ?>
-                    <?= isset($image['title']) ? '<image:title><![CDATA[' . $image['title'] . ']]></image:title>' : '' ?>
-                    <?= isset($image['caption']) ? ' <image:caption><![CDATA[' . $image['caption'] . ']]></image:caption>' : '' ?>
-                    <?= '</image:image>' ?>
-                    <?php
 
-                }
-            }
-            ?>
+                    <?= '<image:loc><![CDATA[' . $image['loc'] . ']]></image:loc>' ?>
+
+                    <?= isset($image['title']) ? '<image:title><![CDATA[' . $image['title'] . ']]></image:title>' : '' ?>
+
+                    <?= isset($image['caption']) ? ' <image:caption><![CDATA[' . $image['caption'] . ']]></image:caption>' : '' ?>
+
+                    <?= '</image:image>' ?>
+
+                <?php endforeach ?>
+            <?php endif ?>
         </url>
     <?php endforeach ?>
 </urlset>

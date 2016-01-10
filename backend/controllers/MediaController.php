@@ -327,8 +327,6 @@ class MediaController extends Controller
 
     /**
      * Insert URL of media to input field.
-     *
-     * @todo Insert media to field works
      */
     public function actionFieldInsert()
     {
@@ -397,6 +395,7 @@ class MediaController extends Controller
                     'class' => $postMedia['media_alignment'],
                 ]) . "\n";
         }
+
         $result .= $image;
 
         if ($postMedia['media_link_to_value']) {

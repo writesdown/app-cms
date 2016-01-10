@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      CreatePage.php
- * @date      12/7/2015
- * @time      9:55 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\backend\_pages\_post;
-
 
 use yii\codeception\BasePage;
 
@@ -19,7 +14,6 @@ use yii\codeception\BasePage;
  *
  * @property \tests\codeception\frontend\FunctionalTester | \tests\codeception\frontend\AcceptanceTester | \tests\codeception\backend\FunctionalTester | \tests\codeception\backend\AcceptanceTester $actor
  *
- * @package tests\codeception\backend\_pages\_post
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -47,6 +41,7 @@ class CreatePage extends BasePage
                 $this->actor->fillField('input[name="Post[' . $field . ']"]', $value);
             }
         }
+
         $this->actor->click('Publish', '#post-create-form');
 
         // Wait to submit

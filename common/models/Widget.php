@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license   http://www.writesdown.com/license/
+ */
 
 namespace common\models;
 
@@ -6,7 +11,6 @@ use common\components\Json;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%widget}}".
@@ -23,7 +27,7 @@ use yii\web\UploadedFile;
 class Widget extends ActiveRecord
 {
     /**
-     * @var UploadedFile
+     * @var yii\web\UploadedFile
      */
     public $widget_file;
 

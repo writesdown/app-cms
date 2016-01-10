@@ -18,7 +18,6 @@ use yii\widgets\Pjax;
 /**
  * Class BaseComment
  *
- * @package frontend\widgets\comment
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0
  */
@@ -165,9 +164,9 @@ abstract class BaseComment extends Widget
                     'rating'       => Option::get('avatar_rating'),
                     'size'         => $this->avatarSize,
                 ]) ?>
+
             </div>
             <?php
-
         }
         ?>
         <div class="media-body comment-body">
@@ -175,21 +174,28 @@ abstract class BaseComment extends Widget
                 <strong class="author vcard">
                     <span class="fn">
                         <?= $comment->comment_author ? $comment->comment_author : \Yii::t('writesdown', 'Anonymous') ?>
+
                     </span>
                 </strong>
                 -
-                <time class="date published" datetime="<?= \Yii::$app->formatter->asDatetime($comment->comment_date) ?>">
+                <time class="date published" datetime="<?= \Yii::$app
+                    ->formatter
+                    ->asDatetime($comment->comment_date) ?>">
                     <?= \Yii::$app->formatter->asDate($comment->comment_date) ?>
+
                 </time>
-                <?php
-                if ($depth < $this->maxDepth && $this->enableThreadComments) {
-                    echo Html::a(\Yii::t('writesdown', 'Reply'), '#',
-                        ['class' => 'comment-reply-link', 'data-id' => $comment->id]);
-                }
-        ?>
+
+                <?php if ($depth < $this->maxDepth && $this->enableThreadComments) {
+                    echo Html::a(\Yii::t('writesdown', 'Reply'), '#', [
+                        'class'   => 'comment-reply-link',
+                        'data-id' => $comment->id,
+                    ]);
+                } ?>
+
             </p>
             <div class="comment-content">
                 <?= $comment->comment_content ?>
+
             </div>
         </div>
         <?php
@@ -214,7 +220,6 @@ abstract class BaseComment extends Widget
                 }
                 $depth--;
             }
-
             echo Html::endTag($this->tagItem);
         }
     }

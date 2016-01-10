@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      PostCest.php
- * @date      12/9/2015
- * @time      6:42 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\backend\functional;
-
 
 use tests\codeception\backend\_pages\_post\CreatePage;
 use tests\codeception\backend\_pages\_post\IndexPage;

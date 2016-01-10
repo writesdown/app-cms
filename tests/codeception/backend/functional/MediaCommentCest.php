@@ -1,16 +1,11 @@
 <?php
 /**
- * @file      MediaCommentCest.php
- * @date      12/9/2015
- * @time      1:05 PM
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
- * @copyright Copyright (c) 2015 Agiel K. Saputra
+ * @link      http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
  * @license   http://www.writesdown.com/license/
  */
 
-
 namespace tests\codeception\backend\functional;
-
 
 use common\models\MediaComment;
 use tests\codeception\backend\_pages\_mediacomment\IndexPage;
@@ -26,7 +21,6 @@ use yii\helpers\Url;
 /**
  * Class MediaCommentCest
  *
- * @package tests\codeception\backend\acceptance
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */

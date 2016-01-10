@@ -13,8 +13,8 @@
 $this->title = Yii::t('writesdown', 'Detail Theme');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Theme'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<?= $this->render('_theme-detail', [
+
+echo $this->render('_theme-detail', [
     'config'    => $config,
     'installed' => $installed,
 ]);
