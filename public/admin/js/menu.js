@@ -24,7 +24,7 @@
         var supports = window.getComputedStyle && window.getComputedStyle(el, '').pointerEvents === 'auto';
         docEl.removeChild(el);
         return !!supports;
-    })();
+    }());
 
     var defaults = {
         listNodeName    : 'ol',
@@ -566,4 +566,4 @@
         });
     });
 
-})(window.jQuery || window.Zepto, window, document);
+}(window.jQuery || window.Zepto, window, document));

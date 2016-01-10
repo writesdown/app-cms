@@ -57,4 +57,4 @@
             dropZone.removeClass('in hover');
         }, 100);
     });
-})(jQuery);
+}(jQuery));
