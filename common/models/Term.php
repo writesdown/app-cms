@@ -106,8 +106,9 @@ class Term extends ActiveRecord
      */
     public function getPosts()
     {
-        return $this->hasMany(Post::className(), ['id' => 'post_id'])->viaTable('{{%term_relationship}}',
-            ['term_id' => 'id']);
+        return $this
+            ->hasMany(Post::className(), ['id' => 'post_id'])
+            ->viaTable('{{%term_relationship}}', ['term_id' => 'id']);
     }
 
     /**

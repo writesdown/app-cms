@@ -88,19 +88,16 @@ class SiteController extends Controller
             $render = '/post/view';
             $comment = new PostComment();
             $query = $query->andWhere(['id' => $frontPage]);
-            $post = $query->one();
+            if ($post = $query->one()) {
+                if (is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php')) {
+                    $render = '/post/view-' . $post->postType->post_type_slug;
+                }
 
-            if (is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php')) {
-                $render = '/post/view-' . $post->postType->post_type_slug;
-            }
-
-            if ($post) {
                 return $this->render($render, [
                     'post'    => $post,
                     'comment' => $comment,
                 ]);
             }
-
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         } else {
             if (Option::get('front_post_type') !== 'all') {
@@ -112,8 +109,7 @@ class SiteController extends Controller
                 'pageSize'   => Option::get('posts_per_page'),
             ]);
             $query->offset($pages->offset)->limit($pages->limit);
-            $posts = $query->all();
-            if ($posts) {
+            if ($posts = $query->all()) {
                 return $this->render('index', [
                     'posts' => $posts,
                     'pages' => isset($pages) ? $pages : null,
@@ -143,7 +139,8 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Option::get('admin_email'))) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                Yii::$app->session->setFlash('success',
+                    'Thank you for contacting us. We will respond to you as soon as possible.');
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error sending email.');
             }

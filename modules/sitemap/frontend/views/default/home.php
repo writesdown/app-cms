@@ -8,6 +8,7 @@
 
 use yii\helpers\Url;
 
+/* @var $item array */
 ?>
 <?= '<?xml version="1.0" encoding="UTF-8"?>' ?>
 <?= '<?xml-stylesheet type="text/xsl" href="' . Url::to(['style']) . '"?>' ?>
