@@ -128,5 +128,4 @@ Done, Enjoy!
 
 Demo
 ----
-Please visit [http://democms.writesdown.com/](http://democms.writesdown.com/) for the demo.
-
+Please visit [http://demo.writesdown.com/](http://demo.writesdown.com/) for the demo.

@@ -206,9 +206,9 @@ class MenuController extends Controller
                 foreach ($children as $child) {
                     $child->updateAttributes(['menu_parent' => $model->menu_parent]);
                 }
+            } else{
+                throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
             }
-
-            throw new NotFoundHttpException('writesdown', 'The requested page does not exist.');
         }
     }
 

@@ -1,9 +1,15 @@
 WritesDown Change Log
 =====================
+(January 11, 2016)
+------------------
+* Bug fixes delete menu item
+* Update travis.yml and readme.md
+
 (January 5, 2016)
 -----------------
 * Reformatting and refactoring code
 * Minor bug fixes
+
 (December 23, 2015)
 -------------------
 * (ENH) Refactoring widget
