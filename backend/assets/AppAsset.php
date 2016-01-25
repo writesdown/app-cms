@@ -19,14 +19,19 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/site.css',
-    ];
-    public $js = [
-        'js/site.js',
-    ];
     public $depends = [
         'codezeen\yii2\adminlte\AdminLteAsset',
         'backend\assets\AppAssetIe9',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->css = ['css/site.css'];
+            $this->js = ['js/site.js'];
+        } else {
+            $this->css = ['css/min/site.css'];
+            $this->js = ['js/min/site.js'];
+        }
+    }
 }

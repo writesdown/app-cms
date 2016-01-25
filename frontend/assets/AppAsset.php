@@ -19,11 +19,17 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/site.css',
-    ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->css = ['css/site.css'];
+        } else {
+            $this->css = ['css/min/site.css'];
+        }
+    }
 }

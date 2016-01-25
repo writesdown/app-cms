@@ -19,13 +19,18 @@ class MenuAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/menu.css',
-    ];
-    public $js = [
-        'js/menu.js',
-    ];
     public $depends = [
         'backend\assets\AppAsset',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->css = ['css/menu.css'];
+            $this->js = ['js/menu.js'];
+        } else {
+            $this->css = ['css/min/menu.css'];
+            $this->js = ['js/min/menu.js'];
+        }
+    }
 }

@@ -19,11 +19,17 @@ class WidgetAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $js = [
-        'js/widget.js',
-    ];
     public $depends = [
         'yii\jui\JuiAsset',
         'backend\assets\AppAsset',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->js = ['js/widget.js'];
+        } else {
+            $this->js = ['js/min/widget.js'];
+        }
+    }
 }

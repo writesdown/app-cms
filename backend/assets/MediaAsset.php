@@ -19,11 +19,17 @@ class MediaAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $js = [
-        'js/media.js',
-    ];
     public $depends = [
         'backend\assets\AppAsset',
         'dosamigos\fileupload\FileUploadUIAsset',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->js = ['js/media.js'];
+        } else {
+            $this->js = ['js/min/media.js'];
+        }
+    }
 }

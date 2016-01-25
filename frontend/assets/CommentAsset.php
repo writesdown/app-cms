@@ -19,10 +19,16 @@ class CommentAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $js = [
-        'js/comment.js',
-    ];
     public $depends = [
         'yii\web\YiiAsset',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->js = ['js/comment.js'];
+        } else {
+            $this->js = ['js/min/comment.js'];
+        }
+    }
 }

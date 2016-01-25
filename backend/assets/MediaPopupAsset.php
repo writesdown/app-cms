@@ -19,15 +19,20 @@ class MediaPopupAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/media.popup.css',
-    ];
-    public $js = [
-        'js/media.popup.js',
-    ];
     public $depends = [
         'backend\assets\AppAsset',
         'yii\jui\JuiAsset',
         'dosamigos\fileupload\FileUploadUIAsset',
     ];
+
+    public function init()
+    {
+        if (YII_DEBUG) {
+            $this->css = ['css/media.popup.css'];
+            $this->js = ['js/media.popup.js'];
+        } else {
+            $this->css = ['css/min/media.popup.css'];
+            $this->js = ['js/media.popup.js'];
+        }
+    }
 }
