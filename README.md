@@ -14,11 +14,11 @@ Contributor, and Subscriber.
 [![Build Status](https://travis-ci.org/writesdown/app-cms.svg?branch=master)](https://travis-ci.org/writesdown/app-cms)
 [![Dependency Status](https://www.versioneye.com/user/projects/568b0e86eb4f47003c001066/badge.svg)](https://www.versioneye.com/user/projects/568b0e86eb4f47003c001066)
 [![Code Climate](https://codeclimate.com/github/writesdown/app-cms/badges/gpa.svg)](https://codeclimate.com/github/writesdown/app-cms)
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/writesdown/app-cms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/writesdown/app-cms/?branch=master)
 Feature
 -------
 
-* Developed using Yii2 Framework
+* Developed with Yii2 PHP Framework
 * Admin-LTE version 2 for admin
 * Custom taxonomies
 * Custom post types
@@ -50,7 +50,7 @@ common
     config/              contains shared configurations
     mail/                contains view files for e-mails
     models/              contains model classes used in both backend and frontend
-    temp/                temporary directory
+    tmp/                 temporary directory
 console
     config/              contains console configurations
     controllers/         contains console controllers (commands)
@@ -121,7 +121,7 @@ After that, write the following code to initialize the database.
 yii migrate
 ```
 
-Go to the admin panel http://host/backend/web/ and change the username and password. 
+Go to the admin panel http://host/public/admin/ and change the username and password. 
 The default username and password is superadmin/superadmin.
 
 Done, Enjoy!
