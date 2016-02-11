@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -13,44 +13,46 @@ use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%media}}".
  *
- * @property integer        $id
- * @property integer        $media_author
- * @property integer        $media_post_id
- * @property string         $media_title
- * @property string         $media_excerpt
- * @property string         $media_content
- * @property string         $media_password
- * @property string         $media_date
- * @property string         $media_modified
- * @property string         $media_slug
- * @property string         $media_mime_type
- * @property string         $media_comment_status
- * @property integer        $media_comment_count
- * @property string         $url
- * @property UploadedFile   $file
- * @property string         $uploadUrl
+ * @property integer $id
+ * @property integer $author
+ * @property integer $post_id
+ * @property string $title
+ * @property string $excerpt
+ * @property string $content
+ * @property string $password
+ * @property string $date
+ * @property string $modified
+ * @property string $slug
+ * @property string $mime_type
+ * @property string $comment_status
+ * @property integer $comment_count
  *
- * @property Post           $mediaPost
- * @property User           $mediaAuthor
+ * @property string $url
+ * @property string $uploadUrl
+ *
+ * @property Post $mediaPost
+ * @property User $mediaAuthor
  * @property MediaComment[] $mediaComments
- * @property MediaMeta[]    $mediaMeta
+ * @property MediaMeta[] $mediaMeta
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Media extends ActiveRecord
 {
-    public $username;
-    public $post_title;
-    public $file;
-
     const COMMENT_STATUS_OPEN = 'open';
     const COMMENT_STATUS_CLOSE = 'close';
+
+    public $username;
+    public $post_title;
+    /**
+     * @var \yii\web\UploadedFile
+     */
+    public $file;
 
     /**
      * @inheritdoc
@@ -67,9 +69,9 @@ class Media extends ActiveRecord
     {
         return [
             [
-                'class'      => SluggableBehavior::className(),
-                'attribute'  => 'media_title',
-                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['media_slug']],
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['slug']],
             ],
         ];
     }
@@ -91,23 +93,23 @@ class Media extends ActiveRecord
     public function rules()
     {
         return [
-            [['media_title', 'media_mime_type'], 'required'],
-            [['media_author', 'media_post_id', 'media_comment_count'], 'integer'],
-            [['media_title', 'media_excerpt', 'media_content'], 'string'],
-            [['media_password', 'media_slug'], 'string', 'max' => 255],
-            [['media_mime_type'], 'string', 'max' => 100],
-            [['media_comment_status'], 'string', 'max' => 20],
-            [['media_date', 'media_modified', 'media_slug'], 'safe'],
+            [['title', 'mime_type'], 'required'],
+            [['author', 'post_id', 'comment_count'], 'integer'],
+            [['title', 'excerpt', 'content'], 'string'],
+            [['password', 'slug'], 'string', 'max' => 255],
+            ['mime_type', 'string', 'max' => 100],
+            ['comment_status', 'string', 'max' => 20],
+            [['date', 'modified', 'slug'], 'safe'],
             [
-                ['file'],
                 'file',
-                'maxSize'    => 1024 * 1024 * 25,
+                'file',
+                'maxSize' => 1024 * 1024 * 25,
                 'extensions' => 'jpg, jpeg, png, gif,'
                     . 'pdf, doc, docx, key, ppt, pptx, pps, ppsx, odt, xls, xlsx, zip,'
-                    . 'mp3, m4a, ogg, wav'
+                    . 'mp3, m4a, ogg, wav,'
                     . 'mp4, m4v, mov, wmv, avi, mpg,ogv, 3gp, 3g2',
             ],
-            [['file'], 'required', 'on' => 'upload'],
+            ['file', 'required', 'on' => 'upload'],
         ];
     }
 
@@ -117,21 +119,21 @@ class Media extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'                   => Yii::t('writesdown', 'ID'),
-            'media_author'         => Yii::t('writesdown', 'Author'),
-            'media_post_id'        => Yii::t('writesdown', 'Attached to'),
-            'media_title'          => Yii::t('writesdown', 'Title'),
-            'media_excerpt'        => Yii::t('writesdown', 'Caption'),
-            'media_content'        => Yii::t('writesdown', 'Description'),
-            'media_password'       => Yii::t('writesdown', 'Password'),
-            'media_date'           => Yii::t('writesdown', 'Uploaded'),
-            'media_modified'       => Yii::t('writesdown', 'Updated'),
-            'media_slug'           => Yii::t('writesdown', 'Slug'),
-            'media_mime_type'      => Yii::t('writesdown', 'Mime Type'),
-            'media_comment_status' => Yii::t('writesdown', 'Comment Status'),
-            'media_comment_count'  => Yii::t('writesdown', 'Comment Count'),
-            'username'             => Yii::t('writesdown', 'Author'),
-            'post_title'           => Yii::t('writesdown', 'Post Title'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'author' => Yii::t('writesdown', 'Author'),
+            'post_id' => Yii::t('writesdown', 'Attached to'),
+            'title' => Yii::t('writesdown', 'Title'),
+            'excerpt' => Yii::t('writesdown', 'Caption'),
+            'content' => Yii::t('writesdown', 'Description'),
+            'password' => Yii::t('writesdown', 'Password'),
+            'date' => Yii::t('writesdown', 'Uploaded'),
+            'modified' => Yii::t('writesdown', 'Updated'),
+            'slug' => Yii::t('writesdown', 'Slug'),
+            'mime_type' => Yii::t('writesdown', 'Mime Type'),
+            'comment_status' => Yii::t('writesdown', 'Comment Status'),
+            'comment_count' => Yii::t('writesdown', 'Comment Count'),
+            'username' => Yii::t('writesdown', 'Author'),
+            'post_title' => Yii::t('writesdown', 'Post Title'),
         ];
     }
 
@@ -140,7 +142,7 @@ class Media extends ActiveRecord
      */
     public function getMediaPost()
     {
-        return $this->hasOne(Post::className(), ['id' => 'media_post_id']);
+        return $this->hasOne(Post::className(), ['id' => 'post_id']);
     }
 
     /**
@@ -148,7 +150,7 @@ class Media extends ActiveRecord
      */
     public function getMediaAuthor()
     {
-        return $this->hasOne(User::className(), ['id' => 'media_author']);
+        return $this->hasOne(User::className(), ['id' => 'author']);
     }
 
     /**
@@ -156,7 +158,7 @@ class Media extends ActiveRecord
      */
     public function getMediaComments()
     {
-        return $this->hasMany(MediaComment::className(), ['comment_media_id' => 'id']);
+        return $this->hasMany(MediaComment::className(), ['media_id' => 'id']);
     }
 
     /**
@@ -170,33 +172,31 @@ class Media extends ActiveRecord
     /**
      * Get comment status as array
      */
-    public function getCommentStatus()
+    public function getCommentStatuses()
     {
         return [
-            self::COMMENT_STATUS_OPEN  => "Open",
-            self::COMMENT_STATUS_CLOSE => "Close",
+            self::COMMENT_STATUS_OPEN => Yii::t('writesdown', 'Open'),
+            self::COMMENT_STATUS_CLOSE => Yii::t('writesdown', 'Close'),
         ];
     }
-
 
     /**
      * Get meta for current media.
      *
-     * @param string $metaName
-     *
+     * @param string $name
      * @return mixed|null|string
      */
-    public function getMeta($metaName)
+    public function getMeta($name)
     {
         /* @var $model \common\models\MediaMeta */
-        $model = MediaMeta::findOne(['meta_name' => $metaName, 'media_id' => $this->id]);
+        $model = MediaMeta::findOne(['name' => $name, 'media_id' => $this->id]);
 
         if ($model) {
-            if (Json::isJson($model->meta_value)) {
-                return Json::decode($model->meta_value);
+            if (Json::isJson($model->value)) {
+                return Json::decode($model->value);
             }
 
-            return $model->meta_value;
+            return $model->value;
         }
 
         return null;
@@ -205,25 +205,25 @@ class Media extends ActiveRecord
     /**
      * Add new meta data for current media.
      *
-     * @param string       $metaName
-     * @param string|array $metaValue
-     *
+     * @param string $name
+     * @param string|array $value
      * @return bool
      */
-    public function setMeta($metaName, $metaValue)
+    public function setMeta($name, $value)
     {
-        if (is_array($metaValue) || is_object($metaValue)) {
-            $metaValue = Json::encode($metaValue);
+        if (is_array($value) || is_object($value)) {
+            $value = Json::encode($value);
         }
 
-        if ($this->getMeta($metaName) !== null) {
-            return $this->upMeta($metaName, $metaValue);
+        if ($this->getMeta($name) !== null) {
+            return $this->upMeta($name, $value);
         }
 
-        $model = new MediaMeta();
-        $model->media_id = $this->id;
-        $model->meta_name = $metaName;
-        $model->meta_value = $metaValue;
+        $model = new MediaMeta([
+            'media_id' => $this->id,
+            'name' => $name,
+            'value' => $value,
+        ]);
 
         return $model->save();
     }
@@ -231,21 +231,20 @@ class Media extends ActiveRecord
     /**
      * Update meta data for current media.
      *
-     * @param string       $metaName
-     * @param string|array $metaValue
-     *
+     * @param string $name
+     * @param string|array $value
      * @return bool
      */
-    public function upMeta($metaName, $metaValue)
+    public function upMeta($name, $value)
     {
         /* @var $model \common\models\MediaMeta */
-        $model = MediaMeta::findOne(['meta_name' => $metaName, 'media_id' => $this->id]);
+        $model = MediaMeta::findOne(['name' => $name, 'media_id' => $this->id]);
 
-        if (is_array($metaValue) || is_object($metaValue)) {
-            $metaValue = Json::encode($metaValue);
+        if (is_array($value) || is_object($value)) {
+            $value = Json::encode($value);
         }
 
-        $model->meta_value = $metaValue;
+        $model->value = $value;
 
         return $model->save();
     }
@@ -274,8 +273,7 @@ class Media extends ActiveRecord
      * Get media image thumbnail. If the version is not found, full size will be returned.
      *
      * @param string $version Version of image thumbnail.
-     * @param array  $options Html::image options.
-     *
+     * @param array $options Html::image options.
      * @return string
      */
     public function getThumbnail($version = 'thumbnail', $options = [])
@@ -283,25 +281,39 @@ class Media extends ActiveRecord
         $thumbnail = '';
         $metadata = $this->getMeta('metadata');
 
-        if (preg_match("/^image/", $this->media_mime_type)) {
-            if (isset($metadata['media_versions'][$version])) {
-                $imageSrc = $metadata['media_versions'][$version]['url'];
-                $imageWidth = $metadata['media_versions'][$version]['width'];
-                $imageHeight = $metadata['media_versions'][$version]['height'];
+        if (preg_match("/^image/", $this->mime_type)) {
+            if (isset($metadata['versions'][$version])) {
+                $imageSrc = $metadata['versions'][$version]['url'];
+                $imageWidth = $metadata['versions'][$version]['width'];
+                $imageHeight = $metadata['versions'][$version]['height'];
             } else {
-                $imageSrc = $metadata['media_versions']['full']['url'];
-                $imageWidth = $metadata['media_versions']['full']['width'];
-                $imageHeight = $metadata['media_versions']['full']['height'];
+                $imageSrc = $metadata['versions']['full']['url'];
+                $imageWidth = $metadata['versions']['full']['width'];
+                $imageHeight = $metadata['versions']['full']['height'];
             }
 
-            $thumbnail = Html::img($this->uploadUrl . $imageSrc, ArrayHelper::merge([
-                'width'  => $imageWidth,
+            $thumbnail = Html::img($this->getUploadUrl() . $imageSrc, ArrayHelper::merge([
+                'width' => $imageWidth,
                 'height' => $imageHeight,
-                'alt'    => $this->media_title,
+                'alt' => $this->title,
             ], $options));
         }
 
         return $thumbnail;
+    }
+
+    /**
+     * Get permission to access model by current user.
+     *
+     * @return bool
+     */
+    public function getPermission()
+    {
+        if (!Yii::$app->user->can('editor') && $this->author !== Yii::$app->user->id) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -311,12 +323,12 @@ class Media extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->media_author = Yii::$app->user->id;
-                $this->media_date = date('Y-m-d H:i:s');
-                $this->media_comment_status = self::COMMENT_STATUS_OPEN;
-                $this->media_comment_count = 0;
+                $this->author = Yii::$app->user->id;
+                $this->date = date('Y-m-d H:i:s');
+                $this->comment_status = self::COMMENT_STATUS_OPEN;
+                $this->comment_count = 0;
             }
-            $this->media_modified = date('Y-m-d H:i:s');
+            $this->modified = date('Y-m-d H:i:s');
 
             return true;
         }

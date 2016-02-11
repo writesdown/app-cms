@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\bootstrap\Modal;
@@ -21,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content">
             <div class="row">
 
-                <?php foreach ($themes as $dir => $theme): ?>
+                <?php foreach ($themes as $theme): ?>
                     <?= $this->render('_theme-thumbnail', [
-                        'theme'     => $theme,
+                        'theme' => $theme,
                         'installed' => $installed,
                     ]) ?>
                 <?php endforeach ?>
@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php Modal::begin([
     'header' => Yii::t('writesdown', 'Detail Theme'),
-    'id'     => 'modal-for-theme-detail',
-    'size'   => Modal::SIZE_LARGE,
+    'id' => 'modal-for-theme-detail',
+    'size' => Modal::SIZE_LARGE,
 ]) ?>
 
 <?php Modal::end() ?>

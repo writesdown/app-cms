@@ -1,25 +1,26 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 return [
     [
-        'taxonomy_id'      => '1',
-        'term_name'        => 'Sample Category',
-        'term_slug'        => 'sample-category',
-        'term_description' => 'This is sample category description',
-        'term_parent'      => '0',
-        'term_count'       => '1',
+        'taxonomy_id' => '1',
+        'name' => 'Sample Category',
+        'slug' => 'sample-category',
+        'description' => 'This is sample category description',
+        'parent' => '0',
+        'count' => '1',
     ],
     [
-        'taxonomy_id'      => '2',
-        'term_name'        => 'Sample Tag',
-        'term_slug'        => 'sample-tag',
-        'term_description' => 'This is sample tag description',
-        'term_parent'      => '0',
-        'term_count'       => '1',
-    ]
+        'taxonomy_id' => '2',
+        'name' => 'Sample Tag',
+        'slug' => 'sample-tag',
+        'description' => 'This is sample tag description',
+        'parent' => '0',
+        'count' => '1',
+    ],
 ];

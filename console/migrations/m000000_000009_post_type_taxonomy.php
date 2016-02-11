@@ -6,7 +6,7 @@ use yii\db\Schema;
  * Class m000000_000009_post_type_taxonomy
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000009_post_type_taxonomy extends \yii\db\Migration
 {
@@ -23,7 +23,7 @@ class m000000_000009_post_type_taxonomy extends \yii\db\Migration
 
         $this->createTable('{{%post_type_taxonomy}}', [
             'post_type_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
-            'taxonomy_id'  => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            'taxonomy_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
             'PRIMARY KEY ([[post_type_id]], [[taxonomy_id]])',
             'FOREIGN KEY ([[post_type_id]]) REFERENCES {{%post_type}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[taxonomy_id]]) REFERENCES {{%taxonomy}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',

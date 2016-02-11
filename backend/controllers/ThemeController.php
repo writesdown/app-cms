@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -20,20 +20,20 @@ use yii\web\UploadedFile;
 /**
  * ThemeController, controlling the actions for theme.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class ThemeController extends Controller
 {
     /**
      * @var string Path to theme directory.
      */
-    private $_themeDir;
+    private $_dir;
 
     /**
      * @var string Path to temporary directory of theme.
      */
-    private $_themeTempDir;
+    private $_tmp;
 
     /**
      * @var string Path to thumbnail directory of theme.
@@ -41,7 +41,7 @@ class ThemeController extends Controller
     private $_thumbDir;
 
     /**
-     * @var string Base url of theme.
+     * @var string Base url of theme thumbnail.
      */
     private $_thumbBaseUrl;
 
@@ -78,39 +78,28 @@ class ThemeController extends Controller
      */
     public function actionIndex()
     {
-        $themes = [];
-        $config = [];
+        $installed = Option::get('theme');
+        $themes[] = $this->getConfig($installed);
 
-        if (!is_dir($this->_themeDir)) {
-            FileHelper::createDirectory($this->_themeDir, 0755);
+        if (!is_dir($this->_dir)) {
+            FileHelper::createDirectory($this->_dir, 0755);
         }
 
         if (!is_dir($this->_thumbDir)) {
             FileHelper::createDirectory($this->_thumbDir, 0755);
         }
 
-        $arrThemes = scandir($this->_themeDir);
+        $arrThemes = scandir($this->_dir);
 
         foreach ($arrThemes as $theme) {
-            if (is_dir($this->_themeDir . $theme) && $theme !== '.' && $theme !== '..') {
-                $configPath = $this->_themeDir . $theme . '/config/main.php';
-                if (is_file($configPath)) {
-                    $config = require($configPath);
-                }
-                $config['info']['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
-                    ? $this->_thumbBaseUrl . $theme . '.png'
-                    : Yii::getAlias('@web/img/themes.png');
-                $config['info']['Dir'] = $theme;
-                if (!isset($config['info']['Name'])) {
-                    $config['info']['Name'] = $theme;
-                }
-                $themes[] = $config['info'];
+            if (is_dir($this->_dir . $theme) && $theme !== '.' && $theme !== '..' && $theme !== $installed) {
+                $themes[] = $this->getConfig($theme);
             }
         }
 
         return $this->render('index', [
             'themes'    => $themes,
-            'installed' => Option::get('theme'),
+            'installed' => $installed,
         ]);
     }
 
@@ -124,86 +113,79 @@ class ThemeController extends Controller
      */
     public function actionUpload()
     {
-        $model = new DynamicModel([
-            'theme',
-        ]);
+        $errors = [];
+        $model = new DynamicModel(['file']);
+        $model->addRule(['file'], 'required')
+            ->addRule(['file'], 'file', ['extensions' => 'zip']);
 
-        $model
-            ->addRule(['theme'], 'required')
-            ->addRule(['theme'], 'file', ['extensions' => 'zip']);
-
-        // Create temporary directory
-        if (!is_dir($this->_themeTempDir)) {
-            FileHelper::createDirectory($this->_themeTempDir, 0755);
+        if (!is_dir($this->_dir)) {
+            FileHelper::createDirectory($this->_dir, 0755);
         }
 
-        // Create theme directory
-        if (!is_dir($this->_themeDir)) {
-            FileHelper::createDirectory($this->_themeDir, 0755);
+        if (!is_dir($this->_tmp)) {
+            FileHelper::createDirectory($this->_tmp, 0755);
         }
 
-        // Create thumbnail directory
         if (!is_dir($this->_thumbDir)) {
             FileHelper::createDirectory($this->_thumbDir, 0755);
         }
 
-        if (Yii::$app->request->isPost) {
-            $model->theme = UploadedFile::getInstance($model, 'theme');
+        if (($model->file = UploadedFile::getInstance($model, 'file')) && $model->validate()) {
+            $themeTempPath = $this->_tmp . $model->file->name;
 
-            if ($model->validate()) {
-                // Theme temporary path
-                $themeTempPath = $this->_themeTempDir . $model->theme->name;
+            if (!$model->file->saveAs($themeTempPath)) {
+                return $this->render('upload', [
+                    'model' => $model,
+                    'errors' => [Yii::t('writesdown', 'Failed to move uploaded file')],
+                ]);
+            }
 
-                // Move theme (zip) to temporary directory
-                if ($model->theme->saveAs($themeTempPath)) {
-                    $zipArchive = new \ZipArchive();
-                    $zipArchive->open($themeTempPath);
+            $zipArchive = new \ZipArchive();
+            $zipArchive->open($themeTempPath);
 
-                    if ($zipArchive->extractTo($this->_themeTempDir)) {
-                        $baseDir = substr($zipArchive->getNameIndex(0), 0, strpos($zipArchive->getNameIndex(0), '/'));
-                        $zipArchive->close();
-                        unlink($themeTempPath);
+            if (!$zipArchive->extractTo($this->_tmp)) {
+                $zipArchive->close();
+                FileHelper::removeDirectory($this->_tmp);
 
-                        // Check theme exist in theme directory
-                        if (is_dir($this->_themeDir . $baseDir)) {
-                            FileHelper::removeDirectory($this->_themeTempDir);
-                            Yii::$app->getSession()->setFlash(
-                                'danger',
-                                Yii::t('writesdown', 'Theme with the same directory already exist.')
-                            );
-                        } else {
-                            rename($this->_themeTempDir . $baseDir, $this->_themeDir . $baseDir);
-                            if (is_file($this->_themeDir . $baseDir . '/screenshot.png')) {
-                                copy($this->_themeDir . $baseDir . '/screenshot.png',
-                                    $this->_thumbDir . $baseDir . '.png');
-                            }
-                            FileHelper::removeDirectory($this->_themeTempDir);
-                            $fileConfig = $this->_themeDir . $baseDir . '/config/main.php';
+                return $this->render('upload', [
+                    'model' => $model,
+                    'errors' => [Yii::t('writesdown', 'Failed to extract file.')],
+                ]);
+            }
 
-                            if (is_file($fileConfig)) {
-                                $config = require($fileConfig);
-                                if (isset($config['upload'])) {
-                                    try {
-                                        Yii::createObject($config['upload']);
-                                    } catch (Exception $e) {
-                                    }
-                                }
-                            }
+            $baseDir = substr($zipArchive->getNameIndex(0), 0, strpos($zipArchive->getNameIndex(0), '/'));
+            $zipArchive->close();
 
-                            Yii::$app->getSession()->setFlash(
-                                'success',
-                                Yii::t('writesdown', 'Theme successfully uploaded')
-                            );
+            if (is_dir($this->_dir . $baseDir)) {
+                FileHelper::removeDirectory($this->_tmp);
+                $errors[] = Yii::t('writesdown', 'Theme with the same directory already exist.');
+            } else {
+                rename($this->_tmp . $baseDir, $this->_dir . $baseDir);
+                FileHelper::removeDirectory($this->_tmp);
 
-                            return $this->redirect(['index']);
+                if (is_file($this->_dir . $baseDir . '/screenshot.png')) {
+                    copy($this->_dir . $baseDir . '/screenshot.png', $this->_thumbDir . $baseDir . '.png');
+                }
+
+                $config = $this->getConfig($baseDir);
+                if (isset($config['upload']) && is_array($config['upload'])) {
+                    foreach ($config['upload'] as $type) {
+                        try {
+                            Yii::createObject($type);
+                        } catch (Exception $e) {
                         }
                     }
                 }
+
+                Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Theme successfully uploaded'));
+
+                return $this->redirect(['index']);
             }
         }
 
         return $this->render('upload', [
             'model' => $model,
+            'errors' => $errors,
         ]);
     }
 
@@ -216,24 +198,8 @@ class ThemeController extends Controller
      */
     public function actionDetail($theme)
     {
-        $config = [];
-        $fileConfig = $this->_themeDir . $theme . '/config/main.php';
-
-        if (is_file($fileConfig)) {
-            $config = require($fileConfig);
-        }
-
-        if (!isset($config['Name'])) {
-            $config['info']['Name'] = $theme;
-        }
-
-        $config['info']['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
-            ? $this->_thumbBaseUrl . $theme . '.png'
-            : Yii::getAlias('@web/img/themes.png');
-        $config['info']['Dir'] = $theme;
-
         return $this->render('detail', [
-            'config'    => $config['info'],
+            'theme' => $this->getConfig($theme),
             'installed' => Option::get('theme'),
         ]);
     }
@@ -247,21 +213,22 @@ class ThemeController extends Controller
      */
     public function actionInstall($theme)
     {
-        if (is_file($fileConfigInstalled = $this->_themeDir . Option::get('theme') . '/config/main.php')) {
-            $configOld = require($fileConfigInstalled);
-            if (isset($configOld['uninstall'])) {
+        $configOld = $this->getConfig(Option::get('theme'));
+
+        if (isset($configOld['uninstall']) && is_array($configOld['uninstall'])) {
+            foreach ($configOld['uninstall'] as $type) {
                 try {
-                    Yii::createObject($configOld['uninstall']);
+                    Yii::createObject($type);
                 } catch (Exception $e) {
                 }
             }
         }
 
-        if (is_file($fileConfigInstall = $this->_themeDir . $theme . '/config/main.php')) {
-            $configNew = require($fileConfigInstall);
-            if (isset($configNew['install'])) {
+        $configNew = $this->getConfig($theme);
+        if (isset($configNew['install']) && is_array($configNew['install'])) {
+            foreach ($configNew['install'] as $type) {
                 try {
-                    Yii::createObject($configNew['install']);
+                    Yii::createObject($type);
                 } catch (Exception $e) {
                 }
             }
@@ -269,8 +236,6 @@ class ThemeController extends Controller
 
         if (Option::set('theme', $theme)) {
             Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', "Theme successfully installed."));
-        } else {
-            Yii::$app->getSession()->setFlash('danger', Yii::t('writesdown', "File config must return an array."));
         }
 
         return $this->redirect(['index']);
@@ -285,20 +250,20 @@ class ThemeController extends Controller
      */
     public function actionDelete($theme)
     {
-        if ($theme != Option::get('theme')) {
-            $fileConfig = $this->_themeDir . $theme . '/config/main.php';
+        if ($theme !== Option::get('theme')) {
+            $config = $this->getConfig($theme);
 
-            if (is_file($fileConfig)) {
-                $config = require($fileConfig);
-                if (isset($config['delete'])) {
+            if (isset($config['delete']) && is_array($config['delete'])) {
+                foreach ($config['delete'] as $type) {
                     try {
-                        Yii::createObject($config['delete']);
+                        Yii::createObject($type);
                     } catch (Exception $e) {
                     }
                 }
             }
 
-            FileHelper::removeDirectory($this->_themeDir . $theme);
+            FileHelper::removeDirectory($this->_dir . $theme);
+
             if (is_file($this->_thumbDir . $theme . '.png')) {
                 unlink($this->_thumbDir . $theme . '.png');
             }
@@ -316,24 +281,8 @@ class ThemeController extends Controller
      */
     public function actionAjaxDetail($theme)
     {
-        $config = [];
-        $fileConfig = $this->_themeDir . $theme . '/config/main.php';
-
-        if (is_file($fileConfig)) {
-            $config = require($fileConfig);
-        }
-
-        if (!isset($config['Name'])) {
-            $config['info']['Name'] = $theme;
-        }
-
-        $config['info']['Thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
-            ? $this->_thumbBaseUrl . $theme . '.png'
-            : Yii::getAlias('@web/img/themes.png');
-        $config['info']['Dir'] = $theme;
-
         return $this->renderPartial('_theme-detail', [
-            'config'    => $config['info'],
+            'theme' => $this->getConfig($theme),
             'installed' => Option::get('theme'),
         ]);
     }
@@ -344,14 +293,41 @@ class ThemeController extends Controller
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-            $this->_themeDir = Yii::getAlias('@themes/');
+            $this->_dir = Yii::getAlias('@themes/');
+            $this->_tmp = Yii::getAlias('@common/tmp/themes/');
             $this->_thumbDir = Yii::getAlias('@webroot/themes/');
             $this->_thumbBaseUrl = Yii::getAlias('@web/themes/');
-            $this->_themeTempDir = Yii::getAlias('@common/temp/themes/');
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get theme config based on theme directory;
+     *
+     * @param $theme
+     * @return array|mixed
+     */
+    protected function getConfig($theme)
+    {
+        $config = [];
+        $configPath = $this->_dir . $theme . '/config/main.php';
+
+        if (is_file($configPath)) {
+            $config = require($configPath);
+        }
+
+        $config['thumbnail'] = is_file($this->_thumbDir . $theme . '.png')
+            ? $this->_thumbBaseUrl . $theme . '.png'
+            : Yii::getAlias('@web/img/themes.png');
+        $config['directory'] = $theme;
+
+        if (!isset($config['info']['Name'])) {
+            $config['info']['Name'] = $theme;
+        }
+
+        return $config;
     }
 }

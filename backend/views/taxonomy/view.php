@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\widgets\Pjax;
@@ -14,7 +14,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $term common\models\Term */
 
-$this->title = Yii::t('writesdown', 'View Taxonomy: {taxonomy_name}', ['taxonomy_name' => $model->taxonomy_sn]);
+$this->title = Yii::t('writesdown', 'View Taxonomy: {name}', ['name' => $model->singular_name]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Taxonomies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,9 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-8">
             <?= $this->render('/term/index', [
-                'searchModel'  => $searchModel,
+                'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
-                'taxonomy'     => $model,
+                'taxonomy' => $model,
             ]) ?>
         </div>
     </div>

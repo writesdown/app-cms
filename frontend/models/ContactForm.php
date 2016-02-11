@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\models;
@@ -13,8 +13,8 @@ use yii\base\Model;
 /**
  * Class ContactForm
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class ContactForm extends Model
 {
@@ -68,7 +68,6 @@ class ContactForm extends Model
      * Sends an email to the specified email address using the information collected by this model.
      *
      * @param  string $email the target email address
-     *
      * @return boolean whether the email was sent
      */
     public function sendEmail($email)

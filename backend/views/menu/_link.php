@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -12,14 +12,14 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $selectedMenu common\models\Menu */
+/* @var $selected common\models\Menu */
 ?>
 <?php $form = ActiveForm::begin([
     'options' => [
-        'class'    => 'panel box box-primary menu-create-menu-item',
-        'data-url' => Url::to(['menu/create-menu-item', 'id' => $selectedMenu->id]),
+        'class' => 'panel box box-primary create-menu-item',
+        'data-url' => Url::to(['create-menu-item', 'id' => $selected->id]),
     ],
-    'action'  => Url::to(['/site/forbidden']),
+    'action' => Url::to(['/site/forbidden']),
 ]) ?>
 
 <div class="box-header with-border">
@@ -33,24 +33,24 @@ use yii\widgets\ActiveForm;
 <div class="panel-collapse collapse in" id="link">
     <div class="box-body">
         <div class="form-group">
-            <?= Html::label(Yii::t('writesdown', 'Menu Label'), 'menu_item_label', ['class' => 'form-label']) ?>
+            <?= Html::label(Yii::t('writesdown', 'Menu Label'), 'item_label', ['class' => 'form-label']) ?>
 
-            <?= Html::textInput('MenuItem[menu_label]', null, [
-                'class'       => 'form-control',
+            <?= Html::textInput('MenuItem[label]', null, [
+                'class' => 'form-control',
                 'placeholder' => 'Label',
-                'maxlength'   => '255',
-                'id'          => 'menu_item_label',
+                'maxlength' => '255',
+                'id' => 'item_label',
             ]) ?>
 
         </div>
         <div class="form-group">
-            <?= Html::label(Yii::t('writesdown', 'Menu URL'), 'menu_item_url', ['class' => 'form-label']) ?>
+            <?= Html::label(Yii::t('writesdown', 'Menu URL'), 'item_url', ['class' => 'form-label']) ?>
 
-            <?= Html::textInput('MenuItem[menu_url]', null, [
-                'class'       => 'form-control',
+            <?= Html::textInput('MenuItem[url]', null, [
+                'class' => 'form-control',
                 'placeholder' => 'URL',
-                'maxlength'   => '255',
-                'id'          => 'menu_item_url',
+                'maxlength' => '255',
+                'id' => 'item_url',
             ]) ?>
 
         </div>

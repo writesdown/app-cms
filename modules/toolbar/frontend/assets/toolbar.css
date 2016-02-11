@@ -5,10 +5,10 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     min-height: 28px;
 }
-#wd-frontend-toolbar .dropdown-menu{
+#wd-frontend-toolbar .dropdown-menu {
     border-radius: 0;
 }
-#wd-frontend-toolbar .dropdown-menu:empty{
+#wd-frontend-toolbar .dropdown-menu:empty {
     display: none;
 }
 #wd-frontend-toolbar .navbar-nav > li > a {
@@ -20,7 +20,7 @@ body {
     line-height: 40px;
     padding: 9px 15px;
 }
-#wd-frontend-toolbar .navbar-toggle{
+#wd-frontend-toolbar .navbar-toggle {
     padding: 4px;
     border-radius: 0;
 }

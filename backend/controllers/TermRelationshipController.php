@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -18,8 +18,8 @@ use yii\web\NotFoundHttpException;
 /**
  * TermRelationshipController implements the CRUD actions for TermRelationship model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class TermRelationshipController extends Controller
 {
@@ -38,15 +38,15 @@ class TermRelationshipController extends Controller
                             'ajax-create-non-hierarchical',
                             'ajax-delete-non-hierarchical',
                         ],
-                        'allow'   => true,
-                        'roles'   => ['subscriber'],
+                        'allow' => true,
+                        'roles' => ['subscriber'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'ajax-change-hierarchical'     => ['post'],
+                    'ajax-change-hierarchical' => ['post'],
                     'ajax-create-non-hierarchical' => ['post'],
                     'ajax-delete-non-hierarchical' => ['post'],
                 ],
@@ -70,7 +70,7 @@ class TermRelationshipController extends Controller
             $model->load(Yii::$app->request->post());
             if ($model->save()) {
                 if ($term = $this->findTerm($model->term_id)) {
-                    $term->updateAttributes(['term_count' => $term->term_count++]);
+                    $term->updateAttributes(['count' => ++$term->count]);
                 }
             }
         } elseif (Yii::$app->request->post('action') === 'remItem'
@@ -79,7 +79,7 @@ class TermRelationshipController extends Controller
             $model = $this->findModel($termRelationship['post_id'], $termRelationship['term_id']);
             if ($model->delete()) {
                 if ($term = $this->findTerm($model->term_id)) {
-                    $term->updateAttributes(['term_count' => $term->term_count--]);
+                    $term->updateAttributes(['count' => --$term->count]);
                 }
             }
         }
@@ -94,7 +94,7 @@ class TermRelationshipController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($term = $this->findTerm($model->term_id)) {
-                $term->updateAttributes(['term_count' => $term->term_count++]);
+                $term->updateAttributes(['count' => ++$term->count]);
             }
         }
     }
@@ -112,7 +112,7 @@ class TermRelationshipController extends Controller
             $model = $this->findModel($termRelationship['post_id'], $termRelationship['term_id']);
             if ($model->delete()) {
                 if ($term = $this->findTerm($model->term_id)) {
-                    $term->updateAttributes(['term_count' => $term->term_count--]);
+                    $term->updateAttributes(['count' => --$term->count]);
                 }
             }
         }
@@ -124,7 +124,6 @@ class TermRelationshipController extends Controller
      *
      * @param integer $post_id
      * @param integer $term_id
-     *
      * @return TermRelationship the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -142,7 +141,6 @@ class TermRelationshipController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Term|false the loaded model
      */
     protected function findTerm($id)

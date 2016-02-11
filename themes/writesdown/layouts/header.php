@@ -1,20 +1,20 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Menu;
-use themes\writesdown\widgets\Nav;
+use themes\writesdown\classes\widgets\Nav;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Breadcrumbs;
 
 /* @var $this yii\web\View */
-/* @var $assetBundle themes\writesdown\assets\ThemeAsset */
+/* @var $assetBundle themes\writesdown\classes\assets\ThemeAsset */
 /* @var $siteTitle string */
 /* @var $tagLine string */
 
@@ -63,9 +63,9 @@ use yii\widgets\Breadcrumbs;
         <div id="menu-primary" class="collapse navbar-collapse">
             <?= Nav::widget([
                 'activateParents' => true,
-                'options'         => ['class' => 'nav navbar-nav navbar-right'],
-                'items'           => Menu::getMenu('primary'),
-                'encodeLabels'    => false,
+                'options' => ['class' => 'nav navbar-nav navbar-right'],
+                'items' => Menu::get('primary'),
+                'encodeLabels' => false,
             ]) ?>
 
         </div>
@@ -84,15 +84,15 @@ use yii\widgets\Breadcrumbs;
             </div>
             <div class="col-md-4">
                 <?php $form = ActiveForm::begin([
-                    'action'  => Url::to(['/site/search']),
-                    'method'  => 'get',
-                    'id'      => 'search-form-top',
+                    'action' => Url::to(['/site/search']),
+                    'method' => 'get',
+                    'id' => 'search-form-top',
                     'options' => ['class' => 'form-search'],
                 ]) ?>
 
                 <div class="input-group">
                     <?= Html::textInput('s', Yii::$app->request->get('s'), [
-                        'class'       => 'form-control',
+                        'class' => 'form-control',
                         'placeholder' => 'Search for...',
                     ]) ?>
 

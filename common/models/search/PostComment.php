@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 /**
  * PostComment represents the model behind the search form about `common\models\PostComment`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostComment extends PostCommentModel
 {
@@ -26,21 +26,8 @@ class PostComment extends PostCommentModel
     public function rules()
     {
         return [
-            [['id', 'comment_post_id', 'comment_parent', 'comment_user_id'], 'integer'],
-            [
-                [
-                    'comment_author',
-                    'comment_author_email',
-                    'comment_author_url',
-                    'comment_author_ip',
-                    'comment_date',
-                    'comment_content',
-                    'comment_approved',
-                    'comment_agent',
-                    'post_title',
-                ],
-                'safe',
-            ],
+            [['id', 'post_id', 'parent', 'user_id'], 'integer'],
+            [['author', 'email', 'url', 'ip', 'date', 'content', 'status', 'agent', 'post_title'], 'safe'],
         ];
     }
 
@@ -56,14 +43,13 @@ class PostComment extends PostCommentModel
     /**
      * Creates data provider instance with search query applied
      *
-     * @param array    $params
+     * @param array $params
      *
-     * @param int      $post_type
-     * @param int|null $post_id
-     *
+     * @param int $posttype Post type ID
+     * @param int|null $post Post ID
      * @return ActiveDataProvider
      */
-    public function search($params, $post_type, $post_id = null)
+    public function search($params, $posttype, $post = null)
     {
         $query = PostCommentModel::find();
 
@@ -72,17 +58,17 @@ class PostComment extends PostCommentModel
                 /* @var $query \yii\db\ActiveQuery */
                 return $query->from(['post' => Post::tableName()]);
             },
-        ]);
+        ])->from(['postComment' => PostComment::tableName()]);
 
-        $query->andWhere(['post.post_type' => $post_type]);
+        $query->andWhere(['post.type' => $posttype]);
 
-        if ($post_id) {
-            $query->andWhere(['post.id' => $post_id]);
+        if ($post) {
+            $query->andWhere(['post.id' => $post]);
         }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'  => [
+            'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ],
@@ -96,21 +82,21 @@ class PostComment extends PostCommentModel
         }
 
         $query->andFilterWhere([
-            'id'              => $this->id,
-            'comment_post_id' => $this->comment_post_id,
-            'comment_parent'  => $this->comment_parent,
-            'comment_user_id' => $this->comment_user_id,
+            'id' => $this->id,
+            'post_id' => $this->post_id,
+            'parent' => $this->parent,
+            'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'comment_author', $this->comment_author])
-            ->andFilterWhere(['like', 'comment_author_email', $this->comment_author_email])
-            ->andFilterWhere(['like', 'comment_author_url', $this->comment_author_url])
-            ->andFilterWhere(['like', 'comment_author_ip', $this->comment_author_ip])
-            ->andFilterWhere(['like', 'comment_content', $this->comment_content])
-            ->andFilterWhere(['like', 'comment_approved', $this->comment_approved])
-            ->andFilterWhere(['like', 'comment_agent', $this->comment_agent])
-            ->andFilterWhere(['like', 'comment_date', $this->comment_date])
-            ->andFilterWhere(['like', 'post.post_title', $this->post_title]);
+        $query->andFilterWhere(['like', 'postComment.author', $this->author])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'url', $this->url])
+            ->andFilterWhere(['like', 'ip', $this->ip])
+            ->andFilterWhere(['like', 'postComment.content', $this->content])
+            ->andFilterWhere(['like', 'postComment.status', $this->status])
+            ->andFilterWhere(['like', 'agent', $this->agent])
+            ->andFilterWhere(['like', 'postComment.date', $this->date])
+            ->andFilterWhere(['like', 'post.title', $this->post_title]);
 
         return $dataProvider;
     }

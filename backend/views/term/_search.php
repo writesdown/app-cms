@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -20,15 +20,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]) ?>
 
-    <?= $form->field($model, 'term_name')->textInput(['id' => 'term-search-term_name']) ?>
+    <?= $form->field($model, 'name')->textInput(['id' => 'term-search-name']) ?>
 
-    <?= $form->field($model, 'term_slug')->textInput(['id' => 'term-search-term_slug']) ?>
+    <?= $form->field($model, 'slug')->textInput(['id' => 'term-search-slug']) ?>
 
-    <?= $form->field($model, 'term_description')->textInput(['id' => 'term-search-term_description']) ?>
+    <?= $form->field($model, 'description')->textInput(['id' => 'term-search-description']) ?>
 
-    <?= $form->field($model, 'term_parent')->textInput(['id' => 'term-search-term_parent']) ?>
+    <?= $form->field($model, 'parent')->textInput(['id' => 'term-search-parent']) ?>
 
-    <?= $form->field($model, 'term_count')->textInput(['id' => 'term-search-term_count']) ?>
+    <?= $form->field($model, 'count')->textInput(['id' => 'term-search-count']) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Search'), ['class' => 'btn btn-flat btn-primary']) ?>
@@ -36,9 +36,9 @@ use yii\widgets\ActiveForm;
         <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
 
         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
-            'class'       => 'index-search-button btn btn-flat btn-default',
-            "data-toggle" => "collapse",
-            "data-target" => "#term-search",
+            'class' => 'index-search-button btn btn-flat btn-default',
+            'data-toggle' => 'collapse',
+            'data-target' => '#term-search',
         ]) ?>
 
     </div>

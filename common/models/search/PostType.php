@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 /**
  * PostType represents the model behind the search form about `common\models\PostType`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostType extends PostTypeModel
 {
@@ -26,19 +26,8 @@ class PostType extends PostTypeModel
     public function rules()
     {
         return [
-            [['id', 'post_type_smb'], 'integer'],
-            [
-                [
-                    'post_type_name',
-                    'post_type_slug',
-                    'post_type_description',
-                    'post_type_icon',
-                    'post_type_sn',
-                    'post_type_pn',
-                    'post_type_permission',
-                ],
-                'safe',
-            ],
+            [['id', 'menu_builder'], 'integer'],
+            [['name', 'slug', 'description', 'icon', 'singular_name', 'plural_name', 'permission'], 'safe'],
         ];
     }
 
@@ -55,7 +44,6 @@ class PostType extends PostTypeModel
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
     public function search($params)
@@ -64,11 +52,7 @@ class PostType extends PostTypeModel
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'  => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ],
-            ],
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
         ]);
 
         $this->load($params);
@@ -78,17 +62,17 @@ class PostType extends PostTypeModel
         }
 
         $query->andFilterWhere([
-            'id'            => $this->id,
-            'post_type_smb' => $this->post_type_smb,
+            'id' => $this->id,
+            'menu_builder' => $this->menu_builder,
         ]);
 
-        $query->andFilterWhere(['like', 'post_type_name', $this->post_type_name])
-            ->andFilterWhere(['like', 'post_type_slug', $this->post_type_slug])
-            ->andFilterWhere(['like', 'post_type_description', $this->post_type_description])
-            ->andFilterWhere(['like', 'post_type_icon', $this->post_type_icon])
-            ->andFilterWhere(['like', 'post_type_sn', $this->post_type_sn])
-            ->andFilterWhere(['like', 'post_type_pn', $this->post_type_pn])
-            ->andFilterWhere(['like', 'post_type_permission', $this->post_type_permission]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'icon', $this->icon])
+            ->andFilterWhere(['like', 'singular_name', $this->singular_name])
+            ->andFilterWhere(['like', 'plural_name', $this->plural_name])
+            ->andFilterWhere(['like', 'permission', $this->permission]);
 
         return $dataProvider;
     }

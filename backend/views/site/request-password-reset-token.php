@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use codezeen\yii2\adminlte\widgets\Alert;
@@ -40,7 +40,7 @@ $this->title = 'Request password reset';
 
         <div class="form-group">
             <?= Html::submitButton('Send', ['class' => 'btn btn-flat btn-primary form-control']) ?>
-            
+
         </div>
         <?php ActiveForm::end() ?>
 

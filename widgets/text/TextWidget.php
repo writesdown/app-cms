@@ -1,20 +1,20 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace widgets\text;
 
-use yii\helpers\Html;
 use common\components\BaseWidget;
+use yii\helpers\Html;
 
 /**
  * Class TextWidget
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.1
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.1
  */
 class TextWidget extends BaseWidget
 {
@@ -35,7 +35,7 @@ class TextWidget extends BaseWidget
         }
 
         echo Html::tag('div', $this->text, [
-            'class' => 'widget-text'
+            'class' => 'widget-text',
         ]);
         echo $this->afterWidget;
     }

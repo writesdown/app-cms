@@ -7,7 +7,7 @@ use yii\db\Schema;
  * Migration for table option.
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000001_option extends \yii\db\Migration
 {
@@ -22,14 +22,14 @@ class m000000_000001_option extends \yii\db\Migration
         }
 
         $this->createTable('{{%option}}', [
-            'id'           => Schema::TYPE_PK,
-            'option_name'  => Schema::TYPE_STRING . '(64) NOT NULL',
-            'option_value' => Schema::TYPE_TEXT . ' NOT NULL',
-            'option_label' => Schema::TYPE_STRING . '(64)',
-            'option_group' => Schema::TYPE_STRING . '(64)',
+            'id' => Schema::TYPE_PK,
+            'name' => Schema::TYPE_STRING . '(64) NOT NULL',
+            'value' => Schema::TYPE_TEXT . ' NOT NULL',
+            'label' => Schema::TYPE_STRING . '(64)',
+            'group' => Schema::TYPE_STRING . '(64)',
         ], $tableOptions);
 
-        $this->batchInsert('{{%option}}', ['option_name', 'option_value', 'option_label', 'option_group'], [
+        $this->batchInsert('{{%option}}', ['name', 'value', 'label', 'group'], [
             ['sitetitle', 'WritesDown', 'Site Title', 'general'],
             ['tagline', 'CMS Built with Yii Framework', 'Tagline', 'general'],
             ['admin_email', 'superadmin@writesdown.com', 'E-mail Address', 'general'],

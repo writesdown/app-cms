@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\grid\GridView;
@@ -23,25 +23,25 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('writesdown', 'Add New Setting'), ['create'], ['class' => 'btn btn-flat btn-success']) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
-                "data-toggle" => "collapse",
-                "data-target" => "#option-search",
+                'class' => 'btn btn-flat btn-info',
+                'data-toggle' => 'collapse',
+                'data-target' => '#option-search',
             ]) ?>
-            
+
         </div>
     </div>
     <?php Pjax::begin() ?>
     <?= $this->render('_search', ['model' => $searchModel]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'columns'      => [
+        'filterModel' => $searchModel,
+        'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'option_name',
-            'option_value:ntext',
-            'option_label',
-            'option_group',
+            'name',
+            'value:ntext',
+            'label',
+            'group',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

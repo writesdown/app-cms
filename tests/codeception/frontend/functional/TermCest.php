@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\functional;
@@ -20,8 +20,8 @@ use yii\helpers\Url;
 /**
  * Class TermCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class TermCest
 {
@@ -75,14 +75,15 @@ class TermCest
     /**
      * @param FunctionalTester $I
      */
-    public function testView(FunctionalTester $I){
+    public function testView(FunctionalTester $I)
+    {
         $I->wantTo('ensure that term view page works');
 
         $I->amOnPage(Url::to(['/term/view', 'id'=>1]));
         $I->see('Category: Sample Category', 'h1');
         $I->seeLink('Sample Post');
 
-        $I->amOnPage(Url::to(['/term/view', 'termslug' => 'sample-category']));
+        $I->amOnPage(Url::to(['/term/view', 'slug' => 'sample-category']));
         $I->see('Category: Sample Category', 'h1');
         $I->seeLink('Sample Post');
     }

@@ -1,11 +1,12 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 return [
-    ['menu_title' => 'Menu Primary', 'menu_location' => 'primary'],
-    ['menu_title' => 'Menu Secondary', 'menu_location' => 'secondary'],
+    ['title' => 'Menu Primary', 'location' => 'primary'],
+    ['title' => 'Menu Secondary', 'location' => 'secondary'],
 ];

@@ -11,50 +11,50 @@ $params = array_merge(
 $baseUrlBack = (new Request())->getBaseUrl() . '/admin';
 
 return [
-    'id'                  => 'app-frontend',
-    'basePath'            => dirname(__DIR__),
+    'id' => 'app-frontend',
+    'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'frontend\controllers',
-    'bootstrap'           => ['log', 'common\components\FrontendBootstrap'],
-    'modules'             => [],
-    'components'          => [
-        'user'            => [
-            'identityClass'   => 'common\models\User',
+    'bootstrap' => ['log', 'common\components\FrontendBootstrap'],
+    'modules' => [],
+    'components' => [
+        'user' => [
+            'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
         ],
-        'log'             => [
+        'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets'    => [
+            'targets' => [
                 [
-                    'class'  => 'yii\log\FileTarget',
+                    'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
             ],
         ],
-        'errorHandler'    => [
+        'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'i18n'            => [
+        'i18n' => [
             'translations' => [
                 'writesdown' => [
-                    'class'          => 'yii\i18n\PhpMessageSource',
-                    'basePath'       => '@app/messages',
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
                     'sourceLanguage' => 'en-US',
-                    'fileMap'        => [],
+                    'fileMap' => [],
                 ],
             ],
         ],
         'urlManagerFront' => [
             'class' => 'yii\web\urlManager',
         ],
-        'urlManagerBack'  => [
-            'class'     => 'yii\web\urlManager',
+        'urlManagerBack' => [
+            'class' => 'yii\web\urlManager',
             'scriptUrl' => $baseUrlBack . '/index.php',
-            'baseUrl'   => $baseUrlBack,
+            'baseUrl' => $baseUrlBack,
         ],
-        'authManager'     => [
+        'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-        'view'            => ['theme' => []],
+        'view' => ['theme' => []],
     ],
-    'params'              => $params,
+    'params' => $params,
 ];

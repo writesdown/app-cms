@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\acceptance;
@@ -19,8 +19,8 @@ use yii\helpers\Url;
 /**
  * Class MediaCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class MediaCest
 {
@@ -71,7 +71,7 @@ class MediaCest
         $I->see('Test Media');
         $I->seeLink('Test Media');
 
-        $I->amOnPage(Url::to(['/media/view', 'mediaslug' => 'test-media']));
+        $I->amOnPage(Url::to(['/media/view', 'slug' => 'test-media']));
         // $I->see('Test Media', 'h1');
         $I->see('Test Media');
         $I->seeLink('Test Media');
@@ -82,7 +82,7 @@ class MediaCest
      */
     public function testProtected(AcceptanceTester $I)
     {
-        Media::findOne(1)->updateAttributes(['media_password' => 'mediapassword']);
+        Media::findOne(1)->updateAttributes(['password' => 'mediapassword']);
 
         $I->wantTo('ensure that protected media works');
 
@@ -101,7 +101,7 @@ class MediaCest
         // $I->seeElement('.entry-meta');
         $I->dontSee('Submit Password');
 
-        Media::findOne(1)->updateAttributes(['media_password' => '']);
+        Media::findOne(1)->updateAttributes(['password' => '']);
     }
 
     /**
@@ -124,9 +124,9 @@ class MediaCest
 
         $I->amGoingTo('submit media comment form with no correct email');
         $mediaView->submitComment([
-            'comment_author'       => 'tester',
-            'comment_author_email' => 'tester.email',
-            'comment_content'      => 'New comment'
+            'author' => 'tester',
+            'email' => 'tester.email',
+            'content' => 'New comment',
         ]);
         $I->expectTo('see that email is not correct');
         $I->see('Email is not a valid email address.');
@@ -135,16 +135,16 @@ class MediaCest
 
         $I->amGoingTo('submit media comment form with correct data');
         $mediaView->submitComment([
-            'comment_author'       => 'tester',
-            'comment_author_email' => 'tester@writesdown.dev',
-            'comment_content'      => 'New comment'
+            'author' => 'tester',
+            'email' => 'tester@writesdown.dev',
+            'content' => 'New comment',
         ]);
         $I->expect('new comment saved');
         $I->dontSee('Name cannot be blank.', '.help-block');
         $I->dontSee('Email cannot be blank.', '.help-block');
         $I->dontSee('Content cannot be blank.', '.help-block');
 
-        MediaComment::deleteAll(['comment_author'=>'tester']);
-        Media::findOne(1)->updateAttributes(['media_comment_count' => '1']);
+        MediaComment::deleteAll(['author' => 'tester']);
+        Media::findOne(1)->updateAttributes(['comment_count' => '1']);
     }
 }

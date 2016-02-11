@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -15,8 +15,8 @@ use yii\helpers\Url;
 /**
  * Class ThemeCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class ThemeCest
 {
@@ -32,34 +32,17 @@ class ThemeCest
     }
 
     /**
-     * This method is called after each cest class test method, even if test failed.
-     *
      * @param AcceptanceTester $I
      */
-    public function _after($I)
+    public function testIndex(AcceptanceTester $I)
     {
-    }
-
-    /**
-     * This method is called when test fails.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function _failed($I)
-    {
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function testIndex(AcceptanceTester $I){
         $I->wantTo('ensure that index theme works');
         $I->amOnPage(Url::to(['/theme/index']));
-        $I->see('Themes','h1');
+        $I->see('Themes', 'h1');
         $I->seeLink('Available Themes');
         $I->seeLink('Add New Theme');
 
-        if(method_exists($I, 'acceptPopup') && method_exists($I, 'wait')){
+        if (method_exists($I, 'acceptPopup') && method_exists($I, 'wait')) {
             $I->amGoingTo('activate theme');
             $I->click('a[href="' . Url::to(['/theme/install', 'theme' => 'writesdown']) . '"]');
             $I->acceptPopup();
@@ -74,7 +57,8 @@ class ThemeCest
     /**
      * @param AcceptanceTester $I
      */
-    public function testUpload(AcceptanceTester $I){
+    public function testUpload(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that upload theme works');
         $I->amOnPage(Url::to(['/theme/upload']));
         $I->see('Upload New Theme', 'h1');
@@ -84,17 +68,18 @@ class ThemeCest
 
         $I->amGoingTo('submit theme form without theme file');
         $I->click('Upload');
-        if(method_exists($I, 'wait')){
+        if (method_exists($I, 'wait')) {
             $I->wait(3);
         }
-        $I->expectTo('see validation errors');
-        $I->see('Theme cannot be blank.', '.help-block');
+        $I->expect('the theme not successfully uploaded');
+        $I->dontSee('Themes', 'h1');
     }
 
     /**
      * @param AcceptanceTester $I
      */
-    public function testDetail(AcceptanceTester $I){
+    public function testDetail(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that detail theme works');
         $I->amOnPage(Url::to(['/theme/detail', 'theme' => 'writesdown']));
         $I->see('Detail Theme', 'h1');

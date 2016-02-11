@@ -1,14 +1,15 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
+use common\models\Option;
+use common\models\Taxonomy;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
-use common\models\Option;
 
 /* @var $this yii\web\View */
 /* @var $user common\models\User */
@@ -16,8 +17,10 @@ use common\models\Option;
 /* @var $tags common\models\Term[] */
 /* @var $pages yii\data\Pagination */
 
-$this->title = Html::encode(Yii::t('writesdown', 'All Posts By {user}', ['user' => $user->display_name]) . ' - ' . Option::get('sitetitle'));
-$this->params['breadcrumbs'][] = Html::encode(Yii::t('writesdown', 'All Posts by {user}', ['user' => $user->display_name]));
+$this->title = Html::encode(Yii::t('writesdown', 'All Posts By {user}',
+        ['user' => $user->display_name]) . ' - ' . Option::get('sitetitle'));
+$this->params['breadcrumbs'][] = Html::encode(Yii::t('writesdown', 'All Posts by {user}',
+    ['user' => $user->display_name]));
 ?>
 <div class="archive user-view">
     <header id="archive-header" class="archive-header page-header">
@@ -29,15 +32,15 @@ $this->params['breadcrumbs'][] = Html::encode(Yii::t('writesdown', 'All Posts by
         <?php foreach ($posts as $post): ?>
             <article class="hentry">
                 <header class="entry-header page-header">
-                    <h2 class="entry-title"><?= Html::a(Html::encode($post->post_title), $post->url) ?></h2>
+                    <h2 class="entry-title"><?= Html::a(Html::encode($post->title), $post->url) ?></h2>
 
-                    <?php $updated = new \DateTime($post->post_modified, new DateTimeZone(Yii::$app->timeZone)) ?>
+                    <?php $updated = new \DateTime($post->modified, new DateTimeZone(Yii::$app->timeZone)) ?>
                     <div class="entry-meta">
                         <span class="entry-date">
                             <span aria-hidden="true" class="glyphicon glyphicon-time"></span>
                             <a rel="bookmark" href="<?= $post->url ?>">
                                 <time datetime="<?= $updated->format('c') ?>" class="entry-date">
-                                    <?= Yii::$app->formatter->asDate($post->post_date) ?>
+                                    <?= Yii::$app->formatter->asDate($post->date) ?>
                                 </time>
                             </a>
                         </span>
@@ -54,21 +57,29 @@ $this->params['breadcrumbs'][] = Html::encode(Yii::t('writesdown', 'All Posts by
                             <a title="<?= Yii::t(
                                 'writesdown',
                                 'Comment on {postTitle}',
-                                ['postTitle' => $post->post_title]
+                                ['postTitle' => $post->title]
                             ) ?>" href="<?= $post->url ?>#respond"><?= Yii::t('writesdown', 'Leave a comment') ?></a>
                         </span>
                     </div>
                 </header>
                 <div class="entry-summary">
-                    <?= $post->post_excerpt ?>...
+                    <?= $post->excerpt ?>...
                 </div>
                 <footer class="footer-meta">
-                    <?php $tags = $post->getTerms()->innerJoinWith(['taxonomy'])->andWhere(['taxonomy_name' => 'tag'])->all() ?>
+                    <?php $tags = $post->getTerms()
+                        ->innerJoinWith([
+                            'taxonomy' => function ($query) {
+                                /** @var $query \yii\db\ActiveQuery */
+                                return $query->from(['taxonomy' => Taxonomy::tableName()]);
+                            },
+                        ])
+                        ->where(['taxonomy.name' => 'tag'])
+                        ->all() ?>
 
                     <?php if ($tags): ?>
                         <h3>
                             <?php foreach ($tags as $tag): ?>
-                                <?= Html::a($tag->term_name, $tag->url, [
+                                <?= Html::a($tag->name, $tag->url, [
                                     'class' => 'btn btn-xs btn-success',
                                 ]) . "\n" ?>
                             <?php endforeach ?>
@@ -80,12 +91,10 @@ $this->params['breadcrumbs'][] = Html::encode(Yii::t('writesdown', 'All Posts by
         <?php endforeach ?>
         <nav id="archive-pagination">
             <?= LinkPager::widget([
-                'pagination'           => $pages,
-                'activePageCssClass'   => 'active',
+                'pagination' => $pages,
+                'activePageCssClass' => 'active',
                 'disabledPageCssClass' => 'disabled',
-                'options'              => [
-                    'class' => 'pagination',
-                ],
+                'options' => ['class' => 'pagination'],
             ]) ?>
         </nav>
     <?php endif ?>

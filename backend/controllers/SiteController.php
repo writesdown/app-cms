@@ -27,8 +27,8 @@ use yii\web\NotFoundHttpException;
 /**
  * Site controller.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class SiteController extends Controller
 {
@@ -50,24 +50,24 @@ class SiteController extends Controller
                             'not-found',
                             'terms',
                         ],
-                        'allow'   => true,
+                        'allow' => true,
                     ],
                     [
                         'actions' => ['logout', 'index', 'error'],
-                        'allow'   => true,
-                        'roles'   => ['@'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                     [
-                        'actions'       => ['signup'],
-                        'allow'         => true,
+                        'actions' => ['signup'],
+                        'allow' => true,
                         'matchCallback' => function () {
                             return Option::get('allow_signup') && Yii::$app->user->isGuest;
                         },
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -100,22 +100,22 @@ class SiteController extends Controller
         $userCount = $userCloneQuery->count();
         $users = $userQuery->limit(8)->orderBy(['id' => SORT_DESC])->all();
         // Get list Post model
-        $postQuery = Post::find()->andWhere(['post_status' => 'publish']);
+        $postQuery = Post::find()->andWhere(['status' => 'publish'])->andWhere(['<=', 'date', date('Y-m-d H:i:s')]);
         $postCloneQuery = clone $postQuery;
         $postCount = $postCloneQuery->count();
         $posts = $postQuery->limit(5)->orderBy(['id' => SORT_DESC])->all();
         // Get list PostComment model
-        $commentQuery = PostComment::find()->andWhere(['comment_approved' => 'approved']);
+        $commentQuery = PostComment::find()->andWhere(['status' => 'approved']);
         $commentCloneQuery = clone $commentQuery;
         $commentCount = $commentCloneQuery->count();
         $comments = $commentQuery->limit(3)->orderBy(['id' => SORT_DESC])->all();
 
         return $this->render('index', [
-            'users'        => $users,
-            'posts'        => $posts,
-            'comments'     => $comments,
-            'userCount'    => $userCount,
-            'postCount'    => $postCount,
+            'users' => $users,
+            'posts' => $posts,
+            'comments' => $comments,
+            'userCount' => $userCount,
+            'postCount' => $postCount,
             'commentCount' => $commentCount,
         ]);
     }
@@ -142,7 +142,7 @@ class SiteController extends Controller
         }
 
         return $this->render('login', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -218,7 +218,6 @@ class SiteController extends Controller
      * user's email.
      *
      * @param $token
-     *
      * @return string|\yii\web\Response
      * @throws \yii\web\BadRequestHttpException
      */

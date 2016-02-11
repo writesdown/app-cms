@@ -2,9 +2,9 @@
 
 namespace tests\codeception\common\_support;
 
+use Codeception\Module;
 use tests\codeception\common\fixtures\AuthAssignmentFixture;
 use tests\codeception\common\fixtures\UserFixture;
-use Codeception\Module;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
 
@@ -34,6 +34,7 @@ class FixtureHelper extends Module
     /**
      * Method called before any suite tests run. Loads User fixture login user
      * to use in acceptance and functional tests.
+     *
      * @param array $settings
      */
     public function _beforeSuite($settings = [])

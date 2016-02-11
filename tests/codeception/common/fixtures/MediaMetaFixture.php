@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\common\fixtures;
@@ -26,5 +26,4 @@ class MediaMetaFixture extends ActiveFixture
      * @var string
      */
     public $dataFile = '@tests/codeception/common/fixtures/data/init_media_meta.php';
-
 }

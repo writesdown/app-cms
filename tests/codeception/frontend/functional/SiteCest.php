@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\functional;
@@ -20,8 +20,8 @@ use tests\codeception\frontend\FunctionalTester;
 /**
  * Class SiteCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class SiteCest
 {
@@ -75,7 +75,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testIndex(FunctionalTester $I){
+    public function testIndex(FunctionalTester $I)
+    {
         $I->wantTo('ensure that home works');
         $I->amOnPage(\Yii::$app->homeUrl);
         $I->seeLink('Sample Post');
@@ -85,7 +86,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testContact(FunctionalTester $I){
+    public function testContact(FunctionalTester $I)
+    {
         $I->wantTo('ensure that contact works');
 
         $contactPage = ContactPage::openBy($I);
@@ -131,7 +133,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testSearch(FunctionalTester $I){
+    public function testSearch(FunctionalTester $I)
+    {
         $I->wantTo('ensure that search page works');
 
         $I->amOnPage(\Yii::$app->homeUrl);

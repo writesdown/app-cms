@@ -6,7 +6,7 @@ use yii\db\Schema;
  * Class m000000_000015_media
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000015_media extends \yii\db\Migration
 {
@@ -22,21 +22,21 @@ class m000000_000015_media extends \yii\db\Migration
         }
 
         $this->createTable('{{%media}}', [
-            'id'                   => Schema::TYPE_PK,
-            'media_author'         => Schema::TYPE_INTEGER . '(11) NOT NULL',
-            'media_post_id'        => Schema::TYPE_INTEGER . '(11)',
-            'media_title'          => Schema::TYPE_TEXT . ' NOT NULL',
-            'media_excerpt'        => Schema::TYPE_TEXT,
-            'media_content'        => Schema::TYPE_TEXT,
-            'media_password'       => Schema::TYPE_STRING . '(255)',
-            'media_date'           => Schema::TYPE_DATETIME . ' NOT NULL',
-            'media_modified'       => Schema::TYPE_DATETIME . ' NOT NULL',
-            'media_slug'           => Schema::TYPE_STRING . '(255) NOT NULL',
-            'media_mime_type'      => Schema::TYPE_STRING . '(100) NOT NULL',
-            'media_comment_status' => Schema::TYPE_STRING . "(20) NOT NULL DEFAULT 'open'",
-            'media_comment_count'  => Schema::TYPE_INTEGER . '(11) NOT NULL DEFAULT 0',
-            'FOREIGN KEY ([[media_post_id]]) REFERENCES {{%post}} ([[id]]) ON DELETE SET NULL ON UPDATE CASCADE',
-            'FOREIGN KEY ([[media_author]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
+            'id' => Schema::TYPE_PK,
+            'author' => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            'post_id' => Schema::TYPE_INTEGER . '(11)',
+            'title' => Schema::TYPE_TEXT . ' NOT NULL',
+            'excerpt' => Schema::TYPE_TEXT,
+            'content' => Schema::TYPE_TEXT,
+            'password' => Schema::TYPE_STRING . '(255)',
+            'date' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'modified' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'slug' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'mime_type' => Schema::TYPE_STRING . '(100) NOT NULL',
+            'comment_status' => Schema::TYPE_STRING . "(20) NOT NULL DEFAULT 'open'",
+            'comment_count' => Schema::TYPE_INTEGER . '(11) NOT NULL DEFAULT 0',
+            'FOREIGN KEY ([[post_id]]) REFERENCES {{%post}} ([[id]]) ON DELETE SET NULL ON UPDATE CASCADE',
+            'FOREIGN KEY ([[author]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
         ], $tableOptions);
     }
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace widgets\search;
@@ -14,8 +14,8 @@ use Yii;
 /**
  * Class Search
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.1
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.1
  */
 class SearchWidget extends BaseWidget
 {

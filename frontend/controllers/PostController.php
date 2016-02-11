@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
@@ -19,48 +19,50 @@ use yii\web\NotFoundHttpException;
 /**
  * Class PostController
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostController extends Controller
 {
     /**
-     * @param int|null    $id        ID of post-type.
-     * @param string|null $posttype  Slug of post-type.
-     *
+     * @param int|null $id Post type ID
+     * @param string|null $slug Post type slug.
      * @return string
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionIndex($id = null, $posttype = null)
+    public function actionIndex($id = null, $slug = null)
     {
         $render = 'index';
 
         if ($id) {
             $postType = $this->findPostType($id);
-        } elseif ($posttype) {
-            $postType = $this->findPostTypeBySlug($posttype);
+        } elseif ($slug) {
+            $postType = $this->findPostTypeBySlug($slug);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
-        $query = $postType->getPosts()->andWhere(['post_status' => 'publish'])->orderBy(['id' => SORT_DESC]);
+        $query = $postType->getPosts()
+            ->andWhere(['status' => 'publish'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->orderBy(['id' => SORT_DESC]);
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page'),
+            'pageSize' => Option::get('posts_per_page'),
         ]);
         $query->offset($pages->offset)->limit($pages->limit);
         $posts = $query->all();
 
         if ($posts) {
-            if (is_file($this->view->theme->basePath . '/post/index-' . $postType->post_type_slug . '.php')) {
-                $render = 'index-' . $postType->post_type_slug . '.php';
+            if (is_file($this->view->theme->basePath . '/post/index-' . $postType->name . '.php')) {
+                $render = 'index-' . $postType->name . '.php';
             }
 
             return $this->render($render, [
                 'postType' => $postType,
-                'posts'    => $posts,
-                'pages'    => $pages,
+                'posts' => $posts,
+                'pages' => $pages,
             ]);
         }
 
@@ -70,46 +72,43 @@ class PostController extends Controller
     /**
      * Displays a single Post model.
      *
-     * @param null    $postslug
-     *
-     * @param integer $id
-     *
+     * @param null $slug Post slug
+     * @param integer $id Post ID
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
      */
-    public function actionView($id = null, $postslug = null)
+    public function actionView($id = null, $slug = null)
     {
         $render = 'view';
-
         $comment = new Comment();
 
         if ($id) {
             $model = $this->findModel($id);
-        } elseif ($postslug) {
-            $model = $this->findModelBySlug($postslug);
+        } elseif ($slug) {
+            $model = $this->findModelBySlug($slug);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
-            if (!$comment->comment_parent) {
-                $model->post_comment_count++;
+            if (!$comment->parent) {
+                $model->comment_count++;
             }
             if ($model->save()) {
                 $this->refresh();
             }
         }
 
-        if ($model->post_password && $model->post_password !== Yii::$app->request->post('password')) {
+        if ($model->password && $model->password !== Yii::$app->request->post('password')) {
             return $this->render('protected', ['post' => $model]);
         }
 
-        if (is_file($this->view->theme->basePath . '/post/view-' . $model->postType->post_type_slug . '.php')) {
-            $render = 'view-' . $model->postType->post_type_slug . '.php';
+        if (is_file($this->view->theme->basePath . '/post/view-' . $model->postType->name . '.php')) {
+            $render = 'view-' . $model->postType->name . '.php';
         }
 
         return $this->render($render, [
-            'post'    => $model,
+            'post' => $model,
             'comment' => $comment,
         ]);
     }
@@ -119,13 +118,15 @@ class PostController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        $model = Post::findOne(['id' => $id, 'post_status' => 'publish']);
+        $model = Post::find()
+            ->andWhere(['id' => $id, 'status' => 'publish'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->one();
 
         if ($model) {
             return $model;
@@ -139,14 +140,16 @@ class PostController extends Controller
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param string $postSlug
-     *
+     * @param string $slug
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModelBySlug($postSlug)
+    protected function findModelBySlug($slug)
     {
-        $model = Post::findOne(['post_slug' => $postSlug, 'post_status' => 'publish']);
+        $model = Post::find()
+            ->andWhere(['slug' => $slug, 'status' => 'publish'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->one();
 
         if ($model) {
             return $model;
@@ -160,7 +163,6 @@ class PostController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param $id
-     *
      * @throws \yii\web\NotFoundHttpException
      * @return PostType the loaded model
      */
@@ -179,14 +181,13 @@ class PostController extends Controller
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param $postType
-     *
+     * @param string $slug Post type slug
      * @throws \yii\web\NotFoundHttpException
      * @return PostType the loaded model
      */
-    protected function findPostTypeBySlug($postType)
+    protected function findPostTypeBySlug($slug)
     {
-        $model = PostType::findOne(['post_type_slug' => $postType]);
+        $model = PostType::findOne(['slug' => $slug]);
 
         if ($model) {
             return $model;

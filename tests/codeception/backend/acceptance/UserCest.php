@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -20,8 +20,8 @@ use yii\helpers\Url;
 /**
  * Class UserCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class UserCest
 {
@@ -34,24 +34,6 @@ class UserCest
     {
         $loginPage = LoginPage::openBy($I);
         $loginPage->submit(['username' => 'administrator', 'password' => 'administrator']);
-    }
-
-    /**
-     * This method is called after each cest class test method, even if test failed.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function _after($I)
-    {
-    }
-
-    /**
-     * This method is called when test fails.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function _failed($I)
-    {
     }
 
     /**
@@ -171,7 +153,7 @@ class UserCest
         $I->see('Users', 'h1');
         $I->dontSeeElement('#user-grid-view a[href="' . Url::to(['/user/delete', 'id' => 1]) . '"]');
         $I->seeElement('#user-grid-view a[href="' . Url::to(['/user/delete', 'id' => 6]) . '"]');
-        if(method_exists($I, 'acceptPopup') && method_exists($I, 'wait')){
+        if (method_exists($I, 'acceptPopup') && method_exists($I, 'wait')) {
             $I->click('#user-grid-view a[href="' . Url::to(['/user/delete', 'id' => 6]) . '"]');
             $I->acceptPopup();
             $I->wait(5);

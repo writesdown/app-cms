@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\components;
@@ -11,8 +11,8 @@ namespace common\components;
  * Class Json extends \yii\helpers\Json.
  * Adding method to check whether a string is valid json or not.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Json extends \yii\helpers\Json
 {
@@ -20,7 +20,6 @@ class Json extends \yii\helpers\Json
      * Check for valid json.
      *
      * @param $string
-     *
      * @return bool
      */
     public static function isJson($string)

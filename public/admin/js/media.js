@@ -1,52 +1,45 @@
 (function ($) {
     'use strict';
 
-    var fu= $('#media-upload');
+    var mediaUpload = $('#media-upload'),
+        dropzone = $('.dropzone');
 
-    fu.fileupload({
-        url: fu.data('url'),
-        dropZone: $('.dropzone'),
+    mediaUpload.fileupload({
+        url: mediaUpload.data('url'),
+        dropZone: dropzone,
         autoUpload: true,
-        filesContainer: ".file-container"
-    });
-
-    fu.fileupload(
+        filesContainer: '.media-container'
+    }).fileupload(
         'option',
         'redirect',
         window.location.href.replace(
             /\/[^\/]*$/,
             '/cors/result.html?%s'
         )
-    );
-
-    fu.addClass('fileupload-processing');
+    ).addClass('fileupload-processing');
 
     $(document).bind('dragover', function (e) {
-        var dropZone = $('.dropzone'),
-            foundDropzone,
-            timeout = window.dropZoneTimeout;
-        if (!timeout) {
-            dropZone.addClass('in');
-        }
-        else {
-            clearTimeout(timeout);
-        }
-        var found = false,
+        var foundDropzone,
+            timeout = window.dropZoneTimeout,
+            found = false,
             node = e.target;
 
-        do {
+        if (!timeout) {
+            dropzone.addClass('in');
+        } else {
+            clearTimeout(timeout);
+        }
 
+        do {
             if ($(node).hasClass('dropzone')) {
                 found = true;
                 foundDropzone = $(node);
                 break;
             }
-
             node = node.parentNode;
-
         } while (node !== null);
 
-        dropZone.removeClass('in hover');
+        dropzone.removeClass('in hover');
 
         if (found) {
             foundDropzone.addClass('hover');
@@ -54,7 +47,7 @@
 
         window.dropZoneTimeout = setTimeout(function () {
             window.dropZoneTimeout = null;
-            dropZone.removeClass('in hover');
+            dropzone.removeClass('in hover');
         }, 100);
     });
 }(jQuery));

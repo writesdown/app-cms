@@ -7,9 +7,9 @@
  */
 
 return [
-    'module_name'   => 'feed',
-    'module_title'  => 'RSS Feed',
-    'module_config' => [
+    'name'    => 'feed',
+    'title'   => 'RSS Feed',
+    'configs' => [
         'frontend' => [
             'class' => 'modules\feed\frontend\Module',
         ],

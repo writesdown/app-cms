@@ -74,11 +74,23 @@
         return result;
     };
 
-    $('#posttype-post_type_slug').slugify('#posttype-post_type_name');
-    $('#taxonomy-taxonomy_slug').slugify('#taxonomy-taxonomy_name');
-    $('#term-term_slug').slugify('#term-term_name');
-    $('#post-post_slug').slugify('#post-post_title');
-    $('#media-media_slug').slugify('#media-media_title');
+    var createHierarchicalTerm = function (form, container){
+        $.ajax({
+            url: form.data('url'),
+            data: form.find(':input').serialize(),
+            type: "POST",
+            success: function(response){
+                container.append(response);
+                form.find('.term.ajax-create-term').val('');
+            }
+        })
+    };
+
+    $('#posttype-slug').slugify('#posttype-name');
+    $('#taxonomy-slug').slugify('#taxonomy-name');
+    $('#term-slug').slugify('#term-name');
+    $('#post-slug').slugify('#post-title');
+    $('#media-slug').slugify('#media-title');
 
     /* SUBMIT INPUT GROUP WIDTH ELEMENT THAT HAS .SUBMIT-BUTTON CLASS */
     $('.submit-button').click(function (e) {
@@ -89,70 +101,63 @@
     /* CREATE TAXONOMY VIA AJAX ON POST-TYPE PAGE*/
     $('#ajax-create-taxonomy-form').on('submit', function (e) {
         e.preventDefault();
-        var _this = $(this);
+        var $this = $(this),
+            taxonomyList = $('#taxonomy-list');
+
         $.ajax({
-            url: _this.data('url'),
-            data: _this.serialize(),
+            url: $this.data('url'),
+            data: $this.serialize(),
             type: "POST",
             success: function(response){
-                $('#taxonomy_list').append(response);
-                _this.find('.form-control').val('');
+                taxonomyList.append(response);
+                $this.find('.form-control').val('');
             }
         });
     });
 
     /* CHANGE VALUE OF HIDDEN INPUT POST TYPE TAXONOMY ON _FORM.PHP OF POST TYPE CREATE BEFORE SUBMIT*/
     $("#post-type-form").on('submit', function(){
-        var d = $('#taxonomy_list').find('input[type="checkbox"]').serializeArray(),
+        var d = $('#taxonomy-list').find('input[type="checkbox"]').serializeArray(),
             o = [];
+
         for(var i = 0; i < d.length; i++){
             o.push(d[i].value);
         }
+
         $('#posttypetaxonomy-taxonomy_ids').val(JSON.stringify(o));
     });
 
     /* CREATE TERM HIERARCHICAL VIA AJAX */
-    $('.btn.ajax-create-hierarchical-term').click(function (e) {
+    $('.term.ajax-create-term.btn').click(function (e) {
         e.preventDefault();
-        var _container = $(this).parents('.box').find('.checkbox'),
-            _form   = $(this).parents('.input-group');
-        create_hierarchical_term(_form, _container)
+        var $this = $(this),
+            container = $this.parents('.box').find('.checkbox'),
+            form   = $this.parents('.input-group');
+
+        createHierarchicalTerm(form, container)
     });
-    $('.posttermhierarchical-term_name').keypress(function(e) {
-        var _container = $(this).parents('.box').find('.checkbox'),
-            _form   = $(this).parents('.input-group');
+    $('.term.ajax-create-term').keypress(function(e) {
+        var $this = $(this),
+            container = $this.parents('.box').find('.checkbox'),
+            form   = $this.parents('.input-group');
+
         if(e.which === 13) {
             e.preventDefault();
-            create_hierarchical_term(_form, _container)
+            createHierarchicalTerm(form, container)
         }
     });
-    function create_hierarchical_term(form, container){
-        $.ajax({
-            url: form.data('url'),
-            data: form.find(':input').serialize(),
-            type: "POST",
-            success: function(response){
-                container.append(response);
-                form.find('.posttermhierarchical-term_name').val('');
-            }
-        })
-    }
 
     /* AJAX CHANGE TAXONOMY HIERARCHICAL */
-    $('.update-taxonomy-hierarchical').on('change', ':input[type="checkbox"]', function () {
-        var _action,
-            _parent = $(this).parents('.update-taxonomy-hierarchical');
+    $('.term-relationship.taxonomy-hierarchical').on('change', ':input[type="checkbox"]', function () {
+        var $this = $(this),
+            action = $this.is(':checked') ? 'addItem' : 'remItem',
+            parent = $(this).parents('.term-relationship.taxonomy-hierarchical');
 
-        if ($(this).is(':checked')) {
-            _action = 'addItem';
-        } else {
-            _action = 'remItem';
-        }
         $.ajax({
-            url: _parent.data('url'),
+            url: parent.data('url'),
             data: {
-                action: _action,
-                TermRelationship: {post_id: _parent.data('post_id'), term_id: $(this).val()},
+                action: action,
+                TermRelationship: {post_id: parent.data('post_id'), term_id: $this.val()},
                 _csrf: yii.getCsrfToken()
             },
             type: "POST"
@@ -163,13 +168,14 @@
     $(document).on("click", ".btn-wd-post", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        var _confirm = $(this).data('confirm'),
-            _form = $(this).parents('form'),
-            _action = $(this).attr('href');
-        if(confirm(_confirm)){
-            _form.attr('method', 'post').attr('action', _action);
-            _form.submit();
+        var $this = $(this),
+            confirmMessage = $this.data('confirm'),
+            form = $this.parents('form'),
+            action = $this.attr('href');
+
+        if(confirm(confirmMessage)){
+            form.attr('method', 'post').attr('action', action);
+            form.submit();
         }
     });
-
 }(jQuery));

@@ -1,8 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 /**
@@ -11,7 +12,7 @@
  */
 
 return [
-    'post_id'    => '1',
-    'meta_name'  => $faker->name,
-    'meta_value' => $faker->text,
+    'post_id' => '1',
+    'name' => $faker->name,
+    'value' => $faker->text,
 ];

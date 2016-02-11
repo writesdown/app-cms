@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use codezeen\yii2\adminlte\widgets\Alert;
@@ -15,7 +15,7 @@ use yii\helpers\Html;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Yii::t('writesdown', 'Sing In');
+$this->title = Yii::t('writesdown', 'Sign In');
 ?>
 <div class="login-box">
     <div class="login-logo">
@@ -46,20 +46,18 @@ $this->title = Yii::t('writesdown', 'Sing In');
 
             </div>
             <div class="col-xs-4">
-                <?= Html::submitButton('Signin', [
+                <?= Html::submitButton('Sign In', [
                     'class' => 'btn btn-primary btn-block btn-flat',
-                    'name'  => 'signin-button',
+                    'name' => 'signin-button',
                 ]) ?>
 
             </div>
         </div>
         <?php ActiveForm::end() ?>
 
-        <?= Html::a(Yii::t('writesdown', 'Reset Password'), ['/site/request-password-reset']) ?><br/>
+        <?= Html::a(Yii::t('writesdown', 'Reset Password'), ['request-password-reset']) ?><br/>
 
-        <?= Option::get('allow_signup')
-            ? Html::a(Yii::t('writesdown', 'Register a new membership'), ['/site/signup'])
-            : "" ?>
+        <?= Option::get('allow_signup') ? Html::a(Yii::t('writesdown', 'Register a new membership'), ['signup']) : "" ?>
 
     </div>
     <br/>

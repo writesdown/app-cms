@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -16,24 +16,24 @@ use yii\widgets\ActiveForm;
 <div class="option-form">
     <?php $form = ActiveForm::begin(['id' => 'option-form']) ?>
 
-    <?= $form->field($model, 'option_name')->textInput([
-        'maxlength'   => 64,
-        'placeholder' => $model->getAttributeLabel('option_name'),
+    <?= $form->field($model, 'name')->textInput([
+        'maxlength' => 64,
+        'placeholder' => $model->getAttributeLabel('name'),
     ]) ?>
 
-    <?= $form->field($model, 'option_value')->textarea([
-        'rows'        => 6,
-        'placeholder' => $model->getAttributeLabel('option_value'),
+    <?= $form->field($model, 'value')->textarea([
+        'rows' => 6,
+        'placeholder' => $model->getAttributeLabel('value'),
     ]) ?>
 
-    <?= $form->field($model, 'option_label')->textInput([
-        'maxlength'   => 64,
-        'placeholder' => $model->getAttributeLabel('option_label'),
+    <?= $form->field($model, 'label')->textInput([
+        'maxlength' => 64,
+        'placeholder' => $model->getAttributeLabel('label'),
     ]) ?>
 
-    <?= $form->field($model, 'option_group')->textInput([
-        'maxlength'   => 64,
-        'placeholder' => $model->getAttributeLabel('option_group'),
+    <?= $form->field($model, 'group')->textInput([
+        'maxlength' => 64,
+        'placeholder' => $model->getAttributeLabel('group'),
     ]) ?>
 
     <div class="form-group">

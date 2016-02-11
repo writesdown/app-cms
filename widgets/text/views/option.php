@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -12,15 +12,15 @@ use yii\helpers\Html;
 /* @var $widget common\models\Widget */
 
 ?>
-<?php $widgetConfig = $widget->getConfig() ?>
-<?= Html::hiddenInput('Widget[widget_config][class]', $widgetConfig['class']) ?>
+<?php $config = $widget->getConfig() ?>
+<?= Html::hiddenInput('Widget[config][class]', $config['class']) ?>
 
 <div class="form-group">
     <?= Html::label('Title', 'title-' . $widget->id, ['class' => 'form-label']) ?>
 
     <?= Html::textInput(
-        'Widget[widget_config][title]',
-        $widgetConfig['title'],
+        'Widget[config][title]',
+        $config['title'],
         ['class' => 'form-control input-sm']
     ) ?>
 
@@ -28,10 +28,10 @@ use yii\helpers\Html;
 <div class="form-group">
     <?= Html::label('Title', 'text-' . $widget->id, ['class' => 'form-label']) ?>
 
-    <?= Html::textarea('Widget[widget_config][text]', $widgetConfig['text'], [
-        'id'    => 'text-' . $widget->id,
+    <?= Html::textarea('Widget[config][text]', $config['text'], [
+        'id' => 'text-' . $widget->id,
         'class' => 'form-control',
-        'rows'  => '5'
+        'rows' => '5',
     ]) ?>
 
 </div>

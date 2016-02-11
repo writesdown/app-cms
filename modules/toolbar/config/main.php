@@ -7,13 +7,12 @@
  */
 
 return [
-    'module_name'   => 'toolbar',
-    'module_title'  => 'Toolbar',
-    'module_config' => [
+    'name'               => 'toolbar',
+    'title'              => 'Toolbar',
+    'configs'            => [
         'frontend' => [
             'class' => 'modules\toolbar\frontend\Module',
         ],
     ],
-    'module_fb'     => 1,
-    'module_active' => 1,
+    'frontend_bootstrap' => 1,
 ];

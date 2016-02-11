@@ -1,8 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 /**
@@ -13,14 +14,14 @@
 $security = Yii::$app->getSecurity();
 
 return [
-    'username'             => $faker->userName,
-    'email'                => $faker->email,
-    'full_name'            => $faker->name,
-    'display_name'         => $faker->name,
-    'password_hash'        => $security->generatePasswordHash('password_' . $index),
+    'username' => $faker->userName,
+    'email' => $faker->email,
+    'full_name' => $faker->name,
+    'display_name' => $faker->name,
+    'password_hash' => $security->generatePasswordHash('password_' . $index),
     'password_reset_token' => $security->generateRandomString() . '_' . time(),
-    'auth_key'             => $security->generateRandomString(),
-    'created_at'           => time(),
-    'updated_at'           => time(),
-    'login_at'             => time(),
+    'auth_key' => $security->generateRandomString(),
+    'created_at' => time(),
+    'updated_at' => time(),
+    'login_at' => time(),
 ];

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -13,23 +13,20 @@ use yii\widgets\DetailView;
 /* @var $commentParent common\models\PostComment */
 /* @var $model common\models\PostComment */
 
-$this->title = Yii::t('writesdown', 'Reply {post_type} Comment', [
-    'post_type' => $commentParent->commentPost->postType->post_type_sn,
-]);
+$this->title = Yii::t(
+    'writesdown', 'Reply {postType} Comment {id}',
+    ['postType' => $commentParent->commentPost->postType->singular_name, 'id' => $model->id]
+);
 $this->params['breadcrumbs'][] = [
-    'label' => Yii::t('writesdown', '{postTypeSN} Comments', [
-        'postTypeSN' => $commentParent->commentPost->postType->post_type_sn,
-    ]),
-    'url'   => ['index', 'post_type' => $commentParent->commentPost->postType->id],
+    'label' => $commentParent->commentPost->postType->singular_name,
+    'url' => ['index', 'posttype' => $commentParent->commentPost->postType->id],
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => Yii::t('writesdown', '{postTypeSN} Comment: {postCommentId}', [
-        'postCommentId' => $commentParent->id,
-        'postTypeSN'    => $commentParent->commentPost->postType->post_type_sn,
-    ]),
-    'url'   => ['update', 'id' => $commentParent->id],
+    'label' => $commentParent->commentPost->id,
+    'url' => ['index', 'posttype' => $commentParent->commentPost->postType->id, 'post' => $commentParent->post_id],
 ];
-$this->params['breadcrumbs'][] = Yii::t('writesdown', 'Reply');
+$this->params['breadcrumbs'][] = ['label' => $commentParent->id, 'url' => ['update', 'id' => $commentParent->id]];
+$this->params['breadcrumbs'][] = Yii::t('writesdown', 'Reply Comment');
 ?>
 <?php $form = ActiveForm::begin(['id' => 'post-comment-reply-form']) ?>
 
@@ -39,58 +36,58 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Reply');
             <div class="box-header">
                 <i class="fa fa-reply"></i>
 
-                <h3 class="box-title"><?= Yii::t('writesdown', 'Reply To') ?></h3>
+                <h3 class="box-title"><?= Yii::t('writesdown', 'Reply to') ?></h3>
             </div>
             <div class="box-body">
-                <?= $commentParent->comment_content ?>
+                <?= $commentParent->content ?>
 
             </div>
         </div>
         <?= $this->render('_form-reply', [
             'model' => $model,
-            'form'  => $form,
+            'form' => $form,
         ]) ?>
     </div>
     <div class="col-md-4 post-comment-update">
         <?= DetailView::widget([
-            'model'      => $commentParent,
+            'model' => $commentParent,
             'attributes' => [
                 'id',
                 [
-                    'attribute' => 'comment_post_id',
-                    'value'     => Html::a($commentParent->commentPost->post_title, [
+                    'attribute' => 'post_id',
+                    'value' => Html::a($commentParent->commentPost->title, [
                         '/post/update',
                         'id' => $commentParent->commentPost->id,
                     ]),
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
-                'comment_author:ntext',
-                'comment_author_email:email',
-                'comment_author_url:url',
+                'author:ntext',
+                'email:email',
+                'url:url',
                 [
-                    'attribute' => 'comment_author_ip',
-                    'value'     => Html::a(
-                        $model->comment_author_ip,
-                        'http://whois.arin.net/rest/ip/' . $model->comment_author_ip,
+                    'attribute' => 'ip',
+                    'value' => Html::a(
+                        $commentParent->ip,
+                        'http://whois.arin.net/rest/ip/' . $commentParent->ip,
                         ['target' => '_blank']
                     ),
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
                 [
-                    'attribute' => 'comment_date',
-                    'value'     => Yii::$app->formatter->asDatetime($model->comment_date, 'php:M d, Y H:i:s'),
-                    'format'    => 'raw',
+                    'attribute' => 'date',
+                    'value' => Yii::$app->formatter->asDatetime($commentParent->date, 'php:M d, Y H:i:s'),
+                    'format' => 'raw',
                 ],
-                'comment_approved',
-                'comment_agent',
+                'status',
+                'agent',
                 [
-                    'attribute' => 'comment_parent',
-                    'value'     => $commentParent->comment_parent
-                        ? Html::a($commentParent->comment_parent, ['update', 'id' => $commentParent->comment_parent])
+                    'attribute' => 'parent',
+                    'value' => $commentParent->parent
+                        ? Html::a($commentParent->parent, ['update', 'id' => $commentParent->parent])
                         : '',
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
-                'comment_user_id',
+                'user_id',
             ],
         ]) ?>
 

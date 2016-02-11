@@ -18,4 +18,4 @@
         $(this).hide();
         cv.append(cf);
     })
-});
+}(jQuery));

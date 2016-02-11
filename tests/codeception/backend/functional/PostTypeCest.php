@@ -1,18 +1,17 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
 
 use common\models\PostType;
-use common\models\search\Taxonomy;
 use tests\codeception\backend\_pages\_posttype\CreatePage;
+use tests\codeception\backend\_pages\_posttype\IndexPage;
 use tests\codeception\backend\_pages\_posttype\UpdatePage;
 use tests\codeception\backend\_pages\_site\LoginPage;
-use tests\codeception\backend\_pages\_posttype\IndexPage;
 use tests\codeception\backend\FunctionalTester;
 use tests\codeception\common\fixtures\PostCommentFixture;
 use tests\codeception\common\fixtures\PostFixture;
@@ -26,8 +25,8 @@ use yii\helpers\Url;
 /**
  * Class PostTypeCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class PostTypeCest
 {
@@ -72,12 +71,12 @@ class PostTypeCest
         $I->see('Post Types', 'h1');
 
         $I->amGoingTo('submit search form with non existing post-type');
-        $indexPage->submit(['post_type_name' => 'non_existing_post_type']);
+        $indexPage->submit(['name' => 'non_existing_post_type']);
         $I->expectTo('not see a record');
         $I->see('No results found.', '#post-type-grid-view');
 
         $I->amGoingTo('submit search form with existing post-type');
-        $indexPage->submit(['post_type_name' => 'post', 'post_type_slug' => '']);
+        $indexPage->submit(['name' => 'post', 'slug' => '']);
         $I->expectTo('see user with username subscriber');
         $I->see('post', '#post-type-grid-view');
         $I->dontSee('page', '#post-type-grid-view');
@@ -119,10 +118,10 @@ class PostTypeCest
         // Test same data
         $I->amGoingTo('submit form post-type with existing data');
         $createPage->submitPostType([
-            'post_type_name' => 'post',
-            'post_type_slug' => 'post',
-            'post_type_pn'   => 'Post',
-            'post_type_sn'   => 'Posts'
+            'name' => 'post',
+            'slug' => 'post',
+            'singular_name' => 'Post',
+            'plural_name' => 'Posts',
         ]);
         $I->expectTo('see validation errors');
         $I->see('Name "post" has already been taken.', '.help-block');
@@ -130,19 +129,18 @@ class PostTypeCest
 
         // Test correct data
         $I->amGoingTo('submit form post-type with correct data');
-        $I->selectOption('#posttype-post_type_permission', 'author');
+        $I->selectOption('#posttype-permission', 'author');
         $createPage->submitPostType([
-            'post_type_name' => 'test-post-type',
-            'post_type_slug' => 'test-post-type',
-            'post_type_sn'   => 'Test Post Type',
-            'post_type_pn'   => 'Test Post Types',
+            'name' => 'test-post-type',
+            'slug' => 'test-post-type',
+            'singular_name' => 'Test Post Type',
+            'plural_name' => 'Test Post Types',
         ]);
         $I->expect('new post-type created');
         // $I->see('View Post Type: Test Post Type', 'h1');
         $I->see('View Post Type: Test Post Type');
 
-        PostType::deleteAll(['post_type_name' => 'test-post-type']);
-        Taxonomy::deleteAll(['taxonomy_name' => 'test-taxonomy']);
+        PostType::deleteAll(['name' => 'test-post-type']);
     }
 
     /**
@@ -155,17 +153,20 @@ class PostTypeCest
         $I->see('Update Post Type: Post', 'h1');
 
         $I->amGoingTo('submit post-type form with correct data');
-        $I->checkOption('#posttype-post_type_smb');
-        $I->selectOption('#posttype-post_type_permission', 'subscriber');
+        $I->checkOption('#posttype-menu_builder');
+        $I->selectOption('#posttype-permission', 'subscriber');
         $updatePage->submitPostType([
-            'post_type_description' => 'New post-type description',
+            'description' => 'New post-type description',
         ]);
         $I->expectTo('post-type updated');
         // $I->see('View Post Type: Post', 'h1');
         $I->see('View Post Type: Post');
 
-        PostType::findOne(1)->update(['post_type_smb' => '0', 'post_type_permission' => 'contributor', 'post_type_description' => '']);
-        Taxonomy::deleteAll(['taxonomy_name' => 'test-taxonomy']);
+        PostType::findOne(1)->update([
+            'menu_builder' => '0',
+            'permission' => 'contributor',
+            'description' => '',
+        ]);
     }
 
     /**

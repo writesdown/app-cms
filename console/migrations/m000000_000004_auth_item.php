@@ -23,13 +23,13 @@ class m000000_000004_auth_item extends \yii\db\Migration
         }
 
         $this->createTable('{{%auth_item}}', [
-            'name'        => Schema::TYPE_STRING . '(64) NOT NULL',
-            'type'        => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            'name' => Schema::TYPE_STRING . '(64) NOT NULL',
+            'type' => Schema::TYPE_INTEGER . '(11) NOT NULL',
             'description' => Schema::TYPE_TEXT,
-            'rule_name'   => Schema::TYPE_STRING . '(64)',
-            'data'        => Schema::TYPE_TEXT,
-            'created_at'  => Schema::TYPE_INTEGER . '(11)',
-            'updated_at'  => Schema::TYPE_INTEGER . '(11)',
+            'rule_name' => Schema::TYPE_STRING . '(64)',
+            'data' => Schema::TYPE_TEXT,
+            'created_at' => Schema::TYPE_INTEGER . '(11)',
+            'updated_at' => Schema::TYPE_INTEGER . '(11)',
             'PRIMARY KEY ([[name]])',
             'FOREIGN KEY ([[rule_name]]) REFERENCES {{%auth_rule}} ([[name]]) ON DELETE CASCADE ON UPDATE CASCADE',
         ], $tableOptions);

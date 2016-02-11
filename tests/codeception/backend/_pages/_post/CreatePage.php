@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\_pages\_post;
@@ -13,7 +13,6 @@ use yii\codeception\BasePage;
  * Class CreatePage
  *
  * @property \tests\codeception\frontend\FunctionalTester | \tests\codeception\frontend\AcceptanceTester | \tests\codeception\backend\FunctionalTester | \tests\codeception\backend\AcceptanceTester $actor
- *
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.2
  */
@@ -22,7 +21,7 @@ class CreatePage extends BasePage
     /**
      * @var array
      */
-    public $route = ['/post/create', 'post_type' => '1'];
+    public $route = ['/post/create', 'type' => '1'];
 
     /**
      * @param array $data
@@ -30,12 +29,12 @@ class CreatePage extends BasePage
     public function submit(array $data)
     {
         foreach ($data as $field => $value) {
-            if ($field == 'post_content') {
+            if ($field == 'content') {
                 // Execute js for TinyMCE
                 if (method_exists($this->actor, 'executeJS')) {
-                    $this->actor->executeJS('$("#post-post_content").val("' . $value . '")');
+                    $this->actor->executeJS('$("#post-content").val("' . $value . '")');
                 } else {
-                    $this->actor->fillField('textarea[name="Post[post_content]"]', $value);
+                    $this->actor->fillField('textarea[name="Post[content]"]', $value);
                 }
             } else {
                 $this->actor->fillField('input[name="Post[' . $field . ']"]', $value);

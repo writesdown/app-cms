@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -15,13 +15,13 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $media_id
- * @property string  $meta_name
- * @property string  $meta_value
+ * @property string $name
+ * @property string $value
  *
- * @property Media   $media
+ * @property Media $media
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class MediaMeta extends ActiveRecord
 {
@@ -39,10 +39,10 @@ class MediaMeta extends ActiveRecord
     public function rules()
     {
         return [
-            [['media_id', 'meta_name', 'meta_value'], 'required'],
+            [['media_id', 'name', 'value'], 'required'],
             [['media_id'], 'integer'],
-            [['meta_value'], 'string'],
-            [['meta_name'], 'string', 'max' => 255],
+            [['value'], 'string'],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -52,10 +52,10 @@ class MediaMeta extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'         => Yii::t('writesdown', 'ID'),
-            'media_id'   => Yii::t('writesdown', 'Media ID'),
-            'meta_name'  => Yii::t('writesdown', 'Meta Name'),
-            'meta_value' => Yii::t('writesdown', 'Meta Value'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'media_id' => Yii::t('writesdown', 'Media ID'),
+            'name' => Yii::t('writesdown', 'Meta Name'),
+            'value' => Yii::t('writesdown', 'Meta Value'),
         ];
     }
 

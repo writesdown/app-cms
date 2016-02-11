@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
@@ -14,8 +14,8 @@ use yii\helpers\Url;
 /**
  * Class ThemeCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class ThemeCest
 {
@@ -51,10 +51,11 @@ class ThemeCest
     /**
      * @param FunctionalTester $I
      */
-    public function testIndex(FunctionalTester $I){
+    public function testIndex(FunctionalTester $I)
+    {
         $I->wantTo('ensure that index theme works');
         $I->amOnPage(Url::to(['/theme/index']));
-        $I->see('Themes','h1');
+        $I->see('Themes', 'h1');
         $I->seeLink('Available Themes');
         $I->seeLink('Add New Theme');
 
@@ -64,7 +65,8 @@ class ThemeCest
     /**
      * @param FunctionalTester $I
      */
-    public function testUpload(FunctionalTester $I){
+    public function testUpload(FunctionalTester $I)
+    {
         $I->wantTo('ensure that upload theme works');
         $I->amOnPage(Url::to(['/theme/upload']));
         $I->see('Upload New Theme', 'h1');
@@ -76,7 +78,8 @@ class ThemeCest
     /**
      * @param FunctionalTester $I
      */
-    public function testDetail(FunctionalTester $I){
+    public function testDetail(FunctionalTester $I)
+    {
         $I->wantTo('ensure that detail theme works');
         $I->amOnPage(Url::to(['/theme/detail', 'theme' => 'writesdown']));
         $I->see('Detail Theme', 'h1');

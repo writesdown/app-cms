@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 /**
  * Taxonomy represents the model behind the search form about `common\models\Taxonomy`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Taxonomy extends TaxonomyModel
 {
@@ -26,8 +26,8 @@ class Taxonomy extends TaxonomyModel
     public function rules()
     {
         return [
-            [['id', 'taxonomy_hierarchical', 'taxonomy_smb'], 'integer'],
-            [['taxonomy_name', 'taxonomy_slug', 'taxonomy_sn', 'taxonomy_pn'], 'safe'],
+            [['id', 'hierarchical', 'menu_builder'], 'integer'],
+            [['name', 'slug', 'singular_name', 'plural_name'], 'safe'],
         ];
     }
 
@@ -44,7 +44,6 @@ class Taxonomy extends TaxonomyModel
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
     public function search($params)
@@ -53,11 +52,7 @@ class Taxonomy extends TaxonomyModel
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'  => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ],
-            ],
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
         ]);
 
         $this->load($params);
@@ -67,15 +62,15 @@ class Taxonomy extends TaxonomyModel
         }
 
         $query->andFilterWhere([
-            'id'                    => $this->id,
-            'taxonomy_hierarchical' => $this->taxonomy_hierarchical,
-            'taxonomy_smb'          => $this->taxonomy_smb,
+            'id' => $this->id,
+            'hierarchical' => $this->hierarchical,
+            'menu_builder' => $this->menu_builder,
         ]);
 
-        $query->andFilterWhere(['like', 'taxonomy_name', $this->taxonomy_name])
-            ->andFilterWhere(['like', 'taxonomy_slug', $this->taxonomy_slug])
-            ->andFilterWhere(['like', 'taxonomy_sn', $this->taxonomy_sn])
-            ->andFilterWhere(['like', 'taxonomy_pn', $this->taxonomy_pn]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'singular_name', $this->singular_name])
+            ->andFilterWhere(['like', 'plural_name', $this->plural_name]);
 
         return $dataProvider;
     }

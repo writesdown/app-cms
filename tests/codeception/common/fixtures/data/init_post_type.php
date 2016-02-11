@@ -1,27 +1,28 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 return [
     [
-        'post_type_name'       => 'post',
-        'post_type_slug'       => 'post',
-        'post_type_icon'       => 'fa fa-thumb-tack',
-        'post_type_sn'         => 'Post',
-        'post_type_pn'         => 'Posts',
-        'post_type_smb'        => '0',
-        'post_type_permission' => 'contributor',
+        'name' => 'post',
+        'slug' => 'post',
+        'icon' => 'fa fa-thumb-tack',
+        'singular_name' => 'Post',
+        'plural_name' => 'Posts',
+        'menu_builder' => '0',
+        'permission' => 'contributor',
     ],
     [
-        'post_type_name'       => 'page',
-        'post_type_slug'       => 'pages',
-        'post_type_icon'       => 'fa fa-file-o',
-        'post_type_sn'         => 'Page',
-        'post_type_pn'         => 'Pages',
-        'post_type_smb'        => '1',
-        'post_type_permission' => 'editor',
-    ]
+        'name' => 'page',
+        'slug' => 'pages',
+        'icon' => 'fa fa-file-o',
+        'singular_name' => 'Page',
+        'plural_name' => 'Pages',
+        'menu_builder' => '1',
+        'permission' => 'editor',
+    ],
 ];

@@ -7,7 +7,7 @@ use yii\db\Schema;
  * Migration class for auth_item_child.
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000005_auth_item_child extends \yii\db\Migration
 {
@@ -24,7 +24,7 @@ class m000000_000005_auth_item_child extends \yii\db\Migration
 
         $this->createTable('{{%auth_item_child}}', [
             'parent' => Schema::TYPE_STRING . '(64) NOT NULL',
-            'child'  => Schema::TYPE_STRING . '(64) NOT NULL',
+            'child' => Schema::TYPE_STRING . '(64) NOT NULL',
             'PRIMARY KEY ([[parent]], [[child]])',
             'FOREIGN KEY ([[parent]]) REFERENCES {{%auth_item}} ([[name]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[child]]) REFERENCES {{%auth_item}} ([[name]]) ON DELETE CASCADE ON UPDATE CASCADE',

@@ -5,8 +5,8 @@ use yii\db\Schema;
 /**
  * Class m000000_000020_module
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.2.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.2.0
  */
 class m000000_000020_module extends \yii\db\Migration
 {
@@ -22,39 +22,39 @@ class m000000_000020_module extends \yii\db\Migration
         }
 
         $this->createTable('{{%module}}', [
-            'id'                 => Schema::TYPE_PK,
-            'module_name'        => Schema::TYPE_STRING . '(64) NOT NULL',
-            'module_title'       => Schema::TYPE_TEXT . ' NOT NULL',
-            'module_description' => Schema::TYPE_TEXT,
-            'module_config'      => Schema::TYPE_TEXT . ' NOT NULL',
-            'module_status'      => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
-            'module_dir'         => Schema::TYPE_STRING . '(128) NOT NULL',
-            'module_bb'          => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
-            'module_fb'          => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
-            'module_date'        => Schema::TYPE_DATETIME . ' NOT NULL',
-            'module_modified'    => Schema::TYPE_DATETIME . ' NOT NULL',
+            'id' => Schema::TYPE_PK,
+            'name' => Schema::TYPE_STRING . '(64) NOT NULL',
+            'title' => Schema::TYPE_TEXT . ' NOT NULL',
+            'description' => Schema::TYPE_TEXT,
+            'config' => Schema::TYPE_TEXT . ' NOT NULL',
+            'status' => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
+            'directory' => Schema::TYPE_STRING . '(128) NOT NULL',
+            'backend_bootstrap' => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
+            'frontend_bootstrap' => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
+            'date' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'modified' => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
 
         /**
          * Insert data module
          */
         $this->batchInsert('{{%module}}', [
-            'module_name',
-            'module_title',
-            'module_description',
-            'module_config',
-            'module_status',
-            'module_dir',
-            'module_bb',
-            'module_fb',
-            'module_date',
-            'module_modified',
+            'name',
+            'title',
+            'description',
+            'config',
+            'status',
+            'directory',
+            'backend_bootstrap',
+            'frontend_bootstrap',
+            'date',
+            'modified',
         ], [
             [
                 'toolbar',
                 'Toolbar',
                 null,
-                '{"frontend":{"class":"modules\\\\toolbar\\\\frontend\\\\Module"}}',
+                '{"frontend":{"class":"modules\\toolbar\\frontend\\Module"}}',
                 0,
                 'toolbar',
                 0,
@@ -64,9 +64,9 @@ class m000000_000020_module extends \yii\db\Migration
             ],
             [
                 'sitemap',
-                'Site Map',
+                'Sitemap',
                 'Module for sitemap',
-                '{"backend":{"class":"modules\\\\sitemap\\\\backend\\\\Module"},"frontend":{"class":"modules\\\\sitemap\\\\frontend\\\\Module"}}',
+                '{"backend":{"class":"modules\\sitemap\\backend\\Module"},"frontend":{"class":"modules\\sitemap\\frontend\\Module"}}',
                 0,
                 'sitemap',
                 0,
@@ -78,7 +78,7 @@ class m000000_000020_module extends \yii\db\Migration
                 'feed',
                 'RSS Feed',
                 null,
-                '{"frontend":{"class":"modules\\\\feed\\\\frontend\\\\Module"}}',
+                '{"frontend":{"class":"modules\\feed\\frontend\\Module"}}',
                 0,
                 'feed',
                 0,

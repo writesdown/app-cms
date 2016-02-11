@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets\comment;
@@ -18,8 +18,8 @@ use yii\widgets\Pjax;
 /**
  * Class BaseComment
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 abstract class BaseComment extends Widget
 {
@@ -124,10 +124,10 @@ abstract class BaseComment extends Widget
             echo Html::endTag($this->tag);
             echo Html::beginTag('nav', ['class' => 'comment-pagination']);
             echo LinkPager::widget([
-                'pagination'           => $this->pages,
-                'activePageCssClass'   => 'active',
+                'pagination' => $this->pages,
+                'activePageCssClass' => 'active',
                 'disabledPageCssClass' => 'disabled',
-                'options'              => [
+                'options' => [
                     'class' => 'pagination',
                 ],
             ]);
@@ -136,16 +136,16 @@ abstract class BaseComment extends Widget
         }
     }
 
+
     /**
-     * @param     $comment
+     * @param \common\models\BaseComment $comment
      * @param int $depth
-     *
      * @throws \Exception
      */
     protected function displayComment($comment, $depth = 0)
     {
         echo Html::beginTag('div', [
-            'id'    => 'comment-' . $comment->id,
+            'id' => 'comment-' . $comment->id,
             'class' => $comment->child ? 'parent depth-' . $depth : 'depth-' . $depth,
         ]);
 
@@ -153,48 +153,50 @@ abstract class BaseComment extends Widget
             ?>
             <div class="media-left avatar">
                 <?= Gravatar::widget([
-                    'email'        => $comment->comment_author_email,
-                    'options'      => [
-                        'alt'    => $comment->comment_author,
-                        'class'  => 'avatar',
-                        'width'  => $this->avatarSize,
+                    'email' => $comment->email,
+                    'options' => [
+                        'alt' => $comment->author,
+                        'class' => 'avatar',
+                        'width' => $this->avatarSize,
                         'height' => $this->avatarSize,
                     ],
                     'defaultImage' => Option::get('avatar_default'),
-                    'rating'       => Option::get('avatar_rating'),
-                    'size'         => $this->avatarSize,
+                    'rating' => Option::get('avatar_rating'),
+                    'size' => $this->avatarSize,
                 ]) ?>
 
             </div>
             <?php
+
         }
         ?>
         <div class="media-body comment-body">
             <p class="meta">
                 <strong class="author vcard">
                     <span class="fn">
-                        <?= $comment->comment_author ? $comment->comment_author : \Yii::t('writesdown', 'Anonymous') ?>
+                        <?= $comment->author ? $comment->author : \Yii::t('writesdown', 'Anonymous') ?>
 
                     </span>
                 </strong>
                 -
                 <time class="date published" datetime="<?= \Yii::$app
                     ->formatter
-                    ->asDatetime($comment->comment_date) ?>">
-                    <?= \Yii::$app->formatter->asDate($comment->comment_date) ?>
+                    ->asDatetime($comment->date) ?>">
+                    <?= \Yii::$app->formatter->asDate($comment->date) ?>
 
                 </time>
 
                 <?php if ($depth < $this->maxDepth && $this->enableThreadComments) {
-                    echo Html::a(\Yii::t('writesdown', 'Reply'), '#', [
-                        'class'   => 'comment-reply-link',
+    echo Html::a(\Yii::t('writesdown', 'Reply'), '#', [
+                        'class' => 'comment-reply-link',
                         'data-id' => $comment->id,
                     ]);
-                } ?>
+}
+        ?>
 
             </p>
             <div class="comment-content">
-                <?= $comment->comment_content ?>
+                <?= $comment->content ?>
 
             </div>
         </div>

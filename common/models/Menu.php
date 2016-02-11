@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -13,14 +13,14 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%menu}}".
  *
- * @property integer    $id
- * @property string     $menu_title
- * @property string     $menu_location
+ * @property integer $id
+ * @property string $title
+ * @property string $location
  *
  * @property MenuItem[] $menuItems
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Menu extends ActiveRecord
 {
@@ -38,9 +38,9 @@ class Menu extends ActiveRecord
     public function rules()
     {
         return [
-            [['menu_title'], 'required'],
-            [['menu_title'], 'string', 'max' => 255],
-            [['menu_location'], 'string', 'max' => 50],
+            [['title'], 'required'],
+            [['title'], 'string', 'max' => 255],
+            [['location'], 'string', 'max' => 50],
         ];
     }
 
@@ -50,9 +50,9 @@ class Menu extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'            => Yii::t('writesdown', 'ID'),
-            'menu_title'    => Yii::t('writesdown', 'Title'),
-            'menu_location' => Yii::t('writesdown', 'Location'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'title' => Yii::t('writesdown', 'Title'),
+            'location' => Yii::t('writesdown', 'Location'),
         ];
     }
 
@@ -65,19 +65,17 @@ class Menu extends ActiveRecord
     }
 
     /**
-     * Get available menu items recursively
+     * Get available menu items recursively for backend purpose.
      *
-     * @param int $parentId
-     *
+     * @param int $parent
      * @return array|null
      */
-    public function getAvailableMenuItem($parentId = 0)
+    public function getBackendItems($parent = 0)
     {
         /* @var $model \common\models\MenuItem */
-        $models = $this
-            ->getMenuItems()
-            ->andWhere(['menu_parent' => $parentId])
-            ->orderBy(['menu_order' => SORT_ASC])
+        $models = $this->getMenuItems()
+            ->andWhere(['parent' => $parent])
+            ->orderBy(['order' => SORT_ASC])
             ->indexBy('id')
             ->all();
 
@@ -86,7 +84,7 @@ class Menu extends ActiveRecord
         }
 
         foreach ($models as $id => $model) {
-            $models[$id]->items = $this->getAvailableMenuItem($model->id);
+            $models[$id]->items = $this->getBackendItems($model->id);
         }
 
         return $models;
@@ -96,13 +94,12 @@ class Menu extends ActiveRecord
      * Get menu by location.
      * Ready to render on frontend.
      *
-     * @param $menuLocation
-     *
+     * @param $location
      * @return array|null
      */
-    public static function getMenu($menuLocation)
+    public static function get($location)
     {
-        $menu = static::getListMenuItem($menuLocation);
+        $menu = static::getFrontendItems($location);
 
         if ($menu) {
             return $menu;
@@ -114,21 +111,20 @@ class Menu extends ActiveRecord
     /**
      * List menu item by menu location;
      *
-     * @param string $menuLocation
-     * @param int    $menuParent
-     *
+     * @param string $location
+     * @param int $parent
      * @return array|null
      */
-    protected static function getListMenuItem($menuLocation, $menuParent = 0)
+    protected static function getFrontendItems($location, $parent = 0)
     {
         /* @var $menuItemModel \common\models\MenuItem[] */
         $menuItem = [];
 
         $menuItemModel = MenuItem::find()
             ->innerJoinWith(['menu'])
-            ->andWhere(['menu_location' => $menuLocation])
-            ->andWhere(['menu_parent' => $menuParent])
-            ->orderBy('menu_order')
+            ->andWhere(['location' => $location])
+            ->andWhere(['parent' => $parent])
+            ->orderBy('order')
             ->all();
 
         if (empty($menuItemModel)) {
@@ -137,11 +133,11 @@ class Menu extends ActiveRecord
 
         foreach ($menuItemModel as $model) {
             $menuItem[] = [
-                'id'     => $model->id,
-                'label'  => $model->menu_label,
-                'url'    => $model->menu_url,
-                'parent' => $model->menu_parent,
-                'items'  => static::getListMenuItem($menuLocation, $model->id),
+                'id' => $model->id,
+                'label' => $model->label,
+                'url' => $model->url,
+                'parent' => $model->parent,
+                'items' => static::getFrontendItems($location, $model->id),
             ];
         }
 

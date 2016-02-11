@@ -4,7 +4,6 @@
  * This file returns a list of environments that the application
  * may be installed under. The returned data must be in the following
  * format:
- *
  * ```php
  * return [
  *     'environment name' => [
@@ -30,14 +29,14 @@
  */
 return [
     'Development' => [
-        'path'                   => 'dev',
-        'setWritable'            => [
+        'path' => 'dev',
+        'setWritable' => [
             'backend/runtime',
             'public/admin/assets',
             'frontend/runtime',
             'public/assets',
         ],
-        'setExecutable'          => [
+        'setExecutable' => [
             'yii',
             'tests/codeception/bin/yii',
         ],
@@ -46,15 +45,15 @@ return [
             'frontend/config/main-local.php',
         ],
     ],
-    'Production'  => [
-        'path'                   => 'prod',
-        'setWritable'            => [
+    'Production' => [
+        'path' => 'prod',
+        'setWritable' => [
             'backend/runtime',
             'public/admin/assets',
             'frontend/runtime',
             'public/assets',
         ],
-        'setExecutable'          => [
+        'setExecutable' => [
             'yii',
         ],
         'setCookieValidationKey' => [

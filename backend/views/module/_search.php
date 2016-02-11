@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -21,21 +21,23 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'module_name') ?>
+            <?= $form->field($model, 'name') ?>
 
-            <?= $form->field($model, 'module_title') ?>
+            <?= $form->field($model, 'title') ?>
 
-            <?= $form->field($model, 'module_description') ?>
+            <?= $form->field($model, 'description') ?>
 
-            <?= $form->field($model, 'module_fb')->dropDownList($model->getFrontendBootstrap(), ['prompt' => false]) ?>
+            <?= $form->field($model, 'frontend_bootstrap')->dropDownList($model->getFrontendBootstraps(),
+                ['prompt' => false]) ?>
 
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'module_status')->dropDownList($model->getStatus(), ['prompt' => false]) ?>
+            <?= $form->field($model, 'status')->dropDownList($model->getStatuses(), ['prompt' => false]) ?>
 
-            <?= $form->field($model, 'module_dir') ?>
+            <?= $form->field($model, 'directory') ?>
 
-            <?= $form->field($model, 'module_bb')->dropDownList($model->getBackendBootstrap(), ['prompt' => false]) ?>
+            <?= $form->field($model, 'backend_bootstrap')->dropDownList($model->getBackendBootstraps(),
+                ['prompt' => false]) ?>
 
         </div>
     </div>
@@ -46,9 +48,9 @@ use yii\widgets\ActiveForm;
         <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
 
         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
-            'class'       => 'module-search-button btn btn-flat btn-default',
-            "data-toggle" => "collapse",
-            "data-target" => "#module-search",
+            'class' => 'module-search-button btn btn-flat btn-default',
+            'data-toggle' => 'collapse',
+            'data-target' => '#module-search',
         ]) ?>
 
     </div>

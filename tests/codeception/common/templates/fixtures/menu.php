@@ -1,8 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 /**
@@ -11,6 +12,6 @@
  */
 
 return [
-    'menu_title'    => $faker->name,
-    'menu_location' => $faker->slug(1),
+    'title' => $faker->name,
+    'location' => $faker->slug(1),
 ];

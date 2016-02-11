@@ -1,5 +1,11 @@
 WritesDown Change Log
 =====================
+(February 5, 2016)
+------------------
+* Update database
+* Refactoring code based on database
+* New media browser
+
 (January 11, 2016)
 ------------------
 * Bug fixes delete menu item

@@ -5,8 +5,8 @@ use yii\db\Schema;
 /**
  * Class m000000_000021_widget
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.2.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.2.0
  */
 class m000000_000021_widget extends \yii\db\Migration
 {
@@ -22,14 +22,14 @@ class m000000_000021_widget extends \yii\db\Migration
         }
 
         $this->createTable('{{%widget}}', [
-            'id'              => Schema::TYPE_PK,
-            'widget_title'    => Schema::TYPE_STRING . '(255) NOT NULL',
-            'widget_config'   => Schema::TYPE_TEXT . ' NOT NULL',
-            'widget_location' => Schema::TYPE_STRING . '(128) NOT NULL',
-            'widget_order'    => Schema::TYPE_INTEGER . '(11) NOT NULL DEFAULT 0',
-            'widget_dir'      => Schema::TYPE_STRING . '(128) NOT NULL',
-            'widget_date'     => Schema::TYPE_DATETIME . ' NOT NULL',
-            'widget_modified' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'id' => Schema::TYPE_PK,
+            'title' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'config' => Schema::TYPE_TEXT . ' NOT NULL',
+            'location' => Schema::TYPE_STRING . '(128) NOT NULL',
+            'order' => Schema::TYPE_INTEGER . '(11) NOT NULL DEFAULT 0',
+            'directory' => Schema::TYPE_STRING . '(128) NOT NULL',
+            'date' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'modified' => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
     }
 

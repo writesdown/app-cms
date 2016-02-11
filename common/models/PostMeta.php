@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -15,13 +15,13 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $post_id
- * @property string  $meta_name
- * @property string  $meta_value
+ * @property string $name
+ * @property string $value
  *
- * @property Post    $post
+ * @property Post $post
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostMeta extends ActiveRecord
 {
@@ -39,10 +39,10 @@ class PostMeta extends ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'meta_name', 'meta_value'], 'required'],
-            [['post_id'], 'integer'],
-            [['meta_value'], 'string'],
-            [['meta_name'], 'string', 'max' => 255],
+            [['post_id', 'name', 'value'], 'required'],
+            ['post_id', 'integer'],
+            ['value', 'string'],
+            ['name', 'string', 'max' => 255],
         ];
     }
 
@@ -52,10 +52,10 @@ class PostMeta extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'         => Yii::t('writesdown', 'ID'),
-            'post_id'    => Yii::t('writesdown', 'Post ID'),
-            'meta_name'  => Yii::t('writesdown', 'Meta Name'),
-            'meta_value' => Yii::t('writesdown', 'Meta Value'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'post_id' => Yii::t('writesdown', 'Post ID'),
+            'name' => Yii::t('writesdown', 'Meta Name'),
+            'value' => Yii::t('writesdown', 'Meta Value'),
         ];
     }
 

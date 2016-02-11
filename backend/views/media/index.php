@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\grid\GridView;
@@ -22,19 +22,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form-inline grid-nav" role="form">
         <div class="form-group">
             <?= Html::dropDownList('bulk-action', null, ['delete' => 'Delete Permanently'], [
-                'prompt' => 'Bulk Action',
-                'class'  => 'bulk-action form-control',
+                'prompt' => Yii::t('writesdown', 'Bulk Action'),
+                'class' => 'bulk-action form-control',
             ]) ?>
 
             <?= Html::button(Yii::t('writesdown', 'Apply'), [
-                'class'     => 'btn btn-flat btn-warning bulk-button',
+                'class' => 'btn btn-flat btn-warning bulk-button',
                 'data-type' => 'DELETE',
             ]) ?>
 
             <?= Html::a(Yii::t('writesdown', 'Add New Media'), ['create'], ['class' => 'btn btn-flat btn-primary']) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
+                'class' => 'btn btn-flat btn-info',
                 "data-toggle" => "collapse",
                 "data-target" => "#media-search",
             ]) ?>
@@ -45,13 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_search', ['model' => $searchModel]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'id'           => 'media-grid-view',
-        'columns'      => [
+        'filterModel' => $searchModel,
+        'id' => 'media-grid-view',
+        'columns' => [
             [
-                'class'           => 'yii\grid\CheckboxColumn',
+                'class' => 'yii\grid\CheckboxColumn',
                 'checkboxOptions' => function ($model) {
-                    if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
+                    if (!Yii::$app->user->can('editor') && $model->author !== Yii::$app->user->id) {
                         return ['disabled' => 'disabled'];
                     }
 
@@ -60,70 +60,70 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => Yii::t('writesdown', 'Preview'),
-                'format'    => 'raw',
-                'value'     => function ($model) {
+                'format' => 'raw',
+                'value' => function ($model) {
                     /* @var $model common\models\Media */
                     $metadata = $model->getMeta('metadata');
-                    if (preg_match('/^image\//', $model->media_mime_type)) {
-                        return Html::a(Html::img($model->uploadUrl . $metadata['media_icon_url']), [
-                            '/media/update',
-                            'id' => $model->id,
-                        ], ['class' => 'media-mime-icon']);
-                    } else {
-                        return Html::a(Html::img(Url::base(true) . '/' . $metadata['media_icon_url']), [
-                            '/media/update',
+                    if (preg_match('/^image\//', $model->mime_type)) {
+                        return Html::a(Html::img($model->getUploadUrl() . $metadata['icon_url']), [
+                            'update',
                             'id' => $model->id,
                         ], ['class' => 'media-mime-icon']);
                     }
+
+                    return Html::a(Html::img(Url::base(true) . '/' . $metadata['icon_url']), [
+                        'update',
+                        'id' => $model->id,
+                    ], ['class' => 'media-mime-icon']);
                 },
             ],
             [
-                'label'  => Yii::t('writesdown', 'File Name'),
+                'label' => Yii::t('writesdown', 'File Name'),
                 'format' => 'html',
-                'value'  => function ($model) {
+                'value' => function ($model) {
                     /* @var $model common\models\Media */
                     $metadata = $model->getMeta('metadata');
 
-                    return Html::a($metadata['media_filename'], ['/media/update', 'id' => $model->id]);
+                    return Html::a($metadata['filename'], ['update', 'id' => $model->id]);
                 },
             ],
             [
                 'attribute' => 'username',
-                'value'     => function ($model) {
+                'value' => function ($model) {
                     return $model->mediaAuthor->username;
                 },
             ],
-            'media_date:datetime',
+            'date:datetime',
 
             [
-                'class'   => 'yii\grid\ActionColumn',
+                'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'view'   => function ($url, $model) {
+                    'view' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $model->url, [
-                            'title'     => Yii::t('yii', 'View'),
+                            'title' => Yii::t('yii', 'View'),
                             'data-pjax' => '0',
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
+                        if (!Yii::$app->user->can('editor') && $model->author !== Yii::$app->user->id) {
                             return '';
                         }
 
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                            'title'     => Yii::t('yii', 'Update'),
+                            'title' => Yii::t('yii', 'Update'),
                             'data-pjax' => '0',
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        if (!Yii::$app->user->can('editor') && $model->media_author !== Yii::$app->user->id) {
+                        if (!Yii::$app->user->can('editor') && $model->author !== Yii::$app->user->id) {
                             return '';
                         }
 
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                            'title'        => Yii::t('yii', 'Delete'),
+                            'title' => Yii::t('yii', 'Delete'),
                             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                            'data-method'  => 'post',
-                            'data-pjax'    => '0',
+                            'data-method' => 'post',
+                            'data-pjax' => '0',
                         ]);
                     },
                 ],
@@ -136,11 +136,11 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php $this->registerJs('jQuery(document).on("click", ".bulk-button", function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t('writesdown', "Are you sure to do this?") . '")){
-        var ids     = $("#media-grid-view").yiiGridView("getSelectedRows"); // returns an array of pkeys, and #grid is your grid element id
+    if(confirm("' . Yii::t('writesdown', 'Are you sure?') . '")){
+        var ids     = $("#media-grid-view").yiiGridView("getSelectedRows");
         var action  = $(this).closest(".form-group").find(".bulk-action").val();
         $.ajax({
-            url: "' . Url::to(["/media/bulk-action"]) . '",
+            url: "' . Url::to(['bulk-action']) . '",
             data: { ids: ids, action: action, _csrf: yii.getCsrfToken() },
             type: "POST",
             success: function(data){

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\functional;
@@ -18,8 +18,8 @@ use yii\helpers\Url;
 /**
  * Class MediaCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class MediaCest
 {
@@ -69,7 +69,7 @@ class MediaCest
         $I->see('Test Media', 'h1');
         $I->seeLink('Test Media');
 
-        $I->amOnPage(Url::to(['/media/view', 'mediaslug' => 'test-media']));
+        $I->amOnPage(Url::to(['/media/view', 'slug' => 'test-media']));
         $I->see('Test Media', 'h1');
         $I->seeLink('Test Media');
     }
@@ -79,7 +79,7 @@ class MediaCest
      */
     public function testProtected(FunctionalTester $I)
     {
-        Media::findOne(1)->updateAttributes(['media_password' => 'mediapassword']);
+        Media::findOne(1)->updateAttributes(['password' => 'mediapassword']);
 
         $I->wantTo('ensure that protected media works');
 
@@ -97,6 +97,6 @@ class MediaCest
         $I->seeElement('.entry-meta');
         $I->seeLink('Test Media');
 
-        Media::findOne(1)->updateAttributes(['media_password' => '']);
+        Media::findOne(1)->updateAttributes(['password' => '']);
     }
 }

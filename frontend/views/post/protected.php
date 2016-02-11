@@ -1,12 +1,13 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
+use common\models\Taxonomy;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -15,24 +16,32 @@ use yii\widgets\ActiveForm;
 /* @var $comment common\models\PostComment */
 /* @var $category common\models\Term */
 
-$this->title = Html::encode($post->post_title . ' - ' . Option::get('sitetitle'));
+$this->title = Html::encode($post->title . ' - ' . Option::get('sitetitle'));
 $this->params['breadcrumbs'][] = [
-    'label' => Html::encode($post->postType->post_type_sn),
-    'url'   => ['/post/index', 'id' => $post->postType->id],
+    'label' => Html::encode($post->postType->singular_name),
+    'url' => ['/post/index', 'id' => $post->postType->id],
 ];
-$category = $post->getTerms()->innerJoinWith(['taxonomy'])->andWhere(['taxonomy_slug' => 'category'])->one();
+$category = $post->getTerms()
+    ->innerJoinWith([
+        'taxonomy' => function ($query) {
+            /* @var $query \yii\db\ActiveQuery */
+            $query->from(['taxonomy' => Taxonomy::tableName()]);
+        },
+    ])
+    ->andWhere(['taxonomy.name' => 'category'])
+    ->one();
 
 if ($category) {
-    $this->params['breadcrumbs'][] = ['label' => Html::encode($category->term_name), 'url' => $category->url];
+    $this->params['breadcrumbs'][] = ['label' => Html::encode($category->name), 'url' => $category->url];
 }
 
-$this->params['breadcrumbs'][] = Html::encode($post->post_title);
+$this->params['breadcrumbs'][] = Html::encode($post->title);
 ?>
 
 <div class="single post-protected">
     <article class="hentry">
         <header class="entry-header page-header">
-            <h1 class="entry-title"><?= Html::encode($post->post_title) ?></h1>
+            <h1 class="entry-title"><?= Html::encode($post->title) ?></h1>
 
         </header>
         <div class="entry-content">
@@ -41,24 +50,24 @@ $this->params['breadcrumbs'][] = Html::encode($post->post_title);
             <p>
                 <?= Yii::t(
                     'writesdown',
-                    '{post_title} is protected, please submit the right password to view the {post_type}.',
+                    '{title} is protected, please submit the right password to view the {type}.',
                     [
-                        'post_title' => Html::encode($post->post_title),
-                        'post_type'  => Html::encode($post->postType->post_type_sn),
+                        'title' => Html::encode($post->title),
+                        'type' => Html::encode($post->postType->singular_name),
                     ]
                 ) ?>
 
             </p>
-            <div class="form-group field-post-post_password required">
+            <div class="form-group field-post-password required">
                 <?= Html::label(
                     Yii::t('writesdown', 'Password'),
-                    'post-post_password',
+                    'post-password',
                     ['class' => 'control-label']
                 ) ?>
 
                 <?= Html::passwordInput('password', null, [
                     'class' => 'form-control',
-                    'id'    => 'post-post_password',
+                    'id' => 'post-password',
                 ]) ?>
 
             </div>

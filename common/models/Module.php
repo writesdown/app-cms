@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license http://www.writesdown.com/license/
+ */
 
 namespace common\models;
 
@@ -6,41 +11,41 @@ use common\components\Json;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%module}}".
  *
  * @property integer $id
- * @property string  $module_name
- * @property string  $module_title
- * @property string  $module_description
- * @property string  $module_config
- * @property integer $module_status
- * @property string  $module_dir
- * @property integer $module_bb
- * @property integer $module_fb
- * @property string  $module_date
- * @property string  $module_modified
+ * @property string $name
+ * @property string $title
+ * @property string $description
+ * @property string $config
+ * @property integer $status
+ * @property string $directory
+ * @property integer $backend_bootstrap
+ * @property integer $frontend_bootstrap
+ * @property string $date
+ * @property string $modified
+ *
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.2.0
  */
 class Module extends ActiveRecord
 {
     // Constant for module activation.
-    const MODULE_ACTIVE = 1;
-    const MODULE_INACTIVE = 0;
-
+    const STATUS_ACTIVE = 1;
+    const STATUS_NOT_ACTIVE = 0;
     // Constant for module backend bootstrapping .
-    const MODULE_BB = 1;
-    const MODULE_BNB = 0;
-
+    const BACKEND_BOOTSTRAP = 1;
+    const NOT_BACKEND_BOOTSTRAP = 0;
     // Constant for module backend bootstrapping .
-    const MODULE_FB = 1;
-    const MODULE_FNB = 0;
+    const FRONTEND_BOOTSTRAP = 1;
+    const NOT_FRONTEND_BOOTSTRAP = 0;
 
     /**
-     * @var UploadedFile
+     * @var \yii\web\UploadedFile
      */
-    public $module_file;
+    public $file;
 
     /**
      * @inheritdoc
@@ -56,21 +61,21 @@ class Module extends ActiveRecord
     public function rules()
     {
         return [
-            [['module_name', 'module_title', 'module_config', 'module_dir'], 'required'],
-            [['module_title', 'module_description', 'module_config'], 'string'],
-            [['module_name'], 'string', 'max' => 64],
-            [['module_dir'], 'string', 'max' => 128],
-            [['module_name', 'module_dir'], 'unique'],
-            [['module_date', 'module_modified'], 'safe'],
-            [['module_status', 'module_bb', 'module_fb'], 'integer'],
-            [['module_status'], 'in', 'range' => [self::MODULE_ACTIVE, self::MODULE_INACTIVE]],
-            [['module_status'], 'default', 'value' => self::MODULE_INACTIVE],
-            [['module_bb'], 'in', 'range' => [self::MODULE_BB, self::MODULE_BNB]],
-            [['module_bb'], 'default', 'value' => self::MODULE_BNB],
-            [['module_bb'], 'in', 'range' => [self::MODULE_FB, self::MODULE_FNB]],
-            [['module_bb'], 'default', 'value' => self::MODULE_FNB],
-            [['module_file'], 'required', 'on' => 'create'],
-            [['module_file'], 'file', 'extensions' => 'zip'],
+            [['name', 'title', 'config', 'directory'], 'required'],
+            [['title', 'description', 'config'], 'string'],
+            ['name', 'string', 'max' => 64],
+            ['directory', 'string', 'max' => 128],
+            [['name', 'directory'], 'unique'],
+            [['date', 'modified'], 'safe'],
+            [['status', 'backend_bootstrap', 'frontend_bootstrap'], 'integer'],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_NOT_ACTIVE]],
+            ['status', 'default', 'value' => self::STATUS_NOT_ACTIVE],
+            ['backend_bootstrap', 'in', 'range' => [self::BACKEND_BOOTSTRAP, self::NOT_BACKEND_BOOTSTRAP]],
+            ['backend_bootstrap', 'default', 'value' => self::NOT_BACKEND_BOOTSTRAP],
+            ['frontend_bootstrap', 'in', 'range' => [self::FRONTEND_BOOTSTRAP, self::NOT_BACKEND_BOOTSTRAP]],
+            ['frontend_bootstrap', 'default', 'value' => self::NOT_FRONTEND_BOOTSTRAP],
+            ['file', 'required', 'on' => 'create'],
+            ['file', 'file', 'extensions' => 'zip'],
         ];
     }
 
@@ -80,51 +85,51 @@ class Module extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'                 => Yii::t('writesdown', 'ID'),
-            'module_name'        => Yii::t('writesdown', 'Name'),
-            'module_title'       => Yii::t('writesdown', 'Title'),
-            'module_description' => Yii::t('writesdown', 'Description'),
-            'module_config'      => Yii::t('writesdown', 'Config'),
-            'module_status'      => Yii::t('writesdown', 'Active'),
-            'module_dir'         => Yii::t('writesdown', 'Directory'),
-            'module_fb'          => Yii::t('writesdown', 'Frontend Bootstrap'),
-            'module_bb'          => Yii::t('writesdown', 'Backend Bootstrap'),
-            'module_date'        => Yii::t('writesdown', 'Installed'),
-            'module_modified'    => Yii::t('writesdown', 'Updated'),
-            'module_file'        => Yii::t('writesdown', 'Module (ZIP)'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'name' => Yii::t('writesdown', 'Name'),
+            'title' => Yii::t('writesdown', 'Title'),
+            'description' => Yii::t('writesdown', 'Description'),
+            'config' => Yii::t('writesdown', 'Config'),
+            'status' => Yii::t('writesdown', 'Active'),
+            'directory' => Yii::t('writesdown', 'Directory'),
+            'frontend_bootstrap' => Yii::t('writesdown', 'Is Frontend Bootstrap'),
+            'backend_bootstrap' => Yii::t('writesdown', 'Is Backend Bootstrap'),
+            'date' => Yii::t('writesdown', 'Installed'),
+            'modified' => Yii::t('writesdown', 'Updated'),
+            'file' => Yii::t('writesdown', 'Module (ZIP)'),
         ];
     }
 
     /**
      * Get module status as array
      */
-    public function getStatus()
+    public function getStatuses()
     {
         return [
-            self::MODULE_ACTIVE   => Yii::t('writesdown', 'Yes'),
-            self::MODULE_INACTIVE => Yii::t('writesdown', 'No'),
+            self::STATUS_ACTIVE => Yii::t('writesdown', 'Yes'),
+            self::STATUS_NOT_ACTIVE => Yii::t('writesdown', 'No'),
         ];
     }
 
     /**
      * Get array
      */
-    public function getBackendBootstrap()
+    public function getBackendBootstraps()
     {
         return [
-            self::MODULE_BB  => Yii::t('writesdown', 'Yes'),
-            self::MODULE_BNB => Yii::t('writesdown', 'No'),
+            self::BACKEND_BOOTSTRAP => Yii::t('writesdown', 'Yes'),
+            self::NOT_BACKEND_BOOTSTRAP => Yii::t('writesdown', 'No'),
         ];
     }
 
     /**
      * Get array
      */
-    public function getFrontendBootstrap()
+    public function getFrontendBootstraps()
     {
         return [
-            self::MODULE_FB  => Yii::t('writesdown', 'Yes'),
-            self::MODULE_FNB => Yii::t('writesdown', 'No'),
+            self::FRONTEND_BOOTSTRAP => Yii::t('writesdown', 'Yes'),
+            self::NOT_FRONTEND_BOOTSTRAP => Yii::t('writesdown', 'No'),
         ];
     }
 
@@ -136,7 +141,7 @@ class Module extends ActiveRecord
      */
     public static function getActiveModules()
     {
-        return static::find()->where(['module_status' => 1])->all();
+        return static::find()->where(['status' => self::STATUS_ACTIVE])->all();
     }
 
     /**
@@ -146,7 +151,7 @@ class Module extends ActiveRecord
      */
     public function getConfig()
     {
-        return Json::decode($this->module_config);
+        return Json::decode($this->config);
     }
 
     /**
@@ -188,7 +193,7 @@ class Module extends ActiveRecord
      */
     public function getParamPath()
     {
-        return Yii::getAlias('@modules/' . $this->module_dir . '/config/params.php');
+        return Yii::getAlias('@modules/' . $this->directory . '/config/params.php');
     }
 
     /**
@@ -198,7 +203,7 @@ class Module extends ActiveRecord
      */
     public function getConfigPath()
     {
-        return Yii::getAlias('@modules/' . $this->module_dir . '/config/config.php');
+        return Yii::getAlias('@modules/' . $this->directory . '/config/config.php');
     }
 
     /**
@@ -208,9 +213,9 @@ class Module extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->module_date = new Expression('NOW()');
+                $this->date = new Expression('NOW()');
             }
-            $this->module_modified = new Expression('NOW()');
+            $this->modified = new Expression('NOW()');
 
             return true;
         }

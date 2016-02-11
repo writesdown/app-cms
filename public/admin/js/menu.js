@@ -484,16 +484,17 @@
     var updateOutput = function (e) {
         var list = e.length ? e : $(e.target),
             output = list.data("output");
+
         if (window.JSON) {
             if (typeof output !== "undefined") {
-                output.val(window.JSON.stringify(list.nestable("serialise")));//, null, 2));
+                output.val(window.JSON.stringify(list.nestable("serialise")));
             }
         } else {
             output.val("JSON browser support required for this menu option.");
         }
     };
 
-    $(".dd").nestable({
+    $('.dd').nestable({
         listNodeName    : 'ul',
         itemNodeName    : 'li',
         rootClass       : 'dd',
@@ -510,58 +511,62 @@
         group           : 0,
         maxDepth        : 5,
         threshold       : 20
-    }).on("change", updateOutput);
+    }).on('change', updateOutput);
 
-    $(".menu-items-form").on("submit", function () {
-        var menu_items = $(".dd");
-        updateOutput( menu_items.data("output", $("#menu-output")));
+    $('.menu-items-form').on('submit', function () {
+        var $menuItems = $('.dd');
+
+        updateOutput( $menuItems.data('output', $('#menu-output')));
     });
 
     /* DELETE MENU */
-    $('#menu-delete-menu').click( function(e){
+    $('#delete-menu').click( function(e){
         e.preventDefault();
-        var _this = $(this),
-            _form = $(this).closest('form');
-        if(_form.find('#select-menu-list').val() === ''){
-            alert(_this.data('error'));
-        }else if (confirm(_this.data('message'))){
-            _form.attr('method', 'post');
-            _form.append('<input type="hidden" name="_csrf" value="'+yii.getCsrfToken()+'">');
-            _form.attr('action', _this.data('url') );
-            _form.submit();
+        var $this = $(this),
+            form = $(this).closest('form');
+
+        if(form.find('#select-menu-list').val() === ''){
+            alert($this.data('error'));
+        } else if (confirm($this.data('message'))){
+            form.attr('method', 'post');
+            form.append('<input type="hidden" name="_csrf" value="'+yii.getCsrfToken()+'">');
+            form.attr('action', $this.data('url') );
+            form.submit();
         }
     });
 
     /* CREATE MENU ITEM */
-    $(".menu-create-menu-item").submit( function(e){
+    $('.create-menu-item').submit( function(e){
         e.preventDefault();
         e.stopImmediatePropagation();
+        var $this = $(this),
+            listMenu = $('.list-menu');
+
         $.ajax({
-            url: $(this).data('url'),
+            url: $this.data('url'),
             type: 'POST',
-            data: $(this).serialize(),
+            data: $this.serialize(),
             success: function(response){
-                $(".list-menu").append(response);
+                listMenu.append(response);
             }
         });
     });
 
     /* REMOVE MENU ITEM */
-    $(document).on("click", ".menu-delete-menu-item", function(e){
+    $(document).on('click', '.delete-menu-item', function(e){
         e.preventDefault();
-
-        var _child = $(this).closest(".dd-item").find('.dd-list'),
-            _parent = $(this).closest(".dd-list"),
-            _this = $(this);
+        var $this = $(this),
+            child = $this.closest('.dd-item').find('.dd-list'),
+            parent = $this.closest('.dd-list');
 
         $.ajax({
-            url: _this.data('url'),
-            data: { id: _this.data('id'), '_csrf': yii.getCsrfToken()},
-            type: "POST",
+            url: $this.data('url'),
+            data: { id: $this.data('id'), '_csrf': yii.getCsrfToken()},
+            type: 'POST',
             success: function () {
-                _parent.append(_child.html());
-                _child.remove();
-                _this.closest(".dd-item").remove();
+                parent.append(child.html());
+                child.remove();
+                $this.closest(".dd-item").remove();
             }
         });
     });

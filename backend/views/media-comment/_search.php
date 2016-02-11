@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
 <div id="media-comment-search" class="collapse media-comment-search">
     <?php $form = ActiveForm::begin([
-        'action' => ['index', 'media_id' => isset($media) ? $media->id : null],
+        'action' => ['index', 'media' => isset($media) ? $media->id : null],
         'method' => 'get',
     ]) ?>
 
@@ -25,27 +25,25 @@ use yii\widgets\ActiveForm;
         <div class="col-sm-6">
             <?= $form->field($model, 'media_title') ?>
 
-            <?= $form->field($model, 'comment_author') ?>
+            <?= $form->field($model, 'author') ?>
 
-            <?= $form->field($model, 'comment_author_email') ?>
+            <?= $form->field($model, 'email') ?>
 
-            <?= $form->field($model, 'comment_author_url') ?>
+            <?= $form->field($model, 'url') ?>
 
-            <?= $form->field($model, 'comment_author_ip') ?>
+            <?= $form->field($model, 'ip') ?>
 
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'comment_date') ?>
+            <?= $form->field($model, 'date') ?>
 
-            <?= $form->field($model, 'comment_content') ?>
+            <?= $form->field($model, 'content') ?>
 
-            <?= $form->field($model, 'comment_approved')->dropDownList($model->getCommentApproved(), [
-                'prompt' => '',
-            ]) ?>
+            <?= $form->field($model, 'status')->dropDownList($model->getStatuses(), ['prompt' => '']) ?>
 
-            <?= $form->field($model, 'comment_agent') ?>
+            <?= $form->field($model, 'agent') ?>
 
-            <?= $form->field($model, 'comment_parent') ?>
+            <?= $form->field($model, 'parent') ?>
 
         </div>
     </div>
@@ -55,9 +53,9 @@ use yii\widgets\ActiveForm;
         <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
 
         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-level-up']), [
-            'class'       => 'index-search-button btn btn-flat btn-default',
-            "data-toggle" => "collapse",
-            "data-target" => "#media-comment-search",
+            'class' => 'index-search-button btn btn-flat btn-default',
+            'data-toggle' => 'collapse',
+            'data-target' => '#media-comment-search',
         ]) ?>
 
     </div>

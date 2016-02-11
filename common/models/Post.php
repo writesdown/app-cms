@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -17,32 +17,31 @@ use yii\helpers\Html;
 /**
  * This is the model class for table "{{%post}}".
  *
- * @property integer            $id
- * @property integer            $post_author
- * @property integer            $post_type
- * @property string             $post_title
- * @property string             $post_excerpt
- * @property string             $post_content
- * @property string             $post_date
- * @property string             $post_modified
- * @property string             $post_status
- * @property string             $post_password
- * @property string             $post_slug
- * @property string             $post_comment_status
- * @property integer            $post_comment_count
- * @property string             $url
- * @property []                 $poststatus
+ * @property integer $id
+ * @property integer $author
+ * @property integer $type
+ * @property string $title
+ * @property string $excerpt
+ * @property string $content
+ * @property string $date
+ * @property string $modified
+ * @property string $status
+ * @property string $password
+ * @property string $slug
+ * @property string $comment_status
+ * @property integer $comment_count
+ * @property string $url
  *
- * @property Media[]            $media
- * @property PostType           $postType
- * @property User               $postAuthor
- * @property PostComment[]      $postComments
- * @property PostMeta[]         $postMeta
+ * @property Media[] $media
+ * @property PostType $postType
+ * @property User $postAuthor
+ * @property PostComment[] $postComments
+ * @property PostMeta[] $postMeta
  * @property TermRelationship[] $termRelationships
- * @property Term[]             $terms
+ * @property Term[] $terms
  *
- * @author   Agiel K. Saputra <13nightevil@gmail.com>
- * @since    1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Post extends ActiveRecord
 {
@@ -50,12 +49,11 @@ class Post extends ActiveRecord
 
     const COMMENT_STATUS_OPEN = 'open';
     const COMMENT_STATUS_CLOSE = 'close';
-
-    const POST_STATUS_PUBLISH = 'publish';
-    const POST_STATUS_PRIVATE = 'private';
-    const POST_STATUS_DRAFT = 'draft';
-    const POST_STATUS_TRASH = 'trash';
-    const POST_STATUS_REVIEW = 'review';
+    const STATUS_PUBLISH = 'publish';
+    const STATUS_PRIVATE = 'private';
+    const STATUS_DRAFT = 'draft';
+    const STATUS_TRASH = 'trash';
+    const STATUS_REVIEW = 'review';
 
     /**
      * @inheritdoc
@@ -72,11 +70,9 @@ class Post extends ActiveRecord
     {
         return [
             [
-                'class'      => SluggableBehavior::className(),
-                'attribute'  => 'post_title',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['post_slug'],
-                ],
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['slug']],
             ],
         ];
     }
@@ -87,29 +83,28 @@ class Post extends ActiveRecord
     public function rules()
     {
         return [
-            [['post_title'], 'required'],
-            [['post_author', 'post_type', 'post_comment_count'], 'integer'],
-            [['post_title', 'post_excerpt', 'post_content'], 'string'],
-            [['post_date', 'post_modified', 'post_author'], 'safe'],
-            [['post_status', 'post_comment_status'], 'string', 'max' => 20],
-            [['post_password', 'post_slug'], 'string', 'max' => 255],
-
-            ['post_comment_status', 'in', 'range' => [self::COMMENT_STATUS_OPEN, self::COMMENT_STATUS_CLOSE]],
-            ['post_comment_status', 'default', 'value' => self::COMMENT_STATUS_CLOSE],
-            ['post_comment_count', 'default', 'value' => 0],
+            ['title', 'required'],
+            [['author', 'type', 'comment_count'], 'integer'],
+            [['title', 'excerpt', 'content'], 'string'],
+            [['date', 'modified', 'author'], 'safe'],
+            [['status', 'comment_status'], 'string', 'max' => 20],
+            [['password', 'slug'], 'string', 'max' => 255],
+            ['comment_status', 'in', 'range' => [self::COMMENT_STATUS_OPEN, self::COMMENT_STATUS_CLOSE]],
+            ['comment_status', 'default', 'value' => self::COMMENT_STATUS_CLOSE],
+            ['comment_count', 'default', 'value' => 0],
             [
-                'post_status',
+                'status',
                 'in',
                 'range' => [
-                    self::POST_STATUS_PUBLISH,
-                    self::POST_STATUS_DRAFT,
-                    self::POST_STATUS_PRIVATE,
-                    self::POST_STATUS_REVIEW,
-                    self::POST_STATUS_TRASH,
+                    self::STATUS_PUBLISH,
+                    self::STATUS_DRAFT,
+                    self::STATUS_PRIVATE,
+                    self::STATUS_REVIEW,
+                    self::STATUS_TRASH,
                 ],
             ],
-            ['post_status', 'default', 'value' => self::POST_STATUS_PUBLISH],
-            [['post_title', 'post_slug'], 'unique'],
+            ['status', 'default', 'value' => self::STATUS_PUBLISH],
+            [['title', 'slug'], 'unique'],
         ];
     }
 
@@ -119,20 +114,20 @@ class Post extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'                  => Yii::t('writesdown', 'ID'),
-            'post_author'         => Yii::t('writesdown', 'Author'),
-            'post_type'           => Yii::t('writesdown', 'Type'),
-            'post_title'          => Yii::t('writesdown', 'Title'),
-            'post_excerpt'        => Yii::t('writesdown', 'Excerpt'),
-            'post_content'        => Yii::t('writesdown', 'Content'),
-            'post_date'           => Yii::t('writesdown', 'Date'),
-            'post_modified'       => Yii::t('writesdown', 'Modified'),
-            'post_status'         => Yii::t('writesdown', 'Status'),
-            'post_password'       => Yii::t('writesdown', 'Password'),
-            'post_slug'           => Yii::t('writesdown', 'Slug'),
-            'post_comment_status' => Yii::t('writesdown', 'Comment Status'),
-            'post_comment_count'  => Yii::t('writesdown', 'Comment Count'),
-            'username'            => Yii::t('writesdown', 'Author'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'author' => Yii::t('writesdown', 'Author'),
+            'type' => Yii::t('writesdown', 'Type'),
+            'title' => Yii::t('writesdown', 'Title'),
+            'excerpt' => Yii::t('writesdown', 'Excerpt'),
+            'content' => Yii::t('writesdown', 'Content'),
+            'date' => Yii::t('writesdown', 'Date'),
+            'modified' => Yii::t('writesdown', 'Modified'),
+            'status' => Yii::t('writesdown', 'Status'),
+            'password' => Yii::t('writesdown', 'Password'),
+            'slug' => Yii::t('writesdown', 'Slug'),
+            'comment_status' => Yii::t('writesdown', 'Comment Status'),
+            'comment_count' => Yii::t('writesdown', 'Comment Count'),
+            'username' => Yii::t('writesdown', 'Author'),
         ];
     }
 
@@ -141,7 +136,7 @@ class Post extends ActiveRecord
      */
     public function getMedia()
     {
-        return $this->hasMany(Media::className(), ['media_post_id' => 'id']);
+        return $this->hasMany(Media::className(), ['post_id' => 'id']);
     }
 
     /**
@@ -149,7 +144,7 @@ class Post extends ActiveRecord
      */
     public function getPostType()
     {
-        return $this->hasOne(PostType::className(), ['id' => 'post_type']);
+        return $this->hasOne(PostType::className(), ['id' => 'type']);
     }
 
     /**
@@ -157,7 +152,7 @@ class Post extends ActiveRecord
      */
     public function getPostAuthor()
     {
-        return $this->hasOne(User::className(), ['id' => 'post_author']);
+        return $this->hasOne(User::className(), ['id' => 'author']);
     }
 
     /**
@@ -165,7 +160,7 @@ class Post extends ActiveRecord
      */
     public function getPostComments()
     {
-        return $this->hasMany(PostComment::className(), ['comment_post_id' => 'id']);
+        return $this->hasMany(PostComment::className(), ['post_id' => 'id']);
     }
 
     /**
@@ -189,8 +184,9 @@ class Post extends ActiveRecord
      */
     public function getTerms()
     {
-        return $this->hasMany(Term::className(), ['id' => 'term_id'])->viaTable('{{%term_relationship}}',
-            ['post_id' => 'id']);
+        return $this
+            ->hasMany(Term::className(), ['id' => 'term_id'])
+            ->viaTable('{{%term_relationship}}', ['post_id' => 'id']);
     }
 
     /**
@@ -198,25 +194,25 @@ class Post extends ActiveRecord
      *
      * @return array
      */
-    public function getPostStatus()
+    public function getPostStatuses()
     {
         return [
-            self::POST_STATUS_PUBLISH => "Publish",
-            self::POST_STATUS_DRAFT   => "Draft",
-            self::POST_STATUS_PRIVATE => "Private",
-            self::POST_STATUS_TRASH   => "Trash",
-            self::POST_STATUS_REVIEW  => "Review",
+            self::STATUS_PUBLISH => Yii::t('writesdown', 'Publish'),
+            self::STATUS_DRAFT => Yii::t('writesdown', 'Draft'),
+            self::STATUS_PRIVATE => Yii::t('writesdown', 'Private'),
+            self::STATUS_TRASH => Yii::t('writesdown', 'Trash'),
+            self::STATUS_REVIEW => Yii::t('writesdown', 'Review'),
         ];
     }
 
     /**
      * Get comment status as array
      */
-    public function getCommentStatus()
+    public function getCommentStatuses()
     {
         return [
-            self::COMMENT_STATUS_OPEN  => "Open",
-            self::COMMENT_STATUS_CLOSE => "Close",
+            self::COMMENT_STATUS_OPEN => Yii::t('writesdown', 'Open'),
+            self::COMMENT_STATUS_CLOSE => Yii::t('writesdown', 'Close'),
         ];
     }
 
@@ -234,21 +230,20 @@ class Post extends ActiveRecord
     /**
      * Get meta for current post.
      *
-     * @param string $metaName
-     *
+     * @param string $name
      * @return mixed|null
      */
-    public function getMeta($metaName)
+    public function getMeta($name)
     {
         /* @var $model \common\models\PostMeta */
-        $model = PostMeta::findOne(['meta_name' => $metaName, 'post_id' => $this->id]);
+        $model = PostMeta::findOne(['name' => $name, 'post_id' => $this->id]);
 
         if ($model) {
-            if (Json::isJson($model->meta_value)) {
-                return Json::decode($model->meta_value);
+            if (Json::isJson($model->value)) {
+                return Json::decode($model->value);
             }
 
-            return $model->meta_value;
+            return $model->value;
         }
 
         return null;
@@ -257,25 +252,25 @@ class Post extends ActiveRecord
     /**
      * Add new meta data for current post.
      *
-     * @param string       $metaName
-     * @param string|array $metaValue
-     *
+     * @param string $name
+     * @param string|array $value
      * @return bool
      */
-    public function setMeta($metaName, $metaValue)
+    public function setMeta($name, $value)
     {
-        if (is_array($metaValue) || is_object($metaValue)) {
-            $metaValue = Json::encode($metaValue);
+        if (is_array($value) || is_object($value)) {
+            $value = Json::encode($value);
         }
 
-        if ($this->getMeta($metaName) !== null) {
-            return $this->upMeta($metaName, $metaValue);
+        if ($this->getMeta($name) !== null) {
+            return $this->upMeta($name, $value);
         }
 
-        $model = new PostMeta();
-        $model->post_id = $this->id;
-        $model->meta_name = $metaName;
-        $model->meta_value = $metaValue;
+        $model = new PostMeta([
+            'post_id' => $this->id,
+            'name' => $name,
+            'value' => $value,
+        ]);
 
         return $model->save();
     }
@@ -283,21 +278,20 @@ class Post extends ActiveRecord
     /**
      * Update meta data for current post.
      *
-     * @param string       $metaName
-     * @param string|array $metaValue
-     *
+     * @param string $name
+     * @param string|array $value
      * @return bool
      */
-    public function upMeta($metaName, $metaValue)
+    public function upMeta($name, $value)
     {
         /* @var $model \common\models\PostMeta */
-        $model = PostMeta::findOne(['meta_name' => $metaName, 'post_id' => $this->id]);
+        $model = PostMeta::findOne(['name' => $name, 'post_id' => $this->id]);
 
-        if (is_array($metaValue) || is_object($metaValue)) {
-            $metaValue = Json::encode($metaValue);
+        if (is_array($value) || is_object($value)) {
+            $value = Json::encode($value);
         }
 
-        $model->meta_value = $metaValue;
+        $model->value = $value;
 
         return $model->save();
     }
@@ -305,7 +299,6 @@ class Post extends ActiveRecord
     /**
      * @param bool $sameType
      * @param bool $sameTerm
-     *
      * @return array|null|Post
      */
     public function getNextPost($sameType = true, $sameTerm = false)
@@ -314,11 +307,11 @@ class Post extends ActiveRecord
         $query = static::find()
             ->from(['post' => $this->tableName()])
             ->andWhere(['>', 'post.id', $this->id])
-            ->andWhere(['post_status' => 'publish'])
+            ->andWhere(['status' => 'publish'])
             ->orderBy(['post.id' => SORT_ASC]);
 
         if ($sameType) {
-            $query->andWhere(['post_type' => $this->post_type]);
+            $query->andWhere(['type' => $this->type]);
         }
 
         if ($sameTerm) {
@@ -338,14 +331,13 @@ class Post extends ActiveRecord
     }
 
     /**
-     * @param bool   $sameType
-     * @param bool   $sameTerm
+     * @param bool $sameType
+     * @param bool $sameTerm
      * @param string $title
-     * @param array  $options
-     *
+     * @param array $options
      * @return string
      */
-    public function getNextPostLink($title = '{post_title}', $sameType = true, $sameTerm = false, $options = [])
+    public function getNextPostLink($title = '{title}', $sameType = true, $sameTerm = false, $options = [])
     {
         if ($nextPost = $this->getNextPost($sameType, $sameTerm)) {
             $title = preg_replace_callback('/\\{([\w\-\/]+)\\}/', function ($matches) use ($nextPost) {
@@ -363,7 +355,6 @@ class Post extends ActiveRecord
     /**
      * @param bool $sameType
      * @param bool $sameTerm
-     *
      * @return array|null|Post
      */
     public function getPrevPost($sameType = true, $sameTerm = false)
@@ -372,11 +363,11 @@ class Post extends ActiveRecord
         $query = static::find()
             ->from(['post' => $this->tableName()])
             ->andWhere(['<', 'post.id', $this->id])
-            ->andWhere(['post_status' => 'publish'])
+            ->andWhere(['status' => 'publish'])
             ->orderBy(['post.id' => SORT_DESC]);
 
         if ($sameType) {
-            $query->andWhere(['post_type' => $this->post_type]);
+            $query->andWhere(['type' => $this->type]);
         }
 
         if ($sameTerm) {
@@ -396,14 +387,13 @@ class Post extends ActiveRecord
     }
 
     /**
-     * @param bool   $sameType
-     * @param bool   $sameTerm
+     * @param bool $sameType
+     * @param bool $sameTerm
      * @param string $title
-     * @param array  $options
-     *
+     * @param array $options
      * @return string
      */
-    public function getPrevPostLink($title = '{post_title}', $sameType = true, $sameTerm = false, $options = [])
+    public function getPrevPostLink($title = '{title}', $sameType = true, $sameTerm = false, $options = [])
     {
         if ($prevPost = $this->getPrevPost($sameType, $sameTerm)) {
             $title = preg_replace_callback('/\\{([\w\-\/]+)\\}/', function ($matches) use ($prevPost) {
@@ -422,12 +412,11 @@ class Post extends ActiveRecord
      * Generate excerpt of post model.
      *
      * @param int $limit
-     *
      * @return string
      */
     public function getExcerpt($limit = 55)
     {
-        $excerpt = preg_replace('/\s{3,}/', ' ', strip_tags($this->post_content));
+        $excerpt = preg_replace('/\s{3,}/', ' ', strip_tags($this->content));
         $words = preg_split("/[\n\r\t ]+/", $excerpt, $limit + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
 
         if (count($words) > $limit) {
@@ -440,6 +429,24 @@ class Post extends ActiveRecord
         return $excerpt;
     }
 
+
+    /**
+     * Get permission to access model by current user.
+     * @return bool
+     */
+    public function getPermission()
+    {
+        if (!$this->postType
+            || !Yii::$app->user->can($this->postType->permission)
+            || (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $this->author)
+            || (!Yii::$app->user->can('author') && $this->status === self::STATUS_REVIEW)
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @inheritdoc
      */
@@ -447,10 +454,10 @@ class Post extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->post_author = Yii::$app->user->id;
+                $this->author = Yii::$app->user->id;
             }
-            $this->post_modified = date('Y-m-d H:i:s');
-            $this->post_excerpt = $this->getExcerpt();
+            $this->modified = date('Y-m-d H:i:s');
+            $this->excerpt = $this->getExcerpt();
 
             return true;
         }

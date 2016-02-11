@@ -1,0 +1,51 @@
+#media-browser-modal .modal-header {
+    height: 57px;
+    overflow: hidden;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+#media-browser-modal .modal-dialog {
+    width: 90%;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+}
+#media-browser-modal .modal-dialog .modal-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 300px;
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .7);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .7);
+    background: #fcfcfc;
+    -webkit-font-smoothing: subpixel-antialiased;
+    padding: 0;
+}
+#media-browser-modal .modal-dialog .modal-body {
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 57px;
+}
+#media-browser-modal .modal-dialog .modal-body iframe {
+    width: 100%;
+    border: none;
+    height: 100%;
+}
+@media only screen and (max-width: 640px), screen and (max-height: 400px) {
+    #media-browser-modal .modal-dialog {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+    }
+}

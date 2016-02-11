@@ -94,7 +94,7 @@ $priority = [
                 'changeFreq' => $changeFreq,
                 'taxonomies' => $taxonomies,
             ]) ?>
-            <?= $this->render('_media', ['option' => $option, 'priority' => $priority, 'changeFreq' => $changeFreq,]) ?>
+            <?= $this->render('_media', ['option' => $option, 'priority' => $priority, 'changeFreq' => $changeFreq, ]) ?>
         </div>
     </div>
     <div class="form-group">

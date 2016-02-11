@@ -7,7 +7,7 @@ use yii\db\Schema;
  * Migration class for taxonomy.
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000008_taxonomy extends \yii\db\Migration
 {
@@ -23,29 +23,25 @@ class m000000_000008_taxonomy extends \yii\db\Migration
         }
 
         $this->createTable('{{%taxonomy}}', [
-            'id'                    => Schema::TYPE_PK,
-            'taxonomy_name'         => Schema::TYPE_STRING . '(200) NOT NULL',
-            'taxonomy_slug'         => Schema::TYPE_STRING . '(200) NOT NULL',
-            'taxonomy_hierarchical' => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
-            'taxonomy_sn'           => Schema::TYPE_STRING . '(255) NOT NULL',
-            'taxonomy_pn'           => Schema::TYPE_STRING . '(255) NOT NULL',
-            'taxonomy_smb'          => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
+            'id' => Schema::TYPE_PK,
+            'name' => Schema::TYPE_STRING . '(200) NOT NULL',
+            'slug' => Schema::TYPE_STRING . '(200) NOT NULL',
+            'hierarchical' => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
+            'singular_name' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'plural_name' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'menu_builder' => Schema::TYPE_SMALLINT . '(1) NOT NULL DEFAULT 0',
         ], $tableOptions);
 
         /**
          * Add two taxonomies, that are category and tag
          */
-        $this->batchInsert('{{%taxonomy}}', [
-            'taxonomy_name',
-            'taxonomy_slug',
-            'taxonomy_hierarchical',
-            'taxonomy_sn',
-            'taxonomy_pn',
-            'taxonomy_smb',
-        ], [
-            ['category', 'category', '1', 'Category', 'Categories', 1],
-            ['tag', 'tag', '0', 'Tag', 'Tags', 0],
-        ]);
+        $this->batchInsert(
+            '{{%taxonomy}}',
+            ['name', 'slug', 'hierarchical', 'singular_name', 'plural_name', 'menu_builder'], [
+                ['category', 'category', '1', 'Category', 'Categories', 1],
+                ['tag', 'tag', '0', 'Tag', 'Tags', 0],
+            ]
+        );
     }
 
     /**

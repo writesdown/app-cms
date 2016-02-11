@@ -1,18 +1,18 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use backend\assets\WidgetAsset;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $availableWidget [] */
-/* @var $activatedWidget [] */
-/* @var $widgetSpace [] */
+/* @var $active [] */
+/* @var $available [] */
+/* @var $spaces [] */
 
 $this->title = Yii::t('writesdown', 'Widgets');
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,9 +22,9 @@ WidgetAsset::register($this);
     <div class="col-sm-push-6 col-md-push-5 col-sm-6 col-md-7">
         <div class="row">
             <?= $this->render('_space', [
-                'availableWidget' => $availableWidget,
-                'activatedWidget' => $activatedWidget,
-                'widgetSpace'     => $widgetSpace,
+                'active' => $active,
+                'available' => $available,
+                'spaces' => $spaces,
             ]) ?>
         </div>
     </div>
@@ -36,8 +36,8 @@ WidgetAsset::register($this);
         </p>
         <div class="row">
             <?= $this->render('_available', [
-                'availableWidget' => $availableWidget,
-                'widgetSpace'     => $widgetSpace,
+                'available' => $available,
+                'spaces' => $spaces,
             ]) ?>
         </div>
         <div class="form-group">

@@ -67,88 +67,74 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function renderToolbar($event)
     {
         /* @var $view View */
-        /* @var $urlManagerBack \yii\web\UrlManager */
+        /* @var $urlBack \yii\web\UrlManager */
 
-        $urlManagerBack = Yii::$app->urlManagerBack;
+        $urlBack = Yii::$app->urlManagerBack;
         $view = $event->sender;
         $view->registerCss($view->renderPhpFile(__DIR__ . '/assets/toolbar.min.css'));
-
         NavBar::begin([
             'id'                    => 'wd-frontend-toolbar',
             'brandLabel'            => Html::img('@web/img/logo-mini.png'),
-            'brandUrl'              => $urlManagerBack->baseUrl,
-            'innerContainerOptions' => [
-                'class' => 'container-fluid',
-            ],
-            'options'               => [
-                'class' => 'navbar navbar-inverse navbar-fixed-top',
-            ],
+            'brandUrl'              => $urlBack->baseUrl,
+            'innerContainerOptions' => ['class' => 'container-fluid'],
+            'options'               => ['class' => 'navbar navbar-inverse navbar-fixed-top'],
         ]);
-
         echo Nav::widget([
             'encodeLabels' => false,
             'options'      => ['class' => 'navbar-nav'],
             'items'        => [
                 [
-                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-dashboard"></span> ' . Option::get('sitetitle'),
+                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-dashboard"></span> '
+                        . Option::get('sitetitle'),
                     'items' => [
-                        [
-                            'label' => Yii::t('toolbar', 'Dashboard'),
-                            'url'   => $urlManagerBack->baseUrl,
-                        ],
+                        ['label' => Yii::t('toolbar', 'Dashboard'), 'url' => $urlBack->baseUrl],
                         [
                             'label'   => Yii::t('toolbar', 'Themes'),
-                            'url'     => $urlManagerBack->createUrl(['/theme']),
+                            'url'     => $urlBack->createUrl(['/theme']),
                             'visible' => Yii::$app->user->can('administrator'),
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Menus'),
-                            'url'     => $urlManagerBack->createUrl(['/menu']),
+                            'url'     => $urlBack->createUrl(['/menu']),
                             'visible' => Yii::$app->user->can('administrator'),
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Modules'),
-                            'url'     => $urlManagerBack->createUrl(['/module']),
+                            'url'     => $urlBack->createUrl(['/module']),
                             'visible' => Yii::$app->user->can('administrator'),
                         ],
                         [
                             'label'   => Yii::t('toolbar', 'Widgets'),
-                            'url'     => $urlManagerBack->createUrl(['/widget']),
+                            'url'     => $urlBack->createUrl(['/widget']),
                             'visible' => Yii::$app->user->can('administrator'),
                         ],
                     ],
                 ],
                 [
-                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span> ' . Yii::t('toolbar',
-                            'New'),
+                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span> '
+                        . Yii::t('toolbar', 'New'),
                     'items' => $this->getAddNewMenu() ? $this->getAddNewMenu() : null,
                 ],
             ],
         ]);
-
         echo Nav::widget([
             'encodeLabels' => false,
             'options'      => ['class' => 'navbar-nav navbar-right'],
             'items'        => [
                 [
-                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-user"></span> ' . Yii::$app->user->identity->username,
+                    'label' => '<span aria-hidden="true" class="glyphicon glyphicon-user"></span> '
+                        . Yii::$app->user->identity->username,
                     'items' => [
-                        [
-                            'label' => 'Profile',
-                            'url'   => $urlManagerBack->createUrl(['/user/profile']),
-                        ],
+                        ['label' => 'Profile', 'url' => $urlBack->createUrl(['/user/profile'])],
                         [
                             'label'       => 'Logout',
                             'url'         => ['/site/logout'],
-                            'linkOptions' => [
-                                'data-method' => 'post',
-                            ],
+                            'linkOptions' => ['data-method' => 'post'],
                         ],
                     ],
                 ],
             ],
         ]);
-
         NavBar::end();
     }
 
@@ -159,22 +145,22 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     protected function getPostTypeMenu()
     {
-        /* @var $urlManagerBack \yii\web\UrlManager */
+        /* @var $urlBack \yii\web\UrlManager */
         /* @var $postTypes \common\models\PostType[] */
 
-        $urlManagerBack = Yii::$app->urlManagerBack;
-        $menuItems = [];
-        $postTypes = PostType::find()->select(['id', 'post_type_sn', 'post_type_permission'])->all();
+        $urlBack = Yii::$app->urlManagerBack;
+        $items = [];
+        $postTypes = PostType::find()->select(['id', 'singular_name', 'permission'])->all();
 
         foreach ($postTypes as $postType) {
-            $menuItems[] = [
-                'label'   => $postType->post_type_sn,
-                'url'     => $urlManagerBack->createUrl(['/post/create', 'post_type' => $postType->id]),
-                'visible' => Yii::$app->user->can($postType->post_type_permission),
+            $items[] = [
+                'label'   => $postType->singular_name,
+                'url'     => $urlBack->createUrl(['/post/create', 'type' => $postType->id]),
+                'visible' => Yii::$app->user->can($postType->permission),
             ];
         }
 
-        return $menuItems;
+        return $items;
     }
 
     /**
@@ -184,23 +170,22 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     protected function getTaxonomyMenu()
     {
-        /* @var $urlManagerBack \yii\web\UrlManager */
+        /* @var $urlBack \yii\web\UrlManager */
         /* @var $taxonomies \common\models\Taxonomy[] */
 
-        $urlManagerBack = Yii::$app->urlManagerBack;
-        $menuItems = [];
-
-        $taxonomies = Taxonomy::find()->select(['id', 'taxonomy_sn'])->all();
+        $urlBack = Yii::$app->urlManagerBack;
+        $items = [];
+        $taxonomies = Taxonomy::find()->select(['id', 'singular_name'])->all();
 
         foreach ($taxonomies as $taxonomy) {
-            $menuItems[] = [
-                'label'   => $taxonomy->taxonomy_sn,
-                'url'     => $urlManagerBack->createUrl(['/taxonomy/view', 'id' => $taxonomy->id]),
+            $items[] = [
+                'label'   => $taxonomy->singular_name,
+                'url'     => $urlBack->createUrl(['/taxonomy/view', 'id' => $taxonomy->id]),
                 'visible' => Yii::$app->user->can('editor'),
             ];
         }
 
-        return $menuItems;
+        return $items;
     }
 
     /**
@@ -210,14 +195,12 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     protected function getAddNewMenu()
     {
-        /* @var $urlManagerBack \yii\web\UrlManager */
+        /* @var $urlBack \yii\web\UrlManager */
 
-        $urlManagerBack = Yii::$app->urlManagerBack;
-
+        $urlBack = Yii::$app->urlManagerBack;
         $postTypeMenu = $this->getPostTypeMenu();
         $taxonomyMenu = $this->getTaxonomyMenu();
-
-        $menuItems = ArrayHelper::merge(
+        $items = ArrayHelper::merge(
             $postTypeMenu,
             ['<li class="divider"></li>'],
             $taxonomyMenu,
@@ -225,17 +208,17 @@ class Module extends \yii\base\Module implements BootstrapInterface
             [
                 [
                     'label'   => Yii::t('toolbar', 'Taxonomy'),
-                    'url'     => $urlManagerBack->createUrl('/taxonomy/create'),
+                    'url'     => $urlBack->createUrl('/taxonomy/create'),
                     'visible' => Yii::$app->user->can('administrator'),
                 ],
                 [
                     'label'   => Yii::t('toolbar', 'Post Type'),
-                    'url'     => $urlManagerBack->createUrl('/post-type/create'),
+                    'url'     => $urlBack->createUrl('/post-type/create'),
                     'visible' => Yii::$app->user->can('administrator'),
                 ],
             ]
         );
 
-        return $menuItems;
+        return $items;
     }
 }

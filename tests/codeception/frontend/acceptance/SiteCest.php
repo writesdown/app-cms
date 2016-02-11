@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\acceptance;
@@ -20,8 +20,8 @@ use tests\codeception\frontend\AcceptanceTester;
 /**
  * Class SiteCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class SiteCest
 {
@@ -75,7 +75,8 @@ class SiteCest
     /**
      * @param AcceptanceTester $I
      */
-    public function testIndex(AcceptanceTester $I){
+    public function testIndex(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that home works');
         $I->amOnPage(\Yii::$app->homeUrl);
         $I->seeLink('Sample Post');
@@ -85,7 +86,8 @@ class SiteCest
     /**
      * @param AcceptanceTester $I
      */
-    public function testContact(AcceptanceTester $I){
+    public function testContact(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that contact works');
 
         $contactPage = ContactPage::openBy($I);
@@ -104,10 +106,10 @@ class SiteCest
 
         $I->amGoingTo('submit contact form with not correct email');
         $contactPage->submit([
-            'name'       => 'tester',
-            'email'      => 'tester.email',
-            'subject'    => 'test subject',
-            'body'       => 'test content',
+            'name' => 'tester',
+            'email' => 'tester.email',
+            'subject' => 'test subject',
+            'body' => 'test content',
             'verifyCode' => 'testme',
         ]);
         $I->expectTo('see that email address is wrong');
@@ -119,10 +121,10 @@ class SiteCest
 
         $I->amGoingTo('submit contact form with correct data');
         $contactPage->submit([
-            'name'       => 'tester',
-            'email'      => 'tester@example.com',
-            'subject'    => 'test subject',
-            'body'       => 'test content',
+            'name' => 'tester',
+            'email' => 'tester@example.com',
+            'subject' => 'test subject',
+            'body' => 'test content',
             'verifyCode' => 'testme',
         ]);
         $I->see('Thank you for contacting us. We will respond to you as soon as possible.');
@@ -131,13 +133,14 @@ class SiteCest
     /**
      * @param AcceptanceTester $I
      */
-    public function testSearch(AcceptanceTester $I){
+    public function testSearch(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that search page works');
 
         $I->amOnPage(\Yii::$app->homeUrl);
 
         $I->submitForm('#sidebar .form-search', [
-            's' => 'test12345qwerty'
+            's' => 'test12345qwerty',
         ]);
         if (method_exists($I, 'wait')) {
             $I->wait(3);
@@ -145,7 +148,7 @@ class SiteCest
         $I->see('Not Found (#404)', 'h1');
 
         $I->submitForm('#sidebar .form-search', [
-            's' => 'sample post'
+            's' => 'sample post',
         ]);
         if (method_exists($I, 'wait')) {
             $I->wait(3);

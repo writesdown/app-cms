@@ -1,60 +1,58 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
 
-/* @var $config [] */
+/* @var $theme [] */
 /* @var $installed string */
 ?>
 <div class="row">
     <div class="col-sm-6">
-        <?= Html::img($config['Thumbnail'], ['class' => 'thumbnail full-width']) ?>
+        <?= Html::img($theme['thumbnail'], ['class' => 'thumbnail full-width']) ?>
 
     </div>
     <div class="col-sm-6">
         <table class="table table-striped table-bordered">
             <tbody>
 
-            <?php foreach ($config as $key => $value): ?>
-                <?php if ($key !== 'Thumbnail' || $value !== 'Dir') : ?>
-                    <tr>
-                        <th><?= $key ?></th>
-                        <td><?= $value ?></td>
-                    </tr>
-                <?php endif ?>
+            <?php foreach ($theme['info'] as $key => $value): ?>
+                <tr>
+                    <th><?= $key ?></th>
+                    <td><?= $value ?></td>
+                </tr>
             <?php endforeach ?>
 
             </tbody>
         </table>
 
-        <?php if ($config['Dir'] === $installed): ?>
+        <?php if ($theme['directory'] === $installed): ?>
             <span class="full-width btn-block btn btn-flat btn-info"><?= Yii::t('writesdown', 'Installed') ?></span>
         <?php else: ?>
             <div class="btn-group">
-                <?= Html::a(Yii::t('writesdown', 'Install'), ['/theme/install', 'theme' => $config['Dir']], [
+                <?= Html::a(Yii::t('writesdown', 'Install'), ['install', 'theme' => $theme['directory']], [
                     'class' => 'btn btn-flat btn-primary',
-                    'data'  => [
-                        'theme'   => $config['Dir'],
-                        'confirm' => Yii::t('writesdown', 'Are you wanna install this theme?'),
-                        'method'  => 'post',
+                    'data' => [
+                        'theme' => $theme['directory'],
+                        'confirm' => Yii::t('writesdown', 'Are you want to install this theme?'),
+                        'method' => 'post',
                     ],
                 ]) ?>
 
             </div>
             <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', [
-                '/theme/delete',
-                'theme' => $config['Dir'],
+                'delete',
+                'theme' => $theme['directory'],
             ], [
                 'class' => 'btn btn-flat btn-danger pull-right',
-                'data'  => [
-                    'theme'   => $config['Dir'],
-                    'confirm' => Yii::t('writesdown', 'Are you sure wanna to delete this theme permanently?'),
-                    'method'  => 'post',
+                'data' => [
+                    'theme' => $theme['directory'],
+                    'confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
                 ],
             ]) ?>
         <?php endif ?>

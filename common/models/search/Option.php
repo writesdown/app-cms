@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 /**
  * Option represents the model behind the search form about `common\models\Option`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Option extends OptionModel
 {
@@ -26,8 +26,8 @@ class Option extends OptionModel
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['option_name', 'option_value', 'option_label', 'option_group'], 'safe'],
+            ['id', 'integer'],
+            [['name', 'value', 'label', 'group'], 'safe'],
         ];
     }
 
@@ -44,7 +44,6 @@ class Option extends OptionModel
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
     public function search($params)
@@ -65,10 +64,10 @@ class Option extends OptionModel
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'option_name', $this->option_name])
-            ->andFilterWhere(['like', 'option_value', $this->option_value])
-            ->andFilterWhere(['like', 'option_label', $this->option_label])
-            ->andFilterWhere(['like', 'option_group', $this->option_group]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'value', $this->value])
+            ->andFilterWhere(['like', 'label', $this->label])
+            ->andFilterWhere(['like', 'group', $this->group]);
 
         return $dataProvider;
     }

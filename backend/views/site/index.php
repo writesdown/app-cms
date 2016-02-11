@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use cebe\gravatar\Gravatar;
@@ -26,7 +26,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                 <span class="info-box-icon info-box-icon"><i class="fa fa-github"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Github</span>
-                    <span class="info-box-number">
+                    <span>
                         <a aria-label="Follow @writesdown on GitHub" href="https://github.com/writesdown"
                            class="github-button">@writesdown</a>
                     </span>
@@ -38,7 +38,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                 <span class="info-box-icon"><i class="fa fa-files-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><?= Yii::t('writesdown', 'Posts') ?></span>
-                    <span class="info-box-number"><?= $postCount ?></span>
+                    <span><?= $postCount ?></span>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                 <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><?= Yii::t('writesdown', 'Comments') ?></span>
-                    <span class="info-box-number"><?= $commentCount ?></span>
+                    <span><?= $commentCount ?></span>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                 <span class="info-box-icon"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text"><?= Yii::t('writesdown', 'Members') ?></span>
-                    <span class="info-box-number"><?= $userCount ?></span>
+                    <span><?= $userCount ?></span>
                 </div>
             </div>
         </div>
@@ -92,9 +92,9 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                         <?php foreach ($posts as $post): ?>
                             <tr>
                                 <td><?= $post->postAuthor->display_name ?></td>
-                                <td><?= substr(strip_tags($post->post_excerpt), 0, 180) . '...' ?></td>
-                                <td><?= Yii::$app->formatter->asDatetime($post->post_date) ?></td>
-                                <td><?= $post->post_comment_count ?></td>
+                                <td><?= substr(strip_tags($post->excerpt), 0, 180) . '...' ?></td>
+                                <td><?= Yii::$app->formatter->asDatetime($post->date) ?></td>
+                                <td><?= $post->comment_count ?></td>
                                 <td>
                                     <?= Html::a(
                                         '<span class="glyphicon glyphicon-eye-open"></span>',
@@ -131,9 +131,9 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                         <?php foreach ($users as $user): ?>
                             <li>
                                 <?= Gravatar::widget([
-                                    'email'   => $user->email,
+                                    'email' => $user->email,
                                     'options' => ['alt' => $user->username],
-                                    'size'    => 128,
+                                    'size' => 128,
                                 ]) ?>
 
                                 <?= Html::a($user->display_name, $user->url, ['class' => 'users-list-name']) ?>
@@ -181,8 +181,8 @@ $this->title = Yii::t('writesdown', 'Dashboard');
 
                         <?php foreach ($comments as $comment): ?>
                             <tr>
-                                <td><?= $comment->comment_author ?></td>
-                                <td><?= substr(strip_tags($comment->comment_content), 0, 180) . '...' ?></td>
+                                <td><?= $comment->author ?></td>
+                                <td><?= substr(strip_tags($comment->content), 0, 180) . '...' ?></td>
                                 <td>
                                     <?= Html::a(
                                         '<span class="glyphicon glyphicon-eye-open"></span>',

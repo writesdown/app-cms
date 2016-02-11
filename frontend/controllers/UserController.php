@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
@@ -17,17 +17,16 @@ use yii\web\NotFoundHttpException;
 /**
  * Class UserController
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class UserController extends Controller
 {
     /**
      * Displays a single User model.
      *
-     * @param null        $id
-     * @param string|null $user
-     *
+     * @param null $id User ID
+     * @param string|null $user Username
      * @return mixed
      * @throws \yii\web\NotFoundHttpException
      */
@@ -43,11 +42,14 @@ class UserController extends Controller
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
-        $query = $model->getPosts()->andWhere(['post_status' => 'publish'])->orderBy(['id' => SORT_DESC]);
+        $query = $model->getPosts()
+            ->andWhere(['status' => 'publish'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->orderBy(['date' => SORT_DESC]);
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page'),
+            'pageSize' => Option::get('posts_per_page'),
         ]);
         $query->offset($pages->offset)->limit($pages->limit);
         $posts = $query->all();
@@ -58,7 +60,7 @@ class UserController extends Controller
             }
 
             return $this->render($render, [
-                'user'  => $model,
+                'user' => $model,
                 'posts' => $posts,
                 'pages' => isset($pages) ? $pages : null,
             ]);
@@ -71,8 +73,7 @@ class UserController extends Controller
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param int $id
-     *
+     * @param int $id User ID
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -89,8 +90,7 @@ class UserController extends Controller
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param string $username
-     *
+     * @param string $username Username
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

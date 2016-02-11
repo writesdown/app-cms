@@ -1,8 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 /**
@@ -11,11 +12,11 @@
  */
 
 return [
-    'post_type_name'       => $faker->name,
-    'post_type_slug'       => $faker->slug,
-    'post_type_icon'       => 'fa fa-file-o',
-    'post_type_sn'         => $faker->name,
-    'post_type_pn'         => $faker->name,
-    'post_type_smb'        => $faker->numberBetween(0, 1),
-    'post_type_permission' => 'contributor',
+    'name' => $faker->name,
+    'slug' => $faker->slug,
+    'icon' => 'fa fa-file-o',
+    'singular_name' => $faker->name,
+    'plural_name' => $faker->name,
+    'menu_builder' => $faker->numberBetween(0, 1),
+    'permission' => 'contributor',
 ];

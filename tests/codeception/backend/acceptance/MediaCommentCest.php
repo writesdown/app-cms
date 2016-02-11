@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -21,8 +21,8 @@ use yii\helpers\Url;
 /**
  * Class MediaCommentCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class MediaCommentCest
 {
@@ -64,12 +64,12 @@ class MediaCommentCest
         $I->see('Media Comments', 'h1');
 
         $I->amGoingTo('submit search form with non existing media-comment');
-        $indexPage->submit(['comment_author' => 'non_existing_media_comment']);
+        $indexPage->submit(['author' => 'non_existing_media_comment']);
         $I->expectTo('not see a record');
         $I->see('No results found.', '#media-comment-grid-view');
 
         $I->amGoingTo('submit search form with existing media');
-        $indexPage->submit(['comment_author' => 'Mr']);
+        $indexPage->submit(['author' => 'Mr']);
         $I->expectTo('see media-comments of which author contains Mr');
         $I->see('Mr. WritesDown', '#media-comment-grid-view');
     }
@@ -81,13 +81,13 @@ class MediaCommentCest
     {
         $I->wantTo('ensure that update media-comment works');
         $updatePage = UpdatePage::openBy($I);
-        $I->see('Update Media Comment: 1', 'h1');
+        $I->see('Update Media Comment 1', 'h1');
 
         $I->amGoingTo('submit media-comment with no correct email & url');
         $updatePage->submit([
-            'comment_author'       => 'Tester',
-            'comment_author_email' => 'tester.author@test',
-            'comment_author_url'   => 'http://.com'
+            'author' => 'Tester',
+            'email' => 'tester.author@test',
+            'url' => 'http://.com',
         ]);
         $I->expectTo('see that email & url not correct');
         $I->see('Email is not a valid email address.', '.help-block');
@@ -95,18 +95,18 @@ class MediaCommentCest
 
         $I->amGoingTo('submit media-comment with correct data');
         $updatePage->submit([
-            'comment_author'       => 'Tester',
-            'comment_author_email' => 'tester@tester.com',
-            'comment_author_url'   => 'http://tester.com'
+            'author' => 'Tester',
+            'email' => 'tester@tester.com',
+            'url' => 'http://tester.com',
         ]);
         $I->expect('media-comment updated');
         $I->dontSee('Email is not a valid email address.', '.help-block');
         $I->dontSee('URL is not a valid URL.', '.help-block');
 
         MediaComment::findOne(1)->updateAll([
-            'comment_author'       => 'Mr. WritesDown',
-            'comment_author_email' => 'wd@writesdown.com',
-            'comment_author_url'   => 'http://www.writesdown.com'
+            'author' => 'Mr. WritesDown',
+            'email' => 'wd@writesdown.com',
+            'url' => 'http://www.writesdown.com',
         ]);
     }
 
@@ -121,7 +121,7 @@ class MediaCommentCest
 
         $I->seeElement('a[href="' . Url::to(['/media-comment/delete', 'id' => 1]) . '"]');
 
-        if(method_exists($I, 'acceptPopup') && method_exists($I, 'wait')){
+        if (method_exists($I, 'acceptPopup') && method_exists($I, 'wait')) {
             $I->click('a[href="' . Url::to(['/media-comment/delete', 'id' => 1]) . '"]');
             $I->acceptPopup();
             $I->wait(3);
@@ -148,9 +148,9 @@ class MediaCommentCest
         $I->amGoingTo('reply media-comment with no empty content');
         $replyPage->submit('Test reply media-comment');
         $I->expect('the reply saved');
-        $I->see('Update Media Comment: 2', 'h1');
+        $I->see('Update Media Comment 2', 'h1');
 
-        MediaComment::deleteAll(['comment_content' => 'Test reply media-comment']);
+        MediaComment::deleteAll(['content' => 'Test reply media-comment']);
     }
 
     /**

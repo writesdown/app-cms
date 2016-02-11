@@ -6,7 +6,7 @@ use yii\db\Schema;
  * Class m000000_000016_media_meta
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000016_media_meta extends \yii\db\Migration
 {
@@ -22,10 +22,10 @@ class m000000_000016_media_meta extends \yii\db\Migration
         }
 
         $this->createTable('{{%media_meta}}', [
-            'id'         => Schema::TYPE_PK,
-            'media_id'   => Schema::TYPE_INTEGER . '(11) NOT NULL',
-            'meta_name'  => Schema::TYPE_STRING . '(255) NOT NULL',
-            'meta_value' => Schema::TYPE_TEXT . ' NOT NULL',
+            'id' => Schema::TYPE_PK,
+            'media_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            'name' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'value' => Schema::TYPE_TEXT . ' NOT NULL',
             'FOREIGN KEY ([[media_id]]) REFERENCES {{%media}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
         ], $tableOptions);
     }

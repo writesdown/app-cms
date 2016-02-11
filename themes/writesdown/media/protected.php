@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
@@ -12,22 +12,22 @@ use yii\widgets\ActiveForm;
 
 /* @var $media common\models\Media */
 
-$this->title = Html::encode($media->media_title . ' - ' . Option::get('sitetitle'));
+$this->title = Html::encode($media->title . ' - ' . Option::get('sitetitle'));
 
 if ($media->mediaPost) {
     $this->params['breadcrumbs'][] = [
-        'label' => Html::encode($media->mediaPost->post_title),
-        'url'   => $media->mediaPost->url,
+        'label' => Html::encode($media->mediaPost->title),
+        'url' => $media->mediaPost->url,
     ];
 }
 
-$this->params['breadcrumbs'][] = Html::encode($media->media_title);
+$this->params['breadcrumbs'][] = Html::encode($media->title);
 ?>
 
 <div class="single media-protected">
     <article class="hentry">
         <header class="entry-header">
-            <h1 class="entry-title"><?= Html::encode($media->media_title) ?></h1>
+            <h1 class="entry-title"><?= Html::encode($media->title) ?></h1>
 
         </header>
         <div class="entry-content">
@@ -36,21 +36,21 @@ $this->params['breadcrumbs'][] = Html::encode($media->media_title);
             <p>
                 <?= Yii::t(
                     'writesdown',
-                    '{media_title} is protected, please submit the right password to view the Media.',
-                    ['media_title' => Html::encode($media->media_title)]
+                    '{title} is protected, please submit the right password to view the Media.',
+                    ['title' => Html::encode($media->title)]
                 ) ?>
 
             </p>
-            <div class="form-group field-media-media_password required">
+            <div class="form-group field-media-password required">
                 <?= Html::label(
                     Yii::t('writesdown', 'Password'),
-                    'media-media_password',
+                    'media-password',
                     ['class' => 'control-label']
                 ) ?>
 
                 <?= Html::passwordInput('password', null, [
                     'class' => 'form-control',
-                    'id'    => 'media-media_password',
+                    'id' => 'media-password',
                 ]) ?>
 
             </div>

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -22,8 +22,8 @@ use yii\web\NotFoundHttpException;
 /**
  * PostTypeController implements the CRUD actions for PostType model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostTypeController extends Controller
 {
@@ -38,15 +38,15 @@ class PostTypeController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'view', 'create', 'update', 'delete', 'bulk-action'],
-                        'allow'   => true,
-                        'roles'   => ['administrator'],
+                        'allow' => true,
+                        'roles' => ['administrator'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete'      => ['post'],
+                    'delete' => ['post'],
                     'bulk-action' => ['post'],
                 ],
             ],
@@ -64,7 +64,7 @@ class PostTypeController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel'  => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -73,7 +73,6 @@ class PostTypeController extends Controller
      * Displays a single PostType model.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionView($id)
@@ -92,7 +91,7 @@ class PostTypeController extends Controller
     public function actionCreate()
     {
         $model = new PostType();
-        $taxonomies = ArrayHelper::map(Taxonomy::find()->all(), 'id', 'taxonomy_name');
+        $taxonomies = ArrayHelper::map(Taxonomy::find()->all(), 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $postTypeTaxonomy = Yii::$app->request->post('PostTypeTaxonomy');
@@ -101,7 +100,7 @@ class PostTypeController extends Controller
                     $postTypeTaxonomy = new PostTypeTaxonomy();
                     $postTypeTaxonomy->setAttributes([
                         'post_type_id' => $model->id,
-                        'taxonomy_id'  => $taxonomyId,
+                        'taxonomy_id' => $taxonomyId,
                     ]);
                     $postTypeTaxonomy->save();
                 }
@@ -111,8 +110,8 @@ class PostTypeController extends Controller
         }
 
         return $this->render('create', [
-            'model'      => $model,
-            'taxonomy'   => new Taxonomy(),
+            'model' => $model,
+            'taxonomy' => new Taxonomy(),
             'taxonomies' => $taxonomies,
         ]);
     }
@@ -122,13 +121,12 @@ class PostTypeController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $taxonomies = ArrayHelper::map(Taxonomy::find()->all(), 'id', 'taxonomy_name');
+        $taxonomies = ArrayHelper::map(Taxonomy::find()->all(), 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             PostTypeTaxonomy::deleteAll(['post_type_id' => $id]);
@@ -138,7 +136,7 @@ class PostTypeController extends Controller
                     $postTypeTaxonomy = new PostTypeTaxonomy();
                     $postTypeTaxonomy->setAttributes([
                         'post_type_id' => $model->id,
-                        'taxonomy_id'  => $taxonomyId,
+                        'taxonomy_id' => $taxonomyId,
                     ]);
                     $postTypeTaxonomy->save();
                 }
@@ -148,8 +146,8 @@ class PostTypeController extends Controller
         }
 
         return $this->render('update', [
-            'model'      => $model,
-            'taxonomy'   => new Taxonomy(),
+            'model' => $model,
+            'taxonomy' => new Taxonomy(),
             'taxonomies' => $taxonomies,
         ]);
     }
@@ -159,7 +157,6 @@ class PostTypeController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -176,8 +173,8 @@ class PostTypeController extends Controller
      */
     public function actionBulkAction()
     {
-        if (Yii::$app->request->post('action') == 'delete') {
-            foreach (Yii::$app->request->post('ids') as $id) {
+        if (Yii::$app->request->post('action') === 'deleted') {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
                 $this->findModel($id)->delete();
             }
         }
@@ -188,7 +185,6 @@ class PostTypeController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return PostType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

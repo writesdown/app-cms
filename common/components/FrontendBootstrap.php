@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\components;
@@ -17,8 +17,8 @@ use yii\helpers\ArrayHelper;
 /**
  * Class FrontendBootstrap
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class FrontendBootstrap implements BootstrapInterface
 {
@@ -60,7 +60,7 @@ class FrontendBootstrap implements BootstrapInterface
         $app->view->theme->basePath = '@themes/' . Option::get('theme');
         $app->view->theme->baseUrl = '@web/themes/' . Option::get('theme');
         $app->view->theme->pathMap = [
-            '@app/views'      => '@themes/' . Option::get('theme'),
+            '@app/views' => '@themes/' . Option::get('theme'),
             '@app/views/post' => '@themes/' . Option::get('theme') . '/post',
         ];
         $themeParamPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
@@ -82,19 +82,19 @@ class FrontendBootstrap implements BootstrapInterface
     {
         foreach (Module::getActiveModules() as $module) {
             // Get module backend config.
-            if ($moduleConfig = $module->frontendConfig) {
+            if ($config = $module->getFrontendConfig()) {
                 // Set module.
-                $app->setModules([$module->module_name => $moduleConfig]);
+                $app->setModules([$module->name => $config]);
                 // Merge application params with exist module params.
-                if (is_file($module->paramPath)) {
-                    $moduleParam = require($module->paramPath);
+                if (is_file($module->getParamPath())) {
+                    $params = require($module->getParamPath());
                     if (isset($moduleParam['frontend'])) {
-                        $app->params = ArrayHelper::merge($app->params, $moduleParam['frontend']);
+                        $app->params = ArrayHelper::merge($app->params, $params['frontend']);
                     }
                 }
                 // Bootstrap injection.
-                if ($module->module_fb) {
-                    $component = $app->getModule($module->module_name);
+                if ($module->frontend_bootstrap) {
+                    $component = $app->getModule($module->name);
                     if ($component instanceof BootstrapInterface) {
                         $component->bootstrap($app);
                     }

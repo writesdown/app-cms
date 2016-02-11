@@ -35,28 +35,29 @@ use common\models\Option;
         <generator><?= $generator ?></generator>
         <?php foreach ($posts as $post): ?>
             <item>
-                <title><?= $post->post_title ?></title>
-                <link><![CDATA[<?= $post->url ?>]]></link>
-                <comments><![CDATA[<?= $post->url ?>#comments]]></comments>
+                <title><?= $post->title ?></title>
+                <link>
+                <![CDATA[<?= $post->getUrl() ?>]]></link>
+                <comments><![CDATA[<?= $post->getUrl() ?>#comments]]></comments>
                 <pubDate>
                     <?php
-                    $postDate = new DateTime($post->post_date, new DateTimeZone(Option::get('time_zone')));
+                    $postDate = new DateTime($post->date, new DateTimeZone(Option::get('time_zone')));
                     echo $postDate->format('r');
                     ?>
                 </pubDate>
                 <dc:creator><![CDATA[<?= $post->postAuthor->display_name ?>]]></dc:creator>
                 <?php foreach ($post->terms as $term): ?>
-                    <category><![CDATA[<?= $term->term_name ?>]]></category>
+                    <category><![CDATA[<?= $term->name ?>]]></category>
                 <?php endforeach ?>
                 <guid isPermaLink="false">
                     <![CDATA[<?= Yii::$app->urlManager->createAbsoluteUrl(['post/view', 'id' => $post->id]) ?>]]>
                 </guid>
-                <description><![CDATA[<?= $post->post_excerpt ?>]]></description>
+                <description><![CDATA[<?= $post->excerpt ?>]]></description>
                 <?php if (!Option::get('rss_use_excerpt')): ?>
-                    <content:encoded><![CDATA[<?= $post->post_content ?>]]></content:encoded>
+                    <content:encoded><![CDATA[<?= $post->content ?>]]></content:encoded>
                 <?php endif ?>
                 <wfw:commentRss><![CDATA[<?= $post->url ?>]]></wfw:commentRss>
-                <slash:comments><?= $post->post_comment_count ?></slash:comments>
+                <slash:comments><?= $post->comment_count ?></slash:comments>
             </item>
         <?php endforeach ?>
     </channel>

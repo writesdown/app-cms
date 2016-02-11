@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -14,21 +14,21 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%term}}".
  *
- * @property integer            $id
- * @property integer            $taxonomy_id
- * @property string             $term_name
- * @property string             $term_slug
- * @property string             $term_description
- * @property integer            $term_parent
- * @property integer            $term_count
- * @property string             $url
+ * @property integer $id
+ * @property integer $taxonomy_id
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property integer $parent
+ * @property integer $count
+ * @property string $url
  *
- * @property Taxonomy           $taxonomy
+ * @property Taxonomy $taxonomy
  * @property TermRelationship[] $termRelationships
- * @property Post[]             $posts
+ * @property Post[] $posts
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Term extends ActiveRecord
 {
@@ -47,9 +47,9 @@ class Term extends ActiveRecord
     {
         return [
             [
-                'class'      => SluggableBehavior::className(),
-                'attribute'  => 'term_name',
-                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['term_slug']],
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['slug']],
             ],
         ];
     }
@@ -60,12 +60,12 @@ class Term extends ActiveRecord
     public function rules()
     {
         return [
-            [['taxonomy_id', 'term_name'], 'required'],
-            [['taxonomy_id', 'term_parent', 'term_count'], 'integer'],
-            [['term_description'], 'string'],
-            [['term_name', 'term_slug'], 'string', 'max' => 200],
-            [['term_name'], 'unique'],
-            [['term_slug'], 'unique'],
+            [['taxonomy_id', 'name'], 'required'],
+            [['taxonomy_id', 'parent', 'count'], 'integer'],
+            ['description', 'string'],
+            [['name', 'slug'], 'string', 'max' => 200],
+            ['name', 'unique'],
+            ['slug', 'unique'],
         ];
     }
 
@@ -75,13 +75,13 @@ class Term extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'               => Yii::t('writesdown', 'ID'),
-            'taxonomy_id'      => Yii::t('writesdown', 'Taxonomy ID'),
-            'term_name'        => Yii::t('writesdown', 'Name'),
-            'term_slug'        => Yii::t('writesdown', 'Slug'),
-            'term_description' => Yii::t('writesdown', 'Description'),
-            'term_parent'      => Yii::t('writesdown', 'Parent'),
-            'term_count'       => Yii::t('writesdown', 'Count'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'taxonomy_id' => Yii::t('writesdown', 'Taxonomy ID'),
+            'name' => Yii::t('writesdown', 'Name'),
+            'slug' => Yii::t('writesdown', 'Slug'),
+            'description' => Yii::t('writesdown', 'Description'),
+            'parent' => Yii::t('writesdown', 'Parent'),
+            'count' => Yii::t('writesdown', 'Count'),
         ];
     }
 
@@ -106,8 +106,7 @@ class Term extends ActiveRecord
      */
     public function getPosts()
     {
-        return $this
-            ->hasMany(Post::className(), ['id' => 'post_id'])
+        return $this->hasMany(Post::className(), ['id' => 'post_id'])
             ->viaTable('{{%term_relationship}}', ['term_id' => 'id']);
     }
 

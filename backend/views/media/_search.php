@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -26,29 +26,29 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'post_title') ?>
 
-            <?= $form->field($model, 'media_title') ?>
+            <?= $form->field($model, 'title') ?>
 
-            <?= $form->field($model, 'media_slug') ?>
+            <?= $form->field($model, 'slug') ?>
 
-            <?= $form->field($model, 'media_excerpt') ?>
+            <?= $form->field($model, 'excerpt') ?>
 
-            <?= $form->field($model, 'media_content') ?>
+            <?= $form->field($model, 'content') ?>
 
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'media_password') ?>
+            <?= $form->field($model, 'password') ?>
 
-            <?= $form->field($model, 'media_date') ?>
+            <?= $form->field($model, 'date') ?>
 
-            <?= $form->field($model, 'media_modified') ?>
+            <?= $form->field($model, 'modified') ?>
 
-            <?= $form->field($model, 'media_mime_type') ?>
+            <?= $form->field($model, 'mime_type') ?>
 
-            <?= $form->field($model, 'media_comment_status')->dropDownList($model->getCommentStatus(), [
+            <?= $form->field($model, 'comment_status')->dropDownList($model->getCommentStatuses(), [
                 'prompt' => '',
             ]) ?>
 
-            <?= $form->field($model, 'media_comment_count') ?>
+            <?= $form->field($model, 'comment_count') ?>
 
         </div>
     </div>
@@ -59,7 +59,7 @@ use yii\widgets\ActiveForm;
         <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn-flat btn btn-default']) ?>
 
         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
-            'class'       => 'index-search-button btn btn-flat btn-default',
+            'class' => 'index-search-button btn btn-flat btn-default',
             "data-toggle" => "collapse",
             "data-target" => "#media-search",
         ]) ?>

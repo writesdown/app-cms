@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -24,8 +24,8 @@ use yii\web\Response;
 /**
  * PostController implements the CRUD actions for Post model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostController extends Controller
 {
@@ -40,15 +40,15 @@ class PostController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'create', 'update', 'delete', 'bulk-action', 'ajax-search'],
-                        'allow'   => true,
-                        'roles'   => ['subscriber'],
+                        'allow' => true,
+                        'roles' => ['subscriber'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete'      => ['post'],
+                    'delete' => ['post'],
                     'bulk-action' => ['post'],
                     'ajax-search' => ['post'],
                 ],
@@ -60,28 +60,27 @@ class PostController extends Controller
      * Lists all Post models on specific post type.
      * If there is user, the action will generate list of all Post models based on user.
      *
-     * @param integer     $post_type
+     * @param integer $type
      * @param null|string $user
-     *
      * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
      */
-    public function actionIndex($post_type, $user = null)
+    public function actionIndex($type, $user = null)
     {
-        $postType = $this->findPostType($post_type);
+        $postType = $this->findPostType($type);
         $searchModel = new PostSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $post_type, $user);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $type, $user);
 
-        if (!Yii::$app->user->can($postType->post_type_permission)) {
+        if (!Yii::$app->user->can($postType->permission)) {
             throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
         }
 
         return $this->render('index', [
-            'searchModel'  => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'postType'     => $postType,
-            'user'         => $user,
+            'postType' => $postType,
+            'user' => $user,
         ]);
     }
 
@@ -89,25 +88,24 @@ class PostController extends Controller
      * Creates a new Post model.
      * If creation is successful, the browser will be redirected to the 'update' page.
      *
-     * @param integer $post_type post_type_id
-     *
+     * @param integer $type Post type ID
      * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
      */
-    public function actionCreate($post_type)
+    public function actionCreate($type)
     {
         $model = new Post();
-        $postType = $this->findPostType($post_type);
-        $model->post_comment_status = Option::get('default_comment_status');
+        $postType = $this->findPostType($type);
+        $model->comment_status = Option::get('default_comment_status');
 
-        if (!Yii::$app->user->can($postType->post_type_permission)) {
+        if (!Yii::$app->user->can($postType->permission)) {
             throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->post_type = $postType->id;
-            $model->post_date = Yii::$app->formatter->asDatetime($model->post_date, 'php:Y-m-d H:i:s');
+            $model->type = $postType->id;
+            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
                 if ($termIds = Yii::$app->request->post('termIds')) {
                     foreach ($termIds as $termId) {
@@ -117,25 +115,23 @@ class PostController extends Controller
                             'post_id' => $model->id,
                         ]);
                         if ($termRelationship->save() && $term = $this->findTerm($termId)) {
-                            $term->updateAttributes(['term_count' => $term->term_count++]);
+                            $term->updateAttributes(['count' => ++$term->count]);
                         }
                     }
                 }
                 if ($meta = Yii::$app->request->post('meta')) {
-                    foreach ($meta as $meta_name => $meta_value) {
-                        $model->setMeta($meta_name, $meta_value);
+                    foreach ($meta as $name => $value) {
+                        $model->setMeta($name, $value);
                     }
                 }
-                Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', '{post_type} successfully saved.', [
-                    'post_type' => $postType->post_type_sn,
-                ]));
-
+                Yii::$app->getSession()->setFlash('success',
+                    Yii::t('writesdown', '{type} successfully saved.', ['type' => $postType->singular_name, ]));
                 return $this->redirect(['update', 'id' => $model->id]);
             }
         }
 
         return $this->render('create', [
-            'model'    => $model,
+            'model' => $model,
             'postType' => $postType,
         ]);
     }
@@ -145,7 +141,6 @@ class PostController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     *
      * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
@@ -153,34 +148,25 @@ class PostController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $this->getPermission($model);
         $postType = $model->postType;
 
-        if (!$model->postType || !Yii::$app->user->can($model->postType->post_type_permission)) {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
-        } elseif (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $model->post_author) {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
-        } elseif (!Yii::$app->user->can('author') && $model->post_status !== $model::POST_STATUS_REVIEW) {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
-        }
-
         if ($model->load(Yii::$app->request->post())) {
-            $model->post_date = Yii::$app->formatter->asDatetime($model->post_date, 'php:Y-m-d H:i:s');
+            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
                 if ($meta = Yii::$app->request->post('meta')) {
-                    foreach ($meta as $meta_name => $meta_value) {
-                        $model->setMeta($meta_name, $meta_value);
+                    foreach ($meta as $name => $value) {
+                        $model->setMeta($name, $value);
                     }
                 }
-                Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', '{post_type} successfully saved.', [
-                    'post_type' => $postType->post_type_sn,
-                ]));
-
+                Yii::$app->getSession()->setFlash('success',
+                    Yii::t('writesdown', '{type} successfully saved.', ['type' => $postType->singular_name, ]));
                 return $this->redirect(['post/update', 'id' => $id]);
             }
         }
 
         return $this->render('update', [
-            'model'    => $model,
+            'model' => $model,
             'postType' => $postType,
         ]);
     }
@@ -190,7 +176,6 @@ class PostController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
      * @throws \Exception
      * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\NotFoundHttpException
@@ -199,24 +184,16 @@ class PostController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-
-        if (!$model->postType || !Yii::$app->user->can($model->postType->post_type_permission)) {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
-        } elseif (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $model->post_author) {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
-        } elseif (!Yii::$app->user->can('author') && $model->post_status === $model::POST_STATUS_REVIEW) {
-            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
-        }
-
+        $this->getPermission($model);
         $terms = $model->terms;
 
         if ($model->delete()) {
             foreach ($terms as $term) {
-                $term->updateAttributes(['term_count' => $term->term_count--]);
+                $term->updateAttributes(['count' => --$term->count]);
             }
         }
 
-        return $this->redirect(['index', 'post_type' => $model->post_type]);
+        return $this->redirect(['index', 'type' => $model->type]);
     }
 
     /**
@@ -226,33 +203,44 @@ class PostController extends Controller
      */
     public function actionBulkAction()
     {
-        if (Yii::$app->request->post('action') === Post::POST_STATUS_PUBLISH) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['post_status' => Post::POST_STATUS_PUBLISH]);
+        if (Yii::$app->request->post('action') === Post::STATUS_PUBLISH) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->getPermission($model);
+                $model->updateAttributes(['status' => Post::STATUS_PUBLISH]);
             }
-        } elseif (Yii::$app->request->post('action') === Post::POST_STATUS_DRAFT) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['post_status' => Post::POST_STATUS_DRAFT]);
+        } elseif (Yii::$app->request->post('action') === Post::STATUS_DRAFT) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->getPermission($model);
+                $model->updateAttributes(['status' => Post::STATUS_DRAFT]);
             }
-        } elseif (Yii::$app->request->post('action') === Post::POST_STATUS_PRIVATE) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['post_status' => Post::POST_STATUS_PRIVATE]);
+        } elseif (Yii::$app->request->post('action') === Post::STATUS_PRIVATE) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->getPermission($model);
+                $model->updateAttributes(['status' => Post::STATUS_PRIVATE]);
             }
-        } elseif (Yii::$app->request->post('action') === Post::POST_STATUS_TRASH) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['post_status' => Post::POST_STATUS_TRASH]);
+        } elseif (Yii::$app->request->post('action') === Post::STATUS_TRASH) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->getPermission($model);
+                $model->updateAttributes(['status' => Post::STATUS_TRASH]);
             }
-        } elseif (Yii::$app->request->post('action') === Post::POST_STATUS_REVIEW) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['post_status' => Post::POST_STATUS_REVIEW]);
+        } elseif (Yii::$app->request->post('action') === Post::STATUS_REVIEW) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->getPermission($model);
+                $model->updateAttributes(['status' => Post::STATUS_REVIEW]);
             }
         } elseif (Yii::$app->request->post('action') === 'delete') {
-            foreach (Yii::$app->request->post('ids') as $id) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
                 $model = $this->findModel($id);
+                $this->getPermission($model);
                 $terms = $model->terms;
                 if ($model->delete()) {
                     foreach ($terms as $term) {
-                        $term->updateAttributes(['term_count' => $term->term_count--]);
+                        $term->updateAttributes(['count' => --$term->count]);
                     }
                 }
             }
@@ -265,17 +253,30 @@ class PostController extends Controller
     public function actionAjaxSearch()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-
         $query = Post::find()
-            ->select(['id', 'post_title'])
-            ->andWhere(['LIKE', 'post_title', Yii::$app->request->post('post_title')])
+            ->select(['id', 'title'])
+            ->andWhere(['like', 'title', Yii::$app->request->post('title')])
             ->limit(10);
 
-        if ($postType = Yii::$app->request->post('post_type')) {
-            $query->andWhere(['post_type' => $postType]);
+        if ($postType = Yii::$app->request->post('type')) {
+            $query->andWhere(['type' => $postType]);
         }
 
         return $query->all();
+    }
+
+    /**
+     * Get permission to access model by current user.
+     * If the user does not obtain the permission, a 403 exeption will be thrown.
+     *
+     * @param $model Post
+     * @throws ForbiddenHttpException
+     */
+    public function getPermission($model)
+    {
+        if (!$model->getPermission()) {
+            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        }
     }
 
     /**
@@ -283,7 +284,6 @@ class PostController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -301,7 +301,6 @@ class PostController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return PostType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -319,7 +318,6 @@ class PostController extends Controller
      * If the model is not found, it return false.
      *
      * @param integer $id
-     *
      * @return Term|bool|null|static
      */
     protected function findTerm($id)

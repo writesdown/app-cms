@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -19,8 +19,8 @@ use yii\web\NotFoundHttpException;
 /**
  * UserController, controlling the actions for User model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class UserController extends Controller
 {
@@ -35,20 +35,20 @@ class UserController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'create', 'update', 'delete', 'bulk-action'],
-                        'allow'   => true,
-                        'roles'   => ['administrator'],
+                        'allow' => true,
+                        'roles' => ['administrator'],
                     ],
                     [
                         'actions' => ['profile', 'view', 'reset-password'],
-                        'allow'   => true,
-                        'roles'   => ['@'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete'      => ['post'],
+                    'delete' => ['post'],
                     'bulk-action' => ['post'],
                 ],
             ],
@@ -66,7 +66,7 @@ class UserController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel'  => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -75,7 +75,6 @@ class UserController extends Controller
      * Displays a single User model.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionView($id)
@@ -84,7 +83,6 @@ class UserController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
 
     /**
      * Creates a new User model.
@@ -117,7 +115,6 @@ class UserController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     *
      * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\NotFoundHttpException
      * @return mixed
@@ -125,26 +122,18 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $this->checkPermission($model);
 
-        if (Yii::$app->user->can('superadmin')
-            || (Yii::$app->user->can('administrator')
-                && !Yii::$app->authManager->checkAccess($model->id, 'administrator'))
-        ) {
-            if ($model->load(Yii::$app->request->post())) {
-                if ($model->save()) {
-                    Yii::$app->authManager->revokeAll($id);
-                    Yii::$app->authManager->assign(Yii::$app->authManager->getRole($model->role), $id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->authManager->revokeAll($id);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole($model->role), $id);
 
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-            }
-
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -152,7 +141,6 @@ class UserController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
      * @throws \Exception
      * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\NotFoundHttpException
@@ -161,17 +149,10 @@ class UserController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
+        $this->checkPermission($model);
+        $model->delete();
 
-        if (Yii::$app->user->can('superadmin')
-            || (Yii::$app->user->can('administrator')
-                && !Yii::$app->authManager->checkAccess($model->id, 'administrator'))
-        ) {
-            $model->delete();
-
-            return $this->redirect(['index']);
-        }
-
-        throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        return $this->redirect(['index']);
     }
 
     /**
@@ -181,24 +162,33 @@ class UserController extends Controller
      */
     public function actionBulkAction()
     {
-        if (Yii::$app->request->post('action') === 'activated') {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['status' => 10]);
+        if (Yii::$app->request->post('action') === 'active') {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $model->updateAttributes(['status' => User::STATUS_ACTIVE]);
             }
-        } elseif (Yii::$app->request->post('action') === 'unactivated') {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['status' => 5]);
+        } elseif (Yii::$app->request->post('action') === 'not-active') {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->checkPermission($model);
+                $model->updateAttributes(['status' => User::STATUS_NOT_ACTIVE]);
             }
         } elseif (Yii::$app->request->post('action') === 'removed') {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['status' => 0]);
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->checkPermission($model);
+                $model->updateAttributes(['status' => User::STATUS_REMOVED]);
             }
         } elseif (Yii::$app->request->post('action') === 'deleted') {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->delete();
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->checkPermission($model);
+                $model->delete();
             }
         } elseif (Yii::$app->request->post('action') === 'changerole') {
-            foreach (Yii::$app->request->post('ids') as $id) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $model = $this->findModel($id);
+                $this->checkPermission($model);
                 Yii::$app->authManager->revokeAll($id);
                 Yii::$app->authManager->assign(Yii::$app->authManager->getRole(Yii::$app->request->post('role')), $id);
             }
@@ -215,10 +205,8 @@ class UserController extends Controller
     {
         $model = $this->findModel(Yii::$app->user->id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('profile', [
@@ -256,7 +244,6 @@ class UserController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -267,5 +254,16 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @param $model User
+     * @throws ForbiddenHttpException
+     */
+    protected function checkPermission($model)
+    {
+        if (!$model->checkPermission()) {
+            throw new ForbiddenHttpException(Yii::t('writesdown', 'You are not allowed to perform this action.'));
+        }
     }
 }

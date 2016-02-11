@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -16,8 +16,8 @@ use yii\db\ActiveRecord;
  * @property integer $post_id
  * @property integer $term_id
  *
- * @property Post    $post
- * @property Term    $term
+ * @property Post $post
+ * @property Term $term
  *
  * @author  Agiel K. Saputra <13nightevil@gmail.com>
  * @since   0.1.0

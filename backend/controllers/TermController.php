@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -20,8 +20,8 @@ use yii\web\Response;
 /**
  * TermController implements the CRUD actions for Term model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class TermController extends Controller
 {
@@ -36,23 +36,23 @@ class TermController extends Controller
                 'rules' => [
                     [
                         'actions' => ['ajax-create-hierarchical', 'ajax-create-non-hierarchical', 'bulk-action'],
-                        'allow'   => true,
-                        'roles'   => ['editor'],
+                        'allow' => true,
+                        'roles' => ['editor'],
                     ],
                     [
                         'actions' => ['ajax-search'],
-                        'allow'   => true,
-                        'roles'   => ['subscriber'],
+                        'allow' => true,
+                        'roles' => ['subscriber'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'ajax-create-hierarchical'     => ['post'],
+                    'ajax-create-hierarchical' => ['post'],
                     'ajax-create-non-hierarchical' => ['post'],
-                    'bulk-action'                  => ['post'],
-                    'ajax-search'                  => ['post'],
+                    'bulk-action' => ['post'],
+                    'ajax-search' => ['post'],
                 ],
             ],
         ];
@@ -63,24 +63,29 @@ class TermController extends Controller
      */
     public function actionAjaxCreateHierarchical()
     {
+        $item = '';
         $term = new Term();
         $termRelationship = new TermRelationship();
 
         if ($term->load(Yii::$app->request->post())) {
             if ($termRelationship->load(Yii::$app->request->post()) && $termRelationship->post_id) {
-                $term->term_count = 1;
+                $term->count = 1;
                 if ($term->save()) {
                     $termRelationship->term_id = $term->id;
                     if ($termRelationship->save()) {
-                        echo '<br />';
-                        echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
+                        $item = $item
+                            . '<br />'
+                            . Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->name);
                     }
                 }
             } elseif ($term->save()) {
-                echo '<br />';
-                echo Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->term_name);
+                $item = $item
+                    . '<br />'
+                    . Html::label(Html::checkbox('termIds[]', true, ['value' => $term->id]) . $term->name);
             }
         }
+
+        return $item;
     }
 
     /**
@@ -94,7 +99,7 @@ class TermController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return ['id' => $model->id, 'term_name' => $model->term_name];
+            return ['id' => $model->id, 'name' => $model->name];
         }
 
         return [];
@@ -111,8 +116,8 @@ class TermController extends Controller
 
         if ($term = Yii::$app->request->post('Term')) {
             $model = Term::find()
-                ->select(['id', 'term_name'])
-                ->where(['like', 'term_name', $term['term_name']])
+                ->select(['id', 'name'])
+                ->where(['like', 'name', $term['name']])
                 ->andWhere(['taxonomy_id' => $term['taxonomy_id']])
                 ->limit('10')
                 ->all();
@@ -131,8 +136,8 @@ class TermController extends Controller
      */
     public function actionBulkAction()
     {
-        if (Yii::$app->request->post('action') == 'delete') {
-            foreach (Yii::$app->request->post('ids') as $id) {
+        if (Yii::$app->request->post('action') == 'deleted') {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
                 $this->findModel($id)->delete();
             }
         }
@@ -143,7 +148,6 @@ class TermController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Term the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

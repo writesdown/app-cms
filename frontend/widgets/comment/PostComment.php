@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets\comment;
@@ -13,8 +13,8 @@ use yii\data\Pagination;
 /**
  * Class PostComment
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostComment extends BaseComment
 {
@@ -29,24 +29,16 @@ class PostComment extends BaseComment
         $comments = [];
 
         $query = Comment::find()
-            ->select([
-                'id',
-                'comment_author',
-                'comment_author_email',
-                'comment_author_url',
-                'comment_date',
-                'comment_content',
-            ])
-            ->andWhere(['comment_parent' => 0])
-            ->andWhere(['comment_post_id' => $this->model->id])
-            ->andWhere(['comment_approved' => 'approved'])
+            ->select(['id', 'author', 'email', 'url', 'date', 'content'])
+            ->andWhere(['parent' => 0, 'post_id' => $this->model->id, 'status' => 'approved'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
             ->orderBy(['id' => $this->commentOrder]);
 
         $countQuery = clone $query;
 
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => $this->pageSize,
+            'pageSize' => $this->pageSize,
         ]);
 
         $this->pages = $pages;
@@ -68,7 +60,6 @@ class PostComment extends BaseComment
      * Get comment children based on comment ID.
      *
      * @param int $id
-     *
      * @return array|null
      */
     protected function getChildren($id)
@@ -76,17 +67,9 @@ class PostComment extends BaseComment
         /* @var $models \common\models\PostComment[] */
         $comments = [];
         $models = Comment::find()
-            ->select([
-                'id',
-                'comment_author',
-                'comment_author_email',
-                'comment_author_url',
-                'comment_date',
-                'comment_content',
-            ])
-            ->andWhere(['comment_parent' => $id])
-            ->andWhere(['comment_post_id' => $this->model->id])
-            ->andWhere(['comment_approved' => 'approved'])
+            ->select(['id', 'author', 'email', 'url', 'date', 'content'])
+            ->andWhere(['parent' => $id, 'post_id' => $this->model->id, 'status' => 'approved'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
             ->orderBy(['id' => $this->commentOrder])
             ->all();
 

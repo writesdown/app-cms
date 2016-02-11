@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -14,6 +14,9 @@ use yii\data\ActiveDataProvider;
 
 /**
  * User represents the model behind the search form about `common\models\User`.
+ *
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class User extends UserModel
 {
@@ -55,7 +58,6 @@ class User extends UserModel
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
     public function search($params)
@@ -66,7 +68,7 @@ class User extends UserModel
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'  => [
+            'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ],
@@ -80,7 +82,7 @@ class User extends UserModel
         }
 
         $query->andFilterWhere([
-            'id'     => $this->id,
+            'id' => $this->id,
             'status' => $this->status,
         ]);
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -13,12 +13,12 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "{{%media_comment}}".
  *
- * @property integer $comment_media_id
+ * @property integer $media_id
  *
- * @property Media   $commentMedia
+ * @property Media $commentMedia
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class MediaComment extends BaseComment
 {
@@ -41,8 +41,8 @@ class MediaComment extends BaseComment
     public function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
-            ['comment_media_id', 'required'],
-            ['comment_media_id', 'integer'],
+            ['media_id', 'required'],
+            ['media_id', 'integer'],
         ]);
     }
 
@@ -52,8 +52,8 @@ class MediaComment extends BaseComment
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'comment_media_id' => Yii::t('writesdown', 'Comment to'),
-            'media_title'      => Yii::t('writesdown', 'Media Title'),
+            'media_id' => Yii::t('writesdown', 'Comment to'),
+            'media_title' => Yii::t('writesdown', 'Media Title'),
         ]);
     }
 
@@ -62,6 +62,6 @@ class MediaComment extends BaseComment
      */
     public function getCommentMedia()
     {
-        return $this->hasOne(Media::className(), ['id' => 'comment_media_id']);
+        return $this->hasOne(Media::className(), ['id' => 'media_id']);
     }
 }

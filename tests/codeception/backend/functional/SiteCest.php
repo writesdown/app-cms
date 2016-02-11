@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
@@ -18,8 +18,8 @@ use tests\codeception\backend\FunctionalTester;
 /**
  * Class SiteCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class SiteCest
 {
@@ -53,7 +53,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testIndex(FunctionalTester $I){
+    public function testIndex(FunctionalTester $I)
+    {
         $I->wantTo('ensure that home, login & logout works');
 
         // LOGIN
@@ -69,7 +70,7 @@ class SiteCest
         $I->amGoingTo('submit login form with wrong password');
         $loginPage->submit([
             'username' => 'superadmin',
-            'password' => '1\' OR \'1\'=1\''
+            'password' => '1\' OR \'1\'=1\'',
         ]);
         $I->expectTo('see error messages');
         $I->see('Incorrect username or password.', '.help-block');
@@ -77,7 +78,7 @@ class SiteCest
         $I->amGoingTo('submit login form with correct data');
         $loginPage->submit([
             'username' => 'subscriber',
-            'password' => 'subscriber'
+            'password' => 'subscriber',
         ]);
         $I->expectTo('user successfully login to admin page');
 
@@ -95,7 +96,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testSignup(FunctionalTester $I){
+    public function testSignup(FunctionalTester $I)
+    {
         Option::up('allow_signup', '1');
         $I->wantTo('ensure that signup works');
 
@@ -112,8 +114,8 @@ class SiteCest
         $I->amGoingTo('submit signup form with no correct email and password');
         $signupPage->submit([
             'username' => 'newuser',
-            'email'    => 'newuser.email',
-            'password' => 'pass'
+            'email' => 'newuser.email',
+            'password' => 'pass',
         ]);
         $I->expectTo('see that email and password are not correct.');
         $I->dontSee('Username cannot be blank.', '.help-block');
@@ -123,8 +125,8 @@ class SiteCest
         $I->amGoingTo('submit signup form with correct data');
         $signupPage->submit([
             'username' => 'newuser',
-            'email'    => 'newuser@writesdown.dev',
-            'password' => 'password'
+            'email' => 'newuser@writesdown.dev',
+            'password' => 'password',
         ]);
         $I->expect('new user saved.');
         $I->dontSee('Username cannot be blank.', '.help-block');
@@ -138,7 +140,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testRequestPasswordReset(FunctionalTester $I){
+    public function testRequestPasswordReset(FunctionalTester $I)
+    {
         $I->wantTo('ensure that request password reset works');
 
         $requestPasswordResetPage = RequestPasswordResetPage::openBy($I);
@@ -172,7 +175,8 @@ class SiteCest
     /**
      * @param FunctionalTester $I
      */
-    public function testResetPassword(FunctionalTester $I){
+    public function testResetPassword(FunctionalTester $I)
+    {
         $I->wantTo('ensure that reset password works');
         $resetPasswordPage = ResetPasswordPage::openBy($I);
         $I->see('Please choose your new password:', 'p');
@@ -193,8 +197,8 @@ class SiteCest
         $I->see('New password was saved.');
 
         User::findOne(6)->updateAttributes([
-            'auth_key'             => '89jQUg-3NpEgvmXgzs1OWXoILe4sJwi1',
-            'password_hash'        => '$2y$13$NdYAATL.ACEqOmAX6cL1B.ZBZ2pUstB.xMjqFcLrR1ldbHG9yXgwa',
+            'auth_key' => '89jQUg-3NpEgvmXgzs1OWXoILe4sJwi1',
+            'password_hash' => '$2y$13$NdYAATL.ACEqOmAX6cL1B.ZBZ2pUstB.xMjqFcLrR1ldbHG9yXgwa',
         ]);
     }
 }

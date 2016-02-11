@@ -8,7 +8,7 @@
 
 return [
     'backend' => [
-        'adminSiteMenu' => [
+        'adminMenu' => [
             70 => [
                 'label' => Yii::t('writesdown', 'Sitemap'),
                 'url'   => ['/sitemap/default/index'],

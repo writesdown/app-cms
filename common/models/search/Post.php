@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -16,8 +16,8 @@ use yii\helpers\ArrayHelper;
 /**
  * Post represents the model behind the search form about `common\models\Post`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Post extends PostModel
 {
@@ -27,11 +27,22 @@ class Post extends PostModel
     public function rules()
     {
         return [
-            [['id', 'post_author', 'post_type', 'post_comment_count'], 'integer'],
-            [[
-                'post_title', 'post_excerpt', 'post_content', 'post_date', 'post_modified', 'post_status',
-                'post_password', 'post_slug', 'post_comment_status', 'username',
-            ], 'safe'],
+            [['id', 'author', 'type', 'comment_count'], 'integer'],
+            [
+                [
+                    'title',
+                    'excerpt',
+                    'content',
+                    'date',
+                    'modified',
+                    'status',
+                    'password',
+                    'slug',
+                    'comment_status',
+                    'username',
+                ],
+                'safe',
+            ],
         ];
     }
 
@@ -47,20 +58,20 @@ class Post extends PostModel
     /**
      * Creates data provider instance with search query applied
      *
-     * @param array       $params
-     * @param int         $post_type
+     * @param array $params
+     * @param int $type
      * @param null|string $user
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $post_type, $user = null)
+    public function search($params, $type, $user = null)
     {
         $query = PostModel::find();
-        $query->innerJoinWith(['postAuthor']);
-        $query->andWhere(['post_type' => $post_type]);
+        $query->innerJoinWith(['postAuthor'])->from(['post' => static::tableName()]);
+        $query->andWhere(['type' => $type]);
 
         if ($user) {
-            $query->andWhere(['post_author' => $user]);
+            $query->andWhere(['author' => $user]);
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -68,10 +79,10 @@ class Post extends PostModel
         ]);
 
         $dataProvider->setSort([
-            'attributes'   => ArrayHelper::merge($dataProvider->sort->attributes, [
+            'attributes' => ArrayHelper::merge($dataProvider->sort->attributes, [
                 'username' => [
-                    'asc'   => ['username' => SORT_ASC],
-                    'desc'  => ['username' => SORT_DESC],
+                    'asc' => ['username' => SORT_ASC],
+                    'desc' => ['username' => SORT_DESC],
                     'label' => 'Author',
                     'value' => 'username',
                 ],
@@ -86,21 +97,21 @@ class Post extends PostModel
         }
 
         $query->andFilterWhere([
-            'id'                 => $this->id,
-            'post_author'        => $this->post_author,
-            'post_type'          => $this->post_type,
-            'post_comment_count' => $this->post_comment_count,
+            'post.id' => $this->id,
+            'author' => $this->author,
+            'type' => $this->type,
+            'comment_count' => $this->comment_count,
         ]);
 
-        $query->andFilterWhere(['like', 'post_title', $this->post_title])
-            ->andFilterWhere(['like', 'post_excerpt', $this->post_excerpt])
-            ->andFilterWhere(['like', 'post_content', $this->post_content])
-            ->andFilterWhere(['like', 'post_status', $this->post_status])
-            ->andFilterWhere(['like', 'post_password', $this->post_password])
-            ->andFilterWhere(['like', 'post_slug', $this->post_slug])
-            ->andFilterWhere(['like', 'post_date', $this->post_date])
-            ->andFilterWhere(['like', 'post_modified', $this->post_modified])
-            ->andFilterWhere(['like', 'post_comment_status', $this->post_comment_status])
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'excerpt', $this->excerpt])
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'post.status', $this->status])
+            ->andFilterWhere(['like', 'password', $this->password])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'date', $this->date])
+            ->andFilterWhere(['like', 'modified', $this->modified])
+            ->andFilterWhere(['like', 'comment_status', $this->comment_status])
             ->andFilterWhere(['like', 'username', $this->username]);
 
 

@@ -6,7 +6,7 @@ use yii\db\Schema;
  * Class m000000_000012_term_relationship
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000012_term_relationship extends \yii\db\Migration
 {

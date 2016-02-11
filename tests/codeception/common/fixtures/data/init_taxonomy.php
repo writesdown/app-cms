@@ -1,25 +1,26 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 return [
     [
-        'taxonomy_name'         => 'category',
-        'taxonomy_slug'         => 'category',
-        'taxonomy_hierarchical' => '1',
-        'taxonomy_sn'           => 'Category',
-        'taxonomy_pn'           => 'Categories',
-        'taxonomy_smb'          => '1',
+        'name' => 'category',
+        'slug' => 'category',
+        'hierarchical' => '1',
+        'singular_name' => 'Category',
+        'plural_name' => 'Categories',
+        'menu_builder' => '1',
     ],
     [
-        'taxonomy_name'         => 'tag',
-        'taxonomy_slug'         => 'tag',
-        'taxonomy_hierarchical' => '0',
-        'taxonomy_sn'           => 'Tag',
-        'taxonomy_pn'           => 'Tags',
-        'taxonomy_smb'          => '0',
-    ]
+        'name' => 'tag',
+        'slug' => 'tag',
+        'hierarchical' => '0',
+        'singular_name' => 'Tag',
+        'plural_name' => 'Tags',
+        'menu_builder' => '0',
+    ],
 ];

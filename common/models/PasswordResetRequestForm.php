@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -13,8 +13,8 @@ use yii\base\Model;
 /**
  * Password reset request form
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PasswordResetRequestForm extends Model
 {
@@ -36,8 +36,8 @@ class PasswordResetRequestForm extends Model
                 'email',
                 'exist',
                 'targetClass' => '\common\models\User',
-                'filter'      => ['status' => User::STATUS_ACTIVE],
-                'message'     => 'There is no user with such email.',
+                'filter' => ['status' => User::STATUS_ACTIVE],
+                'message' => 'There is no user with such email.',
             ],
         ];
     }
@@ -52,7 +52,7 @@ class PasswordResetRequestForm extends Model
         /* @var $user User */
         $user = User::findOne([
             'status' => User::STATUS_ACTIVE,
-            'email'  => $this->email,
+            'email' => $this->email,
         ]);
 
         if ($user) {

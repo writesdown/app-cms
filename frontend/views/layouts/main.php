@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Menu;
@@ -47,15 +47,15 @@ $this->beginPage()
 <?php
 NavBar::begin([
     'brandLabel' => Option::get('sitetitle'),
-    'brandUrl'   => Yii::$app->homeUrl,
-    'options'    => [
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => [
         'class' => 'navbar-static-top',
-        'id'    => 'navbar-primary',
+        'id' => 'navbar-primary',
     ],
 ]);
 echo Nav::widget([
-    'options'      => ['class' => 'navbar-nav'],
-    'items'        => Menu::getMenu('primary'),
+    'options' => ['class' => 'navbar-nav'],
+    'items' => Menu::get('primary'),
     'encodeLabels' => false,
 ]);
 NavBar::end();

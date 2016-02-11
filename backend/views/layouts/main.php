@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use codezeen\yii2\adminlte\widgets\Alert;
@@ -22,14 +22,14 @@ use yii\widgets\Breadcrumbs;
             <h1><?= $this->title ?></h1>
 
             <?= Breadcrumbs::widget([
-                'homeLink'     => [
+                'homeLink' => [
                     'label' => Html::a(
                         '<i class="fa fa-dashboard"></i> ' . Yii::t('writesdown', 'Home'),
                         Yii::$app->homeUrl
                     ),
                 ],
                 'encodeLabels' => false,
-                'links'        => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
         </section>
         <section class="content clearfix">

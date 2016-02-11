@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\ArrayHelper;
@@ -14,30 +14,30 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $postTypes common\models\PostType[] */
-/* @var $selectedMenu common\models\Menu */
+/* @var $selected common\models\Menu */
 ?>
 <?php foreach ($postTypes as $postType): ?>
     <?php $form = ActiveForm::begin([
         'options' => [
-            'class'    => 'panel box box-primary menu-create-menu-item',
-            'data-url' => Url::to(['menu/create-menu-item', 'id' => $selectedMenu->id]),
+            'class' => 'panel box box-primary create-menu-item',
+            'data-url' => Url::to(['create-menu-item', 'id' => $selected->id]),
         ],
-        'action'  => Url::to(['/site/forbidden']),
+        'action' => Url::to(['/site/forbidden']),
     ]) ?>
 
     <div class="box-header">
         <h4 class="box-title">
             <a href="#post-type-<?= $postType->id ?>" data-parent="#create-menu-items" data-toggle="collapse"
                class="collapsed" aria-expanded="false">
-                <?= $postType->post_type_pn ?>
+                <?= $postType->plural_name ?>
 
             </a>
         </h4>
     </div>
     <div class="panel-collapse collapse post-type-menu" id="post-type-<?= $postType->id ?>">
         <div class="box-body">
-            <?= Html::checkboxList('postIds', null, ArrayHelper::map($postType->posts, 'id', 'post_title'), [
-                'class'     => 'checkbox post-type-menu-item ',
+            <?= Html::checkboxList('postIds', null, ArrayHelper::map($postType->posts, 'id', 'title'), [
+                'class' => 'checkbox post-type-menu-item ',
                 'separator' => '<br />',
             ]) ?>
 

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -21,19 +21,19 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'taxonomy_name') ?>
+            <?= $form->field($model, 'name') ?>
 
-            <?= $form->field($model, 'taxonomy_slug') ?>
+            <?= $form->field($model, 'slug') ?>
 
-            <?= $form->field($model, 'taxonomy_hierarchical')->dropDownList($model->hierarchical, ['prompt' => '']) ?>
+            <?= $form->field($model, 'hierarchical')->dropDownList($model->getHierarchies(), ['prompt' => '']) ?>
 
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'taxonomy_sn') ?>
+            <?= $form->field($model, 'singular_name') ?>
 
-            <?= $form->field($model, 'taxonomy_pn') ?>
+            <?= $form->field($model, 'plural_name') ?>
 
-            <?= $form->field($model, 'taxonomy_smb')->dropDownList($model->smb, ['prompt' => '']) ?>
+            <?= $form->field($model, 'menu_builder')->dropDownList($model->getMenuBuilders(), ['prompt' => '']) ?>
 
         </div>
     </div>
@@ -43,9 +43,9 @@ use yii\widgets\ActiveForm;
         <?= Html::resetButton(Yii::t('writesdown', 'Reset'), ['class' => 'btn btn-flat btn-default']) ?>
 
         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
-            'class'       => 'index-search-button btn btn-flat btn-default',
-            "data-toggle" => "collapse",
-            "data-target" => "#taxonomy-search",
+            'class' => 'index-search-button btn btn-flat btn-default',
+            'data-toggle' => 'collapse',
+            'data-target' => '#taxonomy-search',
         ]) ?>
 
     </div>

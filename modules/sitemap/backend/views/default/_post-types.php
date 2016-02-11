@@ -17,7 +17,7 @@ use yii\helpers\Html;
 <div id="sitemap-post-types-option" class="sitemap-default-index-post-types tab-pane">
 
     <?php foreach ($postTypes as $postType): ?>
-        <h4><i class="<?= $postType->post_type_icon ?>"></i><?= $postType->post_type_sn ?></h4>
+        <h4><i class="<?= $postType->icon ?>"></i> <?= $postType->singular_name ?></h4>
         <div class="form-group checkbox">
             <?= Html::hiddenInput("Option[option_value][post_type][$postType->id][enable]", 0) ?>
 

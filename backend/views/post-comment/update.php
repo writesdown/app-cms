@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use dosamigos\datetimepicker\DateTimePicker;
@@ -16,21 +16,20 @@ use yii\widgets\DetailView;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $model common\models\PostComment */
 
-$this->title = Yii::t('writesdown', 'Update {postType} Comment: {commentId}', [
-    'postType'  => $model->commentPost->postType->post_type_sn,
-    'commentId' => $model->id,
+$this->title = Yii::t('writesdown', 'Update {postType} Comment {id}', [
+    'postType' => $model->commentPost->postType->singular_name,
+    'id' => $model->id,
 ]);
 $this->params['breadcrumbs'][] = [
-    'label' => Yii::t('writesdown', '{postTypeSN} Comments', [
-        'postTypeSN' => $model->commentPost->postType->post_type_sn,
-    ]),
-    'url'   => ['index', 'post_type' => $model->commentPost->postType->id],
+    'label' => $model->commentPost->postType->singular_name,
+    'url' => ['index', 'posttype' => $model->commentPost->postType->id],
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => $model->commentPost->postType->post_type_sn . ': ' . $model->commentPost->id,
-    'url'   => ['index', 'post_type' => $model->commentPost->postType->id, 'post_id' => $model->commentPost->id],
+    'label' => $model->commentPost->id,
+    'url' => ['index', 'posttype' => $model->commentPost->postType->id, 'post' => $model->commentPost->id],
 ];
-$this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment: {commentId}', ['commentId' => $model->id]);
+$this->params['breadcrumbs'][] = $model->id;
+$this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment');
 ?>
 <?php $form = ActiveForm::begin(['id' => 'post-comment-update-form']) ?>
 
@@ -38,57 +37,57 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment: {commentI
     <div class="col-md-8">
         <?= $this->render('_form', [
             'model' => $model,
-            'form'  => $form,
+            'form' => $form,
         ]) ?>
     </div>
     <div class="col-md-4 post-comment-update">
         <?= DetailView::widget([
-            'model'      => $model,
+            'model' => $model,
             'attributes' => [
                 'id',
                 [
-                    'attribute' => 'comment_post_id',
-                    'value'     => Html::a($model->commentPost->post_title, [
+                    'attribute' => 'post_id',
+                    'value' => Html::a($model->commentPost->title, [
                         '/post/update',
                         'id' => $model->commentPost->id,
                     ]),
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
-                'comment_author:ntext',
-                'comment_author_email:email',
-                'comment_author_url:url',
+                'author:ntext',
+                'email:email',
+                'url:url',
                 [
-                    'attribute' => 'comment_author_ip',
-                    'value'     => Html::a(
-                        $model->comment_author_ip,
-                        'http://whois.arin.net/rest/ip/' . $model->comment_author_ip,
+                    'attribute' => 'ip',
+                    'value' => Html::a(
+                        $model->ip,
+                        'http://whois.arin.net/rest/ip/' . $model->ip,
                         ['target' => '_blank']
                     ),
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
                 [
-                    'attribute' => 'comment_date',
-                    'value'     => Html::a(
+                    'attribute' => 'date',
+                    'value' => Html::a(
                         Yii::$app
                             ->formatter
-                            ->asDatetime($model->comment_date, 'php:M d, Y H:i:s') . ' <i class="fa fa-pencil"></i>',
+                            ->asDatetime($model->date, 'php:M d, Y H:i:s') . ' <i class="fa fa-pencil"></i>',
                         '#', [
                             'data-toggle' => 'modal',
-                            'id'          => 'comment-date-link',
+                            'id' => 'date-link',
                             'data-target' => '#modal-for-date',
                         ]
                     ),
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
-                'comment_agent',
+                'agent',
                 [
-                    'attribute' => 'comment_parent',
-                    'value'     => $model->comment_parent
-                        ? Html::a($model->comment_parent, ['update', 'id' => $model->comment_parent, ])
+                    'attribute' => 'parent',
+                    'value' => $model->parent
+                        ? Html::a($model->parent, ['update', 'id' => $model->parent, ])
                         : '',
-                    'format'    => 'raw',
+                    'format' => 'raw',
                 ],
-                'comment_user_id',
+                'user_id',
             ],
         ]) ?>
 
@@ -103,7 +102,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment: {commentI
             ['delete', 'id' => $model->id],
             [
                 'class' => 'btn btn-wd-post btn-sm btn-flat btn-danger pull-right',
-                'data'  => ['confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?')],
+                'data' => ['confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?')],
             ]
         ) ?>
 
@@ -111,19 +110,19 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment: {commentI
 </div>
 <?php Modal::begin([
     'header' => '<i class="glyphicon glyphicon-time"></i> ' . Yii::t('writesdown', 'Change Comment Date') . '',
-    'id'     => 'modal-for-date',
+    'id' => 'modal-for-date',
 ]) ?>
 
-<?= $form->field($model, 'comment_date', ['template' => "{label}\n{input}"])->widget(DateTimePicker::className(), [
-    'template'       => '{reset}{button}{input}',
+<?= $form->field($model, 'date', ['template' => "{label}\n{input}"])->widget(DateTimePicker::className(), [
+    'template' => '{reset}{button}{input}',
     'pickButtonIcon' => 'glyphicon glyphicon-time',
-    'options'        => [
-        'value' => date('M d, Y H:i:s', strtotime($model->comment_date)),
+    'options' => [
+        'value' => date('M d, Y H:i:s', strtotime($model->date)),
     ],
-    'clientOptions'  => [
+    'clientOptions' => [
         'autoclose' => true,
-        'format'    => 'M dd, yyyy hh:ii:ss',
-        'todayBtn'  => true,
+        'format' => 'M dd, yyyy hh:ii:ss',
+        'todayBtn' => true,
     ],
 ]) ?>
 
@@ -131,5 +130,5 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment: {commentI
 
 <?php ActiveForm::end(); ?>
 <?php $this->registerJs('$("#modal-for-date").on("hidden.bs.modal", function () {
-    $("#comment-date-link").html($("#postcomment-comment_date").val() + \' <i class="fa fa-pencil"></i>\');
+    $("#date-link").html($("#postcomment-date").val() + \' <i class="fa fa-pencil"></i>\');
 });') ?>

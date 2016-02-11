@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\ArrayHelper;
@@ -18,31 +18,31 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'user-form']) ?>
 
     <?= $form->field($model, 'username')->textInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('username'),
     ]) ?>
 
     <?= $form->field($model, 'email')->input('email', [
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('email'),
     ])->hint(Yii::t('writesdown', 'An e-mail used for receiving notification and resetting password.')) ?>
 
     <?= $model->isNewRecord ? $form->field($model, 'password')->passwordInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('password'),
     ]) : '' ?>
 
     <?= $form->field($model, 'full_name')->textInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('full_name'),
     ]) ?>
 
     <?= $form->field($model, 'display_name')->textInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('display_name'),
     ])->hint(Yii::t('writesdown', 'Display name will be used as your public name.')) ?>
 
-    <?= $form->field($model, 'status')->dropDownList($model->getStatus()) ?>
+    <?= $form->field($model, 'status')->dropDownList($model->getStatuses()) ?>
 
     <?php
     $role = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name');

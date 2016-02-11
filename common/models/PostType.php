@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -14,27 +14,27 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%post_type}}".
  *
- * @property integer            $id
- * @property string             $post_type_name
- * @property string             $post_type_slug
- * @property string             $post_type_description
- * @property string             $post_type_icon
- * @property string             $post_type_sn
- * @property string             $post_type_pn
- * @property integer            $post_type_smb
- * @property string             $post_type_permission
+ * @property integer $id
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property string $icon
+ * @property string $singular_name
+ * @property string $plural_name
+ * @property integer $menu_builder
+ * @property string $permission
  *
- * @property Post[]             $posts
+ * @property Post[] $posts
  * @property PostTypeTaxonomy[] $postTypeTaxonomies
- * @property Taxonomy[]         $taxonomies
+ * @property Taxonomy[] $taxonomies
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostType extends ActiveRecord
 {
-    const SMB = 1;
-    const NON_SMB = 0;
+    const MENU_BUILDER = 1;
+    const NOT_MENU_BUILDER = 0;
 
     /**
      * @inheritdoc
@@ -51,9 +51,9 @@ class PostType extends ActiveRecord
     {
         return [
             [
-                'class'      => SluggableBehavior::className(),
-                'attribute'  => 'post_type_name',
-                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['post_type_slug']],
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['slug']],
             ],
         ];
     }
@@ -64,15 +64,15 @@ class PostType extends ActiveRecord
     public function rules()
     {
         return [
-            [['post_type_name', 'post_type_sn', 'post_type_pn', 'post_type_permission'], 'required'],
-            [['post_type_description'], 'string'],
-            [['post_type_smb'], 'integer'],
-            ['post_type_smb', 'in', 'range' => [self::SMB, self::NON_SMB]],
-            ['post_type_smb', 'default', 'value' => self::NON_SMB],
-            [['post_type_name', 'post_type_slug', 'post_type_permission'], 'string', 'max' => 64],
-            [['post_type_icon', 'post_type_sn', 'post_type_pn'], 'string', 'max' => 255],
-            [['post_type_name', 'post_type_slug'], 'unique'],
-            [['post_type_slug'], 'safe'],
+            [['name', 'singular_name', 'plural_name', 'permission'], 'required'],
+            [['description'], 'string'],
+            [['menu_builder'], 'integer'],
+            ['menu_builder', 'in', 'range' => [self::MENU_BUILDER, self::NOT_MENU_BUILDER]],
+            ['menu_builder', 'default', 'value' => self::NOT_MENU_BUILDER],
+            [['name', 'slug', 'permission'], 'string', 'max' => 64],
+            [['icon', 'singular_name', 'plural_name'], 'string', 'max' => 255],
+            [['name', 'slug'], 'unique'],
+            [['slug'], 'safe'],
         ];
     }
 
@@ -82,15 +82,15 @@ class PostType extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'                    => Yii::t('writesdown', 'ID'),
-            'post_type_name'        => Yii::t('writesdown', 'Name'),
-            'post_type_slug'        => Yii::t('writesdown', 'Slug'),
-            'post_type_description' => Yii::t('writesdown', 'Description'),
-            'post_type_icon'        => Yii::t('writesdown', 'Icon'),
-            'post_type_sn'          => Yii::t('writesdown', 'Singular Name'),
-            'post_type_pn'          => Yii::t('writesdown', 'Plural Name'),
-            'post_type_smb'         => Yii::t('writesdown', 'Show Menu Builder'),
-            'post_type_permission'  => Yii::t('writesdown', 'Permission'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'name' => Yii::t('writesdown', 'Name'),
+            'slug' => Yii::t('writesdown', 'Slug'),
+            'description' => Yii::t('writesdown', 'Description'),
+            'icon' => Yii::t('writesdown', 'Icon'),
+            'singular_name' => Yii::t('writesdown', 'Singular Name'),
+            'plural_name' => Yii::t('writesdown', 'Plural Name'),
+            'menu_builder' => Yii::t('writesdown', 'Is Menu Builder'),
+            'permission' => Yii::t('writesdown', 'Permission'),
         ];
     }
 
@@ -99,7 +99,7 @@ class PostType extends ActiveRecord
      */
     public function getPosts()
     {
-        return $this->hasMany(Post::className(), ['post_type' => 'id']);
+        return $this->hasMany(Post::className(), ['type' => 'id']);
     }
 
     /**
@@ -115,85 +115,83 @@ class PostType extends ActiveRecord
      */
     public function getTaxonomies()
     {
-        return $this->hasMany(Taxonomy::className(), ['id' => 'taxonomy_id'])->viaTable('{{%post_type_taxonomy}}',
-            ['post_type_id' => 'id']);
+        return $this->hasMany(Taxonomy::className(), ['id' => 'taxonomy_id'])
+            ->viaTable('{{%post_type_taxonomy}}', ['post_type_id' => 'id']);
     }
 
     /**
-     * Get array of smb hierarchical for label or dropdown.
+     * Get array of menu_builder hierarchical for label or dropdown.
      * SMB is abbreviation from Show Menu Builder.
      *
      * @return array
      */
-    public function getSmb()
+    public function getMenuBuilders()
     {
         return [
-            self::SMB     => "Yes",
-            self::NON_SMB => "No",
+            self::MENU_BUILDER => Yii::t('writesdown', 'Yes'),
+            self::NOT_MENU_BUILDER => Yii::t('writesdown', 'No'),
         ];
     }
 
     /**
-     * Get all post type which post_type_smb is true.
+     * Get all post type which menu_builder is true.
      * The return value will be used in admin sidebar menu.
      *
      * @param int $position Position of post type in admin site menu
-     *
      * @return array
      */
-    public static function getMenu($position = 2)
+    public static function getMenus($position = 2)
     {
         /* @var $model \common\models\PostType */
         $models = static::find()->all();
-        $adminSiteMenu = [];
+        $items = [];
         foreach ($models as $model) {
-            $adminSiteMenu[$position] = [
-                'label'   => $model->post_type_pn,
-                'icon'    => $model->post_type_icon,
-                'items'   => static::getTaxonomyMenu($model),
-                'visible' => Yii::$app->user->can($model->post_type_permission),
+            $items[$position] = [
+                'label' => $model->plural_name,
+                'icon' => $model->icon,
+                'items' => static::getTaxonomyMenus($model),
+                'visible' => Yii::$app->user->can($model->permission),
             ];
             $position++;
         }
 
-        return $adminSiteMenu;
+        return $items;
     }
 
     /**
      * Get all taxonomies in postType to show as submenu.
      *
      * @param \common\models\PostType $postType
-     *
      * @return array
      */
-    protected static function getTaxonomyMenu($postType)
+    protected static function getTaxonomyMenus($postType)
     {
-        $adminSiteSubmenu = [];
-        $adminSiteSubmenu[] = [
-            'icon'  => 'fa fa-circle-o',
-            'label' => Yii::t('app', 'All {post_type_name}', ['post_type_name' => $postType->post_type_pn]),
-            'url'   => ['/post/index/', 'post_type' => $postType->id],
+        $items = [];
+        $items[] = [
+            'icon' => 'fa fa-circle-o',
+            'label' => Yii::t('app', 'All {name}', ['name' => $postType->plural_name]),
+            'url' => ['/post/index/', 'type' => $postType->id],
         ];
-        $adminSiteSubmenu[] = [
-            'icon'  => 'fa fa-circle-o',
-            'label' => Yii::t('app', 'Add New {post_type_name}', ['post_type_name' => $postType->post_type_sn]),
-            'url'   => ['/post/create/', 'post_type' => $postType->id],
+        $items[] = [
+            'icon' => 'fa fa-circle-o',
+            'label' => Yii::t('app', 'Add New {name}', ['name' => $postType->singular_name]),
+            'url' => ['/post/create/', 'type' => $postType->id],
         ];
         foreach ($postType->taxonomies as $taxonomy) {
-            $adminSiteSubmenu[] = [
-                'icon'    => 'fa fa-circle-o',
-                'label'   => $taxonomy->taxonomy_pn,
-                'url'     => ['/taxonomy/view/', 'id' => $taxonomy->id],
+            $items[] = [
+                'icon' => 'fa fa-circle-o',
+                'label' => $taxonomy->plural_name,
+                'url' => ['/taxonomy/view/', 'id' => $taxonomy->id],
                 'visible' => Yii::$app->user->can('editor'),
             ];
         }
-        $adminSiteSubmenu[] = [
-            'icon'    => 'fa fa-circle-o',
-            'label'   => Yii::t('app', 'Comments'),
-            'url'     => ['/post-comment/index/', 'post_type' => $postType->id],
+        $items[] = [
+            'icon' => 'fa fa-circle-o',
+            'label' => Yii::t('app', 'Comments'),
+            'url' => ['/post-comment/index/', 'posttype' => $postType->id],
             'visible' => Yii::$app->user->can('editor'),
         ];
 
-        return $adminSiteSubmenu;
+        return $items;
     }
 }

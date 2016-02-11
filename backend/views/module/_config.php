@@ -1,32 +1,44 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
-/* @var $key string */
-/* @var $label string */
+/* @var $this \yii\web\View */
 /* @var $model common\models\Module */
-?>
-<?php if (!is_array($config)): ?>
-    <li>
-        <?= $form->field($model, "module_config" . $key)->textInput([
-            'value'    => $config,
-            'readonly' => $label === 'class' ? 'readonly' : null,
-        ])->label($label) ?>
-    </li>
-<?php else: ?>
-    <ul>
-        <?php foreach ($config as $subKey => $subConfig): ?>
-            <?= $this->render('_config', [
-                'key'    => $key . "[$subKey]",
-                'config' => $subConfig,
-                'form'   => $form,
-                'model'  => $model,
-                'label'  => $subKey,
-            ]) ?>
-        <?php endforeach ?>
-    </ul>
-<?php endif ?>
+/* @var $form \yii\widgets\ActiveForm */
+/* @var $config array */
+/* @var $type string */
+
+/**
+ * Render widget config.
+ *
+ * @param $form    \yii\widgets\ActiveForm
+ * @param $model   \common\models\Widget
+ * @param $config  array
+ * @param $type    string
+ * @param $oldKey  null|array
+ */
+$renderConfig = function ($form, $model, $config, $type, $oldKey = null) use (&$renderConfig) {
+    echo '<ul>';
+
+    foreach ($config as $key => $value) {
+        echo '<li>';
+        if (is_array($value)) {
+            $renderConfig($form, $model, $value, $type, $oldKey . "[$key]");
+        } else {
+            echo $form->field($model, "config" . "[$type]" . $oldKey . "[$key]")->textInput([
+                'class' => 'form-control input-sm',
+                'value' => $value,
+                'readonly' => $key === 'class' ? 'readonly' : null,
+            ])->label($key);
+        }
+        echo '</li>';
+    }
+
+    echo '</ul>';
+};
+
+$renderConfig($form, $model, $config, $type);

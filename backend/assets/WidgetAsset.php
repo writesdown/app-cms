@@ -26,10 +26,6 @@ class WidgetAsset extends AssetBundle
 
     public function init()
     {
-        if (YII_DEBUG) {
-            $this->js = ['js/widget.js'];
-        } else {
-            $this->js = ['js/min/widget.js'];
-        }
+        YII_DEBUG ? $this->js = ['js/widget.js'] : $this->js = ['js/min/widget.js'];
     }
 }

@@ -1,15 +1,15 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use backend\assets\MenuAsset;
 
-/* @var $availableMenu [] */
-/* @var $selectedMenu common\models\Menu */
+/* @var $available [] */
+/* @var $selected common\models\Menu */
 /* @var $postTypes common\models\PostType[] */
 /* @var $taxonomies common\models\Taxonomy[] */
 /* @var $model common\models\Menu */
@@ -23,7 +23,7 @@ MenuAsset::register($this);
     <div class="box box-primary">
         <div class="box-header">
             <i class="fa fa-list-ul"></i>
-            <h2 class="box-title"><?=Yii::t('writesdown', 'Menu') ?></h2>
+            <h2 class="box-title"><?= Yii::t('writesdown', 'Menu') ?></h2>
 
             <div class="box-tools pull-right">
                 <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -38,26 +38,26 @@ MenuAsset::register($this);
                 </div>
                 <div class="col-md-8">
                     <?= $this->render('_select', [
-                        'availableMenu' => $availableMenu,
-                        'selectedMenu'  => $selectedMenu,
+                        'available' => $available,
+                        'selected' => $selected,
                     ]) ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <?php if ($selectedMenu): ?>
+    <?php if ($selected): ?>
         <div class="row">
             <div class="col-md-4">
                 <div id="create-menu-items" class="box-group">
-                    <?= $this->render('_link', ['selectedMenu' => $selectedMenu]) ?>
-                    <?= $this->render('_post-types', ['postTypes' => $postTypes, 'selectedMenu' => $selectedMenu]) ?>
-                    <?= $this->render('_taxonomies', ['taxonomies' => $taxonomies, 'selectedMenu' => $selectedMenu]) ?>
+                    <?= $this->render('_link', ['selected' => $selected]) ?>
+                    <?= $this->render('_post-types', ['postTypes' => $postTypes, 'selected' => $selected]) ?>
+                    <?= $this->render('_taxonomies', ['taxonomies' => $taxonomies, 'selected' => $selected]) ?>
                 </div>
             </div>
             <div class="col-md-8">
                 <?= $this->render('_render', [
-                    'selectedMenu' => $selectedMenu,
+                    'selected' => $selected,
                 ]) ?>
             </div>
         </div>

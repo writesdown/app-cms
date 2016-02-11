@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -13,6 +13,12 @@ use tests\codeception\backend\AcceptanceTester;
 use tests\codeception\common\fixtures\OptionFixture;
 use yii\helpers\Url;
 
+/**
+ * Class SettingCest
+ *
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
+ */
 class SettingCest
 {
     /**
@@ -47,27 +53,28 @@ class SettingCest
     {
     }
 
-    public function testIndex(AcceptanceTester $I){
+    public function testIndex(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that index page only available for superadmin');
         $I->amOnPage(Url::to(['/setting/index']));
         $I->see('Forbidden (#403)', 'h1');
         $I->see('You are not allowed to perform this action.', '.alert');
     }
 
-    public function testGroup(AcceptanceTester $I){
+    public function testGroup(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that setting works');
         $I->amOnPage(Url::to(['/setting/group', 'id' => 'general']));
         $I->see('General Settings', 'h1');
 
         $I->amGoingTo('update site title and tag line');
-        $I->fillField('input[name="Option[sitetitle][option_value]"]', 'My New Website');
-        $I->fillField('input[name="Option[tagline][option_value]"]', 'My New Website Tagline');
+        $I->fillField('input[name="Option[sitetitle][value]"]', 'My New Website');
+        $I->fillField('input[name="Option[tagline][value]"]', 'My New Website Tagline');
         $I->click('Save');
-        if(method_exists($I, 'wait')){
+        if (method_exists($I, 'wait')) {
             $I->wait(3);
         }
         $I->expectTo('see success message');
-
         $I->see('Settings successfully saved.');
 
         Option::up('sitetitle', 'WritesDown');

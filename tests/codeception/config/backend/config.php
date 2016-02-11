@@ -7,16 +7,16 @@ return [
     'params' => [
         'widget' => [
             [
-                'title'       => 'Sidebar',
+                'title' => 'Sidebar',
                 'description' => 'Main sidebar that appears on the right.',
-                'location'    => 'sidebar',
-            ]
+                'location' => 'sidebar',
+            ],
         ],
-        'menu'   => [
+        'menu' => [
             'location' => [
-                'primary'   => 'Primary',
-                'secondary' => 'Secondary'
-            ]
+                'primary' => 'Primary',
+                'secondary' => 'Secondary',
+            ],
         ],
-    ]
+    ],
 ];

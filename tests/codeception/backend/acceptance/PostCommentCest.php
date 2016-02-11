@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -25,8 +25,8 @@ use yii\helpers\Url;
 /**
  * Class PostCommentCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class PostCommentCest
 {
@@ -71,12 +71,12 @@ class PostCommentCest
         $I->see('Post Comments', 'h1');
 
         $I->amGoingTo('submit search form with non existing post-comment');
-        $indexPage->submit(['comment_author' => 'non_existing_post_comment']);
+        $indexPage->submit(['author' => 'non_existing_post_comment']);
         $I->expectTo('not see a record');
         $I->see('No results found.', '#post-comment-grid-view');
 
         $I->amGoingTo('submit search form with existing post');
-        $indexPage->submit(['comment_author' => 'Mr']);
+        $indexPage->submit(['author' => 'Mr']);
         $I->expectTo('see post-comment of which the author contains Mr');
         $I->see('Mr. WritesDown', '#post-comment-grid-view');
     }
@@ -88,13 +88,13 @@ class PostCommentCest
     {
         $I->wantTo('ensure that update post-comment works');
         $updatePage = UpdatePage::openBy($I);
-        $I->see('Update Post Comment: 1', 'h1');
+        $I->see('Update Post Comment 1', 'h1');
 
         $I->amGoingTo('submit post-comment with no correct email & url');
         $updatePage->submit([
-            'comment_author'       => 'Tester',
-            'comment_author_email' => 'tester.author@test',
-            'comment_author_url'   => 'http://.com'
+            'author' => 'Tester',
+            'email' => 'tester.author@test',
+            'url' => 'http://.com',
         ]);
         $I->expectTo('see that email & url not correct');
         $I->see('Email is not a valid email address.', '.help-block');
@@ -102,18 +102,18 @@ class PostCommentCest
 
         $I->amGoingTo('submit post-comment with correct data');
         $updatePage->submit([
-            'comment_author'       => 'Tester',
-            'comment_author_email' => 'tester@tester.com',
-            'comment_author_url'   => 'http://tester.com'
+            'author' => 'Tester',
+            'email' => 'tester@tester.com',
+            'url' => 'http://tester.com',
         ]);
         $I->expect('post-comment updated');
         $I->dontSee('Email is not a valid email address.', '.help-block');
         $I->dontSee('URL is not a valid URL.', '.help-block');
 
         PostComment::findOne(1)->updateAll([
-            'comment_author'       => 'Mr. WritesDown',
-            'comment_author_email' => 'wd@writesdown.com',
-            'comment_author_url'   => 'http://www.writesdown.com'
+            'author' => 'Mr. WritesDown',
+            'email' => 'wd@writesdown.com',
+            'url' => 'http://www.writesdown.com',
         ]);
     }
 
@@ -128,7 +128,7 @@ class PostCommentCest
 
         $I->seeElement('a[href="' . Url::to(['/post-comment/delete', 'id' => 1]) . '"]');
 
-        if(method_exists($I, 'acceptPopup') && method_exists($I, 'wait')){
+        if (method_exists($I, 'acceptPopup') && method_exists($I, 'wait')) {
             $I->click('a[href="' . Url::to(['/post-comment/delete', 'id' => 1]) . '"]');
             $I->acceptPopup();
             $I->wait(3);
@@ -155,9 +155,9 @@ class PostCommentCest
         $I->amGoingTo('reply post-comment with no empty content');
         $replyPage->submit('Test reply post-comment');
         $I->expect('the reply saved');
-        $I->see('Update Post Comment: 2', 'h1');
+        $I->see('Update Post Comment 2', 'h1');
 
-        PostComment::deleteAll(['comment_content' => 'Test reply post-comment']);
+        PostComment::deleteAll(['content' => 'Test reply post-comment']);
     }
 
     /**

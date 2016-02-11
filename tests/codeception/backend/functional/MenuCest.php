@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
@@ -18,8 +18,8 @@ use yii\helpers\Url;
 /**
  * Class MenuCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class MenuCest
 {
@@ -80,7 +80,7 @@ class MenuCest
         $I->see('Test Menu', 'h2');
         $I->dontSee('Menu Item Primary');
 
-        Menu::deleteAll(['menu_title' => 'Test Menu']);
+        Menu::deleteAll(['title' => 'Test Menu']);
     }
 
     /**

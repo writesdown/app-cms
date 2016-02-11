@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -17,17 +17,17 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'user-reset-password-form']) ?>
 
     <?= $form->field($model, 'password_old')->passwordInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('password_old'),
     ]) ?>
 
     <?= $form->field($model, 'password')->passwordInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('password'),
     ]) ?>
 
     <?= $form->field($model, 'password_repeat')->passwordInput([
-        'maxlength'   => 255,
+        'maxlength' => 255,
         'placeholder' => $model->getAttributeLabel('password_repeat'),
     ]) ?>
 

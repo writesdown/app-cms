@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -17,39 +17,38 @@ use yii\web\IdentityInterface;
  * This is the model class for table "{{%user}}".
  *
  * @property integer $id
- * @property string  $username
- * @property string  $email
- * @property string  $full_name
- * @property string  $display_name
- * @property string  $password_hash
- * @property string  $password_reset_token
- * @property string  $auth_key
+ * @property string $username
+ * @property string $email
+ * @property string $full_name
+ * @property string $display_name
+ * @property string $password_hash
+ * @property string $password_reset_token
+ * @property string $auth_key
  * @property integer $status
- * @property string  $created_at
- * @property string  $updated_at
- * @property string  $login_at
- * @property string  $role
- * @property string  $password
- * @property string  $password_old
- * @property string  $password_repeat
- * @property string  $url
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $login_at
+ * @property string $role
+ * @property string $password
+ * @property string $password_old
+ * @property string $password_repeat
+ * @property string $url
  *
  * @property Media[] $media
- * @property Post[]  $posts
+ * @property Post[] $posts
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 5;
+    const STATUS_REMOVED = 0;
+    const STATUS_NOT_ACTIVE = 5;
     const STATUS_ACTIVE = 10;
 
     public $password;
     public $password_old;
     public $password_repeat;
-
     public $role;
 
     /**
@@ -77,17 +76,16 @@ class User extends ActiveRecord implements IdentityInterface
             ['username', 'string', 'min' => 3, 'max' => 255],
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'email'],
-            [['status'], 'integer'],
+            ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            [['auth_key'], 'string', 'max' => 32],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_NOT_ACTIVE, self::STATUS_REMOVED]],
+            ['auth_key', 'string', 'max' => 32],
             [['created_at', 'updated_at', 'login_at', 'role'], 'safe'],
             [['password', 'password_old', 'password_repeat'], 'required', 'on' => 'resetPassword'],
             ['password', 'required', 'on' => 'register'],
             ['password', 'string', 'min' => 6],
             ['password_old', 'passwordValidation'],
             ['password_repeat', 'compare', 'compareAttribute' => 'password'],
-
         ];
     }
 
@@ -97,22 +95,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id'                   => Yii::t('writesdown', 'ID'),
-            'username'             => Yii::t('writesdown', 'Username'),
-            'email'                => Yii::t('writesdown', 'Email'),
-            'full_name'            => Yii::t('writesdown', 'Full Name'),
-            'display_name'         => Yii::t('writesdown', 'Display Name'),
-            'password_hash'        => Yii::t('writesdown', 'Password Hash'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'username' => Yii::t('writesdown', 'Username'),
+            'email' => Yii::t('writesdown', 'Email'),
+            'full_name' => Yii::t('writesdown', 'Full Name'),
+            'display_name' => Yii::t('writesdown', 'Display Name'),
+            'password_hash' => Yii::t('writesdown', 'Password Hash'),
             'password_reset_token' => Yii::t('writesdown', 'Password Reset Token'),
-            'auth_key'             => Yii::t('writesdown', 'Auth Key'),
-            'status'               => Yii::t('writesdown', 'Status'),
-            'created_at'           => Yii::t('writesdown', 'Registered'),
-            'updated_at'           => Yii::t('writesdown', 'Updated'),
-            'login_at'             => Yii::t('writesdown', 'Last Activity'),
-            'role'                 => Yii::t('writesdown', 'Role'),
-            'password'             => Yii::t('writesdown', 'Password'),
-            'password_repeat'      => Yii::t('writesdown', 'Repeat Password'),
-            'password_old'         => Yii::t('writesdown', 'Old Password'),
+            'auth_key' => Yii::t('writesdown', 'Auth Key'),
+            'status' => Yii::t('writesdown', 'Status'),
+            'created_at' => Yii::t('writesdown', 'Registered'),
+            'updated_at' => Yii::t('writesdown', 'Updated'),
+            'login_at' => Yii::t('writesdown', 'Last Activity'),
+            'role' => Yii::t('writesdown', 'Role'),
+            'password' => Yii::t('writesdown', 'Password'),
+            'password_repeat' => Yii::t('writesdown', 'Repeat Password'),
+            'password_old' => Yii::t('writesdown', 'Old Password'),
         ];
     }
 
@@ -121,7 +119,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getMedia()
     {
-        return $this->hasMany(Media::className(), ['media_author' => 'id']);
+        return $this->hasMany(Media::className(), ['author' => 'id']);
     }
 
     /**
@@ -129,7 +127,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getPosts()
     {
-        return $this->hasMany(Post::className(), ['post_author' => 'id']);
+        return $this->hasMany(Post::className(), ['author' => 'id']);
     }
 
     /**
@@ -152,7 +150,6 @@ class User extends ActiveRecord implements IdentityInterface
      * Finds user by username
      *
      * @param string $username
-     *
      * @return static|null
      */
     public static function findByUsername($username)
@@ -164,7 +161,6 @@ class User extends ActiveRecord implements IdentityInterface
      * Finds user by password reset token
      *
      * @param string $token password reset token
-     *
      * @return static|null
      */
     public static function findByPasswordResetToken($token)
@@ -175,7 +171,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
-            'status'               => self::STATUS_ACTIVE,
+            'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -183,7 +179,6 @@ class User extends ActiveRecord implements IdentityInterface
      * Finds out if password reset token is valid
      *
      * @param string $token password reset token
-     *
      * @return boolean
      */
     public static function isPasswordResetTokenValid($token)
@@ -226,7 +221,6 @@ class User extends ActiveRecord implements IdentityInterface
      * Validates password
      *
      * @param string $password password to validate
-     *
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
@@ -274,6 +268,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function passwordValidation()
     {
         $user = static::findOne(Yii::$app->user->id);
+
         if (!$user || !$user->validatePassword($this->password_old)) {
             $this->addError('password_old', Yii::t('writesdown', 'The old password is not correct.'));
         }
@@ -284,12 +279,12 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return array
      */
-    public function getStatus()
+    public function getStatuses()
     {
         return [
-            self::STATUS_ACTIVE   => "Activated",
-            self::STATUS_INACTIVE => "Unactivated",
-            self::STATUS_DELETED  => "Removed",
+            self::STATUS_ACTIVE => "Active",
+            self::STATUS_NOT_ACTIVE => "Not Active",
+            self::STATUS_REMOVED => "Removed",
         ];
     }
 
@@ -300,7 +295,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getStatusText()
     {
-        $status = $this->getStatus();
+        $status = $this->getStatuses();
 
         return isset($status[$this->status]) ? $status[$this->status] : "unknown($this->status)";
     }
@@ -316,6 +311,21 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Check permission of accessed model by current user.
+     */
+    public function checkPermission()
+    {
+        if ((Yii::$app->user->can('superadmin') && $this->id !== Yii::$app->user->id)
+            || (Yii::$app->user->can('administrator') && !Yii::$app->authManager->checkAccess($this->id,
+                    'administrator'))
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @inheritdoc
      */
     public function beforeSave($insert)
@@ -324,7 +334,7 @@ class User extends ActiveRecord implements IdentityInterface
             if ($this->isNewRecord) {
                 $this->created_at = new Expression('NOW()');
                 if (!$this->status) {
-                    $this->status = self::STATUS_INACTIVE;
+                    $this->status = self::STATUS_NOT_ACTIVE;
                 }
                 if (!$this->display_name) {
                     $this->display_name = $this->username;

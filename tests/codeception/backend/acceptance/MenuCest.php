@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -19,8 +19,8 @@ use yii\helpers\Url;
 /**
  * Class MenuCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class MenuCest
 {
@@ -81,7 +81,7 @@ class MenuCest
         $I->see('Test Menu', 'h2');
         $I->dontSee('Menu Item Primary');
 
-        Menu::deleteAll(['menu_title' => 'Test Menu']);
+        Menu::deleteAll(['title' => 'Test Menu']);
     }
 
     /**
@@ -97,13 +97,13 @@ class MenuCest
         $I->selectOption('#select-menu-list', 'Menu Secondary');
         // $I->click('Select', '#select-menu-form');
         $I->click('#select-menu-form button[type="submit"]');
-        if(method_exists($I, 'wait')){
+        if (method_exists($I, 'wait')) {
             $I->wait(3);
         }
         $I->see('Menu Secondary', 'h2');
 
         $I->click('Save');
-        if(method_exists($I, 'wait')){
+        if (method_exists($I, 'wait')) {
             $I->wait(3);
         }
         $I->see('Menu successfully saved.', '.alert');
@@ -119,16 +119,16 @@ class MenuCest
         $I->see('Menus', 'h1');
         $I->see('Menu Primary', 'h2');
 
-        if(method_exists($I, 'wait')){
+        if (method_exists($I, 'wait')) {
             $I->amGoingTo('submit menu form with correct data');
             $indexPage->submitMenuItem([
-                'menu_label' => 'New Menu Item',
-                'menu_url'   => 'http://writesdown.com'
+                'label' => 'New Menu Item',
+                'url' => 'http://writesdown.com',
             ]);
             $I->expectTo('see new menu item');
             $I->see('New Menu Item', '.dd-handle');
         }
 
-        MenuItem::deleteAll(['menu_label' => 'Test Menu Item']);
+        MenuItem::deleteAll(['label' => 'Test Menu Item']);
     }
 }

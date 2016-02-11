@@ -6,7 +6,7 @@ use yii\db\Schema;
  * Class m000000_000018_menu
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000018_menu extends \yii\db\Migration
 {
@@ -22,9 +22,9 @@ class m000000_000018_menu extends \yii\db\Migration
         }
 
         $this->createTable('{{%menu}}', [
-            'id'            => Schema::TYPE_PK,
-            'menu_title'    => Schema::TYPE_STRING . '(255) NOT NULL',
-            'menu_location' => Schema::TYPE_STRING . '(50)',
+            'id' => Schema::TYPE_PK,
+            'title' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'location' => Schema::TYPE_STRING . '(50)',
         ], $tableOptions);
     }
 

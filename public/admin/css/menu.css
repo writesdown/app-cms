@@ -7,7 +7,6 @@
     font-size: 13px;
     line-height: 20px;
 }
-
 .dd-list {
     display: block;
     position: relative;
@@ -15,11 +14,9 @@
     padding: 0;
     list-style: none;
 }
-
 .dd-list .dd-list {
     padding-left: 25px;
 }
-
 .dd-item,
 .dd-empty,
 .dd-placeholder {
@@ -31,15 +28,12 @@
     font-size: 13px;
     line-height: 17px;
 }
-
 .dd-item {
     margin-bottom: 7px;
 }
-
 .dd-item > ul > .dd-item {
     margin-top: 7px;
 }
-
 .dd-handle {
     position: absolute;
     right: 32px;
@@ -47,7 +41,6 @@
     padding: 9px 10px 8px 15px;
     cursor: pointer;
 }
-
 .dd-placeholder,
 .dd-empty {
     margin: 7px 0;
@@ -58,27 +51,24 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-
 .dd-empty {
-    border: 1px dashed #bbb;
+    border: 1px dashed #bbbbbb;
     min-height: 100px;
     background-color: #e5e5e5;
-    background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-    -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-    background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-    background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-    linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image: -webkit-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff),
+    -webkit-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);
+    background-image: -moz-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff),
+    -moz-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);
+    background-image: linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff),
+    linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);
     background-size: 60px 60px;
     background-position: 0 0, 30px 30px;
 }
-
 .dd-dragel {
     position: absolute;
     pointer-events: none;
     z-index: 9999;
 }
-
 #create-menu-items .box {
     margin-bottom: 0;
     border-bottom: none;
@@ -89,23 +79,20 @@
 }
 .menu-header {
     display: block;
-    background: #FCFCFC;
-    border: 1px solid #EEEEEE;
+    background: #fcfcfc;
+    border: 1px solid #eeeeee;
 }
-
 .menu-header .btn-detail-menu {
     display: block;
     float: right;
     margin: -1px -1px -1px 0;
 }
-
 .menu-body {
     padding: 15px;
-    background: #FFFFFF;
-    border: 1px solid #EEEEEE;
+    background: #ffffff;
+    border: 1px solid #eeeeee;
     border-top-width: 0;
 }
-
 .menu-body .dd-placeholder {
     max-width: 100%;
 }

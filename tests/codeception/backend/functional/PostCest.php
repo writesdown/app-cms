@@ -1,12 +1,13 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
 
+use common\models\Post;
 use tests\codeception\backend\_pages\_post\CreatePage;
 use tests\codeception\backend\_pages\_post\IndexPage;
 use tests\codeception\backend\_pages\_post\UpdatePage;
@@ -19,9 +20,14 @@ use tests\codeception\common\fixtures\PostTypeTaxonomyFixture;
 use tests\codeception\common\fixtures\TaxonomyFixture;
 use tests\codeception\common\fixtures\TermFixture;
 use tests\codeception\common\fixtures\TermRelationshipFixture;
-use common\models\Post;
 use yii\helpers\Url;
 
+/**
+ * Class PostCest
+ *
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
+ */
 class PostCest
 {
     /**
@@ -62,12 +68,12 @@ class PostCest
         $I->see('Posts', 'h1');
 
         $I->amGoingTo('submit search form with non existing post');
-        $indexPage->submit(['post_title' => 'non_existing_post']);
+        $indexPage->submit(['title' => 'non_existing_post']);
         $I->expectTo('not see a record');
         $I->see('No results found.', '#post-grid-view');
 
         $I->amGoingTo('submit search form with existing post');
-        $indexPage->submit(['post_title' => 'post', 'post_slug' => '']);
+        $indexPage->submit(['title' => 'post', 'slug' => '']);
         $I->expectTo('see post of which the title contains post');
         $I->see('post', '#post-grid-view');
         $I->dontSee('page', '#post-grid-view');
@@ -88,21 +94,21 @@ class PostCest
 
         $I->amGoingTo('submit create post form with same title');
         $createPage->submit([
-            'post_title' => 'Sample Post'
+            'title' => 'Sample Post',
         ]);
         $I->expectTo('see that title already taken');
         $I->see('Title "Sample Post" has already been taken.', '.help-block');
 
         $I->amGoingTo('submit create post form with correct data');
         $createPage->submit([
-            'post_title'   => 'New Test Post Title',
-            'post_slug'    => 'new-test-post-title',
-            'post_content' => 'New Test Post Content'
+            'title' => 'New Test Post Title',
+            'slug' => 'new-test-post-title',
+            'content' => 'New Test Post Content',
         ]);
         $I->expect('new post saved');
         $I->see('Post successfully saved.', '.alert');
 
-        Post::deleteAll(['post_title' => 'New Test Post Title']);
+        Post::deleteAll(['title' => 'New Test Post Title']);
     }
 
     public function testUpdate(FunctionalTester $I)
@@ -114,18 +120,18 @@ class PostCest
         $I->see('Tags');
 
         $I->amGoingTo('submit post post title same post title');
-        $updatePage->submit(['post_title' => 'Sample Page']);
+        $updatePage->submit(['title' => 'Sample Page']);
         $I->expectTo('see that post title already taken');
         $I->see('Title "Sample Page" has already been taken.', '.help-block');
 
         $I->amGoingTo('submit post form with correct data');
         $updatePage->submit([
-            'post_title' => 'Sample Post Update'
+            'title' => 'Sample Post Update',
         ]);
         $I->expect('post updated');
         $I->see('Post successfully saved.', '.alert');
 
-        Post::findOne(1)->updateAttributes(['post_title' => 'Sample Post']);
+        Post::findOne(1)->updateAttributes(['title' => 'Sample Post']);
     }
 
     public function testDelete(FunctionalTester $I)

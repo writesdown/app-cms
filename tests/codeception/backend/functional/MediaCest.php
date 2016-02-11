@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
@@ -20,8 +20,8 @@ use yii\helpers\Url;
 /**
  * Class MediaCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class MediaCest
 {
@@ -66,15 +66,14 @@ class MediaCest
         $I->see('Media', 'h1');
 
         $I->amGoingTo('submit search form with non existing media');
-        $indexPage->submit(['media_title' => 'non_existing_media']);
+        $indexPage->submit(['title' => 'non_existing_media']);
         $I->expectTo('not see a record');
         $I->see('No results found.', '#media-grid-view');
 
         $I->amGoingTo('submit search form with existing media');
-        $indexPage->submit(['media_title' => 'media', 'media_slug' => '']);
+        $indexPage->submit(['title' => 'media', 'slug' => '']);
         $I->expectTo('see media of which the title contains media');
         $I->see('media', '#media-grid-view');
-        $I->dontSee('page', '#media-grid-view');
     }
 
 
@@ -100,12 +99,12 @@ class MediaCest
 
         $I->amGoingTo('submit update media form');
         $updatePage->submit([
-            'media_title'   => 'test123',
-            'media_excerpt' => 'TEST QWERT'
+            'title' => 'test123',
+            'excerpt' => 'TEST QWERT',
         ]);
         $I->expect('media updated');
 
-        Media::findOne(1)->updateAttributes(['media_title' => 'Test Media', 'media_excerpt' => 'Test Media Caption']);
+        Media::findOne(1)->updateAttributes(['title' => 'Test Media', 'excerpt' => 'Test Media Caption']);
     }
 
     /**

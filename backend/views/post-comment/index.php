@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\grid\GridView;
@@ -18,22 +18,14 @@ use yii\widgets\Pjax;
 /* @var $postType common\models\PostType */
 /* @var $post common\models\Post */
 
-$this->title = Yii::t('writesdown', '{postType} Comments', [
-    'postType' => $postType->post_type_sn,
-]);
-$this->params['breadcrumbs'][] = [
-    'label' => $postType->post_type_sn,
-    'url'   => ['index', 'post_type' => $postType->id],
-];
+$this->title = Yii::t('writesdown', '{postType} Comments', ['postType' => $postType->singular_name]);
+$this->params['breadcrumbs'][] = ['label' => $postType->singular_name, 'url' => ['index', 'posttype' => $postType->id]];
 
 if ($post) {
-    $this->params['breadcrumbs'][] = [
-        'label' => $postType->post_type_sn . ': ' . $post->id,
-        'url'   => ['index', 'post_type' => $postType->id, 'post_id' => $post->id],
-    ];
+    $this->params['breadcrumbs'][] = $post->id;
     $this->title = Yii::t('writesdown', '{postType} {post} Comments', [
-        'postType' => $postType->post_type_sn,
-        'post'     => $post->id,
+        'postType' => $postType->singular_name,
+        'post' => $post->id,
     ]);
 }
 
@@ -45,14 +37,14 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Comments');
             <?= Html::dropDownList(
                 'bulk-action',
                 null,
-                ArrayHelper::merge($searchModel->getCommentApproved(), ['delete' => 'Delete']),
+                ArrayHelper::merge($searchModel->getStatuses(), ['delete' => 'Delete']),
                 ['class' => 'bulk-action form-control', 'prompt' => Yii::t('writesdown', 'Bulk Action')]
             ) ?>
 
             <?= Html::button(Yii::t('writesdown', 'Apply'), ['class' => 'btn btn-flat btn-warning bulk-button']) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
+                'class' => 'btn btn-flat btn-info',
                 "data-toggle" => "collapse",
                 "data-target" => "#post-comment-search",
             ]) ?>
@@ -63,47 +55,43 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Comments');
     <?= $this->render('_search', ['model' => $searchModel, 'postType' => $postType, 'post' => $post]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'id'           => 'post-comment-grid-view',
-        'columns'      => [
+        'filterModel' => $searchModel,
+        'id' => 'post-comment-grid-view',
+        'columns' => [
             ['class' => 'yii\grid\CheckboxColumn'],
 
-            'comment_author:ntext',
-            'comment_author_email:email',
+            'author:ntext',
+            'email:email',
             [
-                'attribute' => 'comment_content',
-                'format'    => 'html',
-                'value'     => function ($model) {
-                    return substr(strip_tags($model->comment_content), 0, 150) . '...';
+                'attribute' => 'content',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return substr(strip_tags($model->content), 0, 150) . '...';
                 },
             ],
-            'comment_date:datetime',
+            'date',
             [
-                'attribute' => 'comment_approved',
-                'filter'    => [
-                    'approved'   => 'Approved',
-                    'unapproved' => 'Unapproved',
-                    'trash'      => 'Trash',
-                ],
+                'attribute' => 'status',
+                'filter' => $searchModel->getStatuses(),
             ],
 
             [
-                'class'    => 'yii\grid\ActionColumn',
+                'class' => 'yii\grid\ActionColumn',
                 'template' => Yii::$app->user->can('editor') ? '{view} {update} {delete} {reply}' : '{view}',
-                'buttons'  => [
-                    'view'  => function ($url, $model) {
+                'buttons' => [
+                    'view' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
                             $model->commentPost->url . '#comment-' . $model->id, [
-                                'title'     => Yii::t('yii', 'View'),
+                                'title' => Yii::t('yii', 'View'),
                                 'data-pjax' => '0',
                             ]);
                     },
                     'reply' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-share-alt"></span>', [
-                            'post-comment/reply',
+                            'reply',
                             'id' => $model->id,
                         ], [
-                            'title'     => Yii::t('writesdown', 'Reply'),
+                            'title' => Yii::t('writesdown', 'Reply'),
                             'data-pjax' => '0',
                         ]);
                     },
@@ -117,11 +105,11 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Comments');
 </div>
 <?php $this->registerJs('jQuery(".bulk-button").click(function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t("app", "Are you sure?") . '")){
+    if(confirm("' . Yii::t("writesdown", "Are you sure?") . '")){
         var ids     = $("#post-comment-grid-view").yiiGridView("getSelectedRows");
         var action  = $(this).parents(".form-group").find(".bulk-action").val();
         $.ajax({
-            url: "' . Url::to(["/post-comment/bulk-action"]) . '",
+            url: "' . Url::to(["bulk-action"]) . '",
             data: { ids: ids, action: action, _csrf: yii.getCsrfToken() },
             type:"POST",
             success: function(data){

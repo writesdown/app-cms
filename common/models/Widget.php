@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -16,20 +16,23 @@ use yii\db\Expression;
  * This is the model class for table "{{%widget}}".
  *
  * @property integer $id
- * @property string  $widget_title
- * @property string  $widget_config
- * @property string  $widget_location
- * @property integer $widget_order
- * @property string  $widget_dir
- * @property string  $widget_date
- * @property string  $widget_modified
+ * @property string $title
+ * @property string $config
+ * @property string $location
+ * @property integer $order
+ * @property string $directory
+ * @property string $date
+ * @property string $modified
+ *
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.2.0
  */
 class Widget extends ActiveRecord
 {
     /**
-     * @var yii\web\UploadedFile
+     * @var \yii\web\UploadedFile
      */
-    public $widget_file;
+    public $file;
 
     /**
      * @inheritdoc
@@ -45,15 +48,15 @@ class Widget extends ActiveRecord
     public function rules()
     {
         return [
-            [['widget_title', 'widget_location', 'widget_dir'], 'required'],
-            [['widget_config'], 'required', 'on' => 'create'],
-            [['widget_config'], 'string'],
-            [['widget_order'], 'integer'],
-            [['widget_date', 'widget_modified'], 'safe'],
-            [['widget_title'], 'string', 'max' => 255],
-            [['widget_location', 'widget_dir'], 'string', 'max' => 128],
-            [['widget_file'], 'required', 'on' => 'upload'],
-            [['widget_file'], 'file', 'extensions' => 'zip'],
+            [['title', 'location', 'directory'], 'required'],
+            ['config', 'required', 'on' => 'create'],
+            ['config', 'string'],
+            ['order', 'integer'],
+            [['date', 'modified'], 'safe'],
+            ['title', 'string', 'max' => 255],
+            [['location', 'directory'], 'string', 'max' => 128],
+            ['file', 'required', 'on' => 'upload'],
+            ['file', 'file', 'extensions' => 'zip'],
         ];
     }
 
@@ -63,15 +66,15 @@ class Widget extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'              => Yii::t('writesdown', 'ID'),
-            'widget_title'    => Yii::t('writesdown', 'Title'),
-            'widget_config'   => Yii::t('writesdown', 'Config'),
-            'widget_location' => Yii::t('writesdown', 'Location'),
-            'widget_order'    => Yii::t('writesdown', 'Order'),
-            'widget_dir'      => Yii::t('writesdown', 'Directory'),
-            'widget_date'     => Yii::t('writesdown', 'Assigned'),
-            'widget_modified' => Yii::t('writesdown', 'Updated'),
-            'widget_file'     => Yii::t('writesdown', 'Widget (ZIP)'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'title' => Yii::t('writesdown', 'Title'),
+            'config' => Yii::t('writesdown', 'Config'),
+            'location' => Yii::t('writesdown', 'Location'),
+            'order' => Yii::t('writesdown', 'Order'),
+            'directory' => Yii::t('writesdown', 'Directory'),
+            'date' => Yii::t('writesdown', 'Assigned'),
+            'modified' => Yii::t('writesdown', 'Updated'),
+            'file' => Yii::t('writesdown', 'Widget (ZIP)'),
         ];
     }
 
@@ -81,7 +84,7 @@ class Widget extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['upload'] = ['widget_file'];
+        $scenarios['upload'] = ['file'];
         $scenarios['activate'] = $scenarios['default'];
 
         return $scenarios;
@@ -94,7 +97,7 @@ class Widget extends ActiveRecord
      */
     public function getConfig()
     {
-        return Json::decode($this->widget_config);
+        return Json::decode($this->config);
     }
 
     /**
@@ -104,9 +107,9 @@ class Widget extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->widget_date = new Expression('NOW()');
+                $this->date = new Expression('NOW()');
             }
-            $this->widget_modified = new Expression('NOW()');
+            $this->modified = new Expression('NOW()');
 
             return true;
         }

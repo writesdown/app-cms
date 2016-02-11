@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
-use themes\writesdown\assets\ThemeAsset;
+use themes\writesdown\classes\assets\ThemeAsset;
 use yii\helpers\Html;
 
 $assetBundle = ThemeAsset::register($this);
@@ -20,7 +20,7 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Yii::$app->request->abso
 
 // Favicon
 $this->registerLinkTag([
-    'rel'  => 'icon',
+    'rel' => 'icon',
     'href' => $assetBundle->baseUrl . '/img/favicon.ico',
     'type' => 'image/x-icon',
 ]);
@@ -50,8 +50,8 @@ $this->beginPage();
 <?php $this->beginBody() ?>
 <?= $this->render('header', [
     'assetBundle' => $assetBundle,
-    'siteTitle'   => $siteTitle,
-    'tagLine'     => $tagLine,
+    'siteTitle' => $siteTitle,
+    'tagLine' => $tagLine,
 ]) ?>
 <div class="container" id="wrapper">
     <div class="row">

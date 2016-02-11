@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 /**
  * Term represents the model behind the search form about `common\models\Term`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class Term extends TermModel
 {
@@ -26,8 +26,8 @@ class Term extends TermModel
     public function rules()
     {
         return [
-            [['id', 'taxonomy_id', 'term_parent', 'term_count'], 'integer'],
-            [['term_name', 'term_slug', 'term_description'], 'safe'],
+            [['id', 'taxonomy_id', 'parent', 'count'], 'integer'],
+            [['name', 'slug', 'description'], 'safe'],
         ];
     }
 
@@ -44,19 +44,18 @@ class Term extends TermModel
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     * @param int   $taxonomy_id
-     *
+     * @param int $taxonomyId
      * @return ActiveDataProvider
      */
-    public function search($params, $taxonomy_id)
+    public function search($params, $taxonomyId)
     {
         $query = TermModel::find();
 
-        $query->andWhere(['taxonomy_id' => $taxonomy_id]);
+        $query->andWhere(['taxonomy_id' => $taxonomyId]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'  => [
+            'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ],
@@ -70,15 +69,15 @@ class Term extends TermModel
         }
 
         $query->andFilterWhere([
-            'id'          => $this->id,
+            'id' => $this->id,
             'taxonomy_id' => $this->taxonomy_id,
-            'term_parent' => $this->term_parent,
-            'term_count'  => $this->term_count,
+            'parent' => $this->parent,
+            'count' => $this->count,
         ]);
 
-        $query->andFilterWhere(['like', 'term_name', $this->term_name])
-            ->andFilterWhere(['like', 'term_slug', $this->term_slug])
-            ->andFilterWhere(['like', 'term_description', $this->term_description]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

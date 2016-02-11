@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\acceptance;
@@ -14,8 +14,8 @@ use yii\helpers\Url;
 /**
  * Class WidgetCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class WidgetCest
 {
@@ -28,24 +28,6 @@ class WidgetCest
     {
         $loginPage = LoginPage::openBy($I);
         $loginPage->submit(['username' => 'administrator', 'password' => 'administrator']);
-    }
-
-    /**
-     * This method is called after each cest class test method, even if test failed.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function _after($I)
-    {
-    }
-
-    /**
-     * This method is called when test fails.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function _failed($I)
-    {
     }
 
     /**
@@ -74,10 +56,10 @@ class WidgetCest
 
         $I->amGoingTo('submit widget form without zip file');
         $I->click('Upload', '#widget-create-form');
-        if(method_exists($I, 'wait')){
+        if (method_exists($I, 'wait')) {
             $I->wait(3);
         }
-        $I->expectTo('see validation errors');
-        $I->see('Widget (ZIP) cannot be blank.', '.help-block');
+        $I->expect('the widget not successfully uploaded');
+        $I->dontSee('Widgets', 'h1');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -18,8 +18,8 @@ use yii\web\NotFoundHttpException;
 /**
  * SettingController implements the CRUD actions for Option model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class SettingController extends Controller
 {
@@ -35,18 +35,18 @@ class SettingController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'create', 'view', 'update', 'delete'],
-                        'allow'   => true,
-                        'roles'   => ['superadmin'],
+                        'allow' => true,
+                        'roles' => ['superadmin'],
                     ],
                     [
                         'actions' => ['group'],
-                        'allow'   => true,
-                        'roles'   => ['administrator'],
+                        'allow' => true,
+                        'roles' => ['administrator'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
@@ -65,7 +65,7 @@ class SettingController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel'  => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -74,7 +74,6 @@ class SettingController extends Controller
      * Displays single Option model.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionView($id)
@@ -108,7 +107,6 @@ class SettingController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -129,7 +127,6 @@ class SettingController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -145,7 +142,6 @@ class SettingController extends Controller
      * It will use group file if exist.
      *
      * @param string $id
-     *
      * @return mixed
      */
     public function actionGroup($id)
@@ -154,7 +150,7 @@ class SettingController extends Controller
 
         if ($options = Yii::$app->request->post('Option')) {
             foreach ($options as $optionName => $option) {
-                Option::up($optionName, $option['option_value']);
+                Option::up($optionName, $option['value']);
             }
             Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Settings successfully saved.'));
 
@@ -176,7 +172,6 @@ class SettingController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Option the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -185,7 +180,7 @@ class SettingController extends Controller
         if (($model = Option::findOne($id)) !== null) {
             return $model;
         }
-        
+
         throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
     }
 
@@ -194,13 +189,12 @@ class SettingController extends Controller
      * If the models are not found, a 404 HTTP exception will be thrown.
      *
      * @param string $id
-     *
      * @return Option the loaded model
      * @throws NotFoundHttpException if the models cannot be found
      */
     protected function findModelByGroup($id)
     {
-        if ($model = Option::find()->where(['option_group' => $id])->indexBy('option_name')->all()) {
+        if ($model = Option::find()->where(['group' => $id])->indexBy('name')->all()) {
             return $model;
         }
 

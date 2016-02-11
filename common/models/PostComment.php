@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -13,12 +13,12 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "{{%post_comment}}".
  *
- * @property integer $comment_post_id
+ * @property integer $post_id
  *
- * @property Post    $commentPost
+ * @property Post $commentPost
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostComment extends BaseComment
 {
@@ -41,8 +41,8 @@ class PostComment extends BaseComment
     public function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
-            ['comment_post_id', 'required'],
-            ['comment_post_id', 'integer'],
+            ['post_id', 'required'],
+            ['post_id', 'integer'],
         ]);
     }
 
@@ -52,8 +52,8 @@ class PostComment extends BaseComment
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'comment_post_id' => Yii::t('writesdown', 'Comment to'),
-            'post_title'      => Yii::t('writesdown', 'Post Title'),
+            'post_id' => Yii::t('writesdown', 'Comment to'),
+            'post_title' => Yii::t('writesdown', 'Post Title'),
         ]);
     }
 
@@ -62,6 +62,6 @@ class PostComment extends BaseComment
      */
     public function getCommentPost()
     {
-        return $this->hasOne(Post::className(), ['id' => 'comment_post_id']);
+        return $this->hasOne(Post::className(), ['id' => 'post_id']);
     }
 }

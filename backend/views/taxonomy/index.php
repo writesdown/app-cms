@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\grid\GridView;
@@ -21,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="taxonomy-index">
     <div class="form-inline grid-nav" role="form">
         <div class="form-group">
-            <?= Html::dropDownList('bulk-action', null, ['delete' => 'Delete'], [
+            <?= Html::dropDownList('bulk-action', null, ['deleted' => Yii::t('writesdown', 'Delete Permanently')], [
                 'prompt' => Yii::t('writesdown', 'Bulk Action'),
-                'class'  => 'bulk-action form-control',
+                'class' => 'bulk-action form-control',
             ]) ?>
 
             <?= Html::button(Yii::t('writesdown', 'Apply'), ['class' => 'btn btn-flat btn-warning bulk-button']) ?>
@@ -35,9 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
-                "data-toggle" => "collapse",
-                "data-target" => "#taxonomy-search",
+                'class' => 'btn btn-flat btn-info',
+                'data-toggle' => 'collapse',
+                'data-target' => '#taxonomy-search',
             ]) ?>
 
         </div>
@@ -46,17 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_search', ['model' => $searchModel]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'id'           => 'taxonomy-grid-view',
-        'columns'      => [
+        'filterModel' => $searchModel,
+        'id' => 'taxonomy-grid-view',
+        'columns' => [
             ['class' => 'yii\grid\CheckboxColumn'],
 
-            'taxonomy_name',
-            'taxonomy_slug',
-            ['attribute' => 'taxonomy_hierarchical', 'format' => 'boolean', 'filter' => $searchModel->hierarchical],
-            'taxonomy_sn',
-            'taxonomy_pn',
-            ['attribute' => 'taxonomy_smb', 'format' => 'boolean', 'filter' => $searchModel->smb],
+            'name',
+            'slug',
+            ['attribute' => 'hierarchical', 'format' => 'boolean', 'filter' => $searchModel->getHierarchies()],
+            'singular_name',
+            'plural_name',
+            ['attribute' => 'menu_builder', 'format' => 'boolean', 'filter' => $searchModel->getMenuBuilders()],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
@@ -67,11 +67,11 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php $this->registerJs('jQuery(".bulk-button").click(function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t("app", "Are you sure to do this?") . '")){
-        var ids     = $("#taxonomy-grid-view").yiiGridView("getSelectedRows"); // returns an array of pkeys, and #grid is your grid element id
+    if(confirm("' . Yii::t("app", "Are you sure?") . '")){
+        var ids     = $("#taxonomy-grid-view").yiiGridView("getSelectedRows");
         var action  = $(this).parents(".form-group").find(".bulk-action").val();
         $.ajax({
-            url: "' . Url::to(["/taxonomy/bulk-action"]) . '",
+            url: "' . Url::to(["bulk-action"]) . '",
             data: { ids: ids, action: action, _csrf: yii.getCsrfToken() },
             type:"POST",
             success: function(response){

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\components;
@@ -17,8 +17,8 @@ use yii\helpers\ArrayHelper;
 /**
  * Class BackendBootstrap
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class BackendBootstrap implements BootstrapInterface
 {
@@ -43,7 +43,6 @@ class BackendBootstrap implements BootstrapInterface
     {
         /* TIME ZONE */
         $app->timeZone = Option::get('time_zone');
-
         /* DATE TIME */
         $app->formatter->dateFormat = 'php:' . Option::get('date_format');
         $app->formatter->timeFormat = 'php:' . Option::get('time_format');
@@ -77,19 +76,19 @@ class BackendBootstrap implements BootstrapInterface
     {
         foreach (Module::getActiveModules() as $module) {
             // Get module backend config.
-            if ($moduleConfig = $module->backendConfig) {
+            if ($config = $module->getBackendConfig()) {
                 // Set module.
-                $app->setModules([$module->module_name => $moduleConfig]);
+                $app->setModules([$module->name => $config]);
                 // Merge application params with exist module params.
-                if (is_file($module->paramPath)) {
-                    $moduleParam = require($module->paramPath);
-                    if (isset($moduleParam['backend'])) {
-                        $app->params = ArrayHelper::merge($app->params, $moduleParam['backend']);
+                if (is_file($module->getParamPath())) {
+                    $params = require($module->getParamPath());
+                    if (isset($params['backend'])) {
+                        $app->params = ArrayHelper::merge($app->params, $params['backend']);
                     }
                 }
                 // Bootstrap injection.
-                if ($module->module_fb) {
-                    $component = $app->getModule($module->module_name);
+                if ($module->backend_bootstrap) {
+                    $component = $app->getModule($module->name);
                     if ($component instanceof BootstrapInterface) {
                         $component->bootstrap($app);
                     }

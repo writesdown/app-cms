@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -12,6 +12,7 @@ use common\models\Widget;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -20,20 +21,20 @@ use yii\web\UploadedFile;
 /**
  * WidgetController, controlling the actions for Widget model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.2.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.2.0
  */
 class WidgetController extends Controller
 {
     /**
      * @var string Path to widget directory.
      */
-    private $_widgetDir;
+    private $_dir;
 
     /**
      * @var string Path to temporary directory of widget.
      */
-    private $_widgetTempDir;
+    private $_tmp;
 
     /**
      * @inheritdoc
@@ -48,7 +49,7 @@ class WidgetController extends Controller
                         'actions' => [
                             'index',
                             'create',
-                            'delete-widget',
+                            'delete',
                             'ajax-activate',
                             'ajax-update',
                             'ajax-delete',
@@ -62,7 +63,7 @@ class WidgetController extends Controller
             'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
-                    'delete-widget' => ['post'],
+                    'delete' => ['post'],
                     'ajax-activate' => ['post'],
                     'ajax-update'   => ['post'],
                     'ajax-delete'   => ['post'],
@@ -78,37 +79,38 @@ class WidgetController extends Controller
      */
     public function actionIndex()
     {
-        $availableWidget = [];
-        $activatedWidget = [];
         $config = [];
-        $widgetSpace = isset(Yii::$app->params['widget']) ? Yii::$app->params['widget'] : [];
+        $active = [];
+        $available = [];
+        $spaces = isset(Yii::$app->params['widget']) ? Yii::$app->params['widget'] : [];
 
-        if (!is_dir($this->_widgetDir)) {
-            FileHelper::createDirectory($this->_widgetDir);
+        if (!is_dir($this->_dir)) {
+            FileHelper::createDirectory($this->_dir, 0755);
         }
 
-        $arrWidgets = scandir($this->_widgetDir);
-
-        foreach ($arrWidgets as $widget) {
-            if (is_dir($this->_widgetDir . $widget) && $widget !== '.' && $widget !== '..') {
-                $configPath = $this->_widgetDir . $widget . '/config/main.php';
+        foreach (scandir($this->_dir) as $widget) {
+            if (is_dir($this->_dir . $widget) && $widget !== '.' && $widget !== '..') {
+                $configPath = $this->_dir . $widget . '/config/main.php';
                 if (is_file($configPath)) {
                     $config = require($configPath);
-                    $config['widget_dir'] = $widget;
+                    $config['directory'] = $widget;
                 }
-                $availableWidget[$widget] = $config;
+                $available[$widget] = $config;
             }
         }
 
-        foreach ($widgetSpace as $space) {
-            $model = Widget::find()->where(['widget_location' => $space['location']])->orderBy(['widget_order' => SORT_ASC])->all();
-            $activatedWidget[$space['location']] = $model;
+        foreach ($spaces as $space) {
+            $model = Widget::find()
+                ->where(['location' => $space['location']])
+                ->orderBy(['order' => SORT_ASC])
+                ->all();
+            $active[$space['location']] = $model;
         }
 
         return $this->render('index', [
-            'activatedWidget' => $activatedWidget,
-            'availableWidget' => $availableWidget,
-            'widgetSpace'     => $widgetSpace,
+            'active' => $active,
+            'available' => $available,
+            'spaces' => $spaces,
         ]);
     }
 
@@ -123,87 +125,85 @@ class WidgetController extends Controller
      */
     public function actionCreate()
     {
+        $errors = [];
         $model = new Widget(['scenario' => 'upload']);
 
-        // Create temporary directory for widget
-        if (!is_dir($this->_widgetTempDir)) {
-            FileHelper::createDirectory($this->_widgetTempDir, 0755);
+        if (!is_dir($this->_tmp)) {
+            FileHelper::createDirectory($this->_tmp, 0755);
         }
 
-        // Create widget directory
-        if (!is_dir($this->_widgetDir)) {
-            FileHelper::createDirectory($this->_widgetDir, 0755);
+        if (!is_dir($this->_dir)) {
+            FileHelper::createDirectory($this->_dir, 0755);
         }
 
-        if (Yii::$app->request->isPost) {
-            $model->widget_file = UploadedFile::getInstance($model, 'widget_file');
-            // Validate widget_file
-            if ($model->validate()) {
-                $widgetTempPath = $this->_widgetTempDir . $model->widget_file->name;
+        if (($model->file = UploadedFile::getInstance($model, 'file')) && $model->validate(['file'])) {
+            $tmpPath = $this->_tmp . $model->file->name;
 
-                // Move widget (zip) to temporary directory
-                if ($model->widget_file->saveAs($widgetTempPath)) {
-                    $zipArchive = new \ZipArchive();
-                    $zipArchive->open($widgetTempPath);
+            if (!$model->file->saveAs($tmpPath)) {
+                return $this->render('create', [
+                    'model' => $model,
+                    'errors' => [Yii::t('writesdown', 'Failed to move uploaded file')],
+                ]);
+            }
 
-                    if ($zipArchive->extractTo($this->_widgetTempDir)) {
-                        $baseDir = substr($zipArchive->getNameIndex(0), 0, strpos($zipArchive->getNameIndex(0), '/'));
+            $zipArchive = new \ZipArchive();
+            $zipArchive->open($tmpPath);
 
-                        // Close and unlink zip
-                        $zipArchive->close();
-                        unlink($widgetTempPath);
+            if (!$zipArchive->extractTo($this->_tmp)) {
+                $zipArchive->close();
+                FileHelper::removeDirectory($this->_tmp);
 
-                        // Check if widget with the same directory already exist
-                        if (is_dir($this->_widgetDir . $baseDir)) {
-                            FileHelper::removeDirectory($this->_widgetTempDir);
-                            Yii::$app->getSession()->setFlash(
-                                'danger',
-                                Yii::t('writesdown', 'Widget with the same directory already exist.')
-                            );
-                        } else {
-                            // Move widget directory
-                            if (rename($this->_widgetTempDir . $baseDir, $this->_widgetDir . $baseDir)) {
-                                FileHelper::removeDirectory($this->_widgetTempDir);
-                                $configPath = $this->_widgetDir . $baseDir . '/config/main.php';
+                return $this->render('create', [
+                    'model' => $model,
+                    'errors' => [Yii::t('writesdown', 'Failed to extract file.')],
+                ]);
+            }
 
-                                // Require widget config if exist
-                                if (is_file($configPath)) {
-                                    $widgetConfig = require_once($configPath);
+            $baseDir = substr($zipArchive->getNameIndex(0), 0, strpos($zipArchive->getNameIndex(0), '/'));
+            $zipArchive->close();
+            $configPath = $this->_tmp . $baseDir . '/config/main.php';
 
-                                    // Check where widget config is valid or not
-                                    if (isset($widgetConfig['widget_title'])
-                                        && isset($widgetConfig['widget_config']['class'])
-                                        && class_exists($widgetConfig['widget_config']['class'])
-                                    ) {
-                                        Yii::$app->getSession()->setFlash(
-                                            'success',
-                                            Yii::t('writesdown', 'Widget successfully installed')
-                                        );
+            if (!is_file($configPath)) {
+                FileHelper::removeDirectory($this->_tmp);
 
-                                        return $this->redirect(['index']);
-                                    } else {
-                                        FileHelper::removeDirectory($this->_widgetDir . $baseDir);
-                                        Yii::$app->getSession()->setFlash(
-                                            'danger',
-                                            Yii::t('writesdown', 'Invalid Configuration')
-                                        );
-                                    }
-                                } else {
-                                    FileHelper::removeDirectory($this->_widgetDir . $baseDir);
-                                    Yii::$app->getSession()->setFlash(
-                                        'danger',
-                                        Yii::t('writesdown', 'File configuration does not exist.')
-                                    );
-                                }
-                            }
-                        }
-                    }
+                return $this->render('create', [
+                    'model' => $model,
+                    'errors' => [Yii::t('writesdown', 'File configuration does not exist.')],
+                ]);
+            }
+
+            $config = require($configPath);
+
+            if (is_dir($this->_dir . $baseDir)) {
+                $errors['dirExist'] = Yii::t('writesdown', 'Widget with the same directory already exist.');
+            } else {
+                rename($this->_tmp . $baseDir, $this->_dir . $baseDir);
+            }
+
+            FileHelper::removeDirectory($this->_tmp);
+
+            if (!isset($config['title'])
+                || !(isset($config['config']['class']) && class_exists($config['config']['class']))
+            ) {
+                $errors[] = Yii::t('writesdown', 'Invalid configuration.');
+            }
+
+            if (!$errors) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Widget successfully installed.'));
+
+                return $this->redirect(['index']);
+            } else {
+                if (!$errors['dirExist']) {
+                    FileHelper::removeDirectory($this->_dir . $baseDir);
                 }
+
+                $errors = ArrayHelper::merge($errors, $model->getFirstErrors());
             }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'errors' => $errors,
         ]);
     }
 
@@ -214,10 +214,10 @@ class WidgetController extends Controller
      *
      * @return \yii\web\Response
      */
-    public function actionDeleteWidget($id)
+    public function actionDelete($id)
     {
-        FileHelper::removeDirectory($this->_widgetDir . $id);
-        Widget::deleteAll('widget_dir=:widget_dir', ['widget_dir' => $id]);
+        FileHelper::removeDirectory($this->_dir . $id);
+        Widget::deleteAll(['directory' => $id]);
 
         return $this->redirect(['index']);
     }
@@ -233,22 +233,21 @@ class WidgetController extends Controller
     {
         $model = new Widget(['scenario' => 'activate']);
         if ($model->load(Yii::$app->request->post())) {
-            $count = Widget::find()->where(['widget_location' => $model->widget_location])->count();
-
-            // Require widget config
-            $configPath = $this->_widgetDir . $id . '/config/main.php';
-            $widgetConfig = require($configPath);
+            $configPath = $this->_dir . $id . '/config/main.php';
+            $config = require($configPath);
 
             // Set attribute of model
-            $model->setAttributes($widgetConfig);
-            $model->widget_dir = $id;
-            $model->widget_config = Json::encode($model->widget_config);
-            $model->widget_order = $count;
+            $model->setAttributes($config);
+            $model->setAttributes([
+                'directory' => $id,
+                'config' => Json::encode($model->config),
+                'order' => Widget::find()->where(['location' => $model->location])->count(),
+            ]);
 
             if ($model->save()) {
-                return $this->renderPartial('_activated', [
-                    'activatedWidget' => $model,
-                    'availableWidget' => [$model->widget_dir => $widgetConfig],
+                return $this->renderPartial('_active', [
+                    'active' => $model,
+                    'available' => [$model->directory => $config],
                 ]);
             }
         }
@@ -266,7 +265,7 @@ class WidgetController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->widget_config = Json::encode($model->widget_config);
+            $model->config = Json::encode($model->config);
             $model->save();
         }
     }
@@ -288,7 +287,7 @@ class WidgetController extends Controller
     {
         if ($ids = Yii::$app->request->post('ids')) {
             foreach ($ids as $order => $id) {
-                $this->findModel($id)->updateAttributes(['widget_order' => $order]);
+                $this->findModel($id)->updateAttributes(['order' => $order]);
             }
         }
     }
@@ -303,8 +302,8 @@ class WidgetController extends Controller
         }
 
         if (parent::beforeAction($action)) {
-            $this->_widgetDir = Yii::getAlias('@widgets/');
-            $this->_widgetTempDir = Yii::getAlias('@common/temp/widgets/');
+            $this->_dir = Yii::getAlias('@widgets/');
+            $this->_tmp = Yii::getAlias('@common/tmp/widgets/');
 
             return true;
         }

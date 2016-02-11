@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -14,30 +14,27 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%taxonomy}}".
  *
- * @property integer            $id
- * @property string             $taxonomy_name
- * @property string             $taxonomy_slug
- * @property integer            $taxonomy_hierarchical
- * @property string             $taxonomy_sn
- * @property string             $taxonomy_pn
- * @property integer            $taxonomy_smb
- * @property array              $smb
- * @property array              $hierarchical
+ * @property integer $id
+ * @property string $name
+ * @property string $slug
+ * @property integer $hierarchical
+ * @property string $singular_name
+ * @property string $plural_name
+ * @property integer $menu_builder
  *
  * @property PostTypeTaxonomy[] $postTypeTaxonomies
- * @property PostType[]         $postTypes
- * @property Term[]             $terms
+ * @property PostType[] $postTypes
+ * @property Term[] $terms
  *
- * @author   Agiel K. Saputra <13nightevil@gmail.com>
- * @since    1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 1.0
  */
 class Taxonomy extends ActiveRecord
 {
     const HIERARCHICAL = 1;
-    const NON_HIERARCHICAL = 0;
-
-    const SMB = 1;
-    const NON_SMB = 0;
+    const NOT_HIERARCHICAL = 0;
+    const MENU_BUILDER = 1;
+    const NOT_MENU_BUILDER = 0;
 
     /**
      * @inheritdoc
@@ -54,11 +51,9 @@ class Taxonomy extends ActiveRecord
     {
         return [
             [
-                'class'      => SluggableBehavior::className(),
-                'attribute'  => 'taxonomy_name',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['taxonomy_slug'],
-                ],
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'attributes' => [ActiveRecord::EVENT_BEFORE_INSERT => ['slug']],
             ],
         ];
     }
@@ -69,15 +64,15 @@ class Taxonomy extends ActiveRecord
     public function rules()
     {
         return [
-            [['taxonomy_name', 'taxonomy_sn', 'taxonomy_pn'], 'required'],
-            [['taxonomy_hierarchical', 'taxonomy_smb'], 'integer'],
-            ['taxonomy_hierarchical', 'in', 'range' => [self::HIERARCHICAL, self::NON_HIERARCHICAL]],
-            ['taxonomy_hierarchical', 'default', 'value' => self::NON_HIERARCHICAL],
-            ['taxonomy_smb', 'in', 'range' => [self::SMB, self::NON_SMB]],
-            ['taxonomy_smb', 'default', 'value' => self::NON_SMB],
-            [['taxonomy_name', 'taxonomy_slug'], 'string', 'max' => 200],
-            [['taxonomy_sn', 'taxonomy_pn'], 'string', 'max' => 255],
-            [['taxonomy_name', 'taxonomy_slug'], 'unique'],
+            [['name', 'singular_name', 'plural_name'], 'required'],
+            [['hierarchical', 'menu_builder'], 'integer'],
+            ['hierarchical', 'in', 'range' => [self::HIERARCHICAL, self::NOT_HIERARCHICAL]],
+            ['hierarchical', 'default', 'value' => self::NOT_HIERARCHICAL],
+            ['menu_builder', 'in', 'range' => [self::MENU_BUILDER, self::NOT_MENU_BUILDER]],
+            ['menu_builder', 'default', 'value' => self::NOT_MENU_BUILDER],
+            [['name', 'slug'], 'string', 'max' => 200],
+            [['singular_name', 'plural_name'], 'string', 'max' => 255],
+            [['name', 'slug'], 'unique'],
         ];
     }
 
@@ -87,13 +82,13 @@ class Taxonomy extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'                    => Yii::t('writesdown', 'ID'),
-            'taxonomy_name'         => Yii::t('writesdown', 'Name'),
-            'taxonomy_slug'         => Yii::t('writesdown', 'Slug'),
-            'taxonomy_hierarchical' => Yii::t('writesdown', 'Is Hierarchical'),
-            'taxonomy_sn'           => Yii::t('writesdown', 'Singular Name'),
-            'taxonomy_pn'           => Yii::t('writesdown', 'Plural Name'),
-            'taxonomy_smb'          => Yii::t('writesdown', 'Show Menu Builder'),
+            'id' => Yii::t('writesdown', 'ID'),
+            'name' => Yii::t('writesdown', 'Name'),
+            'slug' => Yii::t('writesdown', 'Slug'),
+            'hierarchical' => Yii::t('writesdown', 'Is Hierarchical'),
+            'singular_name' => Yii::t('writesdown', 'Singular Name'),
+            'plural_name' => Yii::t('writesdown', 'Plural Name'),
+            'menu_builder' => Yii::t('writesdown', 'Is Menu Builder'),
         ];
     }
 
@@ -110,8 +105,8 @@ class Taxonomy extends ActiveRecord
      */
     public function getPostTypes()
     {
-        return $this->hasMany(PostType::className(), ['id' => 'post_type_id'])->viaTable('{{%post_type_taxonomy}}',
-            ['taxonomy_id' => 'id']);
+        return $this->hasMany(PostType::className(), ['id' => 'post_type_id'])
+            ->viaTable('{{%post_type_taxonomy}}', ['taxonomy_id' => 'id']);
     }
 
     /**
@@ -127,24 +122,24 @@ class Taxonomy extends ActiveRecord
      *
      * @return array
      */
-    public function getHierarchical()
+    public function getHierarchies()
     {
         return [
-            self::HIERARCHICAL     => "Yes",
-            self::NON_HIERARCHICAL => "No",
+            self::HIERARCHICAL => Yii::t('writesdown', 'Yes'),
+            self::NOT_HIERARCHICAL => Yii::t('writesdown', 'No'),
         ];
     }
 
     /**
-     * Get array of smb hierarchical for label or dropdown.
+     * Get array of menu_builder hierarchical for label or dropdown.
      *
      * @return array
      */
-    public function getSmb()
+    public function getMenuBuilders()
     {
         return [
-            self::SMB     => "Yes",
-            self::NON_SMB => "No",
+            self::MENU_BUILDER => Yii::t('writesdown', 'Yes'),
+            self::NOT_MENU_BUILDER => Yii::t('writesdown', 'No'),
         ];
     }
 }

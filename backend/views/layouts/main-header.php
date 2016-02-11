@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use cebe\gravatar\Gravatar;
@@ -26,24 +26,18 @@ use yii\helpers\Html;
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <?= Gravatar::widget([
-                                'email'   => Yii::$app->user->identity->email,
-                                'options' => [
-                                    'alt'   => Yii::$app->user->identity->username,
-                                    'class' => 'user-image',
-                                ],
-                                'size'    => 25,
+                                'email' => Yii::$app->user->identity->email,
+                                'options' => ['alt' => 'Gravatar 25', 'class' => 'user-image'],
+                                'size' => 25,
                             ]) ?>
                             <span class="hidden-xs"><?= Yii::$app->user->identity->username ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="user-header">
                                 <?= Gravatar::widget([
-                                    'email'   => Yii::$app->user->identity->email,
-                                    'options' => [
-                                        'alt'   => Yii::$app->user->identity->username,
-                                        'class' => 'img-circle',
-                                    ],
-                                    'size'    => 84,
+                                    'email' => Yii::$app->user->identity->email,
+                                    'options' => ['alt' => 'Gravatar 84', 'class' => 'img-circle'],
+                                    'size' => 84,
                                 ]) ?>
                                 <p>
                                     <?= Yii::$app->user->identity->username ?>

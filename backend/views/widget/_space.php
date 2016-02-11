@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -11,16 +11,16 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $availableWidget [] */
-/* @var $activatedWidget [] */
-/* @var $widgetSpace [] */
+/* @var $available [] */
+/* @var $active [] */
+/* @var $spaces [] */
 
 $index = 0;
-$sizeofSpace = sizeof($widgetSpace);
-$divideSpace = round($sizeofSpace / 2);
+$sizeofSpaces = sizeof($spaces);
+$divideSpaces = round($sizeofSpaces / 2);
 ?>
-<?php foreach ($widgetSpace as $space): ?>
-    <?php if ($index == 0 || $index == $divideSpace): ?>
+<?php foreach ($spaces as $space): ?>
+    <?php if ($index == 0 || $index == $divideSpaces): ?>
         <div class="col-sm-12 col-md-6">
     <?php endif ?>
 
@@ -40,11 +40,11 @@ $divideSpace = round($sizeofSpace / 2);
 
             <div class="widget-order">
 
-                <?php if (isset($activatedWidget[$space['location']])): ?>
-                    <?php foreach ($activatedWidget[$space['location']] as $widget): ?>
-                        <?= $this->render('_activated', [
-                            'availableWidget' => $availableWidget,
-                            'activatedWidget' => $widget,
+                <?php if (isset($active[$space['location']])): ?>
+                    <?php foreach ($active[$space['location']] as $widget): ?>
+                        <?= $this->render('_active', [
+                            'available' => $available,
+                            'active'    => $widget,
                         ]) ?>
                     <?php endforeach ?>
                 <?php endif ?>
@@ -59,7 +59,7 @@ $divideSpace = round($sizeofSpace / 2);
             ],
         ]) ?>
 
-        <?= Html::hiddenInput('Widget[widget_order]', null, ['class' => 'widget-order-field']) ?>
+        <?= Html::hiddenInput('Widget[order]', null, ['class' => 'widget-order-field']) ?>
 
         <?= Html::submitButton(Yii::t('writesdown', 'Save Order'), ['class' => 'btn btn-flat btn-success btn-block']) ?>
 
@@ -67,7 +67,7 @@ $divideSpace = round($sizeofSpace / 2);
 
     </div>
 
-    <?php if ($index == $divideSpace - 1 || $index == $sizeofSpace - 1): ?>
+    <?php if ($index == $divideSpaces - 1 || $index == $sizeofSpaces - 1): ?>
         </div>
     <?php endif ?>
 

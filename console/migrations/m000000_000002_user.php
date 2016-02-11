@@ -8,7 +8,7 @@ use yii\db\Schema;
  * Migration for table user.
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000002_user extends \yii\db\Migration
 {
@@ -24,18 +24,18 @@ class m000000_000002_user extends \yii\db\Migration
         }
 
         $this->createTable('{{%user}}', [
-            'id'                   => Schema::TYPE_PK,
-            'username'             => Schema::TYPE_STRING . '(255) NOT NULL',
-            'email'                => Schema::TYPE_STRING . '(255) NOT NULL',
-            'full_name'            => Schema::TYPE_STRING . '(255)',
-            'display_name'         => Schema::TYPE_STRING . '(255)',
-            'password_hash'        => Schema::TYPE_STRING . '(255) NOT NULL',
+            'id' => Schema::TYPE_PK,
+            'username' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'email' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'full_name' => Schema::TYPE_STRING . '(255)',
+            'display_name' => Schema::TYPE_STRING . '(255)',
+            'password_hash' => Schema::TYPE_STRING . '(255) NOT NULL',
             'password_reset_token' => Schema::TYPE_STRING . '(255)',
-            'auth_key'             => Schema::TYPE_STRING . '(32) NOT NULL',
-            'status'               => Schema::TYPE_SMALLINT . '(6) NOT NULL DEFAULT 5',
-            'created_at'           => Schema::TYPE_DATETIME . ' NOT NULL',
-            'updated_at'           => Schema::TYPE_DATETIME . ' NOT NULL',
-            'login_at'             => Schema::TYPE_DATETIME,
+            'auth_key' => Schema::TYPE_STRING . '(32) NOT NULL',
+            'status' => Schema::TYPE_SMALLINT . '(6) NOT NULL DEFAULT 5',
+            'created_at' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'updated_at' => Schema::TYPE_DATETIME . ' NOT NULL',
+            'login_at' => Schema::TYPE_DATETIME,
         ], $tableOptions);
 
         /**
@@ -44,18 +44,18 @@ class m000000_000002_user extends \yii\db\Migration
          * After installing this app success, change the username and password of superadmin immediately.
          */
         $this->insert('{{%user}}', [
-            'id'                   => 1,
-            'username'             => 'superadmin',
-            'email'                => 'superadministrator@writesdown.com',
-            'full_name'            => 'Super Administrator',
-            'display_name'         => 'Super Admin',
-            'password_hash'        => '$2y$13$WJIxqq6WBZUw7tyfN2oiH.WJtPntvLMjs6NG9uW0M3Lh71lImaEyu',
+            'id' => 1,
+            'username' => 'superadmin',
+            'email' => 'superadministrator@writesdown.com',
+            'full_name' => 'Super Administrator',
+            'display_name' => 'Super Admin',
+            'password_hash' => '$2y$13$WJIxqq6WBZUw7tyfN2oiH.WJtPntvLMjs6NG9uW0M3Lh71lImaEyu',
             'password_reset_token' => null,
-            'auth_key'             => '7QvEmdZDvaSxM1-oYoWkKso0ws6AHTX1',
-            'status'               => 10,
-            'created_at'           => new Expression('NOW()'),
-            'updated_at'           => new Expression('NOW()'),
-            'login_at'             => new Expression('NOW()'),
+            'auth_key' => '7QvEmdZDvaSxM1-oYoWkKso0ws6AHTX1',
+            'status' => 10,
+            'created_at' => new Expression('NOW()'),
+            'updated_at' => new Expression('NOW()'),
+            'login_at' => new Expression('NOW()'),
         ]);
     }
 

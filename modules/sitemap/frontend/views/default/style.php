@@ -28,67 +28,53 @@ use yii\helpers\Url;
                     font-size: 13px;
                     color: #545353;
                 }
-
                 table {
                     border: none;
                     border-collapse: collapse;
                     width: 100%;
                 }
-
                 #sitemap tr.odd td {
                     background-color: #eee !important;
                 }
-
                 #sitemap tbody tr:hover td {
                     background-color: #ccc;
                 }
-
                 #sitemap tbody tr:hover td, #sitemap tbody tr:hover td a {
                     color: #000;
                 }
-
                 #content {
                     margin: 0 auto;
                     width: 1000px;
                 }
-
                 .expl {
                     margin: 18px 3px;
                     line-height: 1.2em;
                 }
-
                 .expl a {
                     color: #da3114;
                     font-weight: bold;
                 }
-
                 .expl a:visited {
                     color: #da3114;
                 }
-
                 a {
                     color: #000;
                     text-decoration: none;
                 }
-
                 a:visited {
                     color: #777;
                 }
-
                 a:hover {
                     text-decoration: underline;
                 }
-
                 td {
                     font-size: 11px;
                 }
-
                 th {
                     text-align: left;
                     padding-right: 30px;
                     font-size: 11px;
                 }
-
                 thead th {
                     border-bottom: 1px solid #000;
                     cursor: pointer;
@@ -193,7 +179,7 @@ use yii\helpers\Url;
                 </table>
             </xsl:if>
         </div>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <script type="text/javascript"
                 src="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.21.5/js/jquery.tablesorter.min.js"></script>
         <script type="text/javascript"><![CDATA[

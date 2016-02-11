@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
@@ -22,8 +22,8 @@ use yii\web\NotFoundHttpException;
 /**
  * Class SiteController
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class SiteController extends Controller
 {
@@ -35,17 +35,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only'  => ['logout'],
+                'only' => ['logout'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
-                        'allow'   => true,
-                        'roles'   => ['@'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -59,11 +59,11 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error'   => [
+            'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class'           => 'yii\captcha\CaptchaAction',
+                'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
@@ -81,32 +81,33 @@ class SiteController extends Controller
 
         $query = Post::find()
             ->from(['t' => Post::tableName()])
-            ->andWhere(['post_status' => 'publish'])
-            ->orderBy(['t.id' => SORT_DESC]);
+            ->andWhere(['status' => 'publish'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->orderBy(['t.date' => SORT_DESC]);
 
         if (Option::get('show_on_front') == 'page' && $frontPage = Option::get('front_page')) {
             $render = '/post/view';
             $comment = new PostComment();
             $query = $query->andWhere(['id' => $frontPage]);
             if ($post = $query->one()) {
-                if (is_file($this->view->theme->basePath . '/post/view-' . $post->postType->post_type_slug . '.php')) {
-                    $render = '/post/view-' . $post->postType->post_type_slug;
+                if (is_file($this->view->theme->basePath . '/post/view-' . $post->postType->slug . '.php')) {
+                    $render = '/post/view-' . $post->postType->slug;
                 }
 
                 return $this->render($render, [
-                    'post'    => $post,
+                    'post' => $post,
                     'comment' => $comment,
                 ]);
             }
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         } else {
             if (Option::get('front_post_type') !== 'all') {
-                $query->innerJoinWith(['postType'])->andWhere(['post_type_name' => Option::get('front_post_type')]);
+                $query->innerJoinWith(['postType'])->andWhere(['name' => Option::get('front_post_type')]);
             }
             $countQuery = clone $query;
             $pages = new Pagination([
                 'totalCount' => $countQuery->count(),
-                'pageSize'   => Option::get('posts_per_page'),
+                'pageSize' => Option::get('posts_per_page'),
             ]);
             $query->offset($pages->offset)->limit($pages->limit);
             if ($posts = $query->all()) {
@@ -139,8 +140,10 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Option::get('admin_email'))) {
-                Yii::$app->session->setFlash('success',
-                    'Thank you for contacting us. We will respond to you as soon as possible.');
+                Yii::$app->session->setFlash(
+                    'success',
+                    'Thank you for contacting us. We will respond to you as soon as possible.'
+                );
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error sending email.');
             }
@@ -156,22 +159,22 @@ class SiteController extends Controller
     /**
      * Search post by title and content
      *
-     * @param $s
-     *
+     * @param string $s Keyword to search posts.
      * @return string
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionSearch($s)
     {
         $query = Post::find()
-            ->orWhere(['LIKE', 'post_title', $s])
-            ->orWhere(['LIKE', 'post_content', $s])
-            ->andWhere(['post_status' => 'publish'])
-            ->orderBy(['id' => SORT_DESC]);
+            ->orWhere(['like', 'title', $s])
+            ->orWhere(['like', 'content', $s])
+            ->andWhere(['status' => 'publish'])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->orderBy(['date' => SORT_DESC]);
         $countQuery = clone $query;
         $pages = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize'   => Option::get('posts_per_page'),
+            'pageSize' => Option::get('posts_per_page'),
         ]);
         $query->offset($pages->offset)->limit($pages->limit);
         $posts = $query->all();
@@ -180,7 +183,7 @@ class SiteController extends Controller
             return $this->render('/site/search', [
                 'posts' => $posts,
                 'pages' => $pages,
-                's'     => $s,
+                's' => $s,
             ]);
         }
 

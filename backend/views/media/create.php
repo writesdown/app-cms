@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use backend\assets\MediaAsset;
@@ -23,11 +23,11 @@ MediaAsset::register($this);
 <div class="media-create">
     <?php $form = ActiveForm::begin([
         'options' => [
-            'enctype'  => 'multipart/form-data',
-            'id'       => 'media-upload',
-            'data-url' => Url::to(['/media/ajax-upload']),
+            'enctype' => 'multipart/form-data',
+            'id' => 'media-upload',
+            'data-url' => Url::to(['ajax-upload']),
         ],
-        'action'  => Url::to(['/site/forbidden']),
+        'action' => Url::to(['/site/forbidden']),
     ]) ?>
 
     <noscript><?= Html::hiddenInput('redirect', Url::to(['/site/forbidden'])) ?></noscript>
@@ -40,13 +40,13 @@ MediaAsset::register($this);
                 <span><?= Yii::t('writesdown', 'Add files...') ?></span>
                 <?= $form->field($model, 'file', [
                     'template' => '{input}',
-                    'options'  => ['class' => ''],
+                    'options' => ['class' => null],
                 ])->fileInput(['multiple' => 'multiple']) ?>
 
             </div>
         </div>
     </div>
-    <div role="presentation" class="file-container"></div>
+    <div role="presentation" class="media-container"></div>
     <?php ActiveForm::end() ?>
 
 </div>

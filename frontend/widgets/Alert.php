@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license   http://www.yiiframework.com/license/
+ * @link http://www.writesdown.com/
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets;
@@ -12,15 +12,12 @@ use yii\bootstrap\Widget;
 /**
  * Alert widget renders a message from session flash. All flash messages are displayed
  * in the sequence they were assigned using setFlash. You can set message as following:
- *
  * ```php
  * \Yii::$app->getSession()->setFlash('error', 'This is the message');
  * \Yii::$app->getSession()->setFlash('success', 'This is the message');
  * \Yii::$app->getSession()->setFlash('info', 'This is the message');
  * ```
- *
  * Multiple messages could be set as follows:
- *
  * ```php
  * \Yii::$app->getSession()->setFlash('error', ['Error 1', 'Error 2']);
  * ```
@@ -37,10 +34,10 @@ class Alert extends Widget
      * - $value is the bootstrap alert type (i.e. danger, success, info, warning)
      */
     public $alertTypes = [
-        'error'   => 'alert-danger',
-        'danger'  => 'alert-danger',
+        'error' => 'alert-danger',
+        'danger' => 'alert-danger',
         'success' => 'alert-success',
-        'info'    => 'alert-info',
+        'info' => 'alert-info',
         'warning' => 'alert-warning',
     ];
 
@@ -67,9 +64,9 @@ class Alert extends Widget
                     $this->options['id'] = $this->getId() . '-' . $type . '-' . $i;
 
                     echo \yii\bootstrap\Alert::widget([
-                        'body'        => $message,
+                        'body' => $message,
                         'closeButton' => $this->closeButton,
-                        'options'     => $this->options,
+                        'options' => $this->options,
                     ]);
                 }
                 $session->removeFlash($type);

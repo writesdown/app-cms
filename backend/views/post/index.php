@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\bootstrap\ButtonDropdown;
@@ -19,7 +19,7 @@ use yii\widgets\Pjax;
 /* @var $postType common\models\PostType */
 /* @var $user integer */
 
-$this->title = $postType->post_type_pn;
+$this->title = $postType->plural_name;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-index">
@@ -28,42 +28,38 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::dropDownList(
                 'bulk-action',
                 null,
-                ArrayHelper::merge($searchModel->getPostStatus(), ['delete' => 'Delete']),
-                ['class' => 'bulk-action form-control', 'prompt' => 'Bulk Action']
+                ArrayHelper::merge($searchModel->getPostStatuses(), ['delete' => 'Delete']),
+                ['class' => 'bulk-action form-control', 'prompt' => Yii::t('writesdown', 'Bulk Action')]
             ) ?>
 
             <?= Html::button(Yii::t('writesdown', 'Apply'), ['class' => 'btn btn-flat btn-warning bulk-button']) ?>
 
             <?= Html::a(
-                Yii::t('writesdown', 'Add New {postType}', ['postType' => $postType->post_type_sn]),
-                ['create', 'post_type' => $postType->id, ],
+                Yii::t('writesdown', 'Add New {postType}', ['postType' => $postType->singular_name]),
+                ['create', 'type' => $postType->id, ],
                 ['class' => 'btn btn-flat btn-primary']
             ) ?>
 
             <?= ButtonDropdown::widget([
-                'label'       => Html::tag('i', '', ['class' => 'fa fa-user']) . ' Author',
-                'dropdown'    => [
+                'label' => Html::tag('i', '', ['class' => 'fa fa-user']) . ' Author',
+                'dropdown' => [
                     'items' => [
                         [
                             'label' => 'My Posts',
-                            'url'   => [
-                                '/post/index',
-                                'post_type' => $postType->id,
-                                'user'      => Yii::$app->user->id,
-                            ],
+                            'url' => ['index', 'type' => $postType->id, 'user' => Yii::$app->user->id],
                         ],
-                        ['label' => 'All Posts', 'url' => ['/post/index', 'post_type' => $postType->id]],
+                        ['label' => 'All Posts', 'url' => ['index', 'type' => $postType->id]],
                     ],
                 ],
-                'split'       => true,
+                'split' => true,
                 'encodeLabel' => false,
-                'options'     => ['class' => 'btn btn-flat btn-danger'],
+                'options' => ['class' => 'btn btn-flat btn-danger'],
             ]) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
-                "data-toggle" => "collapse",
-                "data-target" => "#post-search",
+                'class' => 'btn btn-flat btn-info',
+                'data-toggle' => 'collapse',
+                'data-target' => '#post-search',
             ]) ?>
 
         </div>
@@ -72,72 +68,65 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_search', ['model' => $searchModel, 'postType' => $postType, 'user' => $user]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'id'           => 'post-grid-view',
-        'columns'      => [
+        'filterModel' => $searchModel,
+        'id' => 'post-grid-view',
+        'columns' => [
             [
-                'class'           => 'yii\grid\CheckboxColumn',
+                'class' => 'yii\grid\CheckboxColumn',
                 'checkboxOptions' => function ($model) {
-                    if ((!Yii::$app->user->can('editor') && $model->post_author !== Yii::$app->user->id)
-                        || !Yii::$app->user->can($model->postType->post_type_permission)
-                    ) {
-                        return ['disabled' => 'disabled'];
+                    /* @var $model \common\models\search\Post */
+                    if ($model->getPermission()) {
+                        return ['value' => $model->id];
                     }
 
-                    return ['value' => $model->id];
+                    return ['disabled' => 'disabled'];
                 },
             ],
             [
                 'attribute' => 'username',
-                'value'     => function ($model) {
-                    /* @var $model common\models\Post */
+                'value' => function ($model) {
+                    /* @var $model \common\models\search\Post */
                     return $model->postAuthor->username;
                 },
             ],
-            'post_title:ntext',
-            'post_date',
-            ['attribute' => 'post_status', 'filter' => $searchModel->getPostStatus()],
-            ['attribute' => 'post_comment_status', 'filter' => $searchModel->getCommentStatus()],
-            'post_comment_count',
+            'title:ntext',
+            'date',
+            ['attribute' => 'status', 'filter' => $searchModel->getPostStatuses()],
+            ['attribute' => 'comment_status', 'filter' => $searchModel->getCommentStatuses()],
+            'comment_count',
 
             [
-                'class'   => 'yii\grid\ActionColumn',
+                'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'view'   => function ($url, $model) {
+                    'view' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $model->url, [
-                            'title'     => Yii::t('yii', 'View'),
+                            'title' => Yii::t('yii', 'View'),
                             'data-pjax' => '0',
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        if (!$model->postType || !Yii::$app->user->can($model->postType->post_type_permission)) {
-                            return '';
-                        } elseif (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $model->post_author) {
-                            return '';
-                        } elseif (!Yii::$app->user->can('author') && $model->post_status !== $model::POST_STATUS_REVIEW) {
-                            return '';
+                        /* @var $model \common\models\search\Post */
+                        if ($model->getPermission()) {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => Yii::t('yii', 'Update'),
+                                'data-pjax' => '0',
+                            ]);
                         }
 
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                            'title'     => Yii::t('yii', 'Update'),
-                            'data-pjax' => '0',
-                        ]);
+                        return '';
                     },
                     'delete' => function ($url, $model) {
-                        if (!$model->postType || !Yii::$app->user->can($model->postType->post_type_permission)) {
-                            return '';
-                        } elseif (!Yii::$app->user->can('editor') && Yii::$app->user->id !== $model->post_author) {
-                            return '';
-                        } elseif (!Yii::$app->user->can('author') && $model->post_status !== $model::POST_STATUS_REVIEW) {
-                            return '';
+                        /* @var $model \common\models\search\Post */
+                        if ($model->getPermission()) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                'title' => Yii::t('yii', 'Delete'),
+                                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
+                            ]);
                         }
 
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                            'title'        => Yii::t('yii', 'Delete'),
-                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                            'data-method'  => 'post',
-                            'data-pjax'    => '0',
-                        ]);
+                        return '';
                     },
                 ],
             ],

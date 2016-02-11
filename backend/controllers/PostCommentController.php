@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -20,8 +20,8 @@ use yii\web\NotFoundHttpException;
 /**
  * PostCommentController, controlling the actions for PostComment model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class PostCommentController extends Controller
 {
@@ -36,15 +36,15 @@ class PostCommentController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'update', 'delete', 'bulk-action', 'reply'],
-                        'allow'   => true,
-                        'roles'   => ['editor'],
+                        'allow' => true,
+                        'roles' => ['editor'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete'      => ['post'],
+                    'delete' => ['post'],
                     'bulk-action' => ['post'],
                 ],
             ],
@@ -56,28 +56,28 @@ class PostCommentController extends Controller
      * Lists all PostComment models on specific post type.
      * If there is post_id the action will generate list of all PostComment models based on post_id.
      *
-     * @param integer      $post_type
-     * @param null|integer $post_id
-     *
+     * @param integer $posttype Post type ID
+     * @param null|integer $post Post ID
      * @throws \yii\web\NotFoundHttpException
      * @return string
      */
-    public function actionIndex($post_type, $post_id = null)
+    public function actionIndex($posttype, $post = null)
     {
-        $post = null;
-        $postType = $this->findPostType($post_type);
+        $postId = null;
+        $postType = $this->findPostType($posttype);
 
-        if ($post_id) {
-            $post = $this->findPost($post_id);
+        if ($post) {
+            $post = $this->findPost($post);
+            $postId = $post->id;
         }
 
         $searchModel = new PostCommentSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $post_type, $post_id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $posttype, $postId);
 
         return $this->render('index', [
-            'post'         => $post,
-            'postType'     => $postType,
-            'searchModel'  => $searchModel,
+            'post' => $post,
+            'postType' => $postType,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -88,7 +88,6 @@ class PostCommentController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -96,7 +95,7 @@ class PostCommentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->comment_date = Yii::$app->formatter->asDatetime($model->comment_date, 'php:Y-m-d H:i:s');
+            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['update', 'id' => $model->id]);
             }
@@ -112,7 +111,6 @@ class PostCommentController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -121,13 +119,13 @@ class PostCommentController extends Controller
         $post = $model->commentPost;
 
         if ($model->delete()) {
-            if (!$model->comment_parent) {
-                $post->updateAttributes(['post_comment_count', $post->post_comment_count--]);
+            if (!$model->parent) {
+                $post->updateAttributes(['comment_count', --$post->comment_count]);
             }
-            PostComment::deleteAll(['comment_parent' => $model->id]);
+            PostComment::deleteAll(['parent' => $model->id]);
         }
 
-        return $this->redirect(['index', 'post_type' => $post->post_type]);
+        return $this->redirect(['index', 'posttype' => $post->type]);
     }
 
     /**
@@ -137,27 +135,27 @@ class PostCommentController extends Controller
      */
     public function actionBulkAction()
     {
-        if (Yii::$app->request->post('action') === PostComment::COMMENT_APPROVED) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_APPROVED]);
+        if (Yii::$app->request->post('action') === PostComment::STATUS_APPROVED) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $this->findModel($id)->updateAttributes(['status' => PostComment::STATUS_APPROVED]);
             }
-        } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_UNAPPROVED) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_UNAPPROVED]);
+        } elseif (Yii::$app->request->post('action') === PostComment::STATUS_NOT_APPROVED) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $this->findModel($id)->updateAttributes(['status' => PostComment::STATUS_NOT_APPROVED]);
             }
-        } elseif (Yii::$app->request->post('action') === PostComment::COMMENT_TRASH) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => PostComment::COMMENT_TRASH]);
+        } elseif (Yii::$app->request->post('action') === PostComment::STATUS_TRASHED) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $this->findModel($id)->updateAttributes(['status' => PostComment::STATUS_TRASHED]);
             }
         } elseif (Yii::$app->request->post('action') === 'delete') {
-            foreach (Yii::$app->request->post('ids') as $id) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
                 $model = $this->findModel($id);
                 $post = $model->commentPost;
                 if ($model->delete()) {
-                    if (!$model->comment_parent) {
-                        $post->updateAttributes(['post_comment_count', $post->post_comment_count--]);
+                    if (!$model->parent) {
+                        $post->updateAttributes(['comment_count', --$post->comment_count]);
                     }
-                    PostComment::deleteAll(['comment_parent' => $model->id]);
+                    PostComment::deleteAll(['parent' => $model->id]);
                 }
             }
         }
@@ -168,7 +166,6 @@ class PostCommentController extends Controller
      * If reply is successful, the browser will be redirected to 'update' page.
      *
      * @param int $id Find PostComment model based on id as parent.
-     *
      * @return string
      */
     public function actionReply($id)
@@ -177,8 +174,8 @@ class PostCommentController extends Controller
         $model = new PostComment(['scenario' => 'reply']);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->comment_post_id = $commentParent->comment_post_id;
-            $model->comment_parent = $commentParent->id;
+            $model->post_id = $commentParent->post_id;
+            $model->parent = $commentParent->id;
             if ($model->save()) {
                 $this->redirect(['post-comment/update', 'id' => $model->id]);
             }
@@ -186,7 +183,7 @@ class PostCommentController extends Controller
 
         return $this->render('reply', [
             'commentParent' => $commentParent,
-            'model'         => $model,
+            'model' => $model,
         ]);
     }
 
@@ -195,7 +192,6 @@ class PostCommentController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return PostComment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -213,7 +209,6 @@ class PostCommentController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return PostType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -232,7 +227,6 @@ class PostCommentController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

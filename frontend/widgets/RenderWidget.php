@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\widgets;
@@ -14,9 +14,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Render active widget to frontend.
- *
  * The following example shows how to use RenderWidget:
- *
  * ~~~
  * RenderWidget::widget([
  *    'location' => 'sidebar',
@@ -29,8 +27,8 @@ use yii\helpers\ArrayHelper;
  * ])
  * ~~~
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.2.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.2.0
  */
 class RenderWidget extends \yii\base\Widget
 {
@@ -53,10 +51,10 @@ class RenderWidget extends \yii\base\Widget
      * @var array Default configuration of widget.
      */
     private $_defaultConfig = [
-        'beforeTitle'  => '',
-        'afterTitle'   => '',
+        'beforeTitle' => '',
+        'afterTitle' => '',
         'beforeWidget' => '',
-        'afterWidget'  => '',
+        'afterWidget' => '',
     ];
 
     /**
@@ -68,8 +66,8 @@ class RenderWidget extends \yii\base\Widget
          * @var $activeWidgets \common\models\Widget
          */
         $activeWidgets = Widget::find()
-            ->where(['widget_location' => $this->location])
-            ->orderBy(['widget_order' => SORT_ASC])
+            ->where(['location' => $this->location])
+            ->orderBy(['order' => SORT_ASC])
             ->all();
 
         if ($activeWidgets) {

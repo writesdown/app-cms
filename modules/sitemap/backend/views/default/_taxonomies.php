@@ -17,7 +17,7 @@ use yii\helpers\Html;
 <div id="sitemap-taxonomies-option" class="sitemap-default-index-taxonomies tab-pane">
 
     <?php foreach ($taxonomies as $taxonomy): ?>
-        <h4><?= $taxonomy->taxonomy_sn ?></h4>
+        <h4><?= $taxonomy->singular_name ?></h4>
         <div class="form-group checkbox">
             <?= Html::hiddenInput("Option[option_value][taxonomy][$taxonomy->id][enable]", 0) ?>
 

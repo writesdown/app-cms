@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models\search;
@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 /**
  * MediaComment represents the model behind the search form about `common\models\MediaComment`.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class MediaComment extends MediaCommentModel
 {
@@ -26,21 +26,8 @@ class MediaComment extends MediaCommentModel
     public function rules()
     {
         return [
-            [['id', 'comment_media_id', 'comment_parent', 'comment_user_id'], 'integer'],
-            [
-                [
-                    'comment_author',
-                    'comment_author_email',
-                    'comment_author_url',
-                    'comment_author_ip',
-                    'comment_date',
-                    'comment_content',
-                    'comment_approved',
-                    'comment_agent',
-                    'media_title',
-                ],
-                'safe',
-            ],
+            [['id', 'media_id', 'parent', 'user_id'], 'integer'],
+            [['author', 'email', 'url', 'ip', 'date', 'content', 'status', 'agent', 'media_title'], 'safe'],
         ];
     }
 
@@ -56,12 +43,11 @@ class MediaComment extends MediaCommentModel
     /**
      * Creates data provider instance with search query applied
      *
-     * @param array    $params
-     * @param int|null $media_id
-     *
+     * @param array $params
+     * @param int|null $mediaId
      * @return ActiveDataProvider
      */
-    public function search($params, $media_id = null)
+    public function search($params, $mediaId = null)
     {
         $query = MediaCommentModel::find();
         $query->innerJoinWith([
@@ -69,15 +55,15 @@ class MediaComment extends MediaCommentModel
                 /* @var $query \yii\db\ActiveQuery */
                 return $query->from(['media' => Media::tableName()]);
             },
-        ]);
+        ])->from(['mediaComment' => static::tableName()]);
 
-        if ($media_id) {
-            $query->andWhere(['media.id' => $media_id]);
+        if ($mediaId) {
+            $query->andWhere(['media.id' => $mediaId]);
         }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'  => [
+            'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
                 ],
@@ -91,21 +77,21 @@ class MediaComment extends MediaCommentModel
         }
 
         $query->andFilterWhere([
-            'id'               => $this->id,
-            'comment_media_id' => $this->comment_media_id,
-            'comment_parent'   => $this->comment_parent,
-            'comment_user_id'  => $this->comment_user_id,
+            'id' => $this->id,
+            'media_id' => $this->media_id,
+            'parent' => $this->parent,
+            'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'comment_author', $this->comment_author])
-            ->andFilterWhere(['like', 'comment_author_email', $this->comment_author_email])
-            ->andFilterWhere(['like', 'comment_author_url', $this->comment_author_url])
-            ->andFilterWhere(['like', 'comment_author_ip', $this->comment_author_ip])
-            ->andFilterWhere(['like', 'comment_content', $this->comment_content])
-            ->andFilterWhere(['like', 'comment_approved', $this->comment_approved])
-            ->andFilterWhere(['like', 'comment_agent', $this->comment_agent])
-            ->andFilterWhere(['like', 'comment_date', $this->comment_date])
-            ->andFilterWhere(['like', 'media.media_title', $this->media_title]);
+        $query->andFilterWhere(['like', 'mediaComment.author', $this->author])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'url', $this->url])
+            ->andFilterWhere(['like', 'ip', $this->ip])
+            ->andFilterWhere(['like', 'mediaComment.content', $this->content])
+            ->andFilterWhere(['like', 'status', $this->status])
+            ->andFilterWhere(['like', 'agent', $this->agent])
+            ->andFilterWhere(['like', 'mediaComment.date', $this->date])
+            ->andFilterWhere(['like', 'media.title', $this->media_title]);
 
         return $dataProvider;
     }

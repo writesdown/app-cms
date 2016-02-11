@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\functional;
@@ -22,8 +22,8 @@ use yii\helpers\Url;
 /**
  * Class PostCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class PostCest
 {
@@ -89,21 +89,23 @@ class PostCest
     /**
      * @param FunctionalTester $I
      */
-    public function testView(FunctionalTester $I){
+    public function testView(FunctionalTester $I)
+    {
         $I->wantTo('ensure that post view works');
 
         $I->amOnPage(Url::to(['/post/view', 'id' => 1]));
         $I->see('Sample Post', 'h1');
 
-        $I->amOnPage(Url::to(['/post/view', 'postslug' => 'sample-post']));
+        $I->amOnPage(Url::to(['/post/view', 'slug' => 'sample-post']));
         $I->see('Sample Post', 'h1');
     }
 
     /**
      * @param FunctionalTester $I
      */
-    public function testProtected(FunctionalTester $I){
-        Post::findOne(1)->updateAttributes(['post_password' => 'postpassword']);
+    public function testProtected(FunctionalTester $I)
+    {
+        Post::findOne(1)->updateAttributes(['password' => 'postpassword']);
 
         $I->wantTo('ensure that protected post works');
 
@@ -120,6 +122,6 @@ class PostCest
         $I->expectTo('see the post');
         $I->seeElement('.entry-meta');
 
-        Post::findOne(1)->updateAttributes(['post_password' => '']);
+        Post::findOne(1)->updateAttributes(['password' => '']);
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
@@ -14,12 +14,12 @@ use yii\helpers\Html;
 /* @var $comment common\models\MediaComment */
 ?>
 <div id="comment-view">
-    <?php if ($post->post_comment_count): ?>
+    <?php if ($post->comment_count): ?>
         <h2 class="comment-title">
-            <?= Yii::t('writesdown', '{comment_count} {comment_word} on {post_title}', [
-                'comment_count' => $post->post_comment_count,
-                'comment_word'  => $post->post_comment_count > 1 ? 'Replies' : 'Reply',
-                'post_title'    => $post->post_title,
+            <?= Yii::t('writesdown', '{comment_count} {comment_word} on {title}', [
+                'comment_count' => $post->comment_count,
+                'comment_word' => $post->comment_count > 1 ? 'Replies' : 'Reply',
+                'title' => $post->title,
             ]) ?>
 
         </h2>
@@ -28,8 +28,8 @@ use yii\helpers\Html;
 
     <?php endif ?>
 
-    <?php if ($post->post_comment_status == 'open'): ?>
-        <?php $dateInterval = date_diff(new DateTime($post->post_date), new DateTime('now')) ?>
+    <?php if ($post->comment_status == 'open'): ?>
+        <?php $dateInterval = date_diff(new DateTime($post->date), new DateTime('now')) ?>
         <?php if (Option::get('comment_registration') && Yii::$app->user->isGuest): ?>
             <h3>
                 <?= Yii::t('writesdown', 'You must login to leave a reply, ') ?>
@@ -42,9 +42,9 @@ use yii\helpers\Html;
         ): ?>
             <h3><?= Yii::t('writesdown', 'Comments are closed') ?></h3>
         <?php else: ?>
-            <?= $this->render('_form', ['model' => $comment, 'post'  => $post]) ?>
+            <?= $this->render('_form', ['model' => $comment, 'post' => $post]) ?>
         <?php endif ?>
-    <?php elseif ($post->post_comment_count && $post->post_comment_status === 'close'): ?>
+    <?php elseif ($post->comment_count && $post->comment_status === 'close'): ?>
         <h3><?= Yii::t('writesdown', 'Comments are closed') ?></h3>
     <?php endif ?>
 

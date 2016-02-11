@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 ?>
 <script id="template-upload" type="text/x-tmpl">
@@ -31,35 +31,38 @@
     {% for (var i=0, file; file=o.files[i]; i++) { %}
         <div class="template-download fade clearfix">
             <div class="media-preview-wrap clearfix">
-
-                {% if (file.media_icon_url) { %}
-                    <a class="media-preview" href="{%=file.media_update_url%}" title="{%=file.media_title%}">
-                        <img src="{%=file.media_icon_url%}">
+                {% if (file.icon_url) { %}
+                    <a class="media-preview" href="{%=file.update_url%}" title="{%=file.title%}">
+                        <img src="{%=file.icon_url%}">
                     </a>
                 {% } %}
-
                 <div class="media-filename-wrap">
                     <p>
-                        <span>{%=file.media_filename%}</span>
+                        <span>{%=file.filename%}</span>
                         <br /><span class="size">{%=file.readable_size%}</span>
                     </p>
-                    {% if (file.media_error) { %}
-                        <div><span class="label label-danger">Error</span> {%=file.media_error%}</div>
+                    {% if (file.error) { %}
+                        <div><span class="label label-danger">Error</span> {%=file.error%}</div>
                     {% } %}
                 </div>
-
             </div>
             <div class="media-option">
-                {% if (file.media_update_url) { %}
-                    <a class="btn btn-flat btn-success edit" href={%=file.media_update_url%}>
+                {% if (file.update_url) { %}
+                    <a class="btn btn-flat btn-success edit" href={%=file.update_url%}>
                         <i class="glyphicon glyphicon-pencil"></i>
                         <span>Edit</span>
                     </a>
                 {% } %}
-                {% if (file.media_delete_url) { %}
-                    <button class="btn btn-flat btn-danger delete" data-type="post" data-url="{%=file.media_delete_url%}">
+                {% if (file.delete_url) { %}
+                    <button class="btn btn-flat btn-danger delete" data-type="post" data-url="{%=file.delete_url%}">
                         <i class="glyphicon glyphicon-trash"></i>
                         <span>Delete</span>
+                    </button>
+                {% } %}
+                {% if (file.error) { %}
+                   <button class="btn btn-flat btn-warning cancel">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>Cancel</span>
                     </button>
                 {% } %}
             </div>

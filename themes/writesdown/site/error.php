@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 $this->title = $name . ' - ' . Option::get('sitetitle');
 $this->params['breadcrumbs'][] = $name;
 $this->registerMetaTag([
-    'name'    => 'robots',
+    'name' => 'robots',
     'content' => 'noindex, nofollow',
 ]);
 ?>
@@ -33,9 +33,9 @@ $this->registerMetaTag([
     <h2><?= Yii::t('writesdown', 'Search with another keyword') ?></h2>
 
     <?php $form = ActiveForm::begin([
-        'action'  => Url::to(['/site/search']),
-        'method'  => 'get',
-        'id'      => 'search-form-top',
+        'action' => Url::to(['/site/search']),
+        'method' => 'get',
+        'id' => 'search-form-top',
         'options' => ['class' => 'form-search'],
     ]) ?>
 
@@ -45,7 +45,7 @@ $this->registerMetaTag([
         <span class="input-group-btn">
             <?= Html::button('<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search', [
                 'class' => ' btn btn-default',
-                'type'  => 'submit',
+                'type' => 'submit',
             ]) ?>
 
         </span>

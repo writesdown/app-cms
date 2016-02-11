@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace backend\controllers;
@@ -19,8 +19,8 @@ use yii\web\NotFoundHttpException;
 /**
  * Class MediaCommentController, controlling the actions for Media model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class MediaCommentController extends Controller
 {
@@ -35,15 +35,15 @@ class MediaCommentController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'update', 'delete', 'bulk-action', 'reply'],
-                        'allow'   => true,
-                        'roles'   => ['editor'],
+                        'allow' => true,
+                        'roles' => ['editor'],
                     ],
                 ],
             ],
-            'verbs'  => [
-                'class'   => VerbFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete'      => ['post'],
+                    'delete' => ['post'],
                     'bulk-action' => ['post'],
                 ],
             ],
@@ -52,27 +52,27 @@ class MediaCommentController extends Controller
 
     /**
      * Lists all MediaComment models.
-     * If there is media_id, the action will generate list of all MediaComment models based on media_id.
+     * If there is media, the action will generate list of all MediaComment models based on Media ID.
      *
-     * @param null|integer $media_id
-     *
+     * @param null|integer $media Media ID
      * @return mixed
      */
-    public function actionIndex($media_id = null)
+    public function actionIndex($media = null)
     {
-        $media = null;
+        $mediaId = null;
 
-        if ($media_id) {
-            $media = $this->findMedia($media_id);
+        if ($media) {
+            $media = $this->findMedia($media);
+            $mediaId = $media->id;
         }
 
         $searchModel = new MediaCommentSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $media_id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $mediaId);
 
         return $this->render('index', [
-            'searchModel'  => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'media'        => $media,
+            'media' => $media,
         ]);
     }
 
@@ -81,7 +81,6 @@ class MediaCommentController extends Controller
      * If update is successful, the browser will be redirected to the 'update' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -89,7 +88,7 @@ class MediaCommentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->comment_date = Yii::$app->formatter->asDatetime($model->comment_date, 'php:Y-m-d H:i:s');
+            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['update', 'id' => $model->id]);
             }
@@ -105,7 +104,6 @@ class MediaCommentController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -114,10 +112,10 @@ class MediaCommentController extends Controller
         $media = $model->commentMedia;
 
         if ($model->delete()) {
-            if (!$model->comment_parent) {
-                $media->updateAttributes(['media_comment_count', $media->media_comment_count--]);
+            if (!$model->parent) {
+                $media->updateAttributes(['comment_count', --$media->comment_count]);
             }
-            MediaComment::deleteAll(['comment_parent' => $model->id]);
+            MediaComment::deleteAll(['parent' => $model->id]);
         }
 
         return $this->redirect(['index']);
@@ -130,27 +128,27 @@ class MediaCommentController extends Controller
      */
     public function actionBulkAction()
     {
-        if (Yii::$app->request->post('action') === MediaComment::COMMENT_APPROVED) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => MediaComment::COMMENT_APPROVED]);
+        if (Yii::$app->request->post('action') === MediaComment::STATUS_APPROVED) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $this->findModel($id)->updateAttributes(['status' => MediaComment::STATUS_APPROVED]);
             }
-        } elseif (Yii::$app->request->post('action') === MediaComment::COMMENT_UNAPPROVED) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => MediaComment::COMMENT_UNAPPROVED]);
+        } elseif (Yii::$app->request->post('action') === MediaComment::STATUS_NOT_APPROVED) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $this->findModel($id)->updateAttributes(['status' => MediaComment::STATUS_NOT_APPROVED]);
             }
-        } elseif (Yii::$app->request->post('action') === MediaComment::COMMENT_TRASH) {
-            foreach (Yii::$app->request->post('ids') as $id) {
-                $this->findModel($id)->updateAttributes(['comment_approved' => MediaComment::COMMENT_TRASH]);
+        } elseif (Yii::$app->request->post('action') === MediaComment::STATUS_TRASHED) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
+                $this->findModel($id)->updateAttributes(['status' => MediaComment::STATUS_TRASHED]);
             }
         } elseif (Yii::$app->request->post('action') === 'delete') {
-            foreach (Yii::$app->request->post('ids') as $id) {
+            foreach (Yii::$app->request->post('ids', []) as $id) {
                 $model = $this->findModel($id);
                 $media = $model->commentMedia;
                 if ($model->delete()) {
-                    if (!$model->comment_parent) {
-                        $media->updateAttributes(['media_comment_count', $media->media_comment_count--]);
+                    if (!$model->parent) {
+                        $media->updateAttributes(['comment_count', --$media->comment_count]);
                     }
-                    MediaComment::deleteAll(['comment_parent' => $model->id]);
+                    MediaComment::deleteAll(['parent' => $model->id]);
                 }
             }
         }
@@ -161,7 +159,6 @@ class MediaCommentController extends Controller
      * If reply is successful, the browser will be redirected to 'update' page.
      *
      * @param int $id Find MediaComment model based on id as its parent
-     *
      * @return string
      */
     public function actionReply($id)
@@ -170,8 +167,10 @@ class MediaCommentController extends Controller
         $model = new MediaComment(['scenario' => 'reply']);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->comment_media_id = $commentParent->comment_media_id;
-            $model->comment_parent = $commentParent->id;
+            $model->setAttributes([
+                'media_id' => $commentParent->media_id,
+                'parent' => $commentParent->id,
+            ]);
             if ($model->save()) {
                 $this->redirect(['/media-comment/update', 'id' => $model->id]);
             }
@@ -179,7 +178,7 @@ class MediaCommentController extends Controller
 
         return $this->render('reply', [
             'commentParent' => $commentParent,
-            'model'         => $model,
+            'model' => $model,
         ]);
     }
 
@@ -188,7 +187,6 @@ class MediaCommentController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return MediaComment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -206,7 +204,6 @@ class MediaCommentController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
-     *
      * @return Media the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 /* @var $model object */
 /* @var $group string */
 
-$this->title = Yii::t('writesdown', '{group} Settings', ['group' => ucwords($group)]);
+$this->title = Yii::t('writesdown', 'Media Settings');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Settings'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -40,23 +40,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= Html::input(
                     'number',
-                    'Option[thumbnail_width][option_value]',
-                    $model->thumbnail_width->option_value,
+                    'Option[thumbnail_width][value]',
+                    $model->thumbnail_width->value,
                     ['min' => 0, 'step' => 1, 'style' => 'width: 70px']
                 ) ?>
 
                 <?= Html::label(Yii::t('writesdown', 'Height'), null, ['style' => 'padding-left: 0']) ?>
                 <?= Html::input(
                     'number',
-                    'Option[thumbnail_height][option_value]',
-                    $model->thumbnail_height->option_value,
+                    'Option[thumbnail_height][value]',
+                    $model->thumbnail_height->value,
                     ['min' => 0, 'step' => 1, 'style' => 'width: 70px']
                 ) ?><br/>
 
                 <?= Html::label(
                     Html::checkbox(
-                        'Option[thumbnail_crop][option_value]',
-                        $model->thumbnail_crop->option_value,
+                        'Option[thumbnail_crop][value]',
+                        $model->thumbnail_crop->value,
                         ['uncheck' => 0]
                     ) . Yii::t('writesdown', 'Crop thumbnail to exact dimensions')
                 ) ?>
@@ -73,8 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= Html::input(
                     'number',
-                    'Option[medium_width][option_value]',
-                    $model->medium_width->option_value,
+                    'Option[medium_width][value]',
+                    $model->medium_width->value,
                     ['min' => 0, 'step' => 1, 'style' => 'width: 70px']
                 ) ?>
 
@@ -82,8 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= Html::input(
                     'number',
-                    'Option[medium_height][option_value]',
-                    $model->medium_height->option_value,
+                    'Option[medium_height][value]',
+                    $model->medium_height->value,
                     ['min' => 0, 'step' => 1, 'style' => 'width: 70px']
                 ) ?>
 
@@ -99,8 +99,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= Html::input(
                     'number',
-                    'Option[large_width][option_value]',
-                    $model->large_width->option_value,
+                    'Option[large_width][value]',
+                    $model->large_width->value,
                     ['min' => 0, 'step' => 1, 'style' => 'width: 70px']
                 ) ?>
 
@@ -108,8 +108,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= Html::input(
                     'number',
-                    'Option[large_height][option_value]',
-                    $model->large_height->option_value,
+                    'Option[large_height][value]',
+                    $model->large_height->value,
                     ['min' => 0, 'step' => 1, 'style' => 'width: 70px']
                 ) ?>
 
@@ -125,8 +125,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="checkbox">
                 <?= Html::label(
                     Html::checkbox(
-                        'Option[uploads_yearmonth_based][option_value]',
-                        $model->uploads_yearmonth_based->option_value,
+                        'Option[uploads_yearmonth_based][value]',
+                        $model->uploads_yearmonth_based->value,
                         ['uncheck' => 0]
                     ) . Yii::t('writesdown', 'Organize my uploads into month- and year-based folders')
                 ) ?>
@@ -134,8 +134,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= Html::label(
                     Html::checkbox(
-                        'Option[uploads_username_based][option_value]',
-                        $model->uploads_username_based->option_value,
+                        'Option[uploads_username_based][value]',
+                        $model->uploads_username_based->value,
                         ['uncheck' => 0]
                     ) . Yii::t('writesdown', 'Organize my uploads into username-based folders')
                 ) ?>

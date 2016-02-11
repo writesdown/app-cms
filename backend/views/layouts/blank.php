@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use backend\assets\AppAsset;
@@ -32,9 +32,9 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <body class="<?= $bodyClass ?>">
-    <?php $this->beginBody() ?>
-    <?= $content ?>
-    <?php $this->endBody() ?>
+<?php $this->beginBody() ?>
+<?= $content ?>
+<?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

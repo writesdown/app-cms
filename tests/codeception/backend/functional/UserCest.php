@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\backend\functional;
@@ -20,8 +20,8 @@ use yii\helpers\Url;
 /**
  * Class UserCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class UserCest
 {
@@ -114,7 +114,7 @@ class UserCest
         $createPage->submit([
             'username' => 'newuser',
             'password' => 'newu',
-            'email'    => 'newuser@email',
+            'email' => 'newuser@email',
         ]);
         $I->expectTo('see that given email is not correct');
         $I->dontSee('Username cannot be blank.', '.help-block');
@@ -125,7 +125,7 @@ class UserCest
         $createPage->submit([
             'username' => 'newuser',
             'password' => 'newuser',
-            'email'    => 'newuser@writesdown.dev',
+            'email' => 'newuser@writesdown.dev',
         ]);
         $I->expect('new user saved');
         $I->see('View User: newuser', 'h1');
@@ -145,7 +145,7 @@ class UserCest
 
         $I->amGoingTo('submit update user form');
         $updatePage->submit([
-            'full_name'    => 'Demoted Into Subscriber',
+            'full_name' => 'Demoted Into Subscriber',
             'display_name' => 'Subscriber',
         ]);
         $I->expect('the user updated');
@@ -153,8 +153,8 @@ class UserCest
         $I->see('Subscriber');
 
         User::findOne(3)->updateAttributes([
-            'display_name'         => 'Editor',
-            'full_name'            => 'Editor at WritesDown'
+            'display_name' => 'Editor',
+            'full_name' => 'Editor at WritesDown',
         ]);
     }
 
@@ -197,7 +197,7 @@ class UserCest
         $I->see('tester@test.test');
 
         User::findOne(2)->updateAttributes([
-            'email' => 'administrator@writesdwon.dev'
+            'email' => 'administrator@writesdwon.dev',
         ]);
     }
 
@@ -236,8 +236,8 @@ class UserCest
         $I->see('View User: administrator');
 
         User::findOne(2)->updateAttributes([
-            'auth_key'             => '0fQDfzYWWt_W4tHLv34YTEjP1Pk5zzRe',
-            'password_hash'        => '$2y$13$lf03M5DAWI7qwJ3UWKq6ruAYdxRZj9RnNWqRhORY1xuFCTvbFFWv.',
+            'auth_key' => '0fQDfzYWWt_W4tHLv34YTEjP1Pk5zzRe',
+            'password_hash' => '$2y$13$lf03M5DAWI7qwJ3UWKq6ruAYdxRZj9RnNWqRhORY1xuFCTvbFFWv.',
         ]);
     }
 }

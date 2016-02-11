@@ -7,10 +7,10 @@
  */
 
 return [
-    'module_name'        => 'sitemap',
-    'module_title'       => 'Site Map',
-    'module_description' => 'Module for sitemap',
-    'module_config'      => [
+    'name'               => 'sitemap',
+    'title'              => 'Sitemap',
+    'description'        => 'Module for sitemap',
+    'configs'            => [
         'backend'  => [
             'class' => 'modules\sitemap\backend\Module',
         ],
@@ -18,5 +18,5 @@ return [
             'class' => 'modules\sitemap\frontend\Module',
         ],
     ],
-    'module_fb'          => 1,
+    'frontend_bootstrap' => 1,
 ];

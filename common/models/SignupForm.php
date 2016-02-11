@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\models;
@@ -13,8 +13,8 @@ use yii\base\Model;
 /**
  * Class SignupForm
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class SignupForm extends Model
 {
@@ -41,30 +41,23 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
+            [['username', 'email'], 'filter', 'filter' => 'trim'],
+            [['username', 'email', 'password', 'term_condition'], 'required'],
             [
                 'username',
                 'unique',
                 'targetClass' => '\common\models\User',
-                'message'     => 'This username has already been taken.',
+                'message' => Yii::t('writesdown', 'This username has already been taken.'),
             ],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
-            ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
             ['email', 'email'],
             [
                 'email',
                 'unique',
                 'targetClass' => '\common\models\User',
-                'message'     => 'This email address has already been taken.',
+                'message' => Yii::t('writesdown', 'This email address has already been taken.'),
             ],
-
-            ['password', 'required'],
             ['password', 'string', 'min' => 6],
-
-            ['term_condition', 'required'],
         ];
     }
 

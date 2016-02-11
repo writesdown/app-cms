@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\grid\GridView;
@@ -23,13 +23,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form-inline grid-nav" role="form">
         <div class="form-group">
             <?= Html::dropDownList('bulk-action', null, [
-                'activated'   => Yii::t('writesdown', 'Activated'),
-                'unactivated' => Yii::t('writesdown', 'Unactivated'),
-                'removed'     => Yii::t('writesdown', 'Removed'),
-                'deleted'     => Yii::t('writesdown', 'Delete permanently'),
+                'active' => Yii::t('writesdown', 'Active'),
+                'not-active' => Yii::t('writesdown', 'Not Active'),
+                'removed' => Yii::t('writesdown', 'Removed'),
+                'deleted' => Yii::t('writesdown', 'Delete Permanently'),
             ], [
-                'class'  => 'bulk-action form-control',
-                'prompt' => 'Change Status',
+                'class' => 'bulk-action form-control',
+                'prompt' => Yii::t('writesdown', 'Change Status'),
             ]) ?>
 
             <?= Html::button(Yii::t('writesdown', 'Apply'), ['class' => 'btn btn-flat btn-warning bulk-button']) ?>
@@ -45,8 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
             }
 
             echo Html::dropDownList('bulk-role', null, $role, [
-                'class'  => 'bulk-role form-control',
-                'prompt' => 'Change Role',
+                'class' => 'bulk-role form-control',
+                'prompt' => Yii::t('writesdown', 'Change Role'),
             ]);
             ?>
 
@@ -56,9 +56,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'btn btn-flat btn-primary']) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
-                "data-toggle" => "collapse",
-                "data-target" => "#user-search",
+                'class' => 'btn btn-flat btn-info',
+                'data-toggle' => 'collapse',
+                'data-target' => '#user-search',
             ]) ?>
 
         </div>
@@ -67,57 +67,65 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_search', ['model' => $searchModel]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'id'           => 'user-grid-view',
-        'columns'      => [
-            ['class' => 'yii\grid\CheckboxColumn'],
+        'filterModel' => $searchModel,
+        'id' => 'user-grid-view',
+        'columns' => [
+            [
+                'class' => 'yii\grid\CheckboxColumn',
+                'checkboxOptions' => function ($model) {
+                    /* @var $model \common\models\User */
+                    if ($model->checkPermission()) {
+                        return ['value' => $model->id];
+                    }
+
+                    return ['disabled' => 'disabled'];
+                },
+            ],
 
             'username',
             'email:email',
             [
                 'attribute' => 'role',
-                'value'     => function ($model) {
-                    return implode(', ',
-                        ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($model->id), 'name'));
+                'value' => function ($model) {
+                    return implode(
+                        ', ',
+                        ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($model->id), 'name')
+                    );
                 },
             ],
             [
                 'attribute' => 'status',
-                'value'     => function ($model) {
+                'value' => function ($model) {
                     return $model->statustext;
                 },
-                'filter'    => $searchModel->getStatus(),
+                'filter' => $searchModel->getStatuses(),
             ],
             [
-                'class'   => 'yii\grid\ActionColumn',
+                'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        if (Yii::$app->user->can('superadmin')
-                            || (Yii::$app->user->can('administrator')
-                                && !Yii::$app->authManager->checkAccess($model->id, 'administrator'))
-                        ) {
+                        /* @var $model \common\models\User */
+                        if ($model->checkPermission()) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                'title'     => Yii::t('yii', 'Update'),
+                                'title' => Yii::t('writesdown', 'Update'),
                                 'data-pjax' => '0',
                             ]);
                         }
 
-                        return false;
+                        return '';
                     },
                     'delete' => function ($url, $model) {
-                        if (Yii::$app->user->can('superadmin')
-                            || (Yii::$app->user->can('administrator')
-                                && !Yii::$app->authManager->checkAccess($model->id, 'administrator'))
-                        ) {
+                        /* @var $model \common\models\User */
+                        if ($model->checkPermission()) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                'title'        => Yii::t('yii', 'Delete'),
-                                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                'data-method'  => 'post',
-                                'data-pjax'    => '0',
+                                'title' => Yii::t('writesdown', 'Delete'),
+                                'data-confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?'),
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
                             ]);
                         }
 
-                        return false;
+                        return '';
                     },
                 ],
             ],
@@ -129,11 +137,11 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php $this->registerJs('jQuery(".bulk-button").click(function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t("writesdown", "Are you sure to do this?") . '")){
+    if(confirm("' . Yii::t("writesdown", "Are you sure?") . '")){
         var ids     = $("#user-grid-view").yiiGridView("getSelectedRows");
         var action  = $(this).parents(".form-group").find(".bulk-action").val();
         $.ajax({
-            url: "' . Url::to(["/user/bulk-action"]) . '",
+            url: "' . Url::to(['bulk-action']) . '",
             data: { ids: ids, action: action, _csrf: yii.getCsrfToken() },
             type:"POST",
             success: function(response){
@@ -144,11 +152,11 @@ $this->params['breadcrumbs'][] = $this->title;
 });
 jQuery(".role-button").click(function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t("writesdown", "Are you sure to do this?") . '")){
+    if(confirm("' . Yii::t("writesdown", "Are you sure?") . '")){
         var ids     = $("#user-grid-view").yiiGridView("getSelectedRows");
         var role    = $(this).parents(".form-group").find(".bulk-role").val();
         $.ajax({
-            url: "' . Url::to(["/user/bulk-action"]) . '",
+            url: "' . Url::to(['bulk-action']) . '",
             data: { ids: ids, action: "changerole", role: role, _csrf: yii.getCsrfToken() },
             type:"POST",
             success: function(response){

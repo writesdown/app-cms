@@ -7,7 +7,7 @@ use yii\db\Schema;
  * Migration for table auth rule.
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000003_auth_rule extends \yii\db\Migration
 {
@@ -23,8 +23,8 @@ class m000000_000003_auth_rule extends \yii\db\Migration
         }
 
         $this->createTable('{{%auth_rule}}', [
-            'name'       => Schema::TYPE_STRING . '(64) NOT NULL',
-            'data'       => Schema::TYPE_TEXT,
+            'name' => Schema::TYPE_STRING . '(64) NOT NULL',
+            'data' => Schema::TYPE_TEXT,
             'created_at' => Schema::TYPE_INTEGER . '(11)',
             'updated_at' => Schema::TYPE_INTEGER . '(11)',
             'PRIMARY KEY ([[name]])',

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\components\TimeZoneHelper;
@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 /* @var $group string */
 /* @var $model object */
 
-$this->title = Yii::t('writesdown', '{group} Settings', ['group' => ucwords($group)]);
+$this->title = Yii::t('writesdown', 'General Settings');
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Settings'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,9 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ) ?>
 
         <div class="col-sm-7">
-            <?= Html::textInput('Option[sitetitle][option_value]', $model->sitetitle->option_value, [
+            <?= Html::textInput('Option[sitetitle][value]', $model->sitetitle->value, [
                 'class' => 'form-control',
-                'id'    => 'option-sitetitle',
+                'id' => 'option-sitetitle',
             ]) ?>
 
         </div>
@@ -45,9 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::label(Yii::t('writesdown', 'Tagline'), 'option-tagline', ['class' => 'col-sm-2 control-label']) ?>
 
         <div class="col-sm-7">
-            <?= Html::textInput('Option[tagline][option_value]', $model->tagline->option_value, [
+            <?= Html::textInput('Option[tagline][value]', $model->tagline->value, [
                 'class' => 'form-control',
-                'id'    => 'option-tagline',
+                'id' => 'option-tagline',
             ]) ?>
 
             <p class="description">
@@ -64,9 +64,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ) ?>
 
         <div class="col-sm-7">
-            <?= Html::textInput('Option[admin_email][option_value]', $model->admin_email->option_value, [
+            <?= Html::textInput('Option[admin_email][value]', $model->admin_email->value, [
                 'class' => 'form-control',
-                'id'    => 'option-admin_email',
+                'id' => 'option-admin_email',
             ]) ?>
 
             <p class="description">
@@ -86,8 +86,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="checkbox">
                 <?= Html::label(
                     Html::checkbox(
-                        'Option[allow_signup][option_value]',
-                        $model->allow_signup->option_value,
+                        'Option[allow_signup][value]',
+                        $model->allow_signup->value,
                         ['uncheck' => 0, 'id' => 'option-allow_signup']
                     ) . Yii::t('writesdown', ' Allow guest to register on this site')
                 ) ?>
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 unset($role['administrator']);
             }
 
-            echo Html::dropDownList('Option[default_role][option_value]', $model->default_role->option_value, $role,
+            echo Html::dropDownList('Option[default_role][value]', $model->default_role->value, $role,
                 ['id' => 'option-default_role', 'class' => 'form-control'])
             ?>
 
@@ -129,12 +129,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="col-sm-7">
             <?= SelectizeDropDownList::widget([
-                'name'    => 'Option[time_zone][option_value]',
-                'value'   => $model->time_zone->option_value,
-                'items'   => TimeZoneHelper::listTimeZone(),
+                'name' => 'Option[time_zone][value]',
+                'value' => $model->time_zone->value,
+                'items' => TimeZoneHelper::listTimeZone(),
                 'options' => [
                     'class' => 'form-control',
-                    'id'    => 'option-time_zone',
+                    'id' => 'option-time_zone',
                 ],
             ]) ?>
 
@@ -146,21 +146,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::label(Yii::t('writesdown', 'Date Format'), null, ['class' => 'col-sm-2 control-label']) ?>
 
         <div class="col-sm-7">
-            <?= Html::radioList('radio-date_format', $model->date_format->option_value, [
+            <?= Html::radioList('radio-date_format', $model->date_format->value, [
                 'F d, Y' => date('F d, Y'),
                 'M d, Y' => date('M d, Y'),
-                'Y-m-d'  => date('Y-m-d'),
-                'm/d/Y'  => date('m/d/Y'),
+                'Y-m-d' => date('Y-m-d'),
+                'm/d/Y' => date('m/d/Y'),
                 'custom' => Yii::t('writesdown', 'Custom')
                     . ': '
-                    . Html::textInput('Option[date_format][option_value]', $model->date_format->option_value, [
-                        'class'    => 'value-date_format',
+                    . Html::textInput('Option[date_format][value]', $model->date_format->value, [
+                        'class' => 'value-date_format',
                         'readonly' => 'readonly',
                     ]),
             ], [
-                'separator'   => '<br />',
-                'encode'      => false,
-                'class'       => 'radio',
+                'separator' => '<br />',
+                'encode' => false,
+                'class' => 'radio',
                 'itemOptions' => ['class' => 'radio-date_format'],
             ]) ?>
 
@@ -178,20 +178,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::label(Yii::t('writesdown', 'Time Format'), null, ['class' => 'col-sm-2 control-label']) ?>
 
         <div class="col-sm-7">
-            <?= Html::radioList('radio-time_format', $model->time_format->option_value, [
+            <?= Html::radioList('radio-time_format', $model->time_format->value, [
                 'g:i:s a' => date('g:i:s a'),
                 'g:i:s A' => date('g:i:s A'),
-                'H:i:s'   => date('H:i:s'),
-                'custom'  => Yii::t('writesdown', 'Custom')
+                'H:i:s' => date('H:i:s'),
+                'custom' => Yii::t('writesdown', 'Custom')
                     . ': '
-                    . Html::textInput('Option[time_format][option_value]', $model->time_format->option_value, [
-                        'class'    => 'value-time_format',
+                    . Html::textInput('Option[time_format][value]', $model->time_format->value, [
+                        'class' => 'value-time_format',
                         'readonly' => 'readonly',
                     ]),
             ], [
-                'separator'   => '<br />',
-                'encode'      => false,
-                'class'       => 'radio',
+                'separator' => '<br />',
+                'encode' => false,
+                'class' => 'radio',
                 'itemOptions' => ['class' => 'radio-time_format'],
             ]) ?>
             <p class="description">
@@ -228,4 +228,4 @@ $this->params['breadcrumbs'][] = $this->title;
             $(".value-date_format").attr("readonly", false);
         }
     });
-})(jQuery);') ?>
+}(jQuery));') ?>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\helpers\Html;
@@ -12,7 +12,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\PostType */
 
-$this->title = Yii::t('writesdown', 'View Post Type: {post_type_name}', ['post_type_name' => $model->post_type_sn]);
+$this->title = Yii::t('writesdown', 'View Post Type: {name}', ['name' => $model->singular_name]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Post Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -26,29 +26,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= Html::a(Yii::t('writesdown', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-flat btn-danger',
-            'data'  => [
+            'data' => [
                 'confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?'),
-                'method'  => 'post',
+                'method' => 'post',
             ],
         ]) ?>
 
     </p>
     <?= DetailView::widget([
-        'model'      => $model,
+        'model' => $model,
         'attributes' => [
             'id',
-            'post_type_name',
-            'post_type_slug',
-            'post_type_description:ntext',
+            'name',
+            'slug',
+            'description:ntext',
             [
-                'attribute' => 'post_type_icon',
-                'value'     => Html::tag('i', '', ['class' => $model->post_type_icon]),
-                'format'    => 'raw',
+                'attribute' => 'icon',
+                'value' => Html::tag('i', '', ['class' => $model->icon]),
+                'format' => 'raw',
             ],
-            'post_type_sn',
-            'post_type_pn',
-            'post_type_smb:boolean',
-            'post_type_permission',
+            'singular_name',
+            'plural_name',
+            'menu_builder:boolean',
+            'permission',
         ],
     ]) ?>
 
@@ -58,9 +58,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <h3><?= Yii::t('writesdown', 'Taxonomies') ?></h3>
 
         <?php foreach ($taxonomies as $taxonomy): ?>
-            <?= Html::a($taxonomy->taxonomy_name, ['/taxonomy/view/', 'id' => $taxonomy->id], [
-                'class' => 'btn btn-xs btn-warning btn-flat',
-            ]) ?>
+            <?= Html::a(
+                $taxonomy->name,
+                ['/taxonomy/view/', 'id' => $taxonomy->id],
+                ['class' => 'btn btn-xs btn-warning btn-flat']
+            ) ?>
         <?php endforeach ?>
 
     <?php endif ?>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use codezeen\yii2\adminlte\widgets\Alert;
@@ -51,21 +51,21 @@ $this->title = Yii::t('writesdown', 'Sing Up');
             <div class="col-xs-8">
                 <?= $form->field($model, 'term_condition')->checkbox(['uncheck' => null])->label(Yii::t(
                     'writesdown', 'I agree to the {termLink}',
-                    ['termLink' => Html::a('terms', ['/site/terms'], ['target' => '_blank'])]
+                    ['termLink' => Html::a('terms', ['terms'], ['target' => '_blank'])]
                 )) ?>
 
             </div>
             <div class="col-xs-4">
                 <?= Html::submitButton('Signup', [
                     'class' => 'btn btn-primary btn-block btn-flat',
-                    'name'  => 'signup-button',
+                    'name' => 'signup-button',
                 ]) ?>
 
             </div>
         </div>
         <?php ActiveForm::end() ?>
 
-        <?= Html::a(Yii::t('writesdown', 'I already have a membership'), ['/site/login']) ?>
+        <?= Html::a(Yii::t('writesdown', 'I already have a membership'), ['login']) ?>
 
     </div>
     <br/>

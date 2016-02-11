@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace frontend\controllers;
@@ -16,19 +16,18 @@ use yii\web\NotFoundHttpException;
 /**
  * Class MediaController
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class MediaController extends Controller
 {
     /**
-     * @param integer|null $id
-     * @param string|null  $mediaslug
-     *
+     * @param integer|null $id Media ID
+     * @param string|null $slug Media slug
      * @return mixed
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionView($id = null, $mediaslug = null)
+    public function actionView($id = null, $slug = null)
     {
         $render = 'view';
 
@@ -36,35 +35,35 @@ class MediaController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-        } elseif ($mediaslug) {
-            $model = $this->findModelBySlug($mediaslug);
+        } elseif ($slug) {
+            $model = $this->findModelBySlug($slug);
         } else {
             throw new NotFoundHttpException(Yii::t('writesdown', 'The requested page does not exist.'));
         }
 
         if ($comment->load(Yii::$app->request->post()) && $comment->save()) {
-            if (!$comment->comment_parent) {
-                $model->media_comment_count++;
+            if (!$comment->parent) {
+                $model->comment_count++;
             }
             if ($model->save()) {
                 $this->refresh();
             }
         }
 
-        if ($model->media_password && $model->media_password !== Yii::$app->request->post('password')) {
+        if ($model->password && $model->password !== Yii::$app->request->post('password')) {
             return $this->render('protected', ['media' => $model]);
         }
 
         if (is_file($this->view->theme->basePath . '/media/view-'
-            . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1)) . '.php')
+            . substr($model->mime_type, 0, strpos($model->mime_type, '/', 1)) . '.php')
         ) {
-            $render = 'view-' . substr($model->media_mime_type, 0, strpos($model->media_mime_type, '/', 1));
+            $render = 'view-' . substr($model->mime_type, 0, strpos($model->mime_type, '/', 1));
         }
 
         return $this->render($render, [
-            'media'    => $model,
+            'media' => $model,
             'metadata' => $model->getMeta('metadata'),
-            'comment'  => $comment,
+            'comment' => $comment,
         ]);
     }
 
@@ -72,8 +71,7 @@ class MediaController extends Controller
      * Finds the Media model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param integer $id
-     *
+     * @param integer $id Media ID
      * @return Media the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -90,14 +88,13 @@ class MediaController extends Controller
      * Finds the Media model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
-     * @param string $mediaSlug
-     *
+     * @param string $slug Media slug
      * @return Media the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModelBySlug($mediaSlug)
+    protected function findModelBySlug($slug)
     {
-        if (($model = Media::findOne(['media_slug' => $mediaSlug])) !== null) {
+        if (($model = Media::findOne(['slug' => $slug])) !== null) {
             return $model;
         }
 

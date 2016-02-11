@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
@@ -22,14 +22,14 @@ use yii\widgets\ActiveForm;
     <?php if (!Yii::$app->user->isGuest): ?>
         <p>
             <?= Yii::t('writesdown', 'Login as {username}, {logout}{cancelReply}', [
-                'username'    => '<strong>' . Yii::$app->user->identity->username . '</strong>',
-                'logout'      => Html::a(Yii::t(
+                'username' => '<strong>' . Yii::$app->user->identity->username . '</strong>',
+                'logout' => Html::a(Yii::t(
                     'writesdown', '<strong>Sign Out</strong>'),
                     ['/site/logout'],
                     ['data-method' => 'post']
                 ),
                 'cancelReply' => Html::a('<strong>' . Yii::t('writesdown', ', Cancel Reply') . '</strong>', '#', [
-                    'id'    => 'cancel-reply',
+                    'id' => 'cancel-reply',
                     'class' => 'cancel-reply',
                     'style' => 'display:none;',
                 ]),
@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
     <?php else: ?>
         <p>
             <?= Html::a('<strong>' . Yii::t('writesdown', 'Cancel Reply') . '</strong>', '#', [
-                'id'    => 'cancel-reply',
+                'id' => 'cancel-reply',
                 'class' => 'cancel-reply',
                 'style' => 'display:none;',
             ]) ?>
@@ -52,21 +52,21 @@ use yii\widgets\ActiveForm;
     <?php if (Yii::$app->user->isGuest && Option::get('require_name_email')): ?>
         <div class="row">
             <div class="col-md-7">
-                <?= $form->field($model, 'comment_author')->textInput() ?>
+                <?= $form->field($model, 'author')->textInput() ?>
 
-                <?= $form->field($model, 'comment_author_email')->textInput(['maxlength' => 100]) ?>
+                <?= $form->field($model, 'email')->textInput(['maxlength' => 100]) ?>
 
-                <?= $form->field($model, 'comment_author_url')->textInput(['maxlength' => 255]) ?>
+                <?= $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
             </div>
         </div>
     <?php endif ?>
 
-    <?= $form->field($model, 'comment_content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= Html::activeHiddenInput($model, 'comment_parent', ['value' => 0, 'class' => 'comment-parent-field']) ?>
+    <?= Html::activeHiddenInput($model, 'parent', ['value' => 0, 'class' => 'comment-parent-field']) ?>
 
-    <?= Html::activeHiddenInput($model, 'comment_media_id', ['value' => $media->id]) ?>
+    <?= Html::activeHiddenInput($model, 'media_id', ['value' => $media->id]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('writesdown', 'Submit'), ['class' => 'btn btn-primary']) ?>

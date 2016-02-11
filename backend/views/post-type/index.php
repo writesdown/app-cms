@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use yii\grid\GridView;
@@ -21,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="post-type-index">
     <div class="form-inline grid-nav" role="form">
         <div class="form-group">
-            <?= Html::dropDownList('bulk-action', null, ['delete' => 'Delete'], [
-                'class'  => 'bulk-action form-control',
-                'prompt' => 'Bulk Action',
+            <?= Html::dropDownList('bulk-action', null, ['deleted' => Yii::t('writesdown', 'Delete Permanently')], [
+                'class' => 'bulk-action form-control',
+                'prompt' => Yii::t('writesdown', 'Bulk Action'),
             ]) ?>
 
             <?= Html::button(Yii::t('writesdown', 'Apply'), ['class' => 'btn btn-flat btn-warning bulk-button']) ?>
@@ -35,9 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ) ?>
 
             <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-search']), [
-                'class'       => 'btn btn-flat btn-info',
-                "data-toggle" => "collapse",
-                "data-target" => "#post-type-search",
+                'class' => 'btn btn-flat btn-info',
+                'data-toggle' => 'collapse',
+                'data-target' => '#post-type-search',
             ]) ?>
 
         </div>
@@ -46,28 +46,28 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_search', ['model' => $searchModel]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel'  => $searchModel,
-        'id'           => 'post-type-grid-view',
-        'columns'      => [
+        'filterModel' => $searchModel,
+        'id' => 'post-type-grid-view',
+        'columns' => [
             ['class' => 'yii\grid\CheckboxColumn'],
 
-            'post_type_name',
-            'post_type_slug',
-            'post_type_description:ntext',
+            'name',
+            'slug',
+            'description:ntext',
             [
-                'attribute' => 'post_type_icon',
-                'format'    => 'raw',
-                'value'     => function ($model) {
-                    return Html::tag('i', '', ['class' => $model->post_type_icon]);
+                'attribute' => 'icon',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::tag('i', '', ['class' => $model->icon]);
                 },
-                'filter'    => false,
+                'filter' => false,
             ],
-            'post_type_sn',
-            'post_type_pn',
+            'singular_name',
+            'plural_name',
             [
-                'attribute' => 'post_type_smb',
-                'format'    => 'boolean',
-                'filter'    => $searchModel->getSmb(),
+                'attribute' => 'menu_builder',
+                'format' => 'boolean',
+                'filter' => $searchModel->getMenuBuilders(),
             ],
 
             ['class' => 'yii\grid\ActionColumn'],
@@ -79,11 +79,11 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php $this->registerJs('jQuery(".bulk-button").click(function(e){
     e.preventDefault();
-    if(confirm("' . Yii::t("writesdown", "All posts on these post types will be affected. Are you sure?") . '")){
+    if(confirm("' . Yii::t('writesdown', 'Are you sure?') . '")){
     var ids     = $("#post-type-grid-view").yiiGridView("getSelectedRows");
     var action  = $(this).parents(".form-group").find(".bulk-action").val();
     $.ajax({
-        url: "' . Url::to(["/post-type/bulk-action"]) . '",
+        url: "' . Url::to(["bulk-action"]) . '",
         data: { ids: ids, action: action, _csrf: yii.getCsrfToken() },
         type:"POST",
         success: function(data){

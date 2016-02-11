@@ -1,56 +1,53 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 return [
-    'backend'  => [
-        'bodyClass' => 'skin-blue sidebar-mini',
-        'menu'      => [
+    'backend' => [
+        'menu' => [
             'location' => [
                 'primary' => 'Primary',
             ],
         ],
-        'postType'  => [
+        'postType' => [
             'post' => [
-                'metaBox' => [
-                    ['class' => 'themes\writesdown\metabox\MetaBox'],
+                'meta' => [
+                    ['class' => 'themes\writesdown\classes\meta\Meta'],
                 ],
                 'support' => [],
             ],
             'page' => [
-                'metaBox' => [
-                    ['class' => 'themes\writesdown\metabox\MetaBox'],
+                'meta' => [
+                    ['class' => 'themes\writesdown\classes\meta\Meta'],
                 ],
                 'support' => [],
             ],
         ],
-        'widget'    => [
+        'widget' => [
             [
-                'title'       => 'Sidebar',
+                'title' => 'Sidebar',
                 'description' => 'Main sidebar that appears on the right.',
-                'location'    => 'sidebar',
+                'location' => 'sidebar',
             ],
             [
-                'title'       => 'Footer Left',
+                'title' => 'Footer Left',
                 'description' => 'Appears on the left of footer',
-                'location'    => 'footer-left',
+                'location' => 'footer-left',
             ],
             [
-                'title'       => 'Footer Middle',
+                'title' => 'Footer Middle',
                 'description' => 'Appears on the middle of footer',
-                'location'    => 'footer-middle',
+                'location' => 'footer-middle',
             ],
             [
-                'title'       => 'Footer Right',
+                'title' => 'Footer Right',
                 'description' => 'Appears on the right of footer',
-                'location'    => 'footer-right',
+                'location' => 'footer-right',
             ],
         ],
-    ],
-    'frontend' => [
     ],
 ];

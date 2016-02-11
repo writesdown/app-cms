@@ -1,111 +1,111 @@
 /* GENERAL */
-img{
+img {
     max-width: 100%;
     height: auto;
 }
 /* NAVBAR PRIMARY */
-#navbar-primary{
+#navbar-primary {
     margin-bottom: 0;
 }
-#navbar-primary .navbar-toggle .icon-bar{
+#navbar-primary .navbar-toggle .icon-bar {
     background-color: #5cb85c;
 }
 /* HEADER PRIMARY */
-#header-primary{
+#header-primary {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: #5cb85c;
-    background-image: linear-gradient(bottom, rgb(92,184,92) 0%, rgb(56,153,56) 100%);
-    background-image: -o-linear-gradient(bottom, rgb(92,184,92) 0%, rgb(56,153,56) 100%);
-    background-image: -moz-linear-gradient(bottom, rgb(92,184,92) 0%, rgb(56,153,56) 100%);
-    background-image: -webkit-linear-gradient(bottom, rgb(92,184,92) 0%, rgb(56,153,56) 100%);
-    background-image: -ms-linear-gradient(bottom, rgb(92,184,92) 0%, rgb(56,153,56) 100%);
+    background-image: linear-gradient(bottom, rgb(92, 184, 92) 0%, rgb(56, 153, 56) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(92, 184, 92) 0%, rgb(56, 153, 56) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(92, 184, 92) 0%, rgb(56, 153, 56) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(92, 184, 92) 0%, rgb(56, 153, 56) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(92, 184, 92) 0%, rgb(56, 153, 56) 100%);
     text-align: center;
 }
-#header-primary .site-title{
-    color: #FFFFFF;
+#header-primary .site-title {
+    color: #ffffff;
     display: block;
 }
-#header-primary .site-tagline{
-    color: #FFFFFF;
+#header-primary .site-tagline {
+    color: #ffffff;
     display: block;
 }
 /* BREADCRUMB PRIMARY */
-#breadcrumb-primary{
-    background-color: #F5F5F5;
+#breadcrumb-primary {
+    background-color: #f5f5f5;
 }
-#breadcrumb-primary .breadcrumb{
+#breadcrumb-primary .breadcrumb {
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 0;
 }
 /* FOOTER PRIMARY */
-#footer-primary{
+#footer-primary {
     background-color: #111111;
     padding-top: 10px;
     padding-bottom: 10px;
     margin-top: 30px;
 }
 /* CONTENT */
-#content{
+#content {
     margin-top: 30px;
 }
-#content .archive .hentry + .hentry{
+#content .archive .hentry + .hentry {
     margin-top: 30px;
 }
 /* SIDEBAR */
-#sidebar{
+#sidebar {
     margin-top: 30px;
 }
-#sidebar .widget + .widget{
+#sidebar .widget + .widget {
     margin-top: 30px;
 }
 /* COMMENTS */
-#comments{
+#comments {
     padding-left: 0;
 }
-#comments .media{
+#comments .media {
     margin-top: 25px;
 }
-#comments .avatar{
+#comments .avatar {
     display: block;
     float: left;
 }
 #comments ul {
-    padding-left: 74px;
+    padding-left: 58px;
 }
 /* ALIGN AND CAPTION */
-p.align-center{
+p.align-center {
     text-align: center;
 }
-p.align-right{
+p.align-right {
     text-align: right;
 }
-p.align-left{
+p.align-left {
     text-align: left;
 }
-.media-caption{
+.media-caption {
     max-width: 100%;
 }
-.media-caption img{
+.media-caption img {
     float: none !important;
 }
-.media-caption .media-caption-text{
+.media-caption .media-caption-text {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 .media-caption.align-left,
-img.align-left{
+img.align-left {
     float: left;
     margin-right: 10px;
 }
 .media-caption.align-right,
-img.align-right{
+img.align-right {
     float: right;
     margin-left: 10px;
 }
 .media-caption.align-center,
-img.align-center{
+img.align-center {
     float: none;
     margin-left: auto;
     margin-right: auto;

@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use dosamigos\datetimepicker\DateTimePicker;
@@ -18,35 +18,35 @@ use yii\helpers\Html;
         <h3 class="box-title"><?= Yii::t('writesdown', 'Publish') ?></h3>
 
         <div class="box-tools pull-right">
-            <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+            <a href="#" data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></a>
         </div>
     </div>
     <div class="box-body">
-        <?= $form->field($model, 'post_date', ['template' => '{input}'])->widget(DateTimePicker::className(), [
-            'size'           => 'sm',
-            'template'       => '{reset}{button}{input}',
+        <?= $form->field($model, 'date', ['template' => '{input}'])->widget(DateTimePicker::className(), [
+            'size' => 'sm',
+            'template' => '{reset}{button}{input}',
             'pickButtonIcon' => 'glyphicon glyphicon-time',
-            'options'        => [
+            'options' => [
                 'value' => $model->isNewRecord
                     ? date('M d, Y h:i:s')
-                    : Yii::$app->formatter->asDatetime($model->post_date, 'php:M d, Y h:i:s'),
+                    : Yii::$app->formatter->asDatetime($model->date, 'php:M d, Y h:i:s'),
             ],
-            'clientOptions'  => [
+            'clientOptions' => [
                 'autoclose' => true,
-                'format'    => 'M dd, yyyy hh:ii:ss',
-                'todayBtn'  => true,
+                'format' => 'M dd, yyyy hh:ii:ss',
+                'todayBtn' => true,
             ],
         ]) ?>
 
-        <?= $form->field($model, 'post_status', ['template' => "{input}"])->dropDownList(
-            Yii::$app->user->can('author') ? $model->getPostStatus() : [$model::POST_STATUS_REVIEW => 'Review'],
+        <?= $form->field($model, 'status', ['template' => "{input}"])->dropDownList(
+            Yii::$app->user->can('author') ? $model->getPostStatuses() : [$model::STATUS_REVIEW => 'Review'],
             ['class' => 'form-control input-sm']
         ) ?>
 
-        <?= $form->field($model, 'post_password', ['template' => "{input}"])->textInput([
-            'maxlength'   => 255,
+        <?= $form->field($model, 'password', ['template' => "{input}"])->textInput([
+            'maxlength' => 255,
             'placeholder' => 'Password',
-            'class'       => 'form-control input-sm',
+            'class' => 'form-control input-sm',
         ]) ?>
 
     </div>
@@ -59,7 +59,7 @@ use yii\helpers\Html;
                 ['delete', 'id' => $model->id],
                 [
                     'class' => 'btn btn-wd-post btn-sm btn-flat btn-danger pull-right',
-                    'data'  => ['confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?')],
+                    'data' => ['confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?')],
                 ])
             : '' ?>
 

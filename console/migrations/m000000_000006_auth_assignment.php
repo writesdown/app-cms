@@ -7,7 +7,7 @@ use yii\db\Schema;
  * Migration class for auth_assignment.
  *
  * @author Agiel K. Saputra <13nightevil@gmail.com>
- * @since  0.1.0
+ * @since 0.1.0
  */
 class m000000_000006_auth_assignment extends \yii\db\Migration
 {
@@ -23,8 +23,8 @@ class m000000_000006_auth_assignment extends \yii\db\Migration
         }
 
         $this->createTable('{{%auth_assignment}}', [
-            'item_name'  => Schema::TYPE_STRING . '(64) NOT NULL',
-            'user_id'    => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            'item_name' => Schema::TYPE_STRING . '(64) NOT NULL',
+            'user_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
             'created_at' => Schema::TYPE_INTEGER . '(11)',
             'PRIMARY KEY ([[item_name]], [[user_id]])',
             'FOREIGN KEY ([[user_id]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
@@ -35,8 +35,8 @@ class m000000_000006_auth_assignment extends \yii\db\Migration
          * Assign first user as super administrator
          */
         $this->insert('{{%auth_assignment}}', [
-            'item_name'  => 'superadmin',
-            'user_id'    => 1,
+            'item_name' => 'superadmin',
+            'user_id' => 1,
             'created_at' => null,
         ]);
     }

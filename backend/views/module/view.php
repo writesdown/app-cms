@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @copyright Copyright (c) 2015 WritesDown
+ * @license http://www.writesdown.com/license/
+ */
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -6,7 +12,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Module */
 
-$this->title = Yii::t('writesdown', 'View Module: {module_title}', ['module_title' => $model->module_title]);
+$this->title = Yii::t('writesdown', 'View Module: {title}', ['title' => $model->title]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Modules'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -20,25 +26,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= Html::a(Yii::t('writesdown', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-flat btn-danger',
-            'data'  => [
+            'data' => [
                 'confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?'),
-                'method'  => 'post',
+                'method' => 'post',
             ],
         ]) ?>
 
     </p>
     <?= DetailView::widget([
-        'model'      => $model,
+        'model' => $model,
         'attributes' => [
-            'module_name',
-            'module_title:ntext',
-            'module_description:ntext',
-            'module_status:boolean',
-            'module_dir',
-            'module_bb:boolean',
-            'module_fb:boolean',
-            'module_date:datetime',
-            'module_modified:datetime',
+            'name',
+            'title:ntext',
+            'description:ntext',
+            'status:boolean',
+            'directory',
+            'backend_bootstrap:boolean',
+            'frontend_bootstrap:boolean',
+            'date:datetime',
+            'modified:datetime',
         ],
     ]) ?>
 

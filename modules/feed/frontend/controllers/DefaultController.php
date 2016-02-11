@@ -7,8 +7,8 @@
 
 namespace modules\feed\frontend\controllers;
 
-use common\models\Post;
 use common\models\Option;
+use common\models\Post;
 use Yii;
 use yii\web\Controller;
 
@@ -33,14 +33,23 @@ class DefaultController extends Controller
         $response->format = $response::FORMAT_RAW;
 
         // Get first post and all posts
-        $lastPost = Post::find()->where(['post_status' => 'publish'])->orderBy(['id' => SORT_DESC])->one();
-        $posts = Post::find()->andWhere(['post_status' => 'publish'])->limit(Option::get('posts_per_rss'))->orderBy(['id' => SORT_DESC])->all();
+        $lastPost = Post::find()
+            ->where(['status' => Post::STATUS_PUBLISH])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->orderBy(['id' => SORT_DESC])->one();
+
+        $posts = Post::find()
+            ->where(['status' => Post::STATUS_PUBLISH])
+            ->andWhere(['<=', 'date', date('Y-m-d H:i:s')])
+            ->limit(Option::get('posts_per_rss'))
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
 
         return $this->renderPartial('index', [
             'title'         => Option::get('sitetitle'),
             'description'   => Option::get('tagline'),
             'link'          => Yii::$app->request->absoluteUrl,
-            'lastBuildDate' => new \DateTime($lastPost->post_date, new \DateTimeZone(Option::get('time_zone'))),
+            'lastBuildDate' => new \DateTime($lastPost->date, new \DateTimeZone(Option::get('time_zone'))),
             'language'      => Yii::$app->language,
             'generator'     => 'http://www.writesdown.com',
             'posts'         => $posts,

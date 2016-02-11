@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use common\models\Option;
@@ -15,30 +15,30 @@ use yii\helpers\Html;
 /* @var $metadata [] */
 /* @var $comment common\models\MediaComment */
 
-$this->title = Html::encode($media->media_title . ' - ' . Option::get('sitetitle'));
+$this->title = Html::encode($media->title . ' - ' . Option::get('sitetitle'));
 
 if ($media->mediaPost) {
     $this->params['breadcrumbs'][] = [
-        'label' => Html::encode($media->mediaPost->post_title),
-        'url'   => $media->mediaPost->url,
+        'label' => Html::encode($media->mediaPost->title),
+        'url' => $media->mediaPost->url,
     ];
 }
 
-$this->params['breadcrumbs'][] = Html::encode($media->media_title);
+$this->params['breadcrumbs'][] = Html::encode($media->title);
 CommentAsset::register($this);
 ?>
 <div class="single media-view">
     <article class="hentry">
         <header class="entry-header page-header">
-            <h1 class="entry-title"><?= Html::encode($media->media_title) ?></h1>
+            <h1 class="entry-title"><?= Html::encode($media->title) ?></h1>
 
-            <?php $updated = new \DateTime($media->media_modified, new DateTimeZone(Yii::$app->timeZone)) ?>
+            <?php $updated = new \DateTime($media->modified, new DateTimeZone(Yii::$app->timeZone)) ?>
             <div class="entry-meta">
                 <span class="entry-date">
                     <span aria-hidden="true" class="glyphicon glyphicon-time"></span>
                     <a rel="bookmark" href="<?= $media->url ?>">
                         <time datetime="<?= $updated->format('c') ?>" class="entry-date">
-                            <?= Yii::$app->formatter->asDate($media->media_date) ?>
+                            <?= Yii::$app->formatter->asDate($media->date) ?>
                         </time>
                     </a>
                 </span>
@@ -54,21 +54,21 @@ CommentAsset::register($this);
                     <span aria-hidden="true" class="glyphicon glyphicon-comment"></span>
                     <a title="<?= Yii::t(
                         'writesdown', 'Comment on {mediaTitle}',
-                        ['mediaTitle' => $media->media_title]
+                        ['mediaTitle' => $media->title]
                     ) ?>" href="<?= $media->url ?>#respond"><?= Yii::t('writesdown', 'Leave a comment') ?></a>
                 </span>
             </div>
         </header>
 
         <div class="entry-content">
-            <?= $media->media_content ?>
+            <?= $media->content ?>
 
-            <?= Html::a($media->media_title, $media->uploadUrl . $metadata['media_versions']['full']['url']) ?>
+            <?= Html::a($media->title, $media->uploadUrl . $metadata['versions']['full']['url']) ?>
 
             <?= $media->mediaPost
                 ? Html::tag('h3', Html::a('<span aria-hidden="true" class="glyphicon glyphicon-menu-left"></span>'
                     . Yii::t('writesdown', 'Back to ')
-                    . $media->mediaPost->post_title, $media->mediaPost->url))
+                    . $media->mediaPost->title, $media->mediaPost->url))
                 : '' ?>
 
         </div>

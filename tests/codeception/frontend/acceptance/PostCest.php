@@ -1,17 +1,17 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace tests\codeception\frontend\acceptance;
 
 use common\models\Post;
 use common\models\PostComment;
-use tests\codeception\common\fixtures\PostTypeFixture;
-use tests\codeception\common\fixtures\PostFixture;
 use tests\codeception\common\fixtures\PostCommentFixture;
+use tests\codeception\common\fixtures\PostFixture;
+use tests\codeception\common\fixtures\PostTypeFixture;
 use tests\codeception\common\fixtures\PostTypeTaxonomyFixture;
 use tests\codeception\common\fixtures\TaxonomyFixture;
 use tests\codeception\common\fixtures\TermFixture;
@@ -23,8 +23,8 @@ use yii\helpers\Url;
 /**
  * Class PostCest
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.2
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.2
  */
 class PostCest
 {
@@ -81,7 +81,7 @@ class PostCest
     public function testIndex(AcceptanceTester $I)
     {
         $I->wantTo('ensure that index post works');
-        $I->amOnPage(Url::to(['/post/index', 'id'=>'1']));
+        $I->amOnPage(Url::to(['/post/index', 'id' => 1]));
         $I->seeLink('Sample Post');
         $I->click('Sample Post');
         // $I->see('Sample Post', 'h1');
@@ -91,14 +91,15 @@ class PostCest
     /**
      * @param AcceptanceTester $I
      */
-    public function testView(AcceptanceTester $I){
+    public function testView(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that post view works');
 
         $I->amOnPage(Url::to(['/post/view', 'id' => 1]));
         // $I->see('Sample Post', 'h1');
         $I->see('Sample Post');
 
-        $I->amOnPage(Url::to(['/post/view', 'postslug' => 'sample-post']));
+        $I->amOnPage(Url::to(['/post/view', 'slug' => 'sample-post']));
         // $I->see('Sample Post', 'h1');
         $I->see('Sample Post');
     }
@@ -106,8 +107,9 @@ class PostCest
     /**
      * @param AcceptanceTester $I
      */
-    public function testProtected(AcceptanceTester $I){
-        Post::findOne(1)->updateAttributes(['post_password' => 'postpassword']);
+    public function testProtected(AcceptanceTester $I)
+    {
+        Post::findOne(1)->updateAttributes(['password' => 'postpassword']);
 
         $I->wantTo('ensure that protected post works');
 
@@ -126,13 +128,14 @@ class PostCest
         // $I->seeElement('.entry-meta');
         $I->dontSee('Submit Password');
 
-        Post::findOne(1)->updateAttributes(['post_password' => '']);
+        Post::findOne(1)->updateAttributes(['password' => '']);
     }
 
     /**
      * @param AcceptanceTester $I
      */
-    public function testComment(AcceptanceTester $I){
+    public function testComment(AcceptanceTester $I)
+    {
         $I->wantTo('ensure that post comment works');
 
         $postView = PostViewPage::openBy($I);
@@ -148,9 +151,9 @@ class PostCest
 
         $I->amGoingTo('submit post comment form with no correct email');
         $postView->submitComment([
-            'comment_author'       => 'tester',
-            'comment_author_email' => 'tester.email',
-            'comment_content'      => 'New comment'
+            'author' => 'tester',
+            'email' => 'tester.email',
+            'content' => 'New comment',
         ]);
         $I->expectTo('see that email is not correct');
         $I->see('Email is not a valid email address.');
@@ -159,16 +162,16 @@ class PostCest
 
         $I->amGoingTo('submit post comment form with correct data');
         $postView->submitComment([
-            'comment_author'       => 'tester',
-            'comment_author_email' => 'tester@writesdown.dev',
-            'comment_content'      => 'New comment'
+            'author' => 'tester',
+            'email' => 'tester@writesdown.dev',
+            'content' => 'New comment',
         ]);
         $I->expect('new comment saved');
         $I->dontSee('Name cannot be blank.', '.help-block');
         $I->dontSee('Email cannot be blank.', '.help-block');
         $I->dontSee('Content cannot be blank.', '.help-block');
 
-        PostComment::deleteAll(['comment_author'=>'tester']);
-        Post::findOne(1)->updateAttributes(['post_comment_count' => '1']);
+        PostComment::deleteAll(['author' => 'tester']);
+        Post::findOne(1)->updateAttributes(['comment_count' => '1']);
     }
 }

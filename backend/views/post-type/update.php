@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 /* @var $this yii\web\View */
@@ -11,9 +11,9 @@
 /* @var $model common\models\PostType */
 /* @var $taxonomy common\models\Taxonomy */
 
-$this->title = Yii::t('writesdown', 'Update Post Type: {post_type_name} ', ['post_type_name' => $model->post_type_sn]);
+$this->title = Yii::t('writesdown', 'Update Post Type: {name} ', ['name' => $model->singular_name]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('writesdown', 'Post Types'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->post_type_sn, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->singular_name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
 ?>
 
@@ -25,8 +25,8 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
     </div>
     <div class="col-md-4">
         <?= $this->render('_post-type-taxonomy', [
-            'model'      => $model,
-            'taxonomy'   => $taxonomy,
+            'model' => $model,
+            'taxonomy' => $taxonomy,
             'taxonomies' => $taxonomies,
         ]) ?>
     </div>

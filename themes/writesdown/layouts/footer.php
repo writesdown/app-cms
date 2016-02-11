@@ -1,9 +1,9 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
- * @author    Agiel K. Saputra <13nightevil@gmail.com>
+ * @link http://www.writesdown.com/
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 use frontend\widgets\RenderWidget;
@@ -17,11 +17,11 @@ use frontend\widgets\RenderWidget;
             <div class="col-md-6">
                 <?= RenderWidget::widget([
                     'location' => 'footer-left',
-                    'config'   => [
+                    'config' => [
                         'beforeWidget' => '<div class="widget">',
-                        'afterWidget'  => '</div>',
-                        'beforeTitle'  => '<div class="widget-title"> <h4>',
-                        'afterTitle'   => '</div></h4>',
+                        'afterWidget' => '</div>',
+                        'beforeTitle' => '<div class="widget-title"> <h4>',
+                        'afterTitle' => '</div></h4>',
                     ],
                 ]) ?>
 
@@ -29,11 +29,11 @@ use frontend\widgets\RenderWidget;
             <div class="col-md-3">
                 <?= RenderWidget::widget([
                     'location' => 'footer-middle',
-                    'config'   => [
+                    'config' => [
                         'beforeWidget' => '<div class="widget">',
-                        'afterWidget'  => '</div>',
-                        'beforeTitle'  => '<div class="widget-title"> <h4>',
-                        'afterTitle'   => '</div></h4>',
+                        'afterWidget' => '</div>',
+                        'beforeTitle' => '<div class="widget-title"> <h4>',
+                        'afterTitle' => '</div></h4>',
                     ],
                 ]) ?>
 
@@ -41,11 +41,11 @@ use frontend\widgets\RenderWidget;
             <div class="col-md-3">
                 <?= RenderWidget::widget([
                     'location' => 'footer-right',
-                    'config'   => [
+                    'config' => [
                         'beforeWidget' => '<div class="widget">',
-                        'afterWidget'  => '</div>',
-                        'beforeTitle'  => '<div class="widget-title"> <h4>',
-                        'afterTitle'   => '</div></h4>',
+                        'afterWidget' => '</div>',
+                        'beforeTitle' => '<div class="widget-title"> <h4>',
+                        'afterTitle' => '</div></h4>',
                     ],
                 ]) ?>
 

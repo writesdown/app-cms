@@ -1,15 +1,17 @@
 (function ($) {
     "use strict";
 
-    $('.widget-activation-form').on('submit', function (e) {
-        var loc = $(this).find('.widget-widget_location');
-        var parent = $('#widget-space-' + loc.val());
+    $('.widget-available-form').on('submit', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
+        var $this = $(this),
+            location = $this.find('.widget-location'),
+            parent = $('#widget-space-' + location.val());
+
         $.ajax({
-            url: $(this).data('url'),
+            url: $this.data('url'),
             type: 'POST',
-            data: $(this).serialize(),
+            data: $this.serialize(),
             success: function (response) {
                 parent.find('.widget-order').append(response);
                 parent.removeClass('collapsed-box');
@@ -18,62 +20,66 @@
         })
     });
 
-    $(document).on('submit', '.widget-activated-form', function (e) {
-        var _boxtitle = $(this).find('.box-title');
-        var _title = _boxtitle.html();
-        var _loading = '<i class="fa fa-spinner fa-pulse"></i>';
+    $(document).on('submit', '.widget-active-form', function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
+        var $this = $(this),
+            boxTitle = $this.find('.box-title'),
+            title = boxTitle.html(),
+            loading = '<i class="fa fa-spinner fa-pulse"></i>';
+
         $.ajax({
-            url: $(this).data('url'),
-            type: "POST",
-            beforeSent: _boxtitle.html(_loading),
-            data: $(this).serialize(),
+            url: $this.data('url'),
+            type: 'POST',
+            beforeSent: boxTitle.html(loading),
+            data: $this.serialize(),
             success: function () {
-                _boxtitle.html(_title)
+                boxTitle.html(title)
             }
         })
     });
 
     $(document).on('click', '.ajax-delete-widget-btn', function () {
-        var _this = $(this);
+        var $this = $(this);
+
         $.ajax({
-            url: _this.data('url'),
-            type: "POST",
+            url: $this.data('url'),
+            type: 'POST',
             success: function () {
-                _this.closest('.box').remove();
+                $this.closest('.box').remove();
             }
         })
     });
 
     $('.widget-order').sortable({
         update: function () {
-            var _ids = [{}];
-            $(this).find('.widget-activated-form').each(function () {
-                _ids.push($(this).data('id'));
+            var ids = [{}],
+                $this = $(this);
+
+            $this.find('.widget-active-form').each(function () {
+                ids.push($(this).data('id'));
             });
-            $(this).closest('.widget-space').find('.widget-order-field').val(JSON.stringify(_ids));
+            $this.closest('.widget-space').find('.widget-order-field').val(JSON.stringify(ids));
         }
     });
 
     $('.widget-order-form').on('submit', function (e) {
-        var _ids = [{}],
-            _this = $(this);
-
         e.preventDefault();
         e.stopImmediatePropagation();
+        var ids = [{}],
+            $this = $(this);
 
         if ($(this).find('.widget-order-field').val() !== '') {
-            _ids = $.parseJSON($(this).find('.widget-order-field').val());
+            ids = $.parseJSON($(this).find('.widget-order-field').val());
         }
 
         $.ajax({
-            url: $(this).data('url'),
-            data: {ids: _ids, _csrf: yii.getCsrfToken()},
-            type: "POST",
-            beforeSent: _this.find('.btn').html('<i class="fa fa-spinner fa-pulse"></i> ' + _this.find('.btn').html()),
+            url: $this.data('url'),
+            data: {ids: ids, _csrf: yii.getCsrfToken()},
+            type: 'POST',
+            beforeSent: $this.find('.btn').html('<i class="fa fa-spinner fa-pulse"></i> ' + $this.find('.btn').html()),
             success: function () {
-                _this.find('.fa-spinner').remove();
+                $this.find('.fa-spinner').remove();
             }
         })
     });

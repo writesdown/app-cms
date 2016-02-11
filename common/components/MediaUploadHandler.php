@@ -1,8 +1,8 @@
 <?php
 /**
- * @link      http://www.writesdown.com/
+ * @link http://www.writesdown.com/
  * @copyright Copyright (c) 2015 WritesDown
- * @license   http://www.writesdown.com/license/
+ * @license http://www.writesdown.com/license/
  */
 
 namespace common\components;
@@ -15,6 +15,7 @@ use Imagine\Image\Point;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\Response;
@@ -23,19 +24,14 @@ use yii\web\UploadedFile;
 /**
  * Upload handler for Media model.
  *
- * @author  Agiel K. Saputra <13nightevil@gmail.com>
- * @since   0.1.0
+ * @author Agiel K. Saputra <13nightevil@gmail.com>
+ * @since 0.1.0
  */
 class MediaUploadHandler
 {
-    /**
-     * @var Media
-     */
-    private $_media;
-    /**
-     * @var array Used to create Media Meta.
-     */
-    private $_meta;
+    const PRINT_RESPONSE = true;
+    const NOT_PRINT_RESPONSE = false;
+
     /**
      * @var array Options for upload handler, can be overridden over class constructs.
      */
@@ -48,52 +44,61 @@ class MediaUploadHandler
      * @var array Grouping files based on its extension.
      */
     protected $fileTypes = [
-        'image'       => [
+        'image' => [
             'extensions' => '/\.(gif|jpg|jpeg|png)$/i',
         ],
-        'audio'       => [
+        'audio' => [
             'extensions' => '/\.(m4a|mp3|wav|wma|oga)$/i',
-            'mime_icon'  => 'img/mime/audio.png',
+            'mime_icon' => 'img/mime/audio.png',
         ],
-        'video'       => [
+        'video' => [
             'extensions' => '/\.(3gp|mkv|flv|og?(a|g)|avi|mov|wmv|mp4|m4p|mp?(g|2|eg|e|v))$/i',
-            'mime_icon'  => 'img/mime/video.png',
+            'mime_icon' => 'img/mime/video.png',
         ],
-        'pdf'         => [
+        'pdf' => [
             'extensions' => '/\.(pdf|xps)$/i',
-            'mime_icon'  => 'img/mime/pdf.png',
+            'mime_icon' => 'img/mime/pdf.png',
         ],
         'spreadsheet' => [
             'extensions' => '/\.(xls|xlsx|ods|csv|xml)$/i',
-            'mime_icon'  => 'img/mime/spreadsheet.png',
+            'mime_icon' => 'img/mime/spreadsheet.png',
         ],
-        'document'    => [
+        'document' => [
             'extensions' => '/\.(doc?(m|x)|odt)$/i',
-            'mime_icon'  => 'img/mime/document.png',
+            'mime_icon' => 'img/mime/document.png',
         ],
-        'archive'     => [
+        'archive' => [
             'extensions' => '/\.(rar|zip|tar|7zip)$/i',
-            'mime_icon'  => 'img/mime/archive.png',
+            'mime_icon' => 'img/mime/archive.png',
         ],
-        'code'        => [
+        'code' => [
             'extensions' => '/\.(php|c?pp|java|vb?s|html|js|css)$/i',
-            'mime_icon'  => 'img/mime/audio.png',
+            'mime_icon' => 'img/mime/audio.png',
         ],
         'interactive' => [
             'extensions' => '/\.(ppt|pptx|odp)$/i',
-            'icon'       => 'img/mime/interactive.png',
+            'icon' => 'img/mime/interactive.png',
         ],
-        'text'        => [
+        'text' => [
             'extensions' => '/\.(txt|md|bat)$/i',
-            'mime_icon'  => 'img/mime/text.png',
+            'mime_icon' => 'img/mime/text.png',
         ],
     ];
+
+    /**
+     * @var Media
+     */
+    private $_media;
+    /**
+     * @var array Used to create Media Meta.
+     */
+    private $_meta;
 
     /**
      * Create object of MediaUploadHandler.
      *
      * @param array|null $options
-     * @param bool       $initialize
+     * @param bool $initialize
      */
     public function __construct($options = null, $initialize = true)
     {
@@ -137,7 +142,6 @@ class MediaUploadHandler
      * Get server var based on id. Return null when it's not exist.
      *
      * @param $id
-     *
      * @return mixed
      */
     protected function getServerVar($id)
@@ -163,7 +167,7 @@ class MediaUploadHandler
      * Adds a new header.
      * If there is already a header with the same name, it will be replaced.
      *
-     * @param string $name  The name of the header.
+     * @param string $name The name of the header.
      * @param string $value The value of the header.
      */
     protected function setHeader($name, $value = '')
@@ -204,7 +208,6 @@ class MediaUploadHandler
      * If the model is not found it will return null.
      *
      * @param integer $id
-     *
      * @return Media|array
      */
     protected function findMedia($id)
@@ -221,7 +224,6 @@ class MediaUploadHandler
      * If the model is not found it will return null.
      *
      * @param integer $id
-     *
      * @return Post|null
      */
     protected function findPost($id)
@@ -265,7 +267,6 @@ class MediaUploadHandler
      * Get upload path based on current config, generate upload_dir/user_path/y/m/filename.ext.
      *
      * @param null $fileName Filename and extension (filename.ext).
-     *
      * @return string
      */
     protected function getUploadPath($fileName = null)
@@ -277,7 +278,6 @@ class MediaUploadHandler
      * Get file-path of the filename.
      *
      * @param string|null $fileName
-     *
      * @return string
      */
     protected function getFilePath($fileName = null)
@@ -290,10 +290,9 @@ class MediaUploadHandler
      * Replace all space to - and transform all character to lowercase.
      *
      * @param string $fileName
-     * @param array  $replace The replace_pairs parameter may be used as a substitute for to and from in which case.
-     *                        it's an array in the form array('from' => 'to', ...).
+     * @param array $replace The replace_pairs parameter may be used as a substitute for to and from in which case.
+     * it's an array in the form array('from' => 'to', ...).
      * @param string $delimiter
-     *
      * @see strtr
      * @return string Clean name
      */
@@ -318,7 +317,6 @@ class MediaUploadHandler
      * Callback function of upCountName.
      *
      * @param array $matches
-     *
      * @return string
      */
     protected function upCountNameCallback($matches)
@@ -333,7 +331,6 @@ class MediaUploadHandler
      * The number before fileName extension is replaced by upCountNameCallback.
      *
      * @param string $fileName
-     *
      * @return mixed
      * @see upCountNameCallback
      */
@@ -348,7 +345,6 @@ class MediaUploadHandler
      * then the number between - and before the extension plus 1.
      *
      * @param UploadedFile $file
-     *
      * @return string
      */
     protected function getFileName($file)
@@ -369,7 +365,7 @@ class MediaUploadHandler
 
         if ($index !== 0) {
             // Replace media title
-            $this->_media->media_title = $file->baseName . ' ' . $index;
+            $this->_media->title = $file->baseName . ' ' . $index;
         }
 
         return $fileName;
@@ -377,8 +373,7 @@ class MediaUploadHandler
 
     /**
      * @param \imagine\image\ImageInterface $image
-     * @param string                        $filePath
-     *
+     * @param string $filePath
      * @return bool
      */
     protected function correctExifRotation($image, $filePath)
@@ -418,7 +413,6 @@ class MediaUploadHandler
      * @param $fileName
      * @param $version
      * @param $options
-     *
      * @return bool|\imagine\Image\ManipulatorInterface
      */
     protected function createScaledImage($fileName, $version, $options)
@@ -456,9 +450,9 @@ class MediaUploadHandler
                 $success = $image->thumbnail(new Box($newWidth, $newHeight))
                     ->save($newFilePath);
                 if ($success) {
-                    $this->_meta['media_versions'][$version] = [
-                        'url'    => $newFileName,
-                        'width'  => $newWidth,
+                    $this->_meta['versions'][$version] = [
+                        'url' => $newFileName,
+                        'width' => $newWidth,
                         'height' => $newHeight,
                     ];
                 }
@@ -481,9 +475,9 @@ class MediaUploadHandler
                     ->crop(new Point($pointX, $pointY), new Box($maxWidth, $maxHeight))
                     ->save($newFilePath);
                 if ($success) {
-                    $this->_meta['media_versions'][$version] = [
-                        'url'    => $newFileName,
-                        'width'  => $maxWidth,
+                    $this->_meta['versions'][$version] = [
+                        'url' => $newFileName,
+                        'width' => $maxWidth,
                         'height' => $maxWidth,
                     ];
                 }
@@ -511,7 +505,6 @@ class MediaUploadHandler
      * Set icon url.
      *
      * @param string $fileName
-     *
      * @return string
      */
     protected function setIconUrl($fileName)
@@ -519,7 +512,7 @@ class MediaUploadHandler
         foreach ($this->fileTypes as $name => $type) {
             if (preg_match($type['extensions'], $fileName)) {
                 if ($name === 'image') {
-                    return $this->_meta['media_versions']['thumbnail']['url'];
+                    return $this->_meta['versions']['thumbnail']['url'];
                 }
 
                 return $type['mime_icon'];
@@ -537,29 +530,73 @@ class MediaUploadHandler
      */
     protected function handleFileUpload($file)
     {
-        $this->_meta['media_filename'] = $this->getFileName($file);
-        $this->_meta['media_file_size'] = $file->size;
+        $this->_meta['filename'] = $this->getFileName($file);
+        $this->_meta['file_size'] = $file->size;
         $uploadDir = $this->getUploadPath();
-        $uploadPath = $this->getUploadPath($this->_meta['media_filename']);
+        $uploadPath = $this->getUploadPath($this->_meta['filename']);
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, $this->getOption('mkdir_mode'), 'true');
+            FileHelper::createDirectory($uploadDir, $this->getOption('mkdir_mode'));
         }
 
         if ($file->saveAs($uploadPath)) {
-            $this->_meta['media_versions']['full']['url'] = $this->getUserPath() .
-                $this->getYearMonthPath() .
-                $this->_meta['media_filename'];
+            $this->_meta['versions']['full']['url'] = $this->getUserPath()
+                . $this->getYearMonthPath()
+                . $this->_meta['filename'];
 
-            if (preg_match($this->fileTypes['image']['extensions'], $this->_meta['media_filename'])) {
-                $image = Image::getImagine()->open($this->getFilePath($this->_meta['media_versions']['full']['url']));
-                $this->handleImageFile($this->_meta['media_versions']['full']['url']);
-                $this->_meta['media_versions']['full']['width'] = $image->getSize()->getWidth();
-                $this->_meta['media_versions']['full']['height'] = $image->getSize()->getHeight();
+            if (preg_match($this->fileTypes['image']['extensions'], $this->_meta['filename'])) {
+                $image = Image::getImagine()->open($this->getFilePath($this->_meta['versions']['full']['url']));
+                $this->handleImageFile($this->_meta['versions']['full']['url']);
+                $this->_meta['versions']['full']['width'] = $image->getSize()->getWidth();
+                $this->_meta['versions']['full']['height'] = $image->getSize()->getHeight();
             }
 
-            $this->_meta['media_icon_url'] = $this->setIconUrl($this->_meta['media_filename']);
+            $this->_meta['icon_url'] = $this->setIconUrl($this->_meta['filename']);
         }
+    }
+
+    /**
+     * @return \yii\data\Pagination
+     */
+    protected function getPages()
+    {
+        $query = Media::find()->orderBy(['id' => SORT_DESC]);
+        $pages = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => $this->getOption('files_per_page'),
+        ]);
+
+        return $pages;
+    }
+
+    /**
+     * @param $pages Pagination
+     * @return array
+     */
+    protected function getPaging($pages)
+    {
+        $currentPage = $pages->getPage();
+        $perPage = $pages->getPageSize();
+        $result = [
+            'next_url' => '',
+            'current_page' => $currentPage,
+            'per_page' => $perPage,
+        ];
+        $pageCount = $pages->getPageCount();
+
+        if ($currentPage + 1 < $pageCount) {
+            if (($page = $currentPage + 1) >= $pageCount - 1) {
+                $page = $pageCount - 1;
+            }
+
+            return [
+                'next_url' => Url::to(['get-json', 'page' => $page + 1, 'per-page' => $pages->getPageSize()]),
+                'current_page' => $page,
+                'per_page' => $perPage,
+            ];
+        }
+
+        return $result;
     }
 
     /**
@@ -570,18 +607,18 @@ class MediaUploadHandler
     public function setOptions($options = [])
     {
         $this->options = [
-            'script_url'                       => Yii::$app->request->absoluteUrl,
-            'upload_dir'                       => Yii::getAlias('@public/uploads/'),
-            'upload_url'                       => Media::getUploadUrl(),
-            'user_dirs'                        => true,
-            'year_month_dirs'                  => true,
-            'mkdir_mode'                       => 0755,
-            'param_name'                       => 'files',
-            'access_control_allow_origin'      => '*',
+            'script_url' => Yii::$app->request->absoluteUrl,
+            'upload_dir' => Yii::getAlias('@public/uploads/'),
+            'upload_url' => Media::getUploadUrl(),
+            'user_dirs' => true,
+            'year_month_dirs' => true,
+            'mkdir_mode' => 0755,
+            'param_name' => 'files',
+            'access_control_allow_origin' => '*',
             'access_control_allow_credentials' => false,
-            'correct_exif_rotation'            => true,
-            'pagination_route'                 => '/media/get-json',
-            'access_control_allow_methods'     => [
+            'correct_exif_rotation' => true,
+            'pagination_route' => '/media/get-json',
+            'access_control_allow_methods' => [
                 'OPTIONS',
                 'HEAD',
                 'GET',
@@ -590,28 +627,28 @@ class MediaUploadHandler
                 'PATCH',
                 'DELETE',
             ],
-            'access_control_allow_headers'     => [
+            'access_control_allow_headers' => [
                 'Content-Type',
                 'Content-Range',
                 'Content-Disposition',
             ],
-            'versions'                         => [
-                'large'     => [
-                    'max_width'  => 1024,
+            'versions' => [
+                'large' => [
+                    'max_width' => 1024,
                     'max_height' => 1024,
                 ],
-                'medium'    => [
-                    'max_width'  => 300,
+                'medium' => [
+                    'max_width' => 300,
                     'max_height' => 300,
                 ],
                 'thumbnail' => [
-                    'max_width'  => 150,
+                    'max_width' => 150,
                     'max_height' => 150,
-                    'crop'       => 1,
+                    'crop' => 1,
                 ],
             ],
-            'files_per_page'                   => 100,
-            'print_response'                   => true,
+            'files_per_page' => 100,
+            'print_response' => true,
         ];
 
         if ($options) {
@@ -632,7 +669,6 @@ class MediaUploadHandler
      * Return string or array if option exist, or return null if not exist.
      *
      * @param string $id
-     *
      * @return string|array|null
      */
     public function getOption($id)
@@ -648,39 +684,29 @@ class MediaUploadHandler
      * Generate response based on Media primary key.
      *
      * @param Media $media
-     *
      * @return array
      */
     public function generateResponse($media)
     {
         $metadata = $media->getMeta('metadata');
         $response = ArrayHelper::merge(ArrayHelper::toArray($media), $metadata);
-        $response['media_data_formatted'] = Yii::$app->formatter->asDatetime($media->media_date);
-        $response['media_readable_size'] = Yii::$app->formatter->asShortSize($metadata['media_file_size']);
-        $response['media_delete_url'] = Url::to(['/media/ajax-delete', 'id' => $media->id, 'delete' => '1']);
-        $response['media_update_url'] = Url::to(['/media/update', 'id' => $media->id]);
-        $response['media_view_url'] = $media->url;
+        $response['date_formatted'] = Yii::$app->formatter->asDatetime($media->date);
+        $response['readable_size'] = Yii::$app->formatter->asShortSize($metadata['file_size']);
+        $response['delete_url'] = Url::to(['/media/ajax-delete', 'id' => $media->id, 'delete' => '1']);
+        $response['update_url'] = Url::to(['/media/update', 'id' => $media->id]);
+        $response['view_url'] = $media->getUrl();
 
-        if (preg_match('/^image\//', $media->media_mime_type)) {
-            $response['media_render_type'] = 'image';
-            $response['media_icon_url'] = $this->getOption('upload_url') . $metadata['media_icon_url'];
-
-            foreach ($metadata['media_versions'] as $versionName => $version) {
-                $response['media_size'][] = [
-                    'version' => $versionName,
-                    'url'     => $version['url'],
-                    'width'   => $version['width'],
-                    'height'  => $version['height'],
-                ];
-            }
+        if (preg_match('/^image\//', $media->mime_type)) {
+            $response['type'] = 'image';
+            $response['icon_url'] = $this->getOption('upload_url') . $metadata['icon_url'];
         } else {
-            $response['media_icon_url'] = Yii::getAlias('@web') . '/' . $metadata['media_icon_url'];
-            if (preg_match('/^video\//', $media->media_mime_type)) {
-                $response['media_render_type'] = 'video';
-            } elseif (preg_match('/^audio\//', $media->media_mime_type)) {
-                $response['media_render_type'] = 'audio';
+            $response['icon_url'] = Yii::getAlias('@web') . '/' . $metadata['icon_url'];
+            if (preg_match('/^video\//', $media->mime_type)) {
+                $response['type'] = 'video';
+            } elseif (preg_match('/^audio\//', $media->mime_type)) {
+                $response['type'] = 'audio';
             } else {
-                $response['media_render_type'] = 'file';
+                $response['type'] = 'file';
             }
         }
 
@@ -702,10 +728,9 @@ class MediaUploadHandler
      * Generate response in the form of a string of json.
      *
      * @param bool $printResponse
-     *
      * @return array
      */
-    public function getResponse($printResponse = true)
+    public function getResponse($printResponse = self::PRINT_RESPONSE)
     {
         if ($printResponse) {
             $this->head();
@@ -739,40 +764,13 @@ class MediaUploadHandler
     }
 
     /**
-     * @return \yii\data\Pagination
-     */
-    public function getPages()
-    {
-        $query = Media::find();
-
-        if ($postId = Yii::$app->request->get('post_id')) {
-            $query->andWhere(['media_post_id' => $postId]);
-        }
-
-        if ($title = Yii::$app->request->get('title')) {
-            $query->andWhere(['LIKE', 'media_title', $title]);
-        }
-
-        $query->orderBy(['id' => SORT_DESC]);
-        $countQuery = clone $query;
-        $pages = new Pagination([
-            'totalCount' => $countQuery->count(),
-            'pageSize'   => $this->getOption('files_per_page'),
-            'route'      => $this->getOption('pagination_route'),
-        ]);
-
-        return $pages;
-    }
-
-    /**
      * Get media files.
      *
+     * @param int $id
      * @param bool $printResponse
-     * @param int  $id
-     *
      * @return array
      */
-    public function get($id = null, $printResponse = true)
+    public function get($id = null, $printResponse = self::PRINT_RESPONSE)
     {
         $content = [];
 
@@ -781,23 +779,13 @@ class MediaUploadHandler
                 $this->getSingularParamName() => $this->generateResponse($media),
             ];
         } else {
-            $query = Media::find();
+            $query = Media::find()->orderBy(['id' => SORT_DESC]);
+            $pages = $this->getPages();
 
-            if ($postId = Yii::$app->request->get('post_id')) {
-                $query->andWhere(['media_post_id' => $postId]);
-            }
-
-            if ($title = Yii::$app->request->get('title')) {
-                $query->andWhere(['LIKE', 'media_title', $title]);
-            }
-
-            $query->orderBy(['id' => SORT_DESC]);
-            $countQuery = clone $query;
-
-            $pages = new Pagination([
-                'totalCount' => $countQuery->count(),
-                'pageSize'   => $this->getOption('files_per_page'),
-            ]);
+            $query->andFilterWhere(['like', 'post_id', Yii::$app->request->get('post')])
+                ->andFilterWhere(['like', 'mime_type', Yii::$app->request->get('type')])
+                ->andFilterWhere(['like', 'title', Yii::$app->request->get('keyword')])
+                ->orFilterWhere(['like', 'content', Yii::$app->request->get('keyword')]);
 
             if ($models = $query->offset($pages->offset)->limit($pages->limit)->all()) {
                 foreach ($models as $media) {
@@ -807,6 +795,7 @@ class MediaUploadHandler
             }
             $response = [
                 $this->getOption('param_name') => $content,
+                'paging' => $this->getPaging($pages),
             ];
         }
 
@@ -819,11 +808,9 @@ class MediaUploadHandler
      * Upload file to server.
      *
      * @param bool $printResponse
-     *
      * @return array
-     * @throws \yii\web\NotFoundHttpException
      */
-    public function post($printResponse = true)
+    public function post($printResponse = self::PRINT_RESPONSE)
     {
         if (Yii::$app->request->get('delete') && $id = Yii::$app->request->get('id')) {
             return $this->delete($id, $printResponse);
@@ -834,13 +821,13 @@ class MediaUploadHandler
         $this->_media->file = UploadedFile::getInstance($this->_media, 'file');
 
         if ($this->_media->file !== null && $this->_media->validate(['file'])) {
-            if ($postId = Yii::$app->request->get('post_id')) {
+            if ($postId = Yii::$app->request->get('post')) {
                 $post = $this->findPost($postId);
-                $this->_media->media_post_id = $post->id;
+                $this->_media->post_id = $post->id;
             }
 
-            $this->_media->media_title = $this->_media->file->baseName;
-            $this->_media->media_mime_type = $this->_media->file->type;
+            $this->_media->title = $this->_media->file->baseName;
+            $this->_media->mime_type = $this->_media->file->type;
             $this->handleFileUpload($this->_media->file);
 
             if ($this->_media->save(false)) {
@@ -850,9 +837,9 @@ class MediaUploadHandler
             }
         } else {
             $response = [
-                'media_error'     => $this->_media->getFirstError('file'),
-                'media_filename'  => isset($this->_media->file->name) ? $this->_media->file->name : null,
-                'media_file_size' => isset($this->_media->file->size) ? $this->_media->file->size : null,
+                'error' => $this->_media->getFirstError('file'),
+                'filename' => isset($this->_media->file->name) ? $this->_media->file->name : null,
+                'file_size' => isset($this->_media->file->size) ? $this->_media->file->size : null,
             ];
         }
 
@@ -866,13 +853,12 @@ class MediaUploadHandler
     /**
      * Delete files based on media primary key
      *
-     * @param int  $id Primary key of Media
+     * @param int $id Primary key of Media
      * @param bool $printResponse
-     *
      * @return array
      * @throws \Exception
      */
-    public function delete($id, $printResponse = true)
+    public function delete($id, $printResponse = self::PRINT_RESPONSE)
     {
         $success = true;
         $response = [];
@@ -880,11 +866,11 @@ class MediaUploadHandler
         $metadata = $media->getMeta('metadata');
 
         if ($media->delete()) {
-            foreach ($metadata['media_versions'] as $version) {
+            foreach ($metadata['versions'] as $version) {
                 $filePath = $this->getFilePath($version['url']);
                 $success = is_file($filePath) && unlink($filePath);
             }
-            $response[$metadata['media_filename']] = $success;
+            $response[$metadata['filename']] = $success;
         }
 
         $this->setResponse($response);
