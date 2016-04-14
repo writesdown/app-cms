@@ -11,6 +11,7 @@ use common\components\Json;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%module}}".
@@ -161,13 +162,7 @@ class Module extends ActiveRecord
      */
     public function getBackendConfig()
     {
-        $config = $this->getConfig();
-
-        if (isset($config['backend'])) {
-            return $config['backend'];
-        }
-
-        return [];
+        return ArrayHelper::getValue($this->getConfig(), 'backend', []);
     }
 
     /**
@@ -177,13 +172,7 @@ class Module extends ActiveRecord
      */
     public function getFrontendConfig()
     {
-        $config = $this->getConfig();
-
-        if (isset($config['frontend'])) {
-            return $config['frontend'];
-        }
-
-        return [];
+        return ArrayHelper::getValue($this->getConfig(), 'frontend', []);
     }
 
     /**
