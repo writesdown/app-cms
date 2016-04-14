@@ -50,7 +50,8 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
                     ],
                     [
                         'attribute' => 'date',
-                        'value' => Html::a(Yii::$app->formatter->asDatetime($model->date, 'php:M d, Y H:i:s')
+                        'value' => Html::a(
+                            date('M d, Y H:i:s', strtotime($model->date))
                             . ' <i class="fa fa-pencil"></i>', '#', [
                                 'data-toggle' => 'modal',
                                 'id' => 'date-link',
@@ -105,5 +106,5 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
 <?php ActiveForm::end() ?>
 
 <?php $this->registerJs('$("#modal-for-date").on("hidden.bs.modal", function () {'
-    . '$("#date-link").html($("#media-date").val() + \' < i class="fa fa-pencil" ></i>\');'
+    . '$("#date-link").html($("#media-date").val() + \' <i class="fa fa-pencil"></i>\');'
     . '});') ?>

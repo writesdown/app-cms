@@ -93,7 +93,7 @@ $this->title = Yii::t('writesdown', 'Dashboard');
                             <tr>
                                 <td><?= $post->postAuthor->display_name ?></td>
                                 <td><?= substr(strip_tags($post->excerpt), 0, 180) . '...' ?></td>
-                                <td><?= Yii::$app->formatter->asDatetime($post->date) ?></td>
+                                <td><?= date('M d, Y H:i:s', strtotime($post->date)) ?></td>
                                 <td><?= $post->comment_count ?></td>
                                 <td>
                                     <?= Html::a(

@@ -109,7 +109,7 @@ class MediaController extends Controller
         $metadata = $model->getMeta('metadata');
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
+            $model->date = date('Y-m-d H:i:s', strtotime($model->date));
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('writesdown', 'Media successfully saved.'));
 

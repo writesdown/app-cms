@@ -62,9 +62,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update Comment');
                 [
                     'attribute' => 'date',
                     'value' => Html::a(
-                        Yii::$app
-                            ->formatter
-                            ->asDatetime($model->date, 'php:M d, Y H:i:s') . ' <i class="fa fa-pencil"></i>',
+                        date('M d, Y H:i:s', strtotime($model->date)) . ' <i class="fa fa-pencil"></i>',
                         '#', [
                             'data-toggle' => 'modal',
                             'id' => 'date-link',

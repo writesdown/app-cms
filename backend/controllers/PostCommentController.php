@@ -95,7 +95,7 @@ class PostCommentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
+            $model->date = date('Y-m-d H:i:s', strtotime($model->date));
             if ($model->save()) {
                 return $this->redirect(['update', 'id' => $model->id]);
             }

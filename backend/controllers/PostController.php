@@ -105,7 +105,7 @@ class PostController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->type = $postType->id;
-            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
+            $model->date = date('Y-m-d H:i:s', strtotime($model->date));
             if ($model->save()) {
                 if ($termIds = Yii::$app->request->post('termIds')) {
                     foreach ($termIds as $termId) {
@@ -152,7 +152,7 @@ class PostController extends Controller
         $postType = $model->postType;
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->date = Yii::$app->formatter->asDatetime($model->date, 'php:Y-m-d H:i:s');
+            $model->date = date('Y-m-d H:i:s', strtotime($model->date));
             if ($model->save()) {
                 if ($meta = Yii::$app->request->post('meta')) {
                     foreach ($meta as $name => $value) {

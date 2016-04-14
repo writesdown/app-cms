@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Reply Comment');
                 ],
                 [
                     'attribute' => 'date',
-                    'value' => Yii::$app->formatter->asDatetime($commentParent->date, 'php:M d, Y H:i:s'),
+                    'value' => date('M d, Y H:i:s', strtotime($commentParent->date)),
                     'format' => 'raw',
                 ],
                 'status',

@@ -28,8 +28,8 @@ use yii\helpers\Html;
             'pickButtonIcon' => 'glyphicon glyphicon-time',
             'options' => [
                 'value' => $model->isNewRecord
-                    ? date('M d, Y h:i:s')
-                    : Yii::$app->formatter->asDatetime($model->date, 'php:M d, Y h:i:s'),
+                    ? date('M d, Y H:i:s')
+                    : date('M d, Y H:i:s', strtotime($model->date)),
             ],
             'clientOptions' => [
                 'autoclose' => true,
