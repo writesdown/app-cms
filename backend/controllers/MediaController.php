@@ -181,9 +181,8 @@ class MediaController extends Controller
             ],
         ];
 
-        // Merge image versions with app params
-        if (isset(Yii::$app->params['media']['versions']) && is_array(Yii::$app->params['media']['versions'])) {
-            $versions = ArrayHelper::merge($versions, Yii::$app->params['media']['versions']);
+        if($userVersions = ArrayHelper::getValue(Yii::$app->params, 'media.versions', [])){
+            $versions = ArrayHelper::merge($versions, $userVersions);
         }
 
         $uploadHandler = new MediaUploadHandler([
