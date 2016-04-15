@@ -30,7 +30,7 @@ class MediaModal extends Widget
     public $multiple = null;
     public $callback = [
         'name' => '',
-        'function' => '',
+        'value' => '',
     ];
     public $buttonTag = 'button';
     public $buttonContent = null;

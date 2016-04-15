@@ -7,12 +7,14 @@
 
 namespace backend\controllers;
 
+use common\components\Json;
 use common\components\MediaUploadHandler;
 use common\models\Media;
 use common\models\Post;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -95,7 +97,7 @@ class MediaBrowserController extends Controller
         $result = '';
 
         foreach (Yii::$app->request->post('Media') as $media) {
-            $type = $media['type'];
+            $type = ArrayHelper::getValue($media, 'type');
             if ($type === 'image') {
                 $result .= $this->getMediaImage($media);
             } elseif ($type === 'video') {
@@ -117,17 +119,18 @@ class MediaBrowserController extends Controller
      */
     public function actionFieldInsert()
     {
+        $files = [];
+
         foreach (Yii::$app->request->post('Media') as $media) {
-            $model = $this->findModel($media['id']);
-            $metadata = $media->$media('metadata');
-            if ($media['type'] === 'image') {
-                return $model->getUploadUrl() . $metadata['versions'][$media['version']]['url'];
-            } else {
-                return $model->getUploadUrl() . $metadata['versions']['full']['url'];
-            }
+            $mediaUploadHandler = new MediaUploadHandler(null, false);
+            $file = $mediaUploadHandler->get(
+                ArrayHelper::getValue($media, 'id'),
+                $mediaUploadHandler::NOT_PRINT_RESPONSE
+            );
+            $files[] = ArrayHelper::getValue($file, 'file');
         }
 
-        return '';
+        return Json::encode($files);
     }
 
     /**
