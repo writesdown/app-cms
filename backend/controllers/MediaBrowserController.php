@@ -177,27 +177,30 @@ class MediaBrowserController extends Controller
     protected function getMediaImage($media)
     {
         $result = '';
-        $model = $this->findModel($media['id']);
+        $model = $this->findModel(ArrayHelper::getValue($media, 'id'));
         $meta = $model->getMeta('metadata');
-        $image = $model->getThumbnail($media['version'], [
+        $image = $model->getThumbnail(ArrayHelper::getValue($media, 'version'), [
                 'data-id' => $model->id,
-                'class' => 'media-image media-' . $model->id . ' ' . $media['align'],
+                'class' => 'media-image media-' . $model->id . ' ' . ArrayHelper::getValue($media, 'align', 'none'),
             ]) . "\n";
 
         if ($model->excerpt) {
             $result .= Html::beginTag('div', [
-                    'class' => $media['align'] . ' media-caption',
+                    'class' => ArrayHelper::getValue($media, 'align', 'none') . ' media-caption',
                     'style' => 'width: ' . $meta['versions'][$media['version']]['width'] . 'px',
                 ]) . "\n";
         }
 
-        if ($media['link_value']) {
-            $result .= Html::beginTag('a', ['href' => $media['link_value'], 'class' => $media['align']]) . "\n";
+        if ($linkValue = ArrayHelper::getValue($media, 'link_value')) {
+            $result .= Html::beginTag('a', [
+                    'href' => $linkValue,
+                    'class' => ArrayHelper::getValue($media, 'align', 'none'),
+                ]) . "\n";
         }
 
         $result .= $image;
 
-        if ($media['link_value']) {
+        if ($linkValue = ArrayHelper::getValue($media, 'link_value')) {
             $result .= Html::endTag('a') . "\n";
         }
 
@@ -218,14 +221,14 @@ class MediaBrowserController extends Controller
      */
     protected function getMediaVideo($media)
     {
-        $model = $this->findModel($media['id']);
+        $model = $this->findModel(ArrayHelper::getValue($media, 'id'));
         $meta = $model->getMeta('metadata');
         $result = Html::beginTag('video', [
                 'controls' => true,
                 'class' => 'media-video media-' . $model->id,
             ]) . "\n";
         $result .= Html::tag('source', '', [
-                'src' => $model->getUploadUrl() . $meta['versions']['full']['url'],
+                'src' => $model->getUploadUrl() . ArrayHelper::getValue($meta, 'versions.full.url'),
                 'type' => $model->mime_type,
             ]) . "\n";
         $result .= 'Your browser does not support the <code>video</code> element.' . "\n";
@@ -243,14 +246,14 @@ class MediaBrowserController extends Controller
      */
     protected function getMediaAudio($media)
     {
-        $model = $this->findModel($media['id']);
+        $model = $this->findModel(ArrayHelper::getValue($media, 'id'));
         $meta = $model->getMeta('metadata');
         $result = Html::beginTag('audio', [
                 'controls' => true,
                 'class' => 'media-audio media-' . $model->id,
             ]) . "\n";
         $result .= Html::tag('source', '', [
-                'src' => $model->getUploadUrl() . $meta['versions']['full']['url'],
+                'src' => $model->getUploadUrl() . ArrayHelper::getValue($meta, 'versions.full.url'),
                 'type' => $model->mime_type,
             ]) . "\n";
         $result .= 'Your browser does not support the <code>video</code> element.' . "\n";
@@ -268,8 +271,12 @@ class MediaBrowserController extends Controller
      */
     protected function getMediaFile($media)
     {
-        $model = $this->findModel($media['id']);
+        $model = $this->findModel(ArrayHelper::getValue($media, 'id'));
 
-        return Html::a($model->title, $media['link_value'], ['class' => 'media-file media-' . $model->id]);
+        return Html::a(
+            $model->title,
+            ArrayHelper::getValue($media, 'link_value'),
+            ['class' => 'media-file media-' . $model->id]
+        );
     }
 }
