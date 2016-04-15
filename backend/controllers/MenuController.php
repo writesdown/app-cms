@@ -231,8 +231,8 @@ class MenuController extends Controller
                     'order' => $key,
                 ]);
                 if ($model->save()) {
-                    if (isset($order['items'])) {
-                        $this->saveMenuItem($order['items'], $model->id);
+                    if ($orderItems = ArrayHelper::getValue($order, 'items')) {
+                        $this->saveMenuItem($orderItems, $model->id);
                     }
                 }
             }
