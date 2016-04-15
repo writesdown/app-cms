@@ -7,9 +7,9 @@
  */
 
 return [
-    'name'               => 'toolbar',
-    'title'              => 'Toolbar',
-    'configs'            => [
+    'name' => 'toolbar',
+    'title' => 'Toolbar',
+    'config' => [
         'frontend' => [
             'class' => 'modules\toolbar\frontend\Module',
         ],

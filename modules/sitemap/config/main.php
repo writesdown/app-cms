@@ -7,11 +7,11 @@
  */
 
 return [
-    'name'               => 'sitemap',
-    'title'              => 'Sitemap',
-    'description'        => 'Module for sitemap',
-    'configs'            => [
-        'backend'  => [
+    'name' => 'sitemap',
+    'title' => 'Sitemap',
+    'description' => 'Module for sitemap',
+    'config' => [
+        'backend' => [
             'class' => 'modules\sitemap\backend\Module',
         ],
         'frontend' => [
