@@ -7,6 +7,7 @@
  */
 
 use backend\assets\AppAsset;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -14,9 +15,6 @@ use yii\helpers\Html;
 
 // Favicon
 $this->registerLinkTag(['rel' => 'icon', 'href' => Yii::getAlias('@web/favicon.ico'), 'type' => 'image/x-icon']);
-
-// Body CSS class
-$bodyClass = isset(Yii::$app->params['bodyClass']) ? Yii::$app->params['bodyClass'] : "skin-blue sidebar-mini";
 
 AppAsset::register($this);
 ?>
@@ -31,7 +29,7 @@ AppAsset::register($this);
     <title>WritesDown &raquo; <?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="<?= $bodyClass ?>">
+<body class="<?= ArrayHelper::getValue(Yii::$app->params, 'bodyClass', 'skin-blue sidebar-mini') ?>">
 <?php $this->beginBody() ?>
 <?= $content ?>
 <?php $this->endBody() ?>

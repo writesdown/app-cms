@@ -40,9 +40,9 @@ use yii\widgets\ActiveForm;
 
         </div>
 
-        <?php if (isset(Yii::$app->params['menu']['location'])): ?>
+        <?php if ($menuLocation = ArrayHelper::getValue(Yii::$app->params, 'menu.location')): ?>
             <?= $form->field($selected, 'location')->radioList(
-                ArrayHelper::merge(Yii::$app->params['menu']['location'], ['none' => Yii::t('writesdown', 'None')]),
+                ArrayHelper::merge($menuLocation, ['none' => Yii::t('writesdown', 'None')]),
                 ['separator' => '<br />', 'class' => 'radio']
             ) ?>
         <?php endif ?>

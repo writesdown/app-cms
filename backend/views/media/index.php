@@ -7,6 +7,7 @@
  */
 
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -64,14 +65,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     /* @var $model common\models\Media */
                     $metadata = $model->getMeta('metadata');
+                    $iconUrl = ArrayHelper::getValue($metadata, 'icon_url');
+
                     if (preg_match('/^image\//', $model->mime_type)) {
-                        return Html::a(Html::img($model->getUploadUrl() . $metadata['icon_url']), [
+                        return Html::a(Html::img($model->getUploadUrl() . $iconUrl), [
                             'update',
                             'id' => $model->id,
                         ], ['class' => 'media-mime-icon']);
                     }
 
-                    return Html::a(Html::img(Url::base(true) . '/' . $metadata['icon_url']), [
+                    return Html::a(Html::img(Url::base(true) . '/' . $iconUrl), [
                         'update',
                         'id' => $model->id,
                     ], ['class' => 'media-mime-icon']);
@@ -84,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     /* @var $model common\models\Media */
                     $metadata = $model->getMeta('metadata');
 
-                    return Html::a($metadata['filename'], ['update', 'id' => $model->id]);
+                    return Html::a(ArrayHelper::getValue($metadata, 'filename', '#'), ['update', 'id' => $model->id]);
                 },
             ],
             [
@@ -144,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
             data: { ids: ids, action: action, _csrf: yii.getCsrfToken() },
             type: "POST",
             success: function(data){
-                  $.pjax.reload({container:"#media-grid-view"});
+                $.pjax.reload({container:"#media-grid-view"});
             }
         });
     }

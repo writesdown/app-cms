@@ -6,6 +6,7 @@
  * @license http://www.writesdown.com/license/
  */
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -24,9 +25,10 @@ $divideSpaces = round($sizeofSpaces / 2);
         <div class="col-sm-12 col-md-6">
     <?php endif ?>
 
-    <div id="widget-space-<?= $space['location'] ?>" class="widget-space box collapsed-box box-success">
+    <div id="widget-space-<?= ArrayHelper::getValue($space, 'location') ?>"
+         class="widget-space box collapsed-box box-success">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= $space['title'] ?></h3>
+            <h3 class="box-title"><?= ArrayHelper::getValue($space, 'title') ?></h3>
 
             <div class="box-tools pull-right">
                 <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
@@ -34,8 +36,8 @@ $divideSpaces = round($sizeofSpaces / 2);
         </div>
         <div class="box-body">
 
-            <?php if (isset($space['description'])): ?>
-                <p><?= $space['description'] ?></p>
+            <?php if ($spaceDescription = ArrayHelper::getValue($space, 'description')): ?>
+                <p><?= $spaceDescription ?></p>
             <?php endif ?>
 
             <div class="widget-order">
@@ -44,7 +46,7 @@ $divideSpaces = round($sizeofSpaces / 2);
                     <?php foreach ($active[$space['location']] as $widget): ?>
                         <?= $this->render('_active', [
                             'available' => $available,
-                            'active'    => $widget,
+                            'active' => $widget,
                         ]) ?>
                     <?php endforeach ?>
                 <?php endif ?>
@@ -52,10 +54,10 @@ $divideSpaces = round($sizeofSpaces / 2);
             </div>
         </div>
         <?php $form = ActiveForm::begin([
-            'action'  => Url::to(['/site/forbidden']),
+            'action' => Url::to(['/site/forbidden']),
             'options' => [
                 'class' => 'widget-order-form box-footer',
-                'data'  => ['url' => Url::to(['ajax-save-order'])],
+                'data' => ['url' => Url::to(['ajax-save-order'])],
             ],
         ]) ?>
 

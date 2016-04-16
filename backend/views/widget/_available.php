@@ -26,7 +26,7 @@ $divideAvailable = round($sizeofAvailable / 2);
 
     <div id="available-widget-<?= $directory ?>" class="available-widget box box-solid collapsed-box">
         <div class="box-header">
-            <h3 class="box-title"><?= $widget['title'] ?></h3>
+            <h3 class="box-title"><?= ArrayHelper::getValue($widget, 'title') ?></h3>
 
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
@@ -41,8 +41,8 @@ $divideAvailable = round($sizeofAvailable / 2);
             </div>
         </div>
 
-        <?php if (isset($widget['description'])): ?>
-            <?= Html::tag('div', $widget['description'], ['class' => 'box-body']) ?>
+        <?php if ($widgetDescription = ArrayHelper::getValue($widget, 'description')): ?>
+            <?= Html::tag('div', $widgetDescription, ['class' => 'box-body']) ?>
         <?php endif ?>
 
         <?php $form = ActiveForm::begin([

@@ -60,8 +60,8 @@ use yii\widgets\ActiveForm;
 
         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa fa-level-up']), [
             'class' => 'index-search-button btn btn-flat btn-default',
-            "data-toggle" => "collapse",
-            "data-target" => "#media-search",
+            'data-toggle' => 'collapse',
+            'data-target' => '#media-search',
         ]) ?>
 
     </div>

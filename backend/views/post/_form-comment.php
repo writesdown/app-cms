@@ -19,7 +19,7 @@ use yii\helpers\Html;
 
         <div class="box-tools pull-right">
             <?php if (!$model->isNewRecord) {
-    echo Html::a(
+                echo Html::a(
                     Yii::t(
                         'writesdown', '{n, plural,=0{# comments} =1{# Comment} other{# Comments}}',
                         ['n' => $model->comment_count]
@@ -27,7 +27,7 @@ use yii\helpers\Html;
                     ['/post-comment/index/', 'posttype' => $model->postType->id, 'post' => $model->id],
                     ['class' => 'text-info']
                 );
-} ?>
+            } ?>
 
             <a href="#" data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></a>
         </div>

@@ -45,8 +45,9 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
                     [
                         'attribute' => 'post_id',
                         'format' => 'raw',
-                        'value' => $model->post_id ? Html::a($model->mediaPost->title,
-                            ['/post/update', 'id' => $model->mediaPost->id]) : Yii::t('writesdown', 'Unattached'),
+                        'value' => $model->post_id
+                            ? Html::a($model->mediaPost->title, ['/post/update', 'id' => $model->mediaPost->id])
+                            : Yii::t('writesdown', 'Unattached'),
                     ],
                     [
                         'attribute' => 'date',
@@ -65,8 +66,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
                     [
                         'attribute' => 'comment_count',
                         'format' => 'raw',
-                        'value' => Html::a($model->comment_count,
-                            ['/media-comment/index', 'media' => $model->id]),
+                        'value' => Html::a($model->comment_count, ['/media-comment/index', 'media' => $model->id]),
                     ],
                 ],
             ]) ?>
@@ -74,9 +74,7 @@ $this->params['breadcrumbs'][] = Yii::t('writesdown', 'Update');
             <?= !$model->isNewRecord
                 ? Html::a(Yii::t('writesdown', 'Delete'), ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-wd-post btn-sm btn-flat btn-danger',
-                    'data' => [
-                        'confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?'),
-                    ],
+                    'data' => ['confirm' => Yii::t('writesdown', 'Are you sure you want to delete this item?')],
                 ])
                 : '' ?>
 

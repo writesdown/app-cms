@@ -164,8 +164,8 @@ use yii\helpers\Html;
         ];
         $adminMenu = ArrayHelper::merge($adminMenu, Option::getMenus(70));
 
-        if (isset(Yii::$app->params['adminMenu']) && is_array(Yii::$app->params['adminMenu'])) {
-            $adminMenu = ArrayHelper::merge($adminMenu, Yii::$app->params['adminMenu']);
+        if ($userAdminMenu = ArrayHelper::getValue(Yii::$app->params, 'adminMenu', [])) {
+            $adminMenu = ArrayHelper::merge($adminMenu, $userAdminMenu);
         }
 
         ksort($adminMenu);

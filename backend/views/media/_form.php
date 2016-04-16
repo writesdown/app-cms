@@ -1,4 +1,4 @@
-<?php
+,<?php
 /**
  * @link http://www.writesdown.com/
  * @author Agiel K. Saputra <13nightevil@gmail.com>
@@ -8,6 +8,7 @@
 
 use codezeen\yii2\tinymce\TinyMce;
 use dosamigos\selectize\SelectizeDropDownList;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
@@ -35,21 +36,21 @@ use yii\web\JsExpression;
             <?= $model->getThumbnail('full', ['class' => 'thumbnail']) ?>
         <?php elseif (preg_match('/^video\//', $model->mime_type)): ?>
             <video controls class="full-width">
-                <source src="<?= $model->getUploadUrl() . $metadata['versions']['full']['url'] ?>"
+                <source src="<?= $model->getUploadUrl() . ArrayHelper::getValue($metadata, 'versions.full.url') ?>"
                         type="<?= $model->mime_type ?>">
                 <?= Yii::t('writesdown', 'Your browser does not support HTML5 video.') ?>
             </video>
         <?php elseif (preg_match('/^audio\//', $model->mime_type)): ?>
             <audio controls class="full-width">
-                <source src="<?= $model->getUploadUrl() . $metadata['versions']['full']['url'] ?>"
+                <source src="<?= $model->getUploadUrl() . ArrayHelper::getValue($metadata, 'versions.full.url') ?>"
                         type="<?= $model->mime_type ?>">
                 <?= Yii::t('writesdown', 'Your browser does not support HTML5 audio.') ?>
             </audio>
         <?php else: ?>
-            <?= Html::textInput('media-file-name', $model->getUploadUrl() . $metadata['versions']['full']['url'], [
-                'class' => 'form-control input-sm',
-                'readonly' => 'readonly',
-            ]) ?>
+            <?= Html::textInput(
+                'media-file-name', $model->getUploadUrl() . ArrayHelper::getValue($metadata, 'versions.full.url'),
+                ['class' => 'form-control input-sm', 'readonly' => 'readonly'])
+            ?>
         <?php endif ?>
 
     </div>
@@ -101,21 +102,20 @@ use yii\web\JsExpression;
                 if (!query.length) return callback();
                 $.ajax({
                     url: "' . Url::to(['/post/ajax-search']) . '",
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            title: query,
-                            _csrf: yii.getCsrfToken()
-                        },
-                        error: function() {
-                            callback();
-                        },
-                        success: function(response) {
-                            callback(response);
-                        }
-                    });
-                }'
-            ),
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        title: query,
+                        _csrf: yii.getCsrfToken()
+                    },
+                    error: function() {
+                        callback();
+                    },
+                    success: function(response) {
+                        callback(response);
+                    }
+                });
+            }'),
         ],
     ]) ?>
 

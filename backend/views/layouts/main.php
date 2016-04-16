@@ -7,6 +7,7 @@
  */
 
 use codezeen\yii2\adminlte\widgets\Alert;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
@@ -29,7 +30,7 @@ use yii\widgets\Breadcrumbs;
                     ),
                 ],
                 'encodeLabels' => false,
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'links' => ArrayHelper::getValue($this->params, 'breadcrumbs', []),
             ]) ?>
         </section>
         <section class="content clearfix">
