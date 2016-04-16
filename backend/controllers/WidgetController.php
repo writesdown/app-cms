@@ -82,7 +82,7 @@ class WidgetController extends Controller
         $config = [];
         $active = [];
         $available = [];
-        $spaces = isset(Yii::$app->params['widget']) ? Yii::$app->params['widget'] : [];
+        $spaces = ArrayHelper::getValue(Yii::$app->params, 'widget', []);
 
         if (!is_dir($this->_dir)) {
             FileHelper::createDirectory($this->_dir, 0755);
@@ -193,7 +193,7 @@ class WidgetController extends Controller
 
                 return $this->redirect(['index']);
             } else {
-                if (!$errors['dirExist']) {
+                if (!ArrayHelper::getValue($errors, 'dirExist')) {
                     FileHelper::removeDirectory($this->_dir . $baseDir);
                 }
 

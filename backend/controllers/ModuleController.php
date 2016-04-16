@@ -139,16 +139,18 @@ class ModuleController extends Controller
             }
 
             FileHelper::removeDirectory($this->_tmp);
+            $frontendClass = ArrayHelper::getValue($model->config, 'frontend.class', false);
+            $backendClass = ArrayHelper::getValue($model->config, 'backend.class', false);
 
-            if (!isset($model->config['frontend']['class']) && !isset($model->config['backend']['class'])) {
+            if (!($frontendClass || $backendClass)) {
                 $errors[] = Yii::t('writesdown', 'Invalid config.');
             }
 
-            if (isset($model->config['backend']['class']) && !class_exists($model->config['backend']['class'])) {
+            if ($backendClass && !class_exists($backendClass)) {
                 $errors[] = Yii::t('writesdown', 'Invalid backend config.');
             }
 
-            if (isset($model->config['frontend']['class']) && !class_exists($model->config['frontend']['class'])) {
+            if ($frontendClass && !class_exists($frontendClass)) {
                 $errors[] = Yii::t('writesdown', 'Invalid frontend config.');
             }
 

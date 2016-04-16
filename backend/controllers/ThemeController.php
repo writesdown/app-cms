@@ -13,6 +13,7 @@ use yii\base\DynamicModel;
 use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -167,13 +168,10 @@ class ThemeController extends Controller
                     copy($this->_dir . $baseDir . '/screenshot.png', $this->_thumbDir . $baseDir . '.png');
                 }
 
-                $config = $this->getConfig($baseDir);
-                if (isset($config['upload']) && is_array($config['upload'])) {
-                    foreach ($config['upload'] as $type) {
-                        try {
-                            Yii::createObject($type);
-                        } catch (Exception $e) {
-                        }
+                foreach (ArrayHelper::getValue($this->getConfig($baseDir), 'upload', []) as $type) {
+                    try {
+                        Yii::createObject($type);
+                    } catch (Exception $e) {
                     }
                 }
 
@@ -213,24 +211,17 @@ class ThemeController extends Controller
      */
     public function actionInstall($theme)
     {
-        $configOld = $this->getConfig(Option::get('theme'));
-
-        if (isset($configOld['uninstall']) && is_array($configOld['uninstall'])) {
-            foreach ($configOld['uninstall'] as $type) {
-                try {
-                    Yii::createObject($type);
-                } catch (Exception $e) {
-                }
+        foreach (ArrayHelper::getValue($this->getConfig(Option::get('theme')), 'uninstall', []) as $type) {
+            try {
+                Yii::createObject($type);
+            } catch (Exception $e) {
             }
         }
 
-        $configNew = $this->getConfig($theme);
-        if (isset($configNew['install']) && is_array($configNew['install'])) {
-            foreach ($configNew['install'] as $type) {
-                try {
-                    Yii::createObject($type);
-                } catch (Exception $e) {
-                }
+        foreach (ArrayHelper::getValue($this->getConfig($theme), 'install', []) as $type) {
+            try {
+                Yii::createObject($type);
+            } catch (Exception $e) {
             }
         }
 
@@ -251,14 +242,11 @@ class ThemeController extends Controller
     public function actionDelete($theme)
     {
         if ($theme !== Option::get('theme')) {
-            $config = $this->getConfig($theme);
 
-            if (isset($config['delete']) && is_array($config['delete'])) {
-                foreach ($config['delete'] as $type) {
-                    try {
-                        Yii::createObject($type);
-                    } catch (Exception $e) {
-                    }
+            foreach (ArrayHelper::getValue($this->getConfig($theme), 'delete', []) as $type) {
+                try {
+                    Yii::createObject($type);
+                } catch (Exception $e) {
                 }
             }
 
