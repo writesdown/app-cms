@@ -187,12 +187,12 @@ abstract class BaseComment extends Widget
                 </time>
 
                 <?php if ($depth < $this->maxDepth && $this->enableThreadComments) {
-    echo Html::a(\Yii::t('writesdown', 'Reply'), '#', [
+                    echo Html::a(\Yii::t('writesdown', 'Reply'), '#', [
                         'class' => 'comment-reply-link',
                         'data-id' => $comment->id,
                     ]);
-}
-        ?>
+                }
+                ?>
 
             </p>
             <div class="comment-content">

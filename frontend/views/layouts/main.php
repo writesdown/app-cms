@@ -12,6 +12,7 @@ use frontend\assets\AppAsset;
 use frontend\widgets\Alert;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
@@ -74,7 +75,7 @@ NavBar::end();
 </header>
 <div id="breadcrumb-primary" class="hidden-xs">
     <div class="container">
-        <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : []]) ?>
+        <?= Breadcrumbs::widget(['links' => ArrayHelper::getValue($this->params, 'breadcrumbs', [])]) ?>
 
     </div>
 </div>

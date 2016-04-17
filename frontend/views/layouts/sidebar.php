@@ -34,13 +34,10 @@ $items = [];
                 <h4><?= $taxonomy->plural_name ?></h4>
 
             </div>
-            <?= isset($items[$taxonomy->id])
-                ? Nav::widget(['items' => $items[$taxonomy->id]])
-                : '' ?>
+            <?= isset($items[$taxonomy->id]) ? Nav::widget(['items' => $items[$taxonomy->id]]) : '' ?>
 
         </div>
         <?php
-
     }
     ?>
 
