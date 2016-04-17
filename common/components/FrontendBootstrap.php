@@ -63,12 +63,12 @@ class FrontendBootstrap implements BootstrapInterface
             '@app/views' => '@themes/' . Option::get('theme'),
             '@app/views/post' => '@themes/' . Option::get('theme') . '/post',
         ];
-        $themeParamPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
+        $paramsPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
 
-        if (is_file($themeParamPath)) {
-            $themeParam = require($themeParamPath);
-            if (isset($themeParam['frontend'])) {
-                $app->params = ArrayHelper::merge($app->params, $themeParam['frontend']);
+        if (is_file($paramsPath)) {
+            $params = require($paramsPath);
+            if ($frontendParams = ArrayHelper::getValue($params, 'frontend')) {
+                $app->params = ArrayHelper::merge($app->params, $frontendParams);
             }
         }
     }
@@ -88,8 +88,8 @@ class FrontendBootstrap implements BootstrapInterface
                 // Merge application params with exist module params.
                 if (is_file($module->getParamPath())) {
                     $params = require($module->getParamPath());
-                    if (isset($moduleParam['frontend'])) {
-                        $app->params = ArrayHelper::merge($app->params, $params['frontend']);
+                    if ($frontendParams = ArrayHelper::getValue($params, 'frontend')) {
+                        $app->params = ArrayHelper::merge($app->params, $frontendParams);
                     }
                 }
                 // Bootstrap injection.

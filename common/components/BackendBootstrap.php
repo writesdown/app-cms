@@ -57,12 +57,12 @@ class BackendBootstrap implements BootstrapInterface
     protected function setTheme($app)
     {
         /* THEME CONFIG */
-        $themeParamPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
+        $paramsPath = Yii::getAlias('@themes/') . Option::get('theme') . '/config/params.php';
 
-        if (is_file($themeParamPath)) {
-            $themeParam = require($themeParamPath);
-            if (isset($themeParam['backend'])) {
-                $app->params = ArrayHelper::merge($app->params, $themeParam['backend']);
+        if (is_file($paramsPath)) {
+            $params = require($paramsPath);
+            if ($backendParams = ArrayHelper::getValue($params, 'backend')) {
+                $app->params = ArrayHelper::merge($app->params, $backendParams);
             }
         }
     }
@@ -82,8 +82,8 @@ class BackendBootstrap implements BootstrapInterface
                 // Merge application params with exist module params.
                 if (is_file($module->getParamPath())) {
                     $params = require($module->getParamPath());
-                    if (isset($params['backend'])) {
-                        $app->params = ArrayHelper::merge($app->params, $params['backend']);
+                    if ($backendParams = ArrayHelper::getValue($params, 'backend')) {
+                        $app->params = ArrayHelper::merge($app->params, $backendParams);
                     }
                 }
                 // Bootstrap injection.
