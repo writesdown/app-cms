@@ -28,16 +28,16 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'description') ?>
 
             <?= $form->field($model, 'frontend_bootstrap')->dropDownList($model->getFrontendBootstraps(),
-                ['prompt' => false]) ?>
+                ['prompt' => '-- select --']) ?>
 
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'status')->dropDownList($model->getStatuses(), ['prompt' => false]) ?>
+            <?= $form->field($model, 'status')->dropDownList($model->getStatuses(), ['prompt' => '-- select --']) ?>
 
             <?= $form->field($model, 'directory') ?>
 
             <?= $form->field($model, 'backend_bootstrap')->dropDownList($model->getBackendBootstraps(),
-                ['prompt' => false]) ?>
+                ['prompt' => '-- select --']) ?>
 
         </div>
     </div>
